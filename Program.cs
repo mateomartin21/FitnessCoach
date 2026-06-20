@@ -1,34 +1,52 @@
+using Scalar.AspNetCore;
+using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// MVC (vistas web)
 builder.Services.AddControllersWithViews();
-// Registrar nuestro repositorio en memoria como un Singleton
-builder.Services.AddSingleton<FitnessCoach.Repositories.IRepositorioUsuario, FitnessCoach.Repositories.RepositorioUsuarioMemoria>();
-// Registrar el servicio de cálculo (Scoped significa que se crea una instancia por cada petición HTTP)
-builder.Services.AddScoped<FitnessCoach.Services.ICalculadorCalorico, FitnessCoach.Services.CalculadorCaloricoService>();
-//Generador de rutinas
-builder.Services.AddScoped<FitnessCoach.Services.IGeneradorRutinas, FitnessCoach.Services.GeneradorRutinasService>();
+
+// API controllers
+builder.Services.AddControllers();
+
+// OpenAPI integrado de .NET 9/10 (sin Swashbuckle)
+builder.Services.AddOpenApi();
+
+// Repositorio de usuarios (Singleton: un único estado compartido en memoria)
+builder.Services.AddSingleton<FitnessCoach.Repositories.IRepositorioUsuario,
+                              FitnessCoach.Repositories.RepositorioUsuarioMemoria>();
+
+// Servicio de cálculo calórico
+builder.Services.AddScoped<FitnessCoach.Services.ICalculadorCalorico,
+                           FitnessCoach.Services.CalculadorCaloricoService>();
+
+// Generador de rutinas
+builder.Services.AddScoped<FitnessCoach.Services.IGeneradorRutinas,
+                           FitnessCoach.Services.GeneradorRutinasService>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Pipeline HTTP
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
+// OpenAPI — genera el JSON en /openapi/v1.json
+app.MapOpenApi();
+app.MapScalarApiReference();
 app.UseHttpsRedirection();
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapStaticAssets();
 
+// Rutas MVC (vistas)
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+// Rutas API
+app.MapControllers();
 
 app.Run();
