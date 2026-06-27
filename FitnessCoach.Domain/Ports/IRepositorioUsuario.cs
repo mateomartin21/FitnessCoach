@@ -1,6 +1,5 @@
-﻿using FitnessCoach.Models;
-
-namespace FitnessCoach.Repositories
+using FitnessCoach.Domain.Models;
+namespace FitnessCoach.Domain.Ports
 {
     public interface IRepositorioUsuario
     {

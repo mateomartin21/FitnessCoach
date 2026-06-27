@@ -1,7 +1,7 @@
-ï»¿@model FitnessCoach.Models.UsuarioPerfil
+@model FitnessCoach.Domain.Models.UsuarioPerfil
 
 @{
-    ViewData["Title"] = "ConfiguraciÃ³n de Perfil - FitnessCoach";
+    ViewData["Title"] = "Configuración de Perfil - FitnessCoach";
 }
 
 <div class="container mt-5">
@@ -9,7 +9,7 @@
         <div class="col-md-6 mb-4">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-dark text-white">
-                    <h5 class="mb-0">Actualizar Datos AntropomÃ©tricos</h5>
+                    <h5 class="mb-0">Actualizar Datos Antropométricos</h5>
                 </div>
                 <div class="card-body">
                     <form asp-controller="Perfil" asp-action="GuardarPerfil" method="post">
@@ -21,7 +21,7 @@
 
                         <div class="row">
                             <div class="col-6 mb-3">
-                                <label for="Edad" class="form-label">Edad (aÃ±os)</label>
+                                <label for="Edad" class="form-label">Edad (años)</label>
                                 <input type="number" class="form-control" id="Edad" name="Edad" value="@Model.Edad" required />
                             </div>
                             <div class="col-6 mb-3">
@@ -38,12 +38,12 @@
                         <div class="mb-3">
                             <label for="TipoObjetivo" class="form-label">Objetivo Fitness Principal</label>
                             <select class="form-select" id="TipoObjetivo" name="TipoObjetivo">
-                                <option value="Perder">PÃ©rdida de Grasa (DÃ©ficit CalÃ³rico)</option>
-                                <option value="Recomp">RecomposiciÃ³n Corporal & Fuerza (Mantenimiento)</option>
+                                <option value="Perder">Pérdida de Grasa (Déficit Calórico)</option>
+                                <option value="Recomp">Recomposición Corporal & Fuerza (Mantenimiento)</option>
                             </select>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">Calcular y Guardar ConfiguraciÃ³n</button>
+                        <button type="submit" class="btn btn-primary w-100">Calcular y Guardar Configuración</button>
                     </form>
                 </div>
             </div>
@@ -66,18 +66,18 @@
                         </div>
 
                         <div class="p-3 mb-3 bg-light rounded border">
-                            <h6 class="text-uppercase text-muted font-weight-bold small">DistribuciÃ³n Base Estimada</h6>
+                            <h6 class="text-uppercase text-muted font-weight-bold small">Distribución Base Estimada</h6>
                             <ul class="list-unstyled mb-0 mt-2">
-                                <li>â€¢ Entrenamiento de fuerza recomendado: 4 dÃ­as por semana</li>
-                                <li>â€¢ Enfoque principal: PreservaciÃ³n de masa muscular magra</li>
+                                <li>• Entrenamiento de fuerza recomendado: 4 días por semana</li>
+                                <li>• Enfoque principal: Preservación de masa muscular magra</li>
                             </ul>
                         </div>
                     </div>
 
                     <div class="p-4 bg-success bg-opacity-10 rounded border border-success text-center mt-3">
-                        <span class="text-uppercase text-muted small d-block mb-1">Presupuesto EnergÃ©tico Diario</span>
+                        <span class="text-uppercase text-muted small d-block mb-1">Presupuesto Energético Diario</span>
                         <span class="display-5 d-block font-weight-bold text-success">@ViewBag.CaloriasRecomendadas</span>
-                        <span class="h4 text-success">kcal / dÃ­a</span>
+                        <span class="h4 text-success">kcal / día</span>
                     </div>
                 </div>
             </div>

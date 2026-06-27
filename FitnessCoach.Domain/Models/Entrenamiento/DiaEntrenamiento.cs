@@ -1,4 +1,4 @@
-﻿namespace FitnessCoach.Models.Entrenamiento
+namespace FitnessCoach.Domain.Models.Entrenamiento
 {
     public class DiaEntrenamiento
     {

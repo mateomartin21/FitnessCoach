@@ -1,6 +1,6 @@
-﻿using FitnessCoach.Models;
+using FitnessCoach.Domain.Models;
 
-namespace FitnessCoach.Services
+namespace FitnessCoach.Application.Services
 {
     public interface ICalculadorCalorico
     {

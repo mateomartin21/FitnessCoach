@@ -1,5 +1,5 @@
-using FitnessCoach.Models;
-using FitnessCoach.Repositories;
+using FitnessCoach.Domain.Models;
+using FitnessCoach.Domain.Ports;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FitnessCoach.Web.ApiControllers

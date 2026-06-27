@@ -1,5 +1,5 @@
 using Scalar.AspNetCore;
-using Scalar.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // MVC (vistas web)
@@ -11,17 +11,16 @@ builder.Services.AddControllers();
 // OpenAPI integrado de .NET 9/10 (sin Swashbuckle)
 builder.Services.AddOpenApi();
 
-// Repositorio de usuarios (Singleton: un único estado compartido en memoria)
-builder.Services.AddSingleton<FitnessCoach.Repositories.IRepositorioUsuario,
-                              FitnessCoach.Repositories.RepositorioUsuarioMemoria>();
+builder.Services.AddSingleton<FitnessCoach.Domain.Ports.IRepositorioUsuario,
+                              FitnessCoach.Infrastructure.Repositoriess.RepositorioUsuarioMemoria>();
 
 // Servicio de cálculo calórico
-builder.Services.AddScoped<FitnessCoach.Services.ICalculadorCalorico,
-                           FitnessCoach.Services.CalculadorCaloricoService>();
+builder.Services.AddScoped<FitnessCoach.Application.Services.ICalculadorCalorico,
+                           FitnessCoach.Application.Services.CalculadorCaloricoService>();
 
 // Generador de rutinas
-builder.Services.AddScoped<FitnessCoach.Services.IGeneradorRutinas,
-                           FitnessCoach.Services.GeneradorRutinasService>();
+builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorRutinas,
+                           FitnessCoach.Application.Services.GeneradorRutinasService>();
 
 var app = builder.Build();
 

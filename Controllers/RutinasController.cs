@@ -1,6 +1,6 @@
-﻿using FitnessCoach.Models;
-using FitnessCoach.Repositories;
-using FitnessCoach.Services;
+using FitnessCoach.Domain.Models;
+using FitnessCoach.Domain.Ports;
+using FitnessCoach.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FitnessCoach.Controllers
@@ -10,7 +10,7 @@ namespace FitnessCoach.Controllers
         private readonly IRepositorioUsuario _repositorio;
         private readonly IGeneradorRutinas _generador;
 
-        // Inyección del repositorio de datos y del servicio de rutinas
+        // Inyecci�n del repositorio de datos y del servicio de rutinas
         public RutinasController(IRepositorioUsuario repositorio, IGeneradorRutinas generador)
         {
             _repositorio = repositorio;

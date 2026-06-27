@@ -1,6 +1,6 @@
-﻿using FitnessCoach.Models.Objetivos;
+using FitnessCoach.Domain.Models.Objetivos;
 
-namespace FitnessCoach.Models
+namespace FitnessCoach.Domain.Models
 {
     public class UsuarioPerfil
     {

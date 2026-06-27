@@ -11,4 +11,20 @@
     <PackageReference Include="Scalar.AspNetCore" Version="2.16.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="FitnessCoach.Application\FitnessCoach.Application.csproj" />
+    <ProjectReference Include="FitnessCoach.Infrastructure\FitnessCoach.Infrastructure.csproj" />
+  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="FitnessCoach.Domain\**" />
+		<Compile Remove="FitnessCoach.Application\**" />
+		<Compile Remove="FitnessCoach.Infrastructure\**" />
+		<Content Remove="FitnessCoach.Domain\**" />
+		<Content Remove="FitnessCoach.Application\**" />
+		<Content Remove="FitnessCoach.Infrastructure\**" />
+		<EmbeddedResource Remove="FitnessCoach.Domain\**" />
+		<EmbeddedResource Remove="FitnessCoach.Application\**" />
+		<EmbeddedResource Remove="FitnessCoach.Infrastructure\**" />
+	</ItemGroup>
+
 </Project>

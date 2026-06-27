@@ -1,6 +1,7 @@
-﻿using FitnessCoach.Models;
+using FitnessCoach.Domain.Models;
+using FitnessCoach.Domain.Ports;
 
-namespace FitnessCoach.Repositories
+namespace FitnessCoach.Infrastructure.Repositoriess
 {
     public class RepositorioUsuarioMemoria : IRepositorioUsuario
     {

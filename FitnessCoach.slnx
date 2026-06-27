@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="FitnessCoach.Application/FitnessCoach.Application.csproj" />
   <Project Path="FitnessCoach.csproj" />
+  <Project Path="FitnessCoach.Domain/FitnessCoach.Domain.csproj" />
+  <Project Path="FitnessCoach.Infrastructure/FitnessCoach.Infrastructure.csproj" />
 </Solution>

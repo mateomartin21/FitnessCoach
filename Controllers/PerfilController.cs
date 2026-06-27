@@ -1,7 +1,7 @@
-Ôªøusing FitnessCoach.Models;
-using FitnessCoach.Models.Objetivos;
-using FitnessCoach.Repositories;
-using FitnessCoach.Services;
+using FitnessCoach.Domain.Models;
+using FitnessCoach.Domain.Models.Objetivos;
+using FitnessCoach.Domain.Ports;
+using FitnessCoach.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -12,7 +12,7 @@ namespace FitnessCoach.Controllers
         private readonly IRepositorioUsuario _repositorio;
         private readonly ICalculadorCalorico _calculador;
 
-        // Inyecci√≥n de dependencias (DIP)
+        // InyecciÛn de dependencias (DIP)
         public PerfilController(IRepositorioUsuario repositorio, ICalculadorCalorico calculador)
         {
             _repositorio = repositorio;
@@ -61,10 +61,10 @@ namespace FitnessCoach.Controllers
                 ObjetivoActual = objetivo
             };
 
-            // 3. Guardar en nuestro repositorio en memoria (Principio de Inversi√≥n de Dependencias)
+            // 3. Guardar en nuestro repositorio en memoria (Principio de InversiÛn de Dependencias)
             _repositorio.Guardar(usuarioModificado);
 
-            // 4. Redirigir de nuevo a la pantalla principal del perfil para ver los nuevos c√°lculos actualizados
+            // 4. Redirigir de nuevo a la pantalla principal del perfil para ver los nuevos c·lculos actualizados
             return RedirectToAction("Index");
         }
     }

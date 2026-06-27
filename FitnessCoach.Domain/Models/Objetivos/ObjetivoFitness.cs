@@ -1,4 +1,4 @@
-﻿namespace FitnessCoach.Models.Objetivos
+namespace FitnessCoach.Domain.Models.Objetivos
 {
     public abstract class ObjetivoFitness
     {
