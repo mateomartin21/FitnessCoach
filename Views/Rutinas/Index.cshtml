@@ -1,66 +1,68 @@
 @model FitnessCoach.Domain.Models.Entrenamiento.Rutina
-
 @{
-    ViewData["Title"] = "Mi Plan de Entrenamiento";
+    ViewData["Title"] = "Mi Rutina";
 }
 
-<div class="container mt-5">
-    <div class="text-center mb-4">
-        <h2 class="display-6 font-weight-bold text-dark">@Model.NombreRutina</h2>
-        <p class="text-muted">Nivel sugerido: <span class="badge bg-primary fs-6">@Model.Nivel</span></p>
-    </div>
+<div class="text-center mb-4">
+    <h2 class="fw-bold" style="color:var(--fc-primary);">@Model.NombreRutina</h2>
+    <span class="badge px-3 py-2" style="background:var(--fc-primary); font-size:0.9rem;">@Model.Nivel</span>
+    <p class="text-muted mt-2 small">Incluye calentamiento y enfriamiento automatico (Patron Decorator)</p>
+</div>
 
-    <div class="accordion shadow-sm" id="accordionRutina">
-        @for (int i = 0; i < Model.Dias.Count; i++)
-        {
-            var dia = Model.Dias[i];
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="heading-@i">
-                    <button class="accordion-button @(i == 0 ? "" : "collapsed") bg-light text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@i" aria-expanded="@(i == 0 ? "true" : "false")" aria-controls="collapse-@i">
-                        <strong>@dia.NombreDia</strong> &nbsp;-&nbsp; @dia.Enfoque
-                    </button>
-                </h2>
-                <div id="collapse-@i" class="accordion-collapse collapse @(i == 0 ? "show" : "")" aria-labelledby="heading-@i" data-bs-parent="#accordionRutina">
-                    <div class="accordion-body">
-                        
-                        @if (dia.Ejercicios.Any())
-                        {
-                            <div class="table-responsive">
-                                <table class="table table-hover table-bordered align-middle">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th>Ejercicio</th>
-                                            <th class="text-center">Series</th>
-                                            <th class="text-center">Repeticiones</th>
-                                            <th>Notas Adicionales</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var ej in dia.Ejercicios)
-                                        {
-                                            <tr>
-                                                <td class="fw-bold">@ej.Nombre</td>
-                                                <td class="text-center">@ej.Series</td>
-                                                <td class="text-center">@ej.Repeticiones</td>
-                                                <td class="text-muted small">@(string.IsNullOrEmpty(ej.Notas) ? "-" : ej.Notas)</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="alert alert-success d-flex align-items-center" role="alert">
-                                <div>
-                                    <strong>¡Día de Descanso!</strong> Recupera energías, la alimentación es clave hoy.
-                                </div>
-                            </div>
-                        }
-
+<div class="accordion" id="accordionRutina">
+    @for (int i = 0; i < Model.Dias.Count; i++)
+    {
+        var dia = Model.Dias[i];
+        var isFirst = i == 0;
+        <div class="accordion-item mb-2" style="border-radius:8px; overflow:hidden;">
+            <h2 class="accordion-header">
+                <button class="accordion-button @(isFirst ? "" : "collapsed")" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#dia-@i">
+                    <i class="fas fa-calendar-day me-2"></i>
+                    <strong>@dia.NombreDia</strong>&nbsp;&mdash;&nbsp;@dia.Enfoque
+                    <span class="badge ms-3 bg-secondary">@dia.Ejercicios.Count ejercicios</span>
+                </button>
+            </h2>
+            <div id="dia-@i" class="accordion-collapse collapse @(isFirst ? "show" : "")">
+                <div class="accordion-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead style="background:#1a1a2e;">
+                                <tr>
+                                    <th class="ps-3">Ejercicio</th>
+                                    <th class="text-center">Series</th>
+                                    <th class="text-center">Reps</th>
+                                    <th>Notas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ej in dia.Ejercicios)
+                                {
+                                    var isWarmup = ej.Nombre.Contains("Calentamiento");
+                                    var isCooldown = ej.Nombre.Contains("Enfriamiento");
+                                    <tr style="@(isWarmup ? "border-left: 3px solid #00d4ff;" : isCooldown ? "border-left: 3px solid #7c3aed;" : "border-left: 3px solid var(--fc-primary);")">
+                                        <td class="ps-3 fw-bold">
+                                            @if (isWarmup) { <i class="fas fa-wind me-1" style="color:#00d4ff;"></i> }
+                                            else if (isCooldown) { <i class="fas fa-snowflake me-1" style="color:#7c3aed;"></i> }
+                                            else { <i class="fas fa-bolt me-1" style="color:var(--fc-primary);"></i> }
+                                            @ej.Nombre
+                                        </td>
+                                        <td class="text-center">@ej.Series</td>
+                                        <td class="text-center">@ej.Repeticiones</td>
+                                        <td class="text-muted small">@(string.IsNullOrEmpty(ej.Notas) ? "-" : ej.Notas)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
+</div>
+
+<div class="text-center mt-4">
+    <a asp-controller="Perfil" asp-action="Index" class="btn btn-outline-light px-4">
+        <i class="fas fa-user-cog me-2"></i>Cambiar Objetivo
+    </a>
 </div>

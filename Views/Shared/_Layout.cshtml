@@ -1,56 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FitnessCoach</title>
-    <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/FitnessCoach.styles.css" asp-append-version="true" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FitnessCoach</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+        <nav class="navbar navbar-expand-md fc-navbar">
+            <div class="container">
+                <a class="navbar-brand fc-brand" asp-controller="Home" asp-action="Index">
+                    <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="fc-logo-svg me-2">
+                        <ellipse cx="50" cy="60" rx="28" ry="22" fill="#2a2a4a"/>
+                        <ellipse cx="50" cy="52" rx="22" ry="20" fill="#3a3a6a"/>
+                        <circle cx="42" cy="48" r="4" fill="white"/>
+                        <circle cx="58" cy="48" r="4" fill="white"/>
+                        <circle cx="43" cy="49" r="2" fill="#1a1a2e"/>
+                        <circle cx="59" cy="49" r="2" fill="#1a1a2e"/>
+                        <ellipse cx="50" cy="56" rx="5" ry="3" fill="#ff6b35"/>
+                        <path d="M30 38 Q28 28 22 24 Q32 26 34 36Z" fill="#2a2a4a"/>
+                        <path d="M70 38 Q72 28 78 24 Q68 26 66 36Z" fill="#2a2a4a"/>
+                        <path d="M36 70 Q50 80 64 70" stroke="#ff6b35" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    </svg>
+                    <span class="fc-brand-text">FitnessCoach</span>
+                </a>
+                <button class="navbar-toggler fc-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+                    <i class="fas fa-bars" style="color:#ff6b35;"></i>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav ms-auto align-items-center gap-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link fc-nav-link" asp-controller="Home" asp-action="Index">
+                                <i class="fas fa-house me-1"></i>Inicio
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Perfil" asp-action="Index">Mi Perfil</a>
+                            <a class="nav-link fc-nav-link" asp-controller="Perfil" asp-action="Index">
+                                <i class="fas fa-user-circle me-1"></i>Mi Perfil
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Rutinas" asp-action="Index">Mi Rutina</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link fc-nav-link fc-nav-highlight" asp-controller="Rutinas" asp-action="Index">
+                                <i class="fas fa-fire me-1"></i>Mi Rutina
+                            </a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <div class="container mt-4">
+        <main role="main" class="pb-4">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="fc-footer mt-5">
         <div class="container">
-            &copy; 2026 - FitnessCoach - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row align-items-center py-4">
+                <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+                    <div class="fc-brand d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                        <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <ellipse cx="50" cy="60" rx="28" ry="22" fill="#2a2a4a"/>
+                            <ellipse cx="50" cy="52" rx="22" ry="20" fill="#3a3a6a"/>
+                            <circle cx="42" cy="48" r="4" fill="white"/>
+                            <circle cx="58" cy="48" r="4" fill="white"/>
+                            <circle cx="43" cy="49" r="2" fill="#1a1a2e"/>
+                            <circle cx="59" cy="49" r="2" fill="#1a1a2e"/>
+                            <ellipse cx="50" cy="56" rx="5" ry="3" fill="#ff6b35"/>
+                            <path d="M30 38 Q28 28 22 24 Q32 26 34 36Z" fill="#2a2a4a"/>
+                            <path d="M70 38 Q72 28 78 24 Q68 26 66 36Z" fill="#2a2a4a"/>
+                        </svg>
+                        <span class="fw-bold" style="color:#ff6b35;">FitnessCoach</span>
+                    </div>
+                    <small class="text-muted d-block mt-1">Tu entrenador personal inteligente</small>
+                </div>
+                <div class="col-md-4 text-center mb-3 mb-md-0">
+                    <small class="text-muted">
+                        Arquitectura Hexagonal &bull; Patrones GOF<br/>
+                        <span style="color:#ff6b35;">Strategy</span> &bull; <span style="color:#00d4ff;">Decorator</span>
+                    </small>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <small class="text-muted">&copy; 2026 FitnessCoach</small><br/>
+                    <small class="text-muted">Desarrollo de Software &bull; Tecnologico</small>
+                </div>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,31 +1,96 @@
-html {
-  font-size: 14px;
+:root {
+    --fc-primary: #ff6b35;
+    --fc-dark: #1a1a2e;
+    --fc-card: #16213e;
+    --fc-border: #2a2a4a;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
+* { box-sizing: border-box; }
 
 body {
-  margin-bottom: 60px;
+    background-color: #0f0f1a !important;
+    color: #f0f0f0 !important;
+    font-family: "Segoe UI", system-ui, sans-serif !important;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* NAVBAR */
+.fc-navbar {
+    background: linear-gradient(90deg, #1a1a2e 0%, #16213e 100%) !important;
+    border-bottom: 2px solid var(--fc-primary) !important;
+    padding: 0.75rem 0 !important;
+}
+.fc-brand { color: var(--fc-primary) !important; font-weight: 800 !important; font-size: 1.3rem !important; text-decoration: none !important; display: flex; align-items: center; }
+.fc-brand-text { letter-spacing: 1px; }
+.fc-nav-link { color: #aaa !important; font-size: 0.9rem !important; padding: 0.5rem 1rem !important; border-radius: 6px !important; transition: all 0.2s !important; }
+.fc-nav-link:hover { color: var(--fc-primary) !important; background: rgba(255,107,53,0.08) !important; }
+.fc-nav-highlight { background: rgba(255,107,53,0.12) !important; color: var(--fc-primary) !important; }
+.fc-toggler { border: none !important; background: transparent !important; }
+
+/* HERO */
+.fc-hero { padding: 1rem 0; }
+.fc-tag { display: inline-block; background: rgba(255,107,53,0.15); color: var(--fc-primary); font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,107,53,0.3); }
+.fc-hero-title { font-size: 2.8rem; font-weight: 900; line-height: 1.1; color: #f0f0f0; }
+.fc-hero-sub { color: #888; font-size: 1rem; max-width: 480px; }
+
+/* WOLF */
+.fc-wolf-container { position: relative; display: inline-block; }
+.fc-wolf { filter: drop-shadow(0 0 30px rgba(255,107,53,0.3)); animation: fc-float 3s ease-in-out infinite; }
+@keyframes fc-float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
-}
+/* BOTONES */
+.fc-btn-primary { background: var(--fc-primary) !important; color: white !important; border: none !important; font-weight: 600 !important; border-radius: 8px !important; transition: all 0.2s !important; }
+.fc-btn-primary:hover { background: #e55a2b !important; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,107,53,0.4) !important; }
+.fc-btn-outline { background: transparent !important; color: #f0f0f0 !important; border: 1px solid #2a2a4a !important; font-weight: 600 !important; border-radius: 8px !important; transition: all 0.2s !important; }
+.fc-btn-outline:hover { border-color: var(--fc-primary) !important; color: var(--fc-primary) !important; }
+
+/* FEATURE CARDS */
+.fc-feature-card { background: #16213e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 1.5rem; transition: all 0.2s; }
+.fc-feature-card:hover { border-color: var(--fc-primary); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255,107,53,0.15); }
+.fc-feature-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+
+/* STATS BAR */
+.fc-info-bar { background: #16213e; border: 1px solid #2a2a4a; border-radius: 12px; }
+.fc-stat { padding: 0.5rem 1rem; }
+.fc-stat-num { font-size: 1.8rem; font-weight: 900; color: var(--fc-primary); }
+.fc-stat-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+.border-end { border-right: 1px solid #2a2a4a !important; }
+
+/* CARDS GENERICAS */
+.card { background: #16213e !important; border: 1px solid #2a2a4a !important; color: #f0f0f0 !important; border-radius: 12px !important; }
+.card-header { background: transparent !important; border-bottom: 1px solid #2a2a4a !important; }
+
+/* FORMS */
+.form-control, .form-select { background: #0f0f1a !important; border: 1px solid #2a2a4a !important; color: #f0f0f0 !important; border-radius: 8px !important; }
+.form-control:focus, .form-select:focus { background: #0f0f1a !important; color: #f0f0f0 !important; border-color: var(--fc-primary) !important; box-shadow: 0 0 0 0.2rem rgba(255,107,53,0.2) !important; }
+.form-label { color: #aaa !important; font-size: 0.85rem !important; font-weight: 600 !important; }
+.form-select option { background: #1a1a2e; color: #f0f0f0; }
+
+/* BOTONES GLOBALES */
+.btn-primary { background: var(--fc-primary) !important; border-color: var(--fc-primary) !important; border-radius: 8px !important; font-weight: 600 !important; }
+.btn-primary:hover { background: #e55a2b !important; border-color: #e55a2b !important; }
+.btn-outline-light { border-color: #2a2a4a !important; color: #f0f0f0 !important; border-radius: 8px !important; font-weight: 600 !important; }
+.btn-outline-light:hover { border-color: var(--fc-primary) !important; color: var(--fc-primary) !important; background: transparent !important; }
+
+/* TABLES */
+.table { color: #f0f0f0 !important; }
+.table-hover tbody tr:hover td { background: rgba(255,107,53,0.05) !important; }
+
+/* ACCORDION */
+.accordion-item { background: #16213e !important; border: 1px solid #2a2a4a !important; margin-bottom: 0.5rem; border-radius: 10px !important; overflow: hidden; }
+.accordion-button { background: #1a1a2e !important; color: #f0f0f0 !important; font-weight: 600 !important; }
+.accordion-button:not(.collapsed) { background: var(--fc-primary) !important; color: white !important; }
+.accordion-button::after { filter: invert(1); }
+.accordion-body { background: #16213e !important; padding: 0 !important; }
+
+/* BADGE */
+.badge { border-radius: 6px !important; }
+
+/* FOOTER */
+.fc-footer { background: #16213e !important; border-top: 1px solid #2a2a4a !important; }
+
+/* MISC */
+.text-muted { color: #888 !important; }
+.display-4 { color: var(--fc-primary) !important; }
