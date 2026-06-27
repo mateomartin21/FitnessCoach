@@ -13,7 +13,6 @@
         <nav class="navbar navbar-expand-md fc-navbar">
             <div class="container">
                 <a class="navbar-brand fc-brand" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/lobo_menu.png" alt="FitnessCoach Logo" height="36" class="me-2" />
                     <span class="fc-brand-text">FitnessCoach</span>
                 </a>
                 <button class="navbar-toggler fc-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
@@ -34,6 +33,11 @@
                         <li class="nav-item">
                             <a class="nav-link fc-nav-link fc-nav-highlight" asp-controller="Rutinas" asp-action="Index">
                                 <i class="fas fa-fire me-1"></i>Mi Rutina
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="IaCoach" asp-action="Index" style="color: #ff6b35; font-weight: bold;">
+                                <i class="fas fa-robot"></i> IA Coach
                             </a>
                         </li>
                     </ul>

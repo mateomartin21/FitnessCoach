@@ -94,3 +94,20 @@ body {
 /* MISC */
 .text-muted { color: #888 !important; }
 .display-4 { color: var(--fc-primary) !important; }
+
+#chat-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chat-box::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+}
+
+.ai-message {
+    border-left: 4px solid #ff6b35;
+}
+
+.btn-warning {
+    color: white !important;
+}

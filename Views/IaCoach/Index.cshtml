@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "IA Coach";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Ventana de Chat -->
+            <div class="card bg-dark text-white shadow" style="border: 1px solid #30363d; border-radius: 15px;">
+                <div class="card-header border-bottom border-secondary p-3">
+                    <h5 class="mb-0 text-orange"><i class="fas fa-robot"></i> Gemini Coach</h5>
+                </div>
+                <div class="card-body" id="chat-box" style="height: 400px; overflow-y: auto; padding: 20px;">
+                    <div class="ai-message p-3 mb-3" style="background: #161b22; border-radius: 10px; width: 80%;">
+                        Hola Mateo, soy tu Coach IA. ¿Qué objetivo quieres lograr hoy?
+                    </div>
+                </div>
+                <div class="card-footer p-3 border-top border-secondary">
+                    <div class="input-group">
+                        <input type="text" id="user-input" class="form-control bg-dark text-white border-secondary" placeholder="Escribe tu mensaje...">
+                        <button class="btn btn-warning" id="send-btn">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('send-btn').addEventListener('click', async () => {
+        const input = document.getElementById('user-input');
+        const chatBox = document.getElementById('chat-box');
+        const message = input.value;
+        if (!message) return;
+
+        // Mostrar mensaje del usuario
+        chatBox.innerHTML += `<div class="text-end mb-3"><span class="p-2" style="background:#ff6b35; border-radius:10px; display:inline-block;">${message}</span></div>`;
+        input.value = '';
+
+        // Llamada simulada a tu API (Aquí conectarías con tu backend de Gemini)
+        // const response = await fetch('/api/coach/chat', { ... });
+
+        chatBox.innerHTML += `<div class="p-3 mb-3" style="background: #161b22; border-radius: 10px; width: 80%;">Pensando...</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+</script>
