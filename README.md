@@ -83,3 +83,10 @@ Este proyecto fue desarrollado con asistencia de herramientas de inteligencia ar
 
 *Tecnologico de Software — Desarrollo de Software y Negocios Digitales*
 *Arquitectura de Software — Dr. Pedrozo — 2026*
+
+---
+
+## Diagramas de arquitectura (C4)
+
+Ver los diagramas C4 (Nivel 1, 2 y 3, en Mermaid) en [docs/diagrama-arquitectura.md](docs/diagrama-arquitectura.md).
+
