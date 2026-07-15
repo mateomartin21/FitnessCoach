@@ -2,28 +2,24 @@
     ViewData["Title"] = "Inicio";
 }
 
-<div class="fc-hero row align-items-center py-5 mb-5">
-    <div class="col-md-7">
-        <div class="fc-tag mb-3">ENTRENAMIENTO INTELIGENTE</div>
-        <h1 class="fc-hero-title">Alcanza tu<br/><span style="color:#ff6b35;">maximo potencial</span></h1>
-        <p class="fc-hero-sub mt-3 mb-4">Rutinas cientificas generadas segun tu objetivo. Calentamiento y enfriamiento automaticos. Todo adaptado a ti.</p>
-        <div class="d-flex gap-3 flex-wrap">
-            <a asp-controller="Perfil" asp-action="Index" class="btn fc-btn-primary px-4 py-2">
-                <i class="fas fa-user-cog me-2"></i>Configurar Perfil
-            </a>
-            <a asp-controller="Rutinas" asp-action="Index" class="btn fc-btn-outline px-4 py-2">
-                <i class="fas fa-list-check me-2"></i>Ver Rutina
-            </a>
+<div class="fc-hero-section">
+    <div class="row align-items-center g-0" style="min-height:85vh;">
+        <div class="col-md-5 px-4 px-md-5">
+            <div class="fc-tag mb-4">ENTRENAMIENTO INTELIGENTE</div>
+            <h1 class="fc-hero-title">Alcanza tu<br/><span style="color:#ff6b35;">maximo potencial</span></h1>
+            <p class="fc-hero-sub mt-3 mb-4">Rutinas cientificas generadas segun tu objetivo. Calentamiento y enfriamiento automaticos. Todo adaptado a ti.</p>
+            <div class="d-flex gap-3 flex-wrap">
+                <a asp-controller="Perfil" asp-action="Index" class="btn fc-btn-primary px-4 py-2">
+                    <i class="fas fa-user-cog me-2"></i>Configurar Perfil
+                </a>
+                <a asp-controller="Rutinas" asp-action="Index" class="btn fc-btn-outline px-4 py-2">
+                    <i class="fas fa-list-check me-2"></i>Ver Rutina
+                </a>
+            </div>
         </div>
-    </div>
-    <div class="col-md-5 text-center mt-4 mt-md-0">
-        <div class="col-md-5 text-center mt-4 mt-md-0">
-            <img src="~/images/branding/principal.png"
-                 alt="FitnessCoach Hero"
-                 class="img-fluid rounded-lg shadow-lg"
-                 style="max-width: 100%; height: auto; border-radius: 15px; border: 2px solid #ff6b35;">
+        <div class="col-md-7 fc-hero-wolf-col">
+            <img src="~/images/branding/principal.png" alt="Lobo Coach" class="fc-wolf-hero" />
         </div>
-
     </div>
 </div>
 
@@ -57,5 +53,21 @@
     </div>
 </div>
 
-
+<div class="fc-info-bar row align-items-center p-4 mb-2">
+    <div class="col-md-3 text-center border-end fc-stat">
+        <div class="fc-stat-num">3</div>
+        <div class="fc-stat-label">Planes de Entrenamiento</div>
+    </div>
+    <div class="col-md-3 text-center border-end fc-stat">
+        <div class="fc-stat-num">3</div>
+        <div class="fc-stat-label">Planes Alimenticios</div>
+    </div>
+    <div class="col-md-3 text-center border-end fc-stat">
+        <div class="fc-stat-num">AI</div>
+        <div class="fc-stat-label">Coach Inteligente</div>
+    </div>
+    <div class="col-md-3 text-center fc-stat">
+        <div class="fc-stat-num">100%</div>
+        <div class="fc-stat-label">Personalizado</div>
+    </div>
 </div>

@@ -22,6 +22,11 @@ builder.Services.AddScoped<FitnessCoach.Application.Services.ICalculadorCalorico
 builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorRutinas,
                            FitnessCoach.Application.Services.GeneradorRutinasService>();
 
+
+builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorAlimentacion, FitnessCoach.Application.Services.GeneradorAlimentacionService>();
+
+builder.Services.AddHttpClient<FitnessCoach.Infrastructure.Adapters.GeminiCoachService>();
+
 var app = builder.Build();
 
 // Pipeline HTTP

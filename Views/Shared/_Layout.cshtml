@@ -13,6 +13,7 @@
         <nav class="navbar navbar-expand-md fc-navbar">
             <div class="container">
                 <a class="navbar-brand fc-brand" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/branding/logo.png" alt="FitnessCoach Logo" class="fc-navbar-logo me-2" />
                     <span class="fc-brand-text">FitnessCoach</span>
                 </a>
                 <button class="navbar-toggler fc-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
@@ -31,13 +32,18 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link fc-nav-link" asp-controller="Alimentacion" asp-action="Index">
+                                <i class="fas fa-utensils me-1"></i>Mi Dieta
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link fc-nav-link fc-nav-highlight" asp-controller="Rutinas" asp-action="Index">
                                 <i class="fas fa-fire me-1"></i>Mi Rutina
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="IaCoach" asp-action="Index" style="color: #ff6b35; font-weight: bold;">
-                                <i class="fas fa-robot"></i> IA Coach
+                            <a class="nav-link" asp-controller="IaCoach" asp-action="Index" style="color:#ff6b35; font-weight:700;">
+                                <i class="fas fa-robot me-1"></i>IA Coach
                             </a>
                         </li>
                     </ul>
@@ -56,31 +62,28 @@
         <div class="container">
             <div class="row align-items-center py-4">
                 <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
-                    <div class="fc-brand d-flex align-items-center justify-content-center justify-content-md-start gap-2">
-                        <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <ellipse cx="50" cy="60" rx="28" ry="22" fill="#2a2a4a"/>
-                            <ellipse cx="50" cy="52" rx="22" ry="20" fill="#3a3a6a"/>
-                            <circle cx="42" cy="48" r="4" fill="white"/>
-                            <circle cx="58" cy="48" r="4" fill="white"/>
-                            <circle cx="43" cy="49" r="2" fill="#1a1a2e"/>
-                            <circle cx="59" cy="49" r="2" fill="#1a1a2e"/>
-                            <ellipse cx="50" cy="56" rx="5" ry="3" fill="#ff6b35"/>
-                            <path d="M30 38 Q28 28 22 24 Q32 26 34 36Z" fill="#2a2a4a"/>
-                            <path d="M70 38 Q72 28 78 24 Q68 26 66 36Z" fill="#2a2a4a"/>
-                        </svg>
-                        <span class="fw-bold" style="color:#ff6b35;">FitnessCoach</span>
+                    <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2 mb-1">
+                        <img src="~/images/branding/logo.png" alt="FitnessCoach" class="fc-footer-logo" />
+                        <span class="fw-bold fs-5" style="color:#ff6b35;">FitnessCoach</span>
                     </div>
-                    <small class="text-muted d-block mt-1">Tu entrenador personal inteligente</small>
+                    <small class="text-muted">Tu entrenador personal inteligente</small>
                 </div>
                 <div class="col-md-4 text-center mb-3 mb-md-0">
-                    <small class="text-muted">
-                        Arquitectura Hexagonal &bull; Patrones GOF<br/>
-                        <span style="color:#ff6b35;">Strategy</span> &bull; <span style="color:#00d4ff;">Decorator</span>
-                    </small>
+                    <div class="d-flex justify-content-center gap-4">
+                        <div>
+                            <a asp-controller="Rutinas" asp-action="Index" class="fc-footer-link">Mi Rutina</a>
+                        </div>
+                        <div>
+                            <a asp-controller="Alimentacion" asp-action="Index" class="fc-footer-link">Mi Dieta</a>
+                        </div>
+                        <div>
+                            <a asp-controller="IaCoach" asp-action="Index" class="fc-footer-link">IA Coach</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-4 text-center text-md-end">
-                    <small class="text-muted">&copy; 2026 FitnessCoach</small><br/>
-                    <small class="text-muted">Desarrollo de Software &bull; Tecnologico</small>
+                    <small class="text-muted d-block">&copy; 2026 FitnessCoach</small>
+                    <small class="text-muted">Tecnologico de Software &bull; Dr. Pedrozo</small>
                 </div>
             </div>
         </div>
