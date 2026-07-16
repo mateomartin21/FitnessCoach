@@ -1,3 +1,5 @@
+using FitnessCoach.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +27,14 @@ builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorRutinas,
 
 builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorAlimentacion, FitnessCoach.Application.Services.GeneradorAlimentacionService>();
 
-builder.Services.AddHttpClient<FitnessCoach.Infrastructure.Adapters.GeminiCoachService>();
+builder.Services.AddHttpClient<FitnessCoach.Infrastructure.Adapters.GeminiCoachService>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(15);
+});
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
