@@ -49,7 +49,7 @@ namespace FitnessCoach.Controllers
 
                 usuario.HistorialProgreso.Add(nuevoRegistro);
 
-                // ¡Clave! Actualizamos el peso maestro del usuario para que sus calorías cambien
+                // Actualizamos el peso maestro del usuario para que sus calorías cambien
                 usuario.PesoKg = NuevoPeso;
 
                 // Guardar cambios en nuestro repositorio temporal

@@ -15,7 +15,7 @@ namespace FitnessCoach.Tests.ServicesIntegration
             var plan = _generador.GenerarPlanParaObjetivo(new ObjetivoPerderPeso());
 
             // Assert
-            Assert.Equal("Perdida de Grasa", plan.Objetivo);
+            Assert.Equal("Pérdida de Grasa", plan.Objetivo);
         }
 
         [Fact]
