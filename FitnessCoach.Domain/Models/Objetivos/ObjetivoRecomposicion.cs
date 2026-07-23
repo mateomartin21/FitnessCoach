@@ -2,7 +2,7 @@ namespace FitnessCoach.Domain.Models.Objetivos
 {
     public class ObjetivoRecomposicion : ObjetivoFitness
     {
-        public override string Nombre => "Recomposición y Fuerza (4 días)";
+        public override string Nombre => "RecomposiciÃ³n y Fuerza (4 dÃ­as)";
         public override double CalcularMultiplicadorCalorico() => 1.0;
     }
 }

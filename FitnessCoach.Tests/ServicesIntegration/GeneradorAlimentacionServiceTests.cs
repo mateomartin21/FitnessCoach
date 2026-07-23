@@ -1,4 +1,4 @@
-﻿using FitnessCoach.Application.Services;
+using FitnessCoach.Application.Services;
 using FitnessCoach.Domain.Models.Objetivos;
 using Xunit;
 
@@ -13,9 +13,8 @@ namespace FitnessCoach.Tests.ServicesIntegration
         {
             // Act
             var plan = _generador.GenerarPlanParaObjetivo(new ObjetivoPerderPeso());
-
             // Assert
-            Assert.Equal("Perdida de Grasa", plan.Objetivo);
+            Assert.Equal("Pérdida de Grasa", plan.Objetivo);
         }
 
         [Fact]
@@ -23,7 +22,6 @@ namespace FitnessCoach.Tests.ServicesIntegration
         {
             // Act
             var plan = _generador.GenerarPlanParaObjetivo(new ObjetivoGanarMusculo());
-
             // Assert
             Assert.Equal("Ganancia Muscular", plan.Objetivo);
         }
@@ -33,7 +31,6 @@ namespace FitnessCoach.Tests.ServicesIntegration
         {
             // Act — sin importar el objetivo, el decorator de hidratación siempre debe aplicarse
             var plan = _generador.GenerarPlanParaObjetivo(new ObjetivoRecomposicion());
-
             // Assert
             Assert.Contains("Tomar 500ml de agua al despertar en ayunas", plan.RecomendacionesGenerales);
         }

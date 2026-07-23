@@ -6,25 +6,40 @@ namespace FitnessCoach.Domain.Patterns.Strategy
     {
         public Rutina GenerarRutina()
         {
-            var rutina = new Rutina { NombreRutina = "Quema de Grasa: Full Body Activo (3 DÌas)", Nivel = "Principiante/Intermedio" };
-            rutina.Dias.Add(new DiaEntrenamiento { NombreDia = "Lunes", Enfoque = "Cuerpo Completo + Cardio", Ejercicios = new List<Ejercicio> {
+            var rutina = new Rutina { NombreRutina = "Quema de Grasa: Full Body Activo (3 D√≠as)", Nivel = "Principiante/Intermedio" };
+            rutina.Dias.Add(new DiaEntrenamiento
+            {
+                NombreDia = "Lunes",
+                Enfoque = "Cuerpo Completo + Cardio",
+                Ejercicios = new List<Ejercicio> {
                 new Ejercicio { Nombre = "Sentadilla Goblet", Series = 4, Repeticiones = "12-15" },
                 new Ejercicio { Nombre = "Flexiones", Series = 3, Repeticiones = "Al fallo" },
                 new Ejercicio { Nombre = "Remo con Mancuernas", Series = 3, Repeticiones = "12-15" },
                 new Ejercicio { Nombre = "Plancha", Series = 3, Repeticiones = "45 seg" },
                 new Ejercicio { Nombre = "Caminadora Inclinada", Series = 1, Repeticiones = "25 min" }
-            }});
-            rutina.Dias.Add(new DiaEntrenamiento { NombreDia = "MiÈrcoles", Enfoque = "Cuerpo Completo B + Cardio", Ejercicios = new List<Ejercicio> {
+            }
+            });
+            rutina.Dias.Add(new DiaEntrenamiento
+            {
+                NombreDia = "Mi√©rcoles",
+                Enfoque = "Cuerpo Completo B + Cardio",
+                Ejercicios = new List<Ejercicio> {
                 new Ejercicio { Nombre = "Zancadas Inversas", Series = 3, Repeticiones = "12 por pierna" },
                 new Ejercicio { Nombre = "Press Militar", Series = 3, Repeticiones = "12-15" },
-                new Ejercicio { Nombre = "JalÛn al Pecho", Series = 3, Repeticiones = "15" },
-                new Ejercicio { Nombre = "Bicicleta Est·tica", Series = 1, Repeticiones = "25 min" }
-            }});
-            rutina.Dias.Add(new DiaEntrenamiento { NombreDia = "Viernes", Enfoque = "Circuito MetabÛlico", Ejercicios = new List<Ejercicio> {
+                new Ejercicio { Nombre = "Jal√≥n al Pecho", Series = 3, Repeticiones = "15" },
+                new Ejercicio { Nombre = "Bicicleta Est√°tica", Series = 1, Repeticiones = "25 min" }
+            }
+            });
+            rutina.Dias.Add(new DiaEntrenamiento
+            {
+                NombreDia = "Viernes",
+                Enfoque = "Circuito Metab√≥lico",
+                Ejercicios = new List<Ejercicio> {
                 new Ejercicio { Nombre = "Sentadillas con Salto", Series = 4, Repeticiones = "15" },
                 new Ejercicio { Nombre = "Mountain Climbers", Series = 4, Repeticiones = "30 seg" },
                 new Ejercicio { Nombre = "Burpees", Series = 4, Repeticiones = "10-12" }
-            }});
+            }
+            });
             return rutina;
         }
     }

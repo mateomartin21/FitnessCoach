@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddSingleton<FitnessCoach.Domain.Ports.IRepositorioUsuario,
-                              FitnessCoach.Infrastructure.Repositoriess.RepositorioUsuarioMemoria>();
+                              FitnessCoach.Infrastructure.Repositories.RepositorioUsuarioMemoria>();
 
 // Servicio de cálculo calórico
 builder.Services.AddScoped<FitnessCoach.Application.Services.ICalculadorCalorico,

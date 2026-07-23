@@ -6,23 +6,38 @@ namespace FitnessCoach.Domain.Patterns.Strategy
     {
         public Rutina GenerarRutina()
         {
-            var rutina = new Rutina { NombreRutina = "Hipertrofia M·xima (5 DÌas)", Nivel = "Avanzado" };
-            rutina.Dias.Add(new DiaEntrenamiento { NombreDia = "Lunes", Enfoque = "Pecho y TrÌceps", Ejercicios = new List<Ejercicio> {
+            var rutina = new Rutina { NombreRutina = "Hipertrofia M√°xima (5 D√≠as)", Nivel = "Avanzado" };
+            rutina.Dias.Add(new DiaEntrenamiento
+            {
+                NombreDia = "Lunes",
+                Enfoque = "Pecho y Tr√≠ceps",
+                Ejercicios = new List<Ejercicio> {
                 new Ejercicio { Nombre = "Press Inclinado con Mancuernas", Series = 4, Repeticiones = "8-10" },
                 new Ejercicio { Nombre = "Press de Banca", Series = 3, Repeticiones = "8-12" },
                 new Ejercicio { Nombre = "Fondos en Paralelas", Series = 3, Repeticiones = "Al fallo" },
-                new Ejercicio { Nombre = "Rompecr·neos", Series = 4, Repeticiones = "10-12" }
-            }});
-            rutina.Dias.Add(new DiaEntrenamiento { NombreDia = "Martes", Enfoque = "Espalda y BÌceps", Ejercicios = new List<Ejercicio> {
+                new Ejercicio { Nombre = "Rompecr√°neos", Series = 4, Repeticiones = "10-12" }
+            }
+            });
+            rutina.Dias.Add(new DiaEntrenamiento
+            {
+                NombreDia = "Martes",
+                Enfoque = "Espalda y B√≠ceps",
+                Ejercicios = new List<Ejercicio> {
                 new Ejercicio { Nombre = "Dominadas", Series = 4, Repeticiones = "6-10" },
                 new Ejercicio { Nombre = "Remo con Barra", Series = 4, Repeticiones = "10-12" },
-                new Ejercicio { Nombre = "Curl de BÌceps", Series = 4, Repeticiones = "8-10" }
-            }});
-            rutina.Dias.Add(new DiaEntrenamiento { NombreDia = "Jueves", Enfoque = "Piernas", Ejercicios = new List<Ejercicio> {
+                new Ejercicio { Nombre = "Curl de B√≠ceps", Series = 4, Repeticiones = "8-10" }
+            }
+            });
+            rutina.Dias.Add(new DiaEntrenamiento
+            {
+                NombreDia = "Jueves",
+                Enfoque = "Piernas",
+                Ejercicios = new List<Ejercicio> {
                 new Ejercicio { Nombre = "Sentadilla Libre", Series = 4, Repeticiones = "8-10" },
                 new Ejercicio { Nombre = "Prensa de Piernas", Series = 4, Repeticiones = "12-15" },
                 new Ejercicio { Nombre = "Peso Muerto Rumano", Series = 4, Repeticiones = "10" }
-            }});
+            }
+            });
             return rutina;
         }
     }

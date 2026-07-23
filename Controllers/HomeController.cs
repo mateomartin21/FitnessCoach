@@ -1,4 +1,4 @@
-using FitnessCoach.Domain.Models;
+using FitnessCoach.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
