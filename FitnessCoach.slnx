@@ -3,4 +3,5 @@
   <Project Path="FitnessCoach.csproj" />
   <Project Path="FitnessCoach.Domain/FitnessCoach.Domain.csproj" />
   <Project Path="FitnessCoach.Infrastructure/FitnessCoach.Infrastructure.csproj" />
+  <Project Path="FitnessCoach.Tests/FitnessCoach.Tests.csproj" />
 </Solution>
