@@ -6,7 +6,7 @@ namespace FitnessCoach.Domain.Patterns.Strategy
     {
         public Rutina GenerarRutina()
         {
-            var rutina = new Rutina { NombreRutina = "Recomposición Estructural: Torso/Pierna (4 Días)", Nivel = "Intermedio" };
+            var rutina = new Rutina { NombreRutina = "RecomposiciÃ³n Estructural: Torso/Pierna (4 DÃ­as)", Nivel = "Intermedio" };
             rutina.Dias.Add(new DiaEntrenamiento
             {
                 NombreDia = "Lunes",
@@ -42,7 +42,7 @@ namespace FitnessCoach.Domain.Patterns.Strategy
                 NombreDia = "Viernes",
                 Enfoque = "Pierna Hipertrofia",
                 Ejercicios = new List<Ejercicio> {
-                new Ejercicio { Nombre = "Sentadilla Búlgara", Series = 3, Repeticiones = "10-12 por pierna" },
+                new Ejercicio { Nombre = "Sentadilla BÃºlgara", Series = 3, Repeticiones = "10-12 por pierna" },
                 new Ejercicio { Nombre = "Hip Thrust", Series = 4, Repeticiones = "10-12" },
                 new Ejercicio { Nombre = "Curl de Isquios", Series = 3, Repeticiones = "15" }
             }
