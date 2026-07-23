@@ -1,4 +1,4 @@
-﻿using FitnessCoach.Application.Services;
+using FitnessCoach.Application.Services;
 using FitnessCoach.Domain.Models.Objetivos;
 using Xunit;
 
