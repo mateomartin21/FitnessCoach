@@ -1,5 +1,6 @@
 using FitnessCoach.Application.Services;
 using FitnessCoach.Domain.Models;
+using FitnessCoach.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -28,17 +29,27 @@ namespace FitnessCoach.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RegistrarPeso(double NuevoPeso, string Notas)
+        public IActionResult RegistrarPeso(RegistrarPesoViewModel modelo)
         {
+            // Nada se guarda hasta saber que los datos son válidos.
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorProgreso"] = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .FirstOrDefault();
+                return RedirectToAction("Index");
+            }
+
             var usuario = _perfiles.ObtenerOCrear(IdentityId);
 
             usuario.HistorialProgreso.Add(new RegistroProgreso
             {
                 Fecha = DateTime.Now,
-                PesoKg = NuevoPeso,
-                Notas = Notas ?? ""
+                PesoKg = modelo.NuevoPeso,
+                Notas = modelo.Notas ?? ""
             });
-            usuario.PesoKg = NuevoPeso;
+            usuario.PesoKg = modelo.NuevoPeso;
 
             _perfiles.Guardar(usuario);
             return RedirectToAction("Index");

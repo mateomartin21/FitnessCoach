@@ -9,9 +9,9 @@
 | Severidad | Total | Abiertas |
 |-----------|-------|----------|
 | 🔴 Crítica (seguridad / pérdida de datos) | 7 | 1 |
-| 🟠 Alta (bug funcional o riesgo real) | 6 | 4 |
+| 🟠 Alta (bug funcional o riesgo real) | 7 | 5 |
 | 🟡 Media (calidad, mantenibilidad) | 9 | 2 |
-| **Total** | **22** | **7** |
+| **Total** | **23** | **8** |
 
 > **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11.
 >
@@ -107,6 +107,13 @@
 **Qué pasa:** el `Id` existe solo como *shadow property* de EF Core. El dominio no puede referirse a un registro individual.
 **Riesgo:** hoy no molesta, pero bloquea funcionalidad de la Fase 4 (editar o borrar un registro específico del historial).
 **Resolución:** Fase 4.
+**Estado:** ⬜ Abierta
+
+### D-23 · La vista de Progreso no existe
+**Dónde:** `ProgresoController.Index` hace `return View(historial)`, pero no hay ningún `Views/Progreso/Index.cshtml` en el repo
+**Qué pasa:** entrar a `/Progreso` lanza `InvalidOperationException: The view 'Index' was not found`. `RegistrarPeso` redirige a esa misma acción, así que el flujo de registrar peso por la web tampoco termina. Pasó inadvertido porque el menú de `_Layout` no enlaza a Progreso: solo se llega escribiendo la URL a mano.
+**Riesgo:** una pantalla del producto directamente no funciona, y el único camino que queda para registrar peso es el API. Detectada el 24/07/2026 al empezar la Fase 3.
+**Resolución:** Fase 4 — el tracker construye esa pantalla completa (gráfica de peso, historial con edición y borrado, rachas). Hacer una vista provisional en la Fase 3 sería trabajo que la Fase 4 tira. `ProgresoController` ya quedó con `ModelState` y `TempData["ErrorProgreso"]` listos para cuando la vista exista.
 **Estado:** ⬜ Abierta
 
 ### D-22 · Login sin bloqueo por intentos fallidos
