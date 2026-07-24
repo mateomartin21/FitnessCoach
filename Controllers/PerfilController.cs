@@ -26,7 +26,19 @@ namespace FitnessCoach.Controllers
         {
             var usuario = _perfiles.ObtenerOCrear(IdentityId);
             ViewBag.ObjetivoNombre = usuario.ObjetivoActual?.Nombre ?? "No definido";
-            ViewBag.CaloriasRecomendadas = Math.Round(_calculador.CalcularCaloriasDiarias(usuario), 0);
+
+            // Un perfil guardado antes de que existieran las validaciones puede tener datos
+            // fuera de rango. El dominio se niega a calcular sobre eso; acá lo traducimos a
+            // "todavía no hay número que mostrar" en vez de tumbar la pantalla.
+            try
+            {
+                ViewBag.CaloriasRecomendadas = Math.Round(_calculador.CalcularCaloriasDiarias(usuario), 0);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                ViewBag.CaloriasRecomendadas = null;
+            }
+
             return View(ADaptarAFormulario(usuario));
         }
 

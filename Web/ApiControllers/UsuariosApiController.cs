@@ -51,11 +51,22 @@ namespace FitnessCoach.Web.ApiControllers
         [HttpGet("calorias")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public IActionResult ObtenerCalorias()
         {
             var usuario = _perfiles.ObtenerOCrear(IdentityId);
-            var calorias = _calculador.CalcularCaloriasDiarias(usuario);
-            return Ok(new { caloriasRecomendadas = Math.Round(calorias, 0) });
+
+            try
+            {
+                var calorias = _calculador.CalcularCaloriasDiarias(usuario);
+                return Ok(new { caloriasRecomendadas = Math.Round(calorias, 0) });
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                // El perfil tiene datos fuera de rango: no es un error del servidor,
+                // es un perfil que hay que completar antes de poder calcular.
+                return UnprocessableEntity(new { mensaje = ex.Message });
+            }
         }
     }
 

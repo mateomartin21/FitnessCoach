@@ -110,10 +110,12 @@ namespace FitnessCoach.Web.ApiControllers
     /// </summary>
     public class NuevoRegistroRequest
     {
-        [Range(30, 300, ErrorMessage = "El peso debe estar entre 30 y 300 kg.")]
+        [Range(RangosPerfil.PesoMinimoKg, RangosPerfil.PesoMaximoKg,
+            ErrorMessage = "El peso debe estar entre {1} y {2} kg.")]
         public double PesoKg { get; set; }
 
-        [StringLength(500, ErrorMessage = "Las notas no pueden superar los 500 caracteres.")]
+        [StringLength(RangosPerfil.NotasLargoMaximo,
+            ErrorMessage = "Las notas no pueden superar los {1} caracteres.")]
         public string? Notas { get; set; }
     }
 }

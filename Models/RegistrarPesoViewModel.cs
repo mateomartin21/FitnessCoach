@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using FitnessCoach.Domain.Models;
 
 namespace FitnessCoach.Models
 {
@@ -7,11 +8,13 @@ namespace FitnessCoach.Models
     /// </summary>
     public class RegistrarPesoViewModel
     {
-        [Range(30, 300, ErrorMessage = "El peso debe estar entre 30 y 300 kg.")]
+        [Range(RangosPerfil.PesoMinimoKg, RangosPerfil.PesoMaximoKg,
+            ErrorMessage = "El peso debe estar entre {1} y {2} kg.")]
         [Display(Name = "Nuevo peso (kg)")]
         public double NuevoPeso { get; set; }
 
-        [StringLength(500, ErrorMessage = "Las notas no pueden superar los 500 caracteres.")]
+        [StringLength(RangosPerfil.NotasLargoMaximo,
+            ErrorMessage = "Las notas no pueden superar los {1} caracteres.")]
         [Display(Name = "Notas")]
         public string? Notas { get; set; }
     }
