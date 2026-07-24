@@ -86,6 +86,10 @@ Tracker       Catálogo de        Resiliencia
 
 ## Fase 2 — Identity, multiusuario y blindaje
 
+> **✅ Cerrada el 24/07/2026** (rama `fase-2/identity-login`, ADR-10) — seis commits: Identity cableado (`bb8b0f9`), login/registro/logout (`3a078b6`), resolución del perfil por identidad (`1dc0e52`), blindaje de la API (`926ae0c`), pruebas del servicio (`398dc85`) y documentación. D-01, D-02, D-05, D-07 y D-11 resueltas. 34/34 pruebas en verde.
+>
+> Deuda nueva detectada durante la fase: **D-21** (CSRF en `IaCoachController`) y **D-22** (login sin bloqueo por intentos fallidos), ambas planificadas para la Fase 3.
+
 **Objetivo:** que cada quien tenga su cuenta y solo pueda tocar lo suyo. Es la fase más grande y la más crítica en seguridad.
 
 **Resuelve:** D-01, D-02, D-05, D-07, D-11
@@ -115,10 +119,12 @@ Tracker       Catálogo de        Resiliencia
 
 **Objetivo:** que sea imposible meter datos basura, por la vía que sea.
 
-**Resuelve:** D-04
+**Resuelve:** D-04, D-21, D-22
 
 **Entregables:**
 - Anotaciones de validación en `UsuarioPerfil` y `RegistroProgreso` con los rangos de `03-ESTANDARES.md` §1.2
+- Token antiforgery en el `fetch()` de `IaCoachController.Consultar` (D-21), único POST que quedó sin cubrir en la Fase 2
+- `lockoutOnFailure: true` + configuración de `options.Lockout` y política de contraseñas más estricta (D-22)
 - `ModelState.IsValid` verificado en **todos** los controladores que reciben datos
 - Refactor de `PerfilController.GuardarPerfil`: recibir un modelo, no 5 parámetros sueltos
 - Mensajes de error visibles en las vistas (`asp-validation-for`)
@@ -286,7 +292,7 @@ Tracker       Catálogo de        Resiliencia
 |------|--------|------|----|----|---------|
 | 0 | ✅ Completada | `fase-0/saneamiento` | #2 | — | ✅ |
 | 1 | ✅ Completada | `fase-1/persistencia-sql` | (contra `CD/CI`) | ADR-09 | ✅ |
-| 2 | ⬜ Pendiente | — | — | — | — |
+| 2 | ✅ Completada | `fase-2/identity-login` | (contra `CD/CI`) | ADR-10 | ✅ |
 | 3 | ⬜ Pendiente | — | — | — | — |
 | 4 | ⬜ Pendiente | — | — | — | — |
 | 5 | ⬜ Pendiente | — | — | — | — |

@@ -6,7 +6,7 @@
 
 ## 1. Seguridad — los cinco vectores
 
-Cuando alguien intenta romper una app web como esta, va por estos cinco huecos. Los primeros cuatro **existen hoy** en FitnessCoach.
+Cuando alguien intenta romper una app web como esta, va por estos cinco huecos. Los cuatro primeros existían en el proyecto; la Fase 2 cerró IDOR, CSRF y enumeración de usuarios, y la validación de entrada sigue abierta hasta la Fase 3.
 
 ### 1.1 IDOR — *Insecure Direct Object Reference*
 
@@ -17,9 +17,11 @@ GET /api/usuarios/1   ← mi perfil
 GET /api/usuarios/2   ← el perfil de otro. ¿Me lo devuelve?
 ```
 
-**Estado actual:** ❌ vulnerable. `UsuariosApiController` y `ProgresoApiController` no tienen ninguna protección.
+**Estado actual:** ✅ resuelto en la Fase 2 (ADR-10). Las rutas de arriba ya no existen: la API cuelga de `/api/perfil` y `/api/perfil/progreso`, sin ningún id de usuario en la URL.
 
-**Regla:** un endpoint **nunca** confía en el ID que viene de la petición para decidir a quién pertenece un recurso. El dueño se determina desde la identidad autenticada (`User.FindFirstValue(ClaimTypes.NameIdentifier)`), y luego se verifica que el recurso solicitado le pertenezca. Si no, `404` (no `403` — ver 1.4).
+**Regla:** un endpoint **nunca** confía en el ID que viene de la petición para decidir a quién pertenece un recurso. El dueño se determina desde la identidad autenticada (`User.FindFirstValue(ClaimTypes.NameIdentifier)`).
+
+**Preferencia, cuando se pueda:** que el id del dueño **no sea un parámetro de entrada en absoluto**. Mientras exista, cada endpoint nuevo tiene que acordarse de comprobar que el solicitante coincide, y basta un olvido para reabrir el agujero. Si no hay id que recibir, no hay nada que olvidar. Cuando la ruta sí necesite un id (por ejemplo, un registro concreto del historial en la Fase 4), se verifica la pertenencia y se responde `404` si falla, nunca `403` — ver 1.4.
 
 ### 1.2 Validación de entrada
 
@@ -46,7 +48,7 @@ GET /api/usuarios/2   ← el perfil de otro. ¿Me lo devuelve?
 
 **Qué es:** una página maliciosa hace que tu navegador, ya autenticado, envíe un POST a la app sin que lo sepas.
 
-**Estado actual:** ❌ vulnerable. `PerfilController.GuardarPerfil` y `ProgresoController.RegistrarPeso` no tienen `[ValidateAntiForgeryToken]`.
+**Estado actual:** ✅ resuelto en la Fase 2 (ADR-10) para los formularios: `PerfilController.GuardarPerfil`, `ProgresoController.RegistrarPeso` y las tres acciones de `AccountController` llevan `[ValidateAntiForgeryToken]`. Queda una excepción: `IaCoachController.Consultar`, que se llama por `fetch()` y no envía el token (deuda **D-21**, Fase 3).
 
 **Regla:** **toda** acción MVC que modifique estado lleva `[ValidateAntiForgeryToken]`, y su formulario Razor usa `asp-action` (que inyecta el token automáticamente). Los endpoints REST con `[ApiController]` consumidos por `fetch()` se protegen con la política de cookies `SameSite=Lax` + verificación de origen.
 
@@ -101,7 +103,7 @@ Si se captura, o se maneja de verdad, o se registra con `ILogger` y se relanza. 
 
 ## 3. Pruebas
 
-**Estado actual:** 21 pruebas xUnit, todas en verde, corriendo en CI.
+**Estado actual:** 34 pruebas xUnit, todas en verde, corriendo en CI.
 
 ### Reglas
 
