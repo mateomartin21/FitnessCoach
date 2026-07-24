@@ -72,5 +72,78 @@ namespace FitnessCoach.Tests.Services
 
             Assert.Equal(esperado, resultado, precision: 3);
         }
+
+        // --- Guardas: el cálculo se niega a operar sobre datos inválidos ---
+
+        [Fact]
+        public void CalcularCaloriasDiarias_ConEstaturaCero_Lanza()
+        {
+            // Arrange — el bug silencioso original: la fórmula devolvía un número
+            // perfectamente formado y perfectamente falso en vez de fallar.
+            var usuario = new UsuarioPerfil { PesoKg = 70, EstaturaCm = 0, Edad = 30 };
+
+            // Act + Assert
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(
+                () => _calculador.CalcularCaloriasDiarias(usuario));
+            Assert.Contains("EstaturaCm", ex.Message);
+        }
+
+        [Theory]
+        [InlineData(-50)]   // peso negativo
+        [InlineData(0)]
+        [InlineData(29.9)]  // apenas por debajo del mínimo
+        [InlineData(300.1)] // apenas por encima del máximo
+        public void CalcularCaloriasDiarias_ConPesoFueraDeRango_Lanza(double pesoKg)
+        {
+            var usuario = new UsuarioPerfil { PesoKg = pesoKg, EstaturaCm = 175, Edad = 30 };
+
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => _calculador.CalcularCaloriasDiarias(usuario));
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(12)]    // menor que la edad mínima
+        [InlineData(101)]
+        [InlineData(500)]
+        public void CalcularCaloriasDiarias_ConEdadFueraDeRango_Lanza(int edad)
+        {
+            var usuario = new UsuarioPerfil { PesoKg = 70, EstaturaCm = 175, Edad = edad };
+
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => _calculador.CalcularCaloriasDiarias(usuario));
+        }
+
+        [Theory]
+        [InlineData(99.9)]
+        [InlineData(250.1)]
+        public void CalcularCaloriasDiarias_ConEstaturaFueraDeRango_Lanza(double estaturaCm)
+        {
+            var usuario = new UsuarioPerfil { PesoKg = 70, EstaturaCm = estaturaCm, Edad = 30 };
+
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => _calculador.CalcularCaloriasDiarias(usuario));
+        }
+
+        [Theory]
+        [InlineData(RangosPerfil.PesoMinimoKg, RangosPerfil.EstaturaMinimaCm, RangosPerfil.EdadMinima)]
+        [InlineData(RangosPerfil.PesoMaximoKg, RangosPerfil.EstaturaMaximaCm, RangosPerfil.EdadMaxima)]
+        public void CalcularCaloriasDiarias_EnLosLimitesExactos_Calcula(double peso, double estatura, int edad)
+        {
+            // Arrange — los extremos son válidos: la guarda excluye lo que está FUERA del rango
+            var usuario = new UsuarioPerfil { PesoKg = peso, EstaturaCm = estatura, Edad = edad };
+
+            // Act
+            double resultado = _calculador.CalcularCaloriasDiarias(usuario);
+
+            // Assert
+            Assert.True(resultado > 0);
+        }
+
+        [Fact]
+        public void CalcularCaloriasDiarias_SinUsuario_Lanza()
+        {
+            Assert.Throws<ArgumentNullException>(() => _calculador.CalcularCaloriasDiarias(null!));
+        }
     }
 }
