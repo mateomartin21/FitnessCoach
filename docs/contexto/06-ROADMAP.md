@@ -117,6 +117,12 @@ Tracker       Catálogo de        Resiliencia
 
 ## Fase 3 — Validación y robustez
 
+> **✅ Cerrada el 24/07/2026** (rama `fase-3/validacion`, ADR-11) — seis commits: anotaciones (`565965d`), `ModelState` y ViewModels (`5e842c9`), guardas del cálculo y `RangosPerfil` (`c9e0114`), CSRF del chat y bloqueo de cuenta (`d5c1670`), rate limiter por IP (`78183fb`), pruebas de casos límite (`eb6b7fa`) y documentación. D-04, D-21 y D-22 resueltas. 66/66 pruebas en verde y **cero deuda crítica abierta**.
+>
+> Se sumó un ADR que el plan no preveía: la fase tomó dos decisiones que contradicen reglas escritas (validar dentro del dominio y revelar el bloqueo de cuenta), y eso no podía quedar solo en comentarios del código.
+>
+> Deuda nueva: **D-23** (la vista de Progreso no existe, detectada al empezar la fase → Fase 4) y **D-24** (rate limiter en memoria y sin cabeceras de proxy → Fase 10).
+
 **Objetivo:** que sea imposible meter datos basura, por la vía que sea.
 
 **Resuelve:** D-04, D-21, D-22
@@ -132,7 +138,7 @@ Tracker       Catálogo de        Resiliencia
 - Pruebas de cada caso límite
 
 **Definition of Done:** prueba de fuego §7, punto 3. Ningún dato inválido llega a la base por ninguna ruta (vista o API).
-**ADR:** no requiere.
+**ADR:** ADR-11 — validación en dos capas y defensa en profundidad del login (no estaba previsto; ver la nota de cierre).
 **Rama sugerida:** `fase-3/validacion`
 
 ---
@@ -141,9 +147,10 @@ Tracker       Catálogo de        Resiliencia
 
 **Objetivo:** convertir el historial de peso en un tracker de verdad, al estilo Hevy/Jefit.
 
-**Resuelve:** D-10, D-12
+**Resuelve:** D-10, D-12, D-23
 
 **Entregables:**
+- **`Views/Progreso/Index.cshtml`, que hoy no existe (D-23):** el controlador ya devuelve `View(historial)` contra una vista ausente, así que la pantalla revienta. Es la base sobre la que se monta todo lo demás de esta fase.
 - `Id` real para `RegistroProgreso` en el dominio (permite editar/borrar registros individuales)
 - Todas las fechas en UTC; conversión solo al mostrar
 - Registro de **entrenamientos completados**, no solo de peso
@@ -153,7 +160,7 @@ Tracker       Catálogo de        Resiliencia
 - Vista de historial con edición y borrado
 
 **Definition of Done:** un usuario puede registrar un entrenamiento, verlo en su historial, ver su racha actual y su gráfica de peso. Todo cubierto por pruebas.
-**ADR:** ADR-11 si el modelo de dominio cambia de forma significativa.
+**ADR:** ADR-12 si el modelo de dominio cambia de forma significativa.
 **Rama sugerida:** `fase-4/tracker`
 
 ---
@@ -170,7 +177,7 @@ Tracker       Catálogo de        Resiliencia
 - Suficiente variedad para rotación
 
 **Definition of Done:** agregar un ejercicio nuevo no requiere tocar ninguna clase de Strategy. Los tests del Decorator siguen pasando sin cambios (por eso usan estrategias falsas).
-**ADR:** ADR-12 — el catálogo desacoplado de las estrategias es un cambio de diseño relevante.
+**ADR:** ADR-13 — el catálogo desacoplado de las estrategias es un cambio de diseño relevante.
 **Rama sugerida:** `fase-5/catalogo-ejercicios`
 
 > ⚠ Es la fase con más impacto sobre las pruebas existentes. Los tests de `GeneradorRutinasService` que hoy verifican `rutina.Nivel` pueden necesitar ajuste — revisar antes de empezar.
@@ -195,7 +202,7 @@ Tracker       Catálogo de        Resiliencia
 - Pruebas del fallback con proveedores falsos
 
 **Definition of Done:** prueba de fuego §7, punto 6 — con internet desconectado, el Lobo responde con gracia y la app no se cae.
-**ADR:** ADR-13 — resiliencia de IA mediante patrón de proveedores intercambiables.
+**ADR:** ADR-14 — resiliencia de IA mediante patrón de proveedores intercambiables.
 **Rama sugerida:** `fase-6/resiliencia-ia`
 
 ---
@@ -213,7 +220,7 @@ Tracker       Catálogo de        Resiliencia
 - Comentarios contextuales del Lobo en las pantallas clave
 
 **Definition of Done:** el análisis usa datos reales del usuario (no genéricos) y degrada con gracia si la IA no está disponible.
-**ADR:** ADR-14 si el diseño de la integración cambia sustancialmente.
+**ADR:** ADR-15 si el diseño de la integración cambia sustancialmente.
 **Rama sugerida:** `fase-7/ia-analisis`
 
 ---
@@ -232,7 +239,7 @@ Tracker       Catálogo de        Resiliencia
 - El Lobo reacciona a cada uno de estos eventos
 
 **Definition of Done:** las mecánicas se calculan desde datos reales, y están cubiertas por pruebas (es lógica de dominio pura, ideal para xUnit).
-**ADR:** ADR-15.
+**ADR:** ADR-16.
 **Rama sugerida:** `fase-8/gamificacion`
 
 ---
@@ -252,7 +259,7 @@ Tracker       Catálogo de        Resiliencia
 - Sonidos 8-bit en acciones clave *(opcional)*
 
 **Definition of Done:** ninguna pantalla parece una plantilla de Bootstrap. La app se reconoce como propia en una captura.
-**ADR:** ADR-16 — decisión de identidad visual y su implementación.
+**ADR:** ADR-17 — decisión de identidad visual y su implementación.
 **Rama sugerida:** `fase-9/pixel-art`
 
 ---
@@ -262,6 +269,7 @@ Tracker       Catálogo de        Resiliencia
 **Objetivo:** el pulido final.
 
 **Entregables:**
+- Rate limiter listo para producción (D-24): almacén compartido en vez de memoria del proceso, y `UseForwardedHeaders` para no contar todo el tráfico bajo la IP del balanceador
 - Revisión de consultas de EF Core (detectar N+1, agregar `AsNoTracking` donde aplique)
 - Índices de base de datos según los patrones de consulta reales
 - Caché donde tenga sentido (catálogo de ejercicios)
@@ -293,7 +301,7 @@ Tracker       Catálogo de        Resiliencia
 | 0 | ✅ Completada | `fase-0/saneamiento` | #2 | — | ✅ |
 | 1 | ✅ Completada | `fase-1/persistencia-sql` | (contra `CD/CI`) | ADR-09 | ✅ |
 | 2 | ✅ Completada | `fase-2/identity-login` | (contra `CD/CI`) | ADR-10 | ✅ |
-| 3 | ⬜ Pendiente | — | — | — | — |
+| 3 | ✅ Completada | `fase-3/validacion` | (contra `CD/CI`) | ADR-11 | ✅ |
 | 4 | ⬜ Pendiente | — | — | — | — |
 | 5 | ⬜ Pendiente | — | — | — | — |
 | 6 | ⬜ Pendiente | — | — | — | — |

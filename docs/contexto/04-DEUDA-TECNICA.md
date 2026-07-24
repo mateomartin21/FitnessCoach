@@ -2,20 +2,22 @@
 
 > **Documento vivo.** Es el inventario honesto de lo que está mal. Cuando algo se resuelve se marca ✅ con la fase que lo resolvió — **no se borra la línea**, el historial sirve para los ADRs y para la sustentación del proyecto.
 >
-> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **24/07/2026** al cerrar la Fase 2 (rama `fase-2/identity-login`).
+> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **24/07/2026** al cerrar la Fase 3 (rama `fase-3/validacion`).
 
 ## Resumen
 
 | Severidad | Total | Abiertas |
 |-----------|-------|----------|
-| 🔴 Crítica (seguridad / pérdida de datos) | 7 | 1 |
-| 🟠 Alta (bug funcional o riesgo real) | 7 | 5 |
-| 🟡 Media (calidad, mantenibilidad) | 9 | 2 |
-| **Total** | **23** | **8** |
+| 🔴 Crítica (seguridad / pérdida de datos) | 7 | 0 |
+| 🟠 Alta (bug funcional o riesgo real) | 7 | 4 |
+| 🟡 Media (calidad, mantenibilidad) | 10 | 2 |
+| **Total** | **24** | **6** |
 
-> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11.
+> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22.
 >
-> **Deuda nueva detectada en la Fase 2:** D-21 y D-22. De las críticas solo queda abierta D-04 (validación de entrada, Fase 3).
+> **No queda ninguna deuda crítica abierta.** Las cuatro altas abiertas son D-09 y D-10 (Fase 4/6), D-12 (Fase 4) y D-23 (vista de Progreso, Fase 4).
+>
+> **Deuda nueva detectada en la Fase 3:** D-23 y D-24.
 
 ---
 
@@ -47,7 +49,7 @@
 **Qué pasa:** cero anotaciones de validación. `GuardarPerfil` recibe parámetros sueltos y ni siquiera consulta `ModelState`. Se acepta peso negativo, edad 0 o 500, estatura 0, nombre vacío.
 **Riesgo:** datos basura en la base y cálculos sin sentido. Con `EstaturaCm = 0` el cálculo calórico devuelve un número absurdo **sin lanzar error** — bug silencioso.
 **Resolución:** Fase 3.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 3 (commits `565965d`, `5e842c9` y `c9e0114`, ADR-11). Validación en dos capas: anotaciones en las entidades y ViewModels (rangos centralizados en `RangosPerfil`), y guardas en `CalcularCaloriasDiarias` que lanzan `ArgumentOutOfRangeException` en vez de devolver un número falso. `GuardarPerfil` recibe un ViewModel y verifica `ModelState` antes de tocar nada. 32 pruebas nuevas cubren los casos límite.
 
 ### D-05 · Sin protección CSRF
 **Dónde:** `PerfilController.GuardarPerfil`, `ProgresoController.RegistrarPeso`
@@ -121,7 +123,7 @@
 **Qué pasa:** Identity trae bloqueo temporal de cuenta tras N intentos fallidos, pero se registró desactivado. Nada limita la cantidad de contraseñas que se pueden probar contra una cuenta.
 **Riesgo:** fuerza bruta sin fricción, agravado porque la política de contraseñas es laxa (`RequiredLength = 6`, sin exigir caracteres no alfanuméricos). Con un correo válido conocido, probar contraseñas comunes es cuestión de tiempo. Detectada al escribir el ADR-10.
 **Resolución:** Fase 3 — `lockoutOnFailure: true` y configurar `options.Lockout` (ventana y número de intentos); endurecer de paso la política de contraseñas.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 3 (commits `d5c1670` y `78183fb`, ADR-11). Bloqueo de 15 minutos tras 5 fallos, contraseñas de 8 caracteres con mayúscula/minúscula/número, **y** un rate limiter de 10 envíos por minuto y por IP sobre login y registro — el bloqueo de Identity cuenta por cuenta y por sí solo no frena el *password spraying*.
 
 ---
 
@@ -187,6 +189,13 @@
 **Qué pasa:** al cerrar D-05 en la Fase 2 se cubrieron las acciones POST de formularios, pero ésta quedó fuera porque no viene de un formulario Razor: la llama JavaScript con `Content-Type: application/json`.
 **Riesgo:** bajo en la práctica — un POST cross-origin con ese `Content-Type` dispara *preflight* CORS, que falla al no haber política que lo permita. Pero es una excepción no declarada a la regla de `03-ESTANDARES.md` §5, y depende de un detalle del navegador en vez de una defensa explícita. Consumir la acción gasta cuota de la API de Gemini.
 **Resolución:** Fase 3 — enviar el token antiforgery en la cabecera `RequestVerificationToken` desde el `fetch()` y validarlo en la acción, o mover la acción a la API con su propio esquema.
+**Estado:** ✅ Resuelta en Fase 3 (commit `d5c1670`, ADR-11). La vista emite el token con `@Html.AntiForgeryToken()`, el `fetch()` lo manda en la cabecera y `Program.cs` declara `options.HeaderName` — sin esa última línea el atributo solo miraría los campos del formulario y rechazaría todo.
+
+### D-24 · El rate limiter es en memoria y no lee cabeceras de proxy
+**Dónde:** `Program.cs` → `AddRateLimiter`, partición por `contexto.Connection.RemoteIpAddress`
+**Qué pasa:** dos limitaciones del límite por IP agregado en la Fase 3. (1) El estado vive en la memoria del proceso: con más de una instancia, cada una lleva su propia cuenta y el límite efectivo se multiplica por la cantidad de nodos. (2) `RemoteIpAddress` detrás de un proxy o balanceador es la IP del proxy, así que todos los usuarios caerían en la misma partición y se bloquearían entre sí.
+**Riesgo:** hoy ninguno — corre en una sola instancia y sin proxy. Se vuelve real en el despliegue a EC2, sobre todo si queda detrás de un balanceador; por eso queda como media y no como alta.
+**Resolución:** Fase 10 (optimización y cierre, junto con el despliegue) — almacén compartido para el limitador y `UseForwardedHeaders` configurado con los proxies de confianza.
 **Estado:** ⬜ Abierta
 
 ---

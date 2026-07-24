@@ -48,6 +48,6 @@ Y adjunta:
 |-------|-------|
 | Creado | 22/07/2026 |
 | Última actualización | 24/07/2026 |
-| Rama de referencia | `fase-2/identity-login` (contra `CD/CI`) |
-| Último ADR | ADR-10 (autenticación con Identity, dominio libre de framework) |
-| Fase activa del roadmap | Fase 3 — Validación y robustez de dominio (siguiente) |
+| Rama de referencia | `fase-3/validacion` (contra `CD/CI`) |
+| Último ADR | ADR-11 (validación en dos capas y defensa en profundidad del login) |
+| Fase activa del roadmap | Fase 4 — Tracker de progreso (siguiente) |
