@@ -10,10 +10,10 @@
 |-----------|-------|----------|
 | 🔴 Crítica (seguridad / pérdida de datos) | 7 | 5 |
 | 🟠 Alta (bug funcional o riesgo real) | 5 | 4 |
-| 🟡 Media (calidad, mantenibilidad) | 8 | 2 |
-| **Total** | **20** | **11** |
+| 🟡 Media (calidad, mantenibilidad) | 8 | 1 |
+| **Total** | **20** | **10** |
 
-> **Resueltas hasta ahora:** Fase 0 → D-08, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. **D-13 sigue abierta** (parcialmente: 5 archivos aún en ISO-8859-1).
+> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Queda abierta de calidad solo D-20 (prompt del Lobo, Fase 6).
 
 ---
 
@@ -116,7 +116,7 @@
 **Qué pasa:** los acentos y guiones largos aparecen corruptos. Ejemplos reales: `"Clculo del Metabolismo Basal"` (falta la á), `"cÃ¡lculo calÃ³rico"` en los comentarios de `Program.cs`, `"PATRON STRATEGY "` con el guion perdido.
 **Riesgo:** afecta la legibilidad y se agrava con cada herramienta que toque los archivos. Si algún día un texto de estos llega a la UI, llega corrupto.
 **Resolución:** Fase 0 — conversión masiva a UTF-8.
-**Estado:** 🟨 Parcial. La Fase 0 convirtió la mayoría, pero al 23/07/2026 siguen en ISO-8859-1: `Controllers/ProgresoController.cs`, `Controllers/RutinasController.cs`, `Application/Services/CalculadorCaloricoService.cs`, `Application/Services/GeneradorRutinasService.cs`, `Domain/Models/Objetivos/ObjetivoGanarMusculo.cs`. Pendiente cerrarla.
+**Estado:** ✅ Resuelta. La Fase 0 convirtió la mayoría; los 5 archivos que quedaban en Windows-1252 (`ProgresoController.cs`, `RutinasController.cs`, `CalculadorCaloricoService.cs`, `GeneradorRutinasService.cs`, `ObjetivoGanarMusculo.cs`) se convirtieron a UTF-8 el 23/07/2026 (`iconv -f WINDOWS-1252 -t UTF-8`). Todo el árbol `.cs` queda en UTF-8.
 
 ### D-14 · Typo en el namespace: `Repositoriess`
 **Dónde:** `Infrastructure/Repositories/RepositorioUsuarioMemoria.cs` → `namespace FitnessCoach.Infrastructure.Repositoriess`
