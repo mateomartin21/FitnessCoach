@@ -11,11 +11,15 @@ namespace FitnessCoach.Controllers
     {
         private readonly IServicioPerfilUsuario _perfiles;
         private readonly IServicioProgreso _progreso;
+        private readonly IServicioEntrenamientos _entrenamientos;
 
-        public ProgresoController(IServicioPerfilUsuario perfiles, IServicioProgreso progreso)
+        public ProgresoController(IServicioPerfilUsuario perfiles,
+                                  IServicioProgreso progreso,
+                                  IServicioEntrenamientos entrenamientos)
         {
             _perfiles = perfiles;
             _progreso = progreso;
+            _entrenamientos = entrenamientos;
         }
 
         private string IdentityId => User.FindFirstValue(ClaimTypes.NameIdentifier)!;
@@ -80,7 +84,34 @@ namespace FitnessCoach.Controllers
             return RedirectToAction("Index");
         }
 
-        private ProgresoViewModel ArmarVista(RegistrarPesoViewModel? nuevo = null)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RegistrarEntrenamiento(
+            [Bind(Prefix = "NuevoEntrenamiento")] RegistrarEntrenamientoViewModel modelo)
+        {
+            if (!ModelState.IsValid)
+                return View("Index", ArmarVista(nuevoEntrenamiento: modelo));
+
+            _entrenamientos.Registrar(IdentityId, modelo.NombreRutina, modelo.DuracionMinutos, modelo.Notas);
+
+            TempData["MensajeProgreso"] = "Entrenamiento registrado.";
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EliminarEntrenamiento(int id)
+        {
+            if (!_entrenamientos.Eliminar(IdentityId, id))
+                return NotFound();
+
+            TempData["MensajeProgreso"] = "Entrenamiento eliminado.";
+            return RedirectToAction("Index");
+        }
+
+        private ProgresoViewModel ArmarVista(
+            RegistrarPesoViewModel? nuevo = null,
+            RegistrarEntrenamientoViewModel? nuevoEntrenamiento = null)
         {
             var usuario = _perfiles.ObtenerOCrear(IdentityId);
 
@@ -88,7 +119,10 @@ namespace FitnessCoach.Controllers
             {
                 Nuevo = nuevo ?? new RegistrarPesoViewModel { NuevoPeso = usuario.PesoKg },
                 Historial = _progreso.ObtenerHistorial(IdentityId).ToList(),
-                PesoActual = usuario.PesoKg
+                PesoActual = usuario.PesoKg,
+                NuevoEntrenamiento = nuevoEntrenamiento ?? new RegistrarEntrenamientoViewModel(),
+                Entrenamientos = _entrenamientos.ObtenerHistorial(IdentityId).ToList(),
+                Rachas = _entrenamientos.ObtenerRachas(IdentityId)
             };
         }
     }

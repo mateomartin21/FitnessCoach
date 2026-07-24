@@ -48,6 +48,21 @@ namespace FitnessCoach.Infrastructure.Data
 
                     progreso.ToTable("RegistrosProgreso");
                 });
+
+                entity.OwnsMany(u => u.EntrenamientosCompletados, entrenamiento =>
+                {
+                    entrenamiento.WithOwner().HasForeignKey("UsuarioPerfilId");
+                    entrenamiento.HasKey(e => e.Id);
+
+                    // Mismo tratamiento que el historial de peso: sin esto la fecha vuelve
+                    // como Unspecified y la conversion a local no haria nada.
+                    entrenamiento.Property(e => e.Fecha)
+                        .HasConversion(
+                            fecha => fecha,
+                            fecha => DateTime.SpecifyKind(fecha, DateTimeKind.Utc));
+
+                    entrenamiento.ToTable("EntrenamientosCompletados");
+                });
             
                 entity.HasIndex(u => u.IdentityUserId)
                     .IsUnique()

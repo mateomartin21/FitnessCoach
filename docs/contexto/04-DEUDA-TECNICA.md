@@ -10,8 +10,8 @@
 |-----------|-------|----------|
 | 🔴 Crítica (seguridad / pérdida de datos) | 7 | 0 |
 | 🟠 Alta (bug funcional o riesgo real) | 7 | 4 |
-| 🟡 Media (calidad, mantenibilidad) | 10 | 2 |
-| **Total** | **24** | **6** |
+| 🟡 Media (calidad, mantenibilidad) | 11 | 3 |
+| **Total** | **25** | **7** |
 
 > **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22.
 >
@@ -190,6 +190,13 @@
 **Riesgo:** bajo en la práctica — un POST cross-origin con ese `Content-Type` dispara *preflight* CORS, que falla al no haber política que lo permita. Pero es una excepción no declarada a la regla de `03-ESTANDARES.md` §5, y depende de un detalle del navegador en vez de una defensa explícita. Consumir la acción gasta cuota de la API de Gemini.
 **Resolución:** Fase 3 — enviar el token antiforgery en la cabecera `RequestVerificationToken` desde el `fetch()` y validarlo en la acción, o mover la acción a la API con su propio esquema.
 **Estado:** ✅ Resuelta en Fase 3 (commit `d5c1670`, ADR-11). La vista emite el token con `@Html.AntiForgeryToken()`, el `fetch()` lo manda en la cabecera y `Program.cs` declara `options.HeaderName` — sin esa última línea el atributo solo miraría los campos del formulario y rechazaría todo.
+
+### D-25 · Las rachas se cuentan en la zona horaria del servidor
+**Dónde:** `ServicioEntrenamientos.ObtenerRachas` → `e.Fecha.ToLocalTime()` y `DateTime.Now`
+**Qué pasa:** una racha es un concepto de calendario — "entrené hoy" depende de la medianoche **del usuario**. Las fechas se guardan bien en UTC, pero para contar días se convierten a la hora local del *servidor*, que es lo único que la app conoce hoy: nunca se le pregunta al usuario su zona horaria.
+**Riesgo:** un usuario en otra zona puede ver su racha cortarse o extenderse un día antes de tiempo. Con todos los usuarios y el servidor en la misma zona no se nota; se vuelve visible al desplegar en un servidor UTC (el caso típico en la nube) o con usuarios de otro país.
+**Resolución:** Fase 10 — guardar la zona horaria en el perfil (o tomarla del navegador) y contar los días en la zona del usuario. `CalculadorRachas` ya está preparado: recibe las fechas y el "hoy" como parámetros, así que solo cambia quién los provee.
+**Estado:** ⬜ Abierta
 
 ### D-24 · El rate limiter es en memoria y no lee cabeceras de proxy
 **Dónde:** `Program.cs` → `AddRateLimiter`, partición por `contexto.Connection.RemoteIpAddress`

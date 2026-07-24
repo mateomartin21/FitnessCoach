@@ -16,6 +16,15 @@ namespace FitnessCoach.Models
         /// <summary>Peso del perfil, que puede no coincidir con el último registro.</summary>
         public double PesoActual { get; set; }
 
+        /// <summary>Formulario de entrenamiento. Se liga con prefijo "NuevoEntrenamiento".</summary>
+        public RegistrarEntrenamientoViewModel NuevoEntrenamiento { get; set; } = new();
+
+        public List<EntrenamientoCompletado> Entrenamientos { get; set; } = new();
+
+        public Rachas Rachas { get; set; } = Rachas.Vacia;
+
+        public bool TieneEntrenamientos => Entrenamientos.Count > 0;
+
         public bool TieneRegistros => Historial.Count > 0;
 
         /// <summary>Cuánto cambió el peso entre el primer registro y el último. Null si hay menos de dos.</summary>
