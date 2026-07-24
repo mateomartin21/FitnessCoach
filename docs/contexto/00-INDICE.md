@@ -48,6 +48,6 @@ Y adjunta:
 |-------|-------|
 | Creado | 22/07/2026 |
 | Última actualización | 24/07/2026 |
-| Rama de referencia | `fase-3/validacion` (contra `CD/CI`) |
-| Último ADR | ADR-11 (validación en dos capas y defensa en profundidad del login) |
-| Fase activa del roadmap | Fase 4 — Tracker de progreso (siguiente) |
+| Rama de referencia | `fase-4/tracker` (contra `CD/CI`) |
+| Último ADR | ADR-12 (el tracker como historial de hechos) |
+| Fase activa del roadmap | Fase 5 — Catálogo de ejercicios y variedad (siguiente) |

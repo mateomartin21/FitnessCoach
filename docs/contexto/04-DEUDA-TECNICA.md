@@ -2,22 +2,22 @@
 
 > **Documento vivo.** Es el inventario honesto de lo que está mal. Cuando algo se resuelve se marca ✅ con la fase que lo resolvió — **no se borra la línea**, el historial sirve para los ADRs y para la sustentación del proyecto.
 >
-> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **24/07/2026** al cerrar la Fase 3 (rama `fase-3/validacion`).
+> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **24/07/2026** al cerrar la Fase 4 (rama `fase-4/tracker`).
 
 ## Resumen
 
 | Severidad | Total | Abiertas |
 |-----------|-------|----------|
 | 🔴 Crítica (seguridad / pérdida de datos) | 7 | 0 |
-| 🟠 Alta (bug funcional o riesgo real) | 7 | 4 |
+| 🟠 Alta (bug funcional o riesgo real) | 8 | 2 |
 | 🟡 Media (calidad, mantenibilidad) | 11 | 3 |
-| **Total** | **25** | **7** |
+| **Total** | **26** | **5** |
 
-> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22.
+> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23.
 >
-> **No queda ninguna deuda crítica abierta.** Las cuatro altas abiertas son D-09 y D-10 (Fase 4/6), D-12 (Fase 4) y D-23 (vista de Progreso, Fase 4).
+> **No queda ninguna deuda crítica abierta.** Las dos altas abiertas son D-09 (errores de Gemini, Fase 6) y D-26 (la API no cubre el tracker, Fase 10).
 >
-> **Deuda nueva detectada en la Fase 3:** D-23 y D-24.
+> **Deuda nueva detectada en la Fase 4:** D-25 y D-26.
 
 ---
 
@@ -95,7 +95,7 @@
 **Qué pasa:** dos caminos escriben la misma colección con criterios horarios distintos.
 **Riesgo:** el historial se ordena incorrectamente al mezclar registros creados por la vista y por el API (desfase de horas según la zona del servidor).
 **Resolución:** Fase 4 — todo a UTC, conversión solo en la vista.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 4 (commit `d112705`, ADR-12). Todo se escribe con `DateTime.UtcNow` **y** el mapeo de EF marca la fecha como UTC al leerla: sin eso volvía como `Unspecified` y el `ToLocalTime()` de la vista no convertía nada, así que el arreglo se habría visto completo en el código y roto en pantalla.
 
 ### D-11 · `POST /api/usuarios` permite crear perfiles ilimitados
 **Dónde:** `UsuariosApiController.Crear`
@@ -104,19 +104,26 @@
 **Resolución:** Fase 2 (junto con D-01; además el índice único de la Fase 2 impide más de un perfil por usuario).
 **Estado:** ✅ Resuelta en Fase 2 (commit `926ae0c`, ADR-10). El endpoint se eliminó: el perfil se crea solo, la primera vez que el usuario autenticado entra (`ServicioPerfilUsuario.ObtenerOCrear`). El índice único filtrado hace imposible el duplicado aunque el alta se invocara dos veces.
 
+### D-26 · La API REST no cubre el tracker
+**Dónde:** `Web/ApiControllers/ProgresoApiController.cs`
+**Qué pasa:** la Fase 4 agregó edición y borrado de registros, entrenamientos completados y rachas, pero **solo por la vista MVC**. La API sigue con lo que definió el ADR-10: listar el historial, ver el último y agregar un registro. No expone `PUT`/`DELETE` de un registro concreto ni nada de entrenamientos.
+**Riesgo:** ninguno de seguridad — es superficie que no existe. El problema es de coherencia: la API quedó siendo una vista parcial y desactualizada del producto, y `03-ESTANDARES.md` §1.5 ya anticipa cómo debería resolverse el caso de una ruta con id (verificar pertenencia y responder `404`).
+**Resolución:** Fase 10, o antes si aparece un consumidor real (la app móvil listada como idea fuera de alcance). Al hacerlo, reusar `ServicioProgreso` y `ServicioEntrenamientos`, que ya tienen las reglas y el aislamiento por cuenta resueltos.
+**Estado:** ⬜ Abierta
+
 ### D-12 · `RegistroProgreso` sin identidad propia en el dominio
 **Dónde:** `Domain/Models/RegistroProgreso.cs` + `ApplicationDbContext.OnModelCreating`
 **Qué pasa:** el `Id` existe solo como *shadow property* de EF Core. El dominio no puede referirse a un registro individual.
 **Riesgo:** hoy no molesta, pero bloquea funcionalidad de la Fase 4 (editar o borrar un registro específico del historial).
 **Resolución:** Fase 4.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 4 (commit `d112705`, ADR-12). `RegistroProgreso.Id` es ahora una propiedad del dominio con `HasKey(r => r.Id)`. **No requirió cambio de esquema** — la columna ya existía —, lo que confirma que era una deuda de modelado y no de base de datos.
 
 ### D-23 · La vista de Progreso no existe
 **Dónde:** `ProgresoController.Index` hace `return View(historial)`, pero no hay ningún `Views/Progreso/Index.cshtml` en el repo
 **Qué pasa:** entrar a `/Progreso` lanza `InvalidOperationException: The view 'Index' was not found`. `RegistrarPeso` redirige a esa misma acción, así que el flujo de registrar peso por la web tampoco termina. Pasó inadvertido porque el menú de `_Layout` no enlaza a Progreso: solo se llega escribiendo la URL a mano.
 **Riesgo:** una pantalla del producto directamente no funciona, y el único camino que queda para registrar peso es el API. Detectada el 24/07/2026 al empezar la Fase 3.
 **Resolución:** Fase 4 — el tracker construye esa pantalla completa (gráfica de peso, historial con edición y borrado, rachas). Hacer una vista provisional en la Fase 3 sería trabajo que la Fase 4 tira. `ProgresoController` ya quedó con `ModelState` y `TempData["ErrorProgreso"]` listos para cuando la vista exista.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 4 (commit `9c04380`, ADR-12). La pantalla existe con historial, formulario validado, entrenamientos, rachas y gráfica. **Se agregó además el enlace en el menú**, que era la razón de fondo de que el bug sobreviviera: la pantalla no era alcanzable desde ningún lado.
 
 ### D-22 · Login sin bloqueo por intentos fallidos
 **Dónde:** `Controllers/AccountController.cs` → `PasswordSignInAsync(..., lockoutOnFailure: false)`
