@@ -6,7 +6,7 @@
 
 ## 1. Seguridad — los cinco vectores
 
-Cuando alguien intenta romper una app web como esta, va por estos cinco huecos. Los cuatro primeros existían en el proyecto; la Fase 2 cerró IDOR, CSRF y enumeración de usuarios, y la validación de entrada sigue abierta hasta la Fase 3.
+Cuando alguien intenta romper una app web como esta, va por estos cinco huecos. Los cuatro primeros existían en el proyecto: la Fase 2 cerró IDOR, CSRF y enumeración de usuarios, y la Fase 3 cerró la validación de entrada.
 
 ### 1.1 IDOR — *Insecure Direct Object Reference*
 
@@ -27,7 +27,7 @@ GET /api/usuarios/2   ← el perfil de otro. ¿Me lo devuelve?
 
 **Qué es:** confiar en que el formulario mande datos razonables.
 
-**Estado actual:** ❌ vulnerable. `UsuarioPerfil` no tiene un solo atributo de validación. Hoy se puede guardar peso `-50`, edad `500`, estatura `0`. Con estatura `0` el cálculo calórico devuelve un resultado sin sentido pero no falla — el peor tipo de bug, porque es silencioso.
+**Estado actual:** ✅ resuelto en la Fase 3 (ADR-11). Los rangos de la tabla de abajo viven en `RangosPerfil` (proyecto `Domain`) y los comparten las entidades, los ViewModels y el request de la API. Con estatura `0` el cálculo ya no devuelve un número falso: lanza `ArgumentOutOfRangeException`.
 
 **Reglas:**
 - Todo modelo que llegue desde el exterior lleva anotaciones (`[Required]`, `[Range]`, `[StringLength]`).
@@ -60,6 +60,8 @@ GET /api/usuarios/2   ← el perfil de otro. ¿Me lo devuelve?
 - El login responde **siempre el mismo mensaje genérico** ante credenciales incorrectas: *"Correo o contraseña incorrectos."* Nunca distingue cuál de los dos falló.
 - El registro no revela si un correo ya existe de forma explotable.
 - Un recurso ajeno responde `404`, no `403`. Un `403` confirma que el recurso existe.
+
+**Excepción declarada (Fase 3, ADR-11):** el **bloqueo de cuenta sí se comunica explícitamente** — *"Tu cuenta quedó bloqueada temporalmente…"* —, aunque eso confirme que la cuenta existe. Se aceptó el costo porque el mensaje genérico dejaba al usuario legítimo intentando una y otra vez sin entender nada, y la información que se filtra es de bajo valor: confirma una cuenta que el atacante ya estaba atacando. La distinción entre "correo inexistente" y "contraseña incorrecta" **sigue sin revelarse**.
 
 ### 1.5 Autorización a nivel de dato
 
@@ -103,7 +105,7 @@ Si se captura, o se maneja de verdad, o se registra con `ILogger` y se relanza. 
 
 ## 3. Pruebas
 
-**Estado actual:** 34 pruebas xUnit, todas en verde, corriendo en CI.
+**Estado actual:** 66 pruebas xUnit, todas en verde, corriendo en CI.
 
 ### Reglas
 

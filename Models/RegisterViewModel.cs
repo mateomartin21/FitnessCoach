@@ -10,7 +10,7 @@ namespace FitnessCoach.Models
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
-        [StringLength(100, MinimumLength = 6, ErrorMessage = "La contraseña debe tener al menos {2} caracteres.")]
+        [StringLength(100, MinimumLength = 8, ErrorMessage = "La contraseña debe tener al menos {2} caracteres.")]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$",
             ErrorMessage = "La contraseña debe incluir al menos una mayúscula, una minúscula y un número.")]
         [DataType(DataType.Password)]
