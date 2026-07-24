@@ -83,10 +83,18 @@
                                                         data-video="@ej.Ejercicio.VideoYoutubeId"
                                                         data-busqueda="@busqueda"
                                                         data-grupo="@ej.Ejercicio.GrupoMuscular"
-                                                        data-equipo="@ej.Ejercicio.Equipo"
-                                                        data-instrucciones="@Json.Serialize(ej.Ejercicio.Instrucciones)">
+                                                        data-equipo="@ej.Ejercicio.Equipo">
                                                     <i class="fas fa-circle-info"></i> Ver técnica
                                                 </button>
+                                                @* Las instrucciones viajan como HTML, no como JSON en un atributo:
+                                                   Json.Serialize devuelve contenido ya codificado y el JSON llegaba
+                                                   mal formado al dataset. Acá Razor escapa cada paso por su cuenta. *@
+                                                <ol class="d-none fc-instrucciones">
+                                                    @foreach (var paso in ej.Ejercicio.Instrucciones)
+                                                    {
+                                                        <li>@paso</li>
+                                                    }
+                                                </ol>
                                             }
                                         </td>
                                         <td class="text-center">@ej.Series</td>
@@ -206,15 +214,21 @@
 
                 const lista = document.getElementById('modalEjercicioInstrucciones');
                 lista.innerHTML = '';
-                let pasos = [];
-                try { pasos = JSON.parse(boton.dataset.instrucciones) || []; } catch { pasos = []; }
+
+                // Los pasos ya están renderizados y escapados por Razor junto al botón.
+                const origen = boton.parentElement.querySelector('.fc-instrucciones');
+                const pasos = origen ? origen.querySelectorAll('li') : [];
+
                 if (pasos.length === 0) {
-                    lista.innerHTML = '<li class="text-muted">Sin instrucciones cargadas para este ejercicio.</li>';
+                    const vacio = document.createElement('li');
+                    vacio.className = 'text-muted';
+                    vacio.textContent = 'Sin instrucciones cargadas para este ejercicio.';
+                    lista.appendChild(vacio);
                 } else {
                     pasos.forEach(function (paso) {
                         const li = document.createElement('li');
                         li.className = 'mb-1';
-                        li.textContent = paso;
+                        li.textContent = paso.textContent;
                         lista.appendChild(li);
                     });
                 }

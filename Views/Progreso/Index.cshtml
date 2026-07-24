@@ -263,8 +263,10 @@
         </div>
         <div class="card-body">
             <canvas id="grafica-peso" height="90"
-                    data-etiquetas="@Json.Serialize(Model.EtiquetasGrafica)"
-                    data-pesos="@Json.Serialize(Model.PesosGrafica)"></canvas>
+                    @* Comillas simples a propósito: el JSON lleva comillas dobles y con
+                       delimitador doble el atributo se cortaría en la primera. *@
+                    data-etiquetas='@Json.Serialize(Model.EtiquetasGrafica)'
+                    data-pesos='@Json.Serialize(Model.PesosGrafica)'></canvas>
         </div>
     </div>
 }
