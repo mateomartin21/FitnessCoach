@@ -19,6 +19,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- La semilla del catalogo se copia como dato, no como referencia al proyecto de
+         Infraestructura (ADR-08). Permite validar el JSON en sí: un alimento mal
+         importado no lo detectaría ninguna otra prueba. -->
+    <Content Include="..\FitnessCoach.Infrastructure\Data\catalogo-alimentos.json"
+             Link="Data\catalogo-alimentos.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FitnessCoach.Domain\FitnessCoach.Domain.csproj" />
     <ProjectReference Include="..\FitnessCoach.Application\FitnessCoach.Application.csproj" />
   </ItemGroup>

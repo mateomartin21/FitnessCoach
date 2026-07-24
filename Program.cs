@@ -66,6 +66,11 @@ builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioUsuario,
 builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioEjercicios,
                            FitnessCoach.Infrastructure.Repositories.RepositorioEjerciciosSql>();
 
+// Catalogo de alimentos: mismo patron, para que los planes de comida se compongan
+// desde datos y no desde texto escrito a mano en las estrategias.
+builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioAlimentos,
+                           FitnessCoach.Infrastructure.Repositories.RepositorioAlimentosSql>();
+
 // Servicio de cálculo calórico
 builder.Services.AddScoped<FitnessCoach.Application.Services.ICalculadorCalorico,
                            FitnessCoach.Application.Services.CalculadorCaloricoService>();
@@ -147,7 +152,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
-// Siembra del catalogo de ejercicios: solo hace algo si la tabla esta vacia.
+// Siembra de los catalogos: cada uno solo hace algo si su tabla esta vacia.
 using (var alcance = app.Services.CreateScope())
 {
     var contexto = alcance.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -155,6 +160,7 @@ using (var alcance = app.Services.CreateScope())
         .CreateLogger("SembradorCatalogo");
 
     await SembradorCatalogoEjercicios.SembrarAsync(contexto, registro);
+    await SembradorCatalogoAlimentos.SembrarAsync(contexto, registro);
 }
 
 // Pipeline HTTP
