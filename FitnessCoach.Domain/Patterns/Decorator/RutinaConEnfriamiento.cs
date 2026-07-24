@@ -11,9 +11,9 @@ namespace FitnessCoach.Domain.Patterns.Decorator
             var rutina = _estrategia.GenerarRutina();
             foreach (var dia in rutina.Dias)
             {
-                dia.Ejercicios.Add(new Ejercicio
+                dia.Ejercicios.Add(new EjercicioPrescrito
                 {
-                    Nombre = "Enfriamiento y Estiramientos",
+                    Ejercicio = new Ejercicio { Slug = "enfriamiento", Nombre = "Enfriamiento y Estiramientos" },
                     Series = 1,
                     Repeticiones = "10 min",
                     Notas = "Estiramientos estaticos de grupos musculares trabajados"
