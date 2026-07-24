@@ -20,7 +20,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Chickens_in_market.jpg/500px-Chickens_in_market.jpg",
     "autorImagen": "Tomás Castelazo",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "muslo-de-pollo",
@@ -43,7 +46,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Chickens_in_market.jpg/500px-Chickens_in_market.jpg",
     "autorImagen": "Tomás Castelazo",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "pavo-pechuga",
@@ -66,7 +72,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Gall-dindi.jpg/500px-Gall-dindi.jpg",
     "autorImagen": "Riki7",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "carne-magra-res",
@@ -89,7 +99,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Korean.cuisine-Deungsim.gui-01.jpg/500px-Korean.cuisine-Deungsim.gui-01.jpg",
     "autorImagen": "by ayustety",
-    "licenciaImagen": "CC BY-SA 2.0"
+    "licenciaImagen": "CC BY-SA 2.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "lomo-de-cerdo",
@@ -112,7 +125,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Lomo_en_adobo-2009.jpg/500px-Lomo_en_adobo-2009.jpg",
     "autorImagen": "Tamorlan",
-    "licenciaImagen": "CC BY 3.0"
+    "licenciaImagen": "CC BY 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "salmon",
@@ -135,7 +151,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Salmo_trutta_Trout_Aquarium_Atlanterhavsparken_Norway.jpg/500px-Salmo_trutta_Trout_Aquarium_Atlanterhavsparken_Norway.jpg",
     "autorImagen": "Hans-Petter Fjeld",
-    "licenciaImagen": "CC BY-SA 2.5"
+    "licenciaImagen": "CC BY-SA 2.5",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "merluza",
@@ -158,7 +177,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Gadus_morhua_Cod-2b-Atlanterhavsparken-Norway.JPG/500px-Gadus_morhua_Cod-2b-Atlanterhavsparken-Norway.JPG",
     "autorImagen": "Hans-Petter Fjeld",
-    "licenciaImagen": "CC BY-SA 2.5"
+    "licenciaImagen": "CC BY-SA 2.5",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "atun-en-agua",
@@ -181,7 +203,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Lata_de_at%C3%BAn-Albo.jpg/500px-Lata_de_at%C3%BAn-Albo.jpg",
     "autorImagen": "Tamorlan",
-    "licenciaImagen": "CC BY 3.0"
+    "licenciaImagen": "CC BY 3.0",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "camaron",
@@ -204,7 +230,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Lysmata_amboinensis_in_Tropicarium-Oceanarium_Budapest.JPG/500px-Lysmata_amboinensis_in_Tropicarium-Oceanarium_Budapest.JPG",
     "autorImagen": "Хомелка",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "huevo-entero",
@@ -228,7 +257,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Eggs_in_basket_2020_G1.jpg/500px-Eggs_in_basket_2020_G1.jpg",
     "autorImagen": "George Chernilevsky",
-    "licenciaImagen": "CC BY-SA 4.0"
+    "licenciaImagen": "CC BY-SA 4.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "clara-de-huevo",
@@ -252,7 +286,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Chicken_egg01_monovular.jpg/500px-Chicken_egg01_monovular.jpg",
     "autorImagen": "miya",
-    "licenciaImagen": "CC BY 3.0"
+    "licenciaImagen": "CC BY 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "tofu",
@@ -277,7 +316,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Ganmodoki.jpg/500px-Ganmodoki.jpg",
     "autorImagen": "Pieria(Uploader and Photographer)",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "tempeh",
@@ -301,7 +343,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Tempeh_tempe.jpg/500px-Tempeh_tempe.jpg",
     "autorImagen": "Sakurai Midori",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "lentejas-cocidas",
@@ -326,7 +371,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Illustration_Lens_culinaris0.jpg/500px-Illustration_Lens_culinaris0.jpg",
     "autorImagen": "Wikimedia Commons",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "garbanzos-cocidos",
@@ -351,7 +399,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Chickpea.jpg",
     "autorImagen": "Wikimedia Commons",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "frijoles-negros",
@@ -376,7 +428,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Black_Beans_2.JPG/500px-Black_Beans_2.JPG",
     "autorImagen": "Wilfredor",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "yogur-griego",
@@ -399,7 +454,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Turkish_strained_yogurt.jpg/500px-Turkish_strained_yogurt.jpg",
     "autorImagen": "Takeaway",
-    "licenciaImagen": "CC BY-SA 4.0"
+    "licenciaImagen": "CC BY-SA 4.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "queso-cottage",
@@ -422,7 +482,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Cottage_Cheese.jpg/500px-Cottage_Cheese.jpg",
     "autorImagen": "Stu Spivack - flickr.com",
-    "licenciaImagen": "CC BY-SA 2.0"
+    "licenciaImagen": "CC BY-SA 2.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "leche-descremada",
@@ -445,7 +510,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Skimmed_milk.jpg/500px-Skimmed_milk.jpg",
     "autorImagen": "Renee Comet (Photographer)",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "queso-mozzarella",
@@ -468,7 +538,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Mozzarella_di_bufala3.jpg/500px-Mozzarella_di_bufala3.jpg",
     "autorImagen": "Popo le Chien",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "arroz-blanco",
@@ -493,7 +567,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/White%2C_Brown%2C_Red_%26_Wild_rice.jpg/500px-White%2C_Brown%2C_Red_%26_Wild_rice.jpg",
     "autorImagen": "Earth100",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "arroz-integral",
@@ -518,7 +595,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/2/27/Oryza_sativa_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-232.jpg",
     "autorImagen": "Franz Eugen Köhler, Köhler's Medizinal-Pflanzen",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "avena",
@@ -542,7 +622,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Illustration_Avena_sativa0.jpg/500px-Illustration_Avena_sativa0.jpg",
     "autorImagen": "Wikimedia Commons",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "snack"
+    ]
   },
   {
     "slug": "quinoa-cocida",
@@ -567,7 +651,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Quinoa_farmer_in_Cachilaya.JPG/500px-Quinoa_farmer_in_Cachilaya.JPG",
     "autorImagen": "Michael Hermann",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "pasta-integral",
@@ -591,7 +678,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/%28Pasta%29_by_David_Adam_Kess_%28pic.2%29.jpg/500px-%28Pasta%29_by_David_Adam_Kess_%28pic.2%29.jpg",
     "autorImagen": "David Adam Kess",
-    "licenciaImagen": "CC BY-SA 4.0"
+    "licenciaImagen": "CC BY-SA 4.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "pan-integral",
@@ -615,7 +705,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Brown_Bread_and_Irish_Butter.JPG/500px-Brown_Bread_and_Irish_Butter.JPG",
     "autorImagen": "Benreis",
-    "licenciaImagen": "CC BY 3.0"
+    "licenciaImagen": "CC BY 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "tortilla-de-maiz",
@@ -640,7 +735,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Tortillas_de_maiz_blanco_%28M%C3%A9xico%29_01.jpg/500px-Tortillas_de_maiz_blanco_%28M%C3%A9xico%29_01.jpg",
     "autorImagen": "ProtoplasmaKid",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "papa-cocida",
@@ -665,7 +765,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/S._tuberosum-5.JPG/500px-S._tuberosum-5.JPG",
     "autorImagen": "Philmarin",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "batata",
@@ -690,7 +793,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/5aday_sweet_potato.jpg/500px-5aday_sweet_potato.jpg",
     "autorImagen": "Wikimedia Commons",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "platano-macho",
@@ -715,7 +821,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Banana.plant.kewgardens.arp.jpg/500px-Banana.plant.kewgardens.arp.jpg",
     "autorImagen": "Adrian Pingstone",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "maiz-dulce",
@@ -740,7 +849,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/VegCorn.jpg/500px-VegCorn.jpg",
     "autorImagen": "Wikimedia Commons",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "manzana",
@@ -765,7 +878,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Owoce_Jab%C5%82ko.jpg/500px-Owoce_Jab%C5%82ko.jpg",
     "autorImagen": "Agnieszka Kwiecień, Nova",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "banana",
@@ -790,7 +908,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Bananas.jpg/500px-Bananas.jpg",
     "autorImagen": "Steve Hopson, www.stevehopson.com",
-    "licenciaImagen": "CC BY-SA 2.5"
+    "licenciaImagen": "CC BY-SA 2.5",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "naranja",
@@ -815,7 +938,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Oranges_-_whole-halved-segment.jpg/500px-Oranges_-_whole-halved-segment.jpg",
     "autorImagen": "Ivar Leidus",
-    "licenciaImagen": "CC BY-SA 4.0"
+    "licenciaImagen": "CC BY-SA 4.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "fresas",
@@ -840,7 +968,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Strawberries.JPG/500px-Strawberries.JPG",
     "autorImagen": "Wikimedia Commons",
-    "licenciaImagen": "CC BY-SA 2.0"
+    "licenciaImagen": "CC BY-SA 2.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "arandanos",
@@ -865,7 +998,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Blueberries.jpg/500px-Blueberries.jpg",
     "autorImagen": "Wikimedia Commons",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "pina",
@@ -890,7 +1028,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/%E0%B4%95%E0%B5%88%E0%B4%A4%E0%B4%9A%E0%B5%8D%E0%B4%9A%E0%B4%95%E0%B5%8D%E0%B4%95.jpg/500px-%E0%B4%95%E0%B5%88%E0%B4%A4%E0%B4%9A%E0%B5%8D%E0%B4%9A%E0%B4%95%E0%B5%8D%E0%B4%95.jpg",
     "autorImagen": "Suniltg de Wikipedia en malayálam",
-    "licenciaImagen": "CC BY 3.0"
+    "licenciaImagen": "CC BY 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "mango",
@@ -915,7 +1058,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/c/cc/The_Botanical_Magazine._Mango.jpg",
     "autorImagen": "Walter Hood Fitch (1817-1892) del. et lith.  Description by John Smith (1798 - 1888)",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "papaya",
@@ -940,7 +1088,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Carica_papaya_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-029.jpg/500px-Carica_papaya_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-029.jpg",
     "autorImagen": "Franz Eugen Köhler, Köhler's Medizinal-Pflanzen",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "kiwi",
@@ -965,7 +1118,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Actinidia_deliciosa_13_R.jpg/500px-Actinidia_deliciosa_13_R.jpg",
     "autorImagen": "Rob Hille",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "uvas",
@@ -990,7 +1148,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Vitis_vinifera_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-145.jpg",
     "autorImagen": "Franz Eugen Köhler, Köhler's Medizinal-Pflanzen",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "pera",
@@ -1015,7 +1178,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Owoce_Gruszka.jpg/500px-Owoce_Gruszka.jpg",
     "autorImagen": "Agnieszka Kwiecień, Nova",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "sandia",
@@ -1040,7 +1208,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Flore_m%C3%A9dicale_des_Antilles%2C_ou%2C_Trait%C3%A9_des_plantes_usuelles_%28Pl._305%29_%287795661744%29.jpg/500px-Flore_m%C3%A9dicale_des_Antilles%2C_ou%2C_Trait%C3%A9_des_plantes_usuelles_%28Pl._305%29_%287795661744%29.jpg",
     "autorImagen": "Descourtilz, J. Theodore.; Descourtilz, M. E.; Pichard.",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "brocoli",
@@ -1065,7 +1238,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Broccoli_bunches.jpg/500px-Broccoli_bunches.jpg",
     "autorImagen": "fir0002  flagstaffotos [at] gmail.com\n\t\tCanon 20D + Tamron 28-75mm f/2.8",
-    "licenciaImagen": "GFDL 1.2"
+    "licenciaImagen": "GFDL 1.2",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "espinaca",
@@ -1090,7 +1266,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Illustration_Spinacia_oleracea0.jpg/500px-Illustration_Spinacia_oleracea0.jpg",
     "autorImagen": "Otto Wilhelm Thomé",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "lechuga",
@@ -1115,7 +1294,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Romaine_lettuce.jpg/500px-Romaine_lettuce.jpg",
     "autorImagen": "Rainer Zenz",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "tomate",
@@ -1140,7 +1322,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Bright_red_tomato_and_cross_section02.jpg/500px-Bright_red_tomato_and_cross_section02.jpg",
     "autorImagen": "fir0002  flagstaffotos [at] gmail.com\n\t\tCanon 20D + Sigma 150mm f/2.8",
-    "licenciaImagen": "GFDL 1.2"
+    "licenciaImagen": "GFDL 1.2",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "pepino",
@@ -1165,7 +1351,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Cucumis_sativus_0002.JPG/500px-Cucumis_sativus_0002.JPG",
     "autorImagen": "H. Zell",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "zanahoria",
@@ -1190,7 +1380,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Bunches_of_carrots.jpg/500px-Bunches_of_carrots.jpg",
     "autorImagen": "Robert Couse-Baker",
-    "licenciaImagen": "CC BY 2.0"
+    "licenciaImagen": "CC BY 2.0",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "pimiento",
@@ -1215,7 +1409,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Illustration_Capsicum_annuum0.jpg/500px-Illustration_Capsicum_annuum0.jpg",
     "autorImagen": "Franz Eugen Köhler",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "calabacin",
@@ -1240,7 +1437,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Calabaza_Vines_%28Flor_de_Auyama%29.jpg/500px-Calabaza_Vines_%28Flor_de_Auyama%29.jpg",
     "autorImagen": "Fox221",
-    "licenciaImagen": "CC BY-SA 4.0"
+    "licenciaImagen": "CC BY-SA 4.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "coliflor",
@@ -1265,7 +1465,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Bloemkool.jpg/500px-Bloemkool.jpg",
     "autorImagen": "Rasbak",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "cebolla",
@@ -1290,7 +1493,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Two_colors_of_onions.jpg/500px-Two_colors_of_onions.jpg",
     "autorImagen": "Wikimedia Commons",
-    "licenciaImagen": "GFDL 1.2"
+    "licenciaImagen": "GFDL 1.2",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "champinones",
@@ -1315,7 +1521,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/ChampignonMushroom.jpg/500px-ChampignonMushroom.jpg",
     "autorImagen": "chris_73",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "ejotes",
@@ -1340,7 +1549,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Phaseolus_vulgaris.jpg/500px-Phaseolus_vulgaris.jpg",
     "autorImagen": "Wikimedia Commons",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "aguacate",
@@ -1365,7 +1577,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Persea_americana1.JPG/500px-Persea_americana1.JPG",
     "autorImagen": "B.navez",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "aceite-de-oliva",
@@ -1390,7 +1607,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Aceite_de_oliva.png/500px-Aceite_de_oliva.png",
     "autorImagen": "Pietrablanca",
-    "licenciaImagen": "CC BY-SA 4.0"
+    "licenciaImagen": "CC BY-SA 4.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "almendras",
@@ -1415,7 +1635,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Almonds_-_in_shell%2C_shell_cracked_open%2C_shelled%2C_blanched.jpg/500px-Almonds_-_in_shell%2C_shell_cracked_open%2C_shelled%2C_blanched.jpg",
     "autorImagen": "Ivar Leidus",
-    "licenciaImagen": "CC BY-SA 4.0"
+    "licenciaImagen": "CC BY-SA 4.0",
+    "momentosAptos": [
+      "desayuno",
+      "snack"
+    ]
   },
   {
     "slug": "nueces",
@@ -1440,7 +1664,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/20110802Walnussbaum_Plankstadt2.jpg/500px-20110802Walnussbaum_Plankstadt2.jpg",
     "autorImagen": "AnRo0002",
-    "licenciaImagen": "CC0"
+    "licenciaImagen": "CC0",
+    "momentosAptos": [
+      "desayuno",
+      "snack"
+    ]
   },
   {
     "slug": "mani",
@@ -1465,7 +1693,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Arachis_hypogaea_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-163.jpg/500px-Arachis_hypogaea_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-163.jpg",
     "autorImagen": "Franz Eugen Köhler, Köhler's Medizinal-Pflanzen",
-    "licenciaImagen": "Public domain"
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "snack"
+    ]
   },
   {
     "slug": "mantequilla-de-mani",
@@ -1490,7 +1722,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/PeanutButter.jpg/500px-PeanutButter.jpg",
     "autorImagen": "PiccoloNamek de Wikipedia en inglés",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "snack"
+    ]
   },
   {
     "slug": "semillas-de-chia",
@@ -1515,7 +1751,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Chia_Seeds_macro_2.jpg/500px-Chia_Seeds_macro_2.jpg",
     "autorImagen": "Daniel Schwen",
-    "licenciaImagen": "CC BY 3.0"
+    "licenciaImagen": "CC BY 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "snack"
+    ]
   },
   {
     "slug": "semillas-de-girasol",
@@ -1540,7 +1780,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Helianthus_annuus_001.JPG/500px-Helianthus_annuus_001.JPG",
     "autorImagen": "H. Zell",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "snack"
+    ]
   },
   {
     "slug": "sardinas",
@@ -1563,7 +1807,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Sardinas_a_la_plancha-_C%C3%A1diz_-_2009.jpg/500px-Sardinas_a_la_plancha-_C%C3%A1diz_-_2009.jpg",
     "autorImagen": "Tamorlan",
-    "licenciaImagen": "CC BY 3.0"
+    "licenciaImagen": "CC BY 3.0",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "tilapia",
@@ -1586,7 +1834,10 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Oreochromis-niloticus-Nairobi.JPG/500px-Oreochromis-niloticus-Nairobi.JPG",
     "autorImagen": "Bjørn Christian Tørrissen",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
   },
   {
     "slug": "leche-entera",
@@ -1609,7 +1860,12 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Milk_glass.jpg/500px-Milk_glass.jpg",
     "autorImagen": "Stefan Kühn",
-    "licenciaImagen": "CC BY-SA 3.0"
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   },
   {
     "slug": "queso-ricotta",
@@ -1632,6 +1888,11 @@
     ],
     "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Ricotta_pugliese.jpg/500px-Ricotta_pugliese.jpg",
     "autorImagen": "Saggittarius A",
-    "licenciaImagen": "CC BY 4.0"
+    "licenciaImagen": "CC BY 4.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
   }
 ]

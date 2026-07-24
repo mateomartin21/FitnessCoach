@@ -68,6 +68,15 @@ namespace FitnessCoach.Domain.Models.Alimentacion
         /// </summary>
         public List<string> EtiquetasDieta { get; set; } = new();
 
+        /// <summary>
+        /// En qué comidas del día cae bien: "desayuno", "principal", "snack".
+        ///
+        /// Es criterio culinario, no nutricional, y hace falta igual: 115 g de tempeh
+        /// con pasta a las siete de la mañana cuadra los macros perfectamente y no lo
+        /// desayuna nadie. Un plan que no se sigue no sirve de nada.
+        /// </summary>
+        public List<string> MomentosAptos { get; set; } = new();
+
         /// <summary>Imagen de referencia. Puede faltar: la vista degrada a un placeholder.</summary>
         public string? UrlImagen { get; set; }
 
@@ -108,6 +117,14 @@ namespace FitnessCoach.Domain.Models.Alimentacion
 
         public bool Cumple(string etiqueta) =>
             EtiquetasDieta.Contains(etiqueta, StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Si el alimento cae bien en ese momento del día. Sin momentos declarados se
+        /// acepta en cualquiera: es preferible a dejarlo fuera del catálogo por omisión.
+        /// </summary>
+        public bool VaEn(string momento) =>
+            MomentosAptos.Count == 0
+            || MomentosAptos.Contains(momento, StringComparer.OrdinalIgnoreCase);
     }
 
     /// <summary>Macros ya escalados a una porción concreta.</summary>

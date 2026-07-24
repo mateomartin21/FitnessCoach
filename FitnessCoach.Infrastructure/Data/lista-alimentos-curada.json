@@ -13,7 +13,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Pechuga de pollo"
+  "wiki": "Pechuga de pollo",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "muslo-de-pollo",
@@ -29,7 +32,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Pollo (alimento)"
+  "wiki": "Pollo (alimento)",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "pavo-pechuga",
@@ -45,7 +51,11 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Meleagris gallopavo"
+  "wiki": "Meleagris gallopavo",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "carne-magra-res",
@@ -61,7 +71,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Carne de vacuno"
+  "wiki": "Carne de vacuno",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "lomo-de-cerdo",
@@ -77,7 +90,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Lomo de cerdo"
+  "wiki": "Lomo de cerdo",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "salmon",
@@ -93,7 +109,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Salmón (alimento)"
+  "wiki": "Salmón (alimento)",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "merluza",
@@ -109,7 +128,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Gadus morhua"
+  "wiki": "Gadus morhua",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "atun-en-agua",
@@ -125,7 +147,11 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Atún en conserva"
+  "wiki": "Atún en conserva",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "camaron",
@@ -141,7 +167,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Camarón"
+  "wiki": "Camarón",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "huevo-entero",
@@ -158,7 +187,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Huevo (alimento)"
+  "wiki": "Huevo (alimento)",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "clara-de-huevo",
@@ -175,7 +209,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Clara de huevo"
+  "wiki": "Clara de huevo",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "tofu",
@@ -193,7 +232,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Tofu"
+  "wiki": "Tofu",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "tempeh",
@@ -210,7 +252,10 @@
    "vegano",
    "sin-lactosa"
   ],
-  "wiki": "Tempeh"
+  "wiki": "Tempeh",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "lentejas-cocidas",
@@ -228,7 +273,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Lens culinaris"
+  "wiki": "Lens culinaris",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "garbanzos-cocidos",
@@ -246,7 +294,11 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Cicer arietinum"
+  "wiki": "Cicer arietinum",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "frijoles-negros",
@@ -264,7 +316,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Frijol negro"
+  "wiki": "Frijol negro",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "yogur-griego",
@@ -280,7 +335,12 @@
    "vegetariano",
    "sin-gluten"
   ],
-  "wiki": "Yogur griego"
+  "wiki": "Yogur griego",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "queso-cottage",
@@ -296,7 +356,12 @@
    "vegetariano",
    "sin-gluten"
   ],
-  "wiki": "Queso cottage"
+  "wiki": "Queso cottage",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "leche-descremada",
@@ -312,7 +377,12 @@
    "vegetariano",
    "sin-gluten"
   ],
-  "wiki": "Leche desnatada"
+  "wiki": "Leche desnatada",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "queso-mozzarella",
@@ -328,7 +398,11 @@
    "vegetariano",
    "sin-gluten"
   ],
-  "wiki": "Mozzarella"
+  "wiki": "Mozzarella",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "arroz-blanco",
@@ -346,7 +420,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Arroz blanco"
+  "wiki": "Arroz blanco",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "arroz-integral",
@@ -364,7 +441,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Arroz integral"
+  "wiki": "Arroz integral",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "avena",
@@ -381,7 +461,11 @@
    "vegano",
    "sin-lactosa"
   ],
-  "wiki": "Avena sativa"
+  "wiki": "Avena sativa",
+  "momentos": [
+   "desayuno",
+   "snack"
+  ]
  },
  {
   "slug": "quinoa-cocida",
@@ -399,7 +483,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Chenopodium quinoa"
+  "wiki": "Chenopodium quinoa",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "pasta-integral",
@@ -416,7 +503,10 @@
    "vegano",
    "sin-lactosa"
   ],
-  "wiki": "Pasta integral"
+  "wiki": "Pasta integral",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "pan-integral",
@@ -433,7 +523,12 @@
    "vegano",
    "sin-lactosa"
   ],
-  "wiki": "Pan integral"
+  "wiki": "Pan integral",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "tortilla-de-maiz",
@@ -451,7 +546,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Tortilla de maíz"
+  "wiki": "Tortilla de maíz",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "papa-cocida",
@@ -469,7 +569,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Solanum tuberosum"
+  "wiki": "Solanum tuberosum",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "batata",
@@ -487,7 +590,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Ipomoea batatas"
+  "wiki": "Ipomoea batatas",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "platano-macho",
@@ -505,7 +611,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Plátano macho"
+  "wiki": "Plátano macho",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "maiz-dulce",
@@ -523,7 +632,11 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Maíz dulce"
+  "wiki": "Maíz dulce",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "manzana",
@@ -541,7 +654,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Manzana"
+  "wiki": "Manzana",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "banana",
@@ -559,7 +677,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Banana"
+  "wiki": "Banana",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "naranja",
@@ -577,7 +700,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Naranja (fruta)"
+  "wiki": "Naranja (fruta)",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "fresas",
@@ -595,7 +723,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Fragaria × ananassa"
+  "wiki": "Fragaria × ananassa",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "arandanos",
@@ -613,7 +746,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Vaccinium corymbosum"
+  "wiki": "Vaccinium corymbosum",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "pina",
@@ -631,7 +769,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Ananas comosus"
+  "wiki": "Ananas comosus",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "mango",
@@ -649,7 +792,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Mangifera indica"
+  "wiki": "Mangifera indica",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "papaya",
@@ -667,7 +815,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Carica papaya"
+  "wiki": "Carica papaya",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "kiwi",
@@ -685,7 +838,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Actinidia deliciosa"
+  "wiki": "Actinidia deliciosa",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "uvas",
@@ -703,7 +861,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Vitis vinifera"
+  "wiki": "Vitis vinifera",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "pera",
@@ -721,7 +884,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Pera (fruta)"
+  "wiki": "Pera (fruta)",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "sandia",
@@ -739,7 +907,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Citrullus lanatus"
+  "wiki": "Citrullus lanatus",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "brocoli",
@@ -757,7 +930,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Brócoli"
+  "wiki": "Brócoli",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "espinaca",
@@ -775,7 +951,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Spinacia oleracea"
+  "wiki": "Spinacia oleracea",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "lechuga",
@@ -793,7 +972,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Lactuca sativa"
+  "wiki": "Lactuca sativa",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "tomate",
@@ -811,7 +993,11 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Tomate"
+  "wiki": "Tomate",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "pepino",
@@ -829,7 +1015,11 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Cucumis sativus"
+  "wiki": "Cucumis sativus",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "zanahoria",
@@ -847,7 +1037,11 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Daucus carota subsp. sativus"
+  "wiki": "Daucus carota subsp. sativus",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "pimiento",
@@ -865,7 +1059,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Pimiento"
+  "wiki": "Pimiento",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "calabacin",
@@ -883,7 +1080,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Calabacín"
+  "wiki": "Calabacín",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "coliflor",
@@ -901,7 +1101,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Coliflor"
+  "wiki": "Coliflor",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "cebolla",
@@ -919,7 +1122,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Allium cepa"
+  "wiki": "Allium cepa",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "champinones",
@@ -937,7 +1143,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Agaricus bisporus"
+  "wiki": "Agaricus bisporus",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "ejotes",
@@ -955,7 +1164,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Judía verde"
+  "wiki": "Judía verde",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "aguacate",
@@ -973,7 +1185,12 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Persea americana"
+  "wiki": "Persea americana",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "aceite-de-oliva",
@@ -991,7 +1208,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Aceite de oliva"
+  "wiki": "Aceite de oliva",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "almendras",
@@ -1009,7 +1229,11 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Almendra"
+  "wiki": "Almendra",
+  "momentos": [
+   "desayuno",
+   "snack"
+  ]
  },
  {
   "slug": "nueces",
@@ -1027,7 +1251,11 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Juglans regia"
+  "wiki": "Juglans regia",
+  "momentos": [
+   "desayuno",
+   "snack"
+  ]
  },
  {
   "slug": "mani",
@@ -1045,7 +1273,11 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Arachis hypogaea"
+  "wiki": "Arachis hypogaea",
+  "momentos": [
+   "desayuno",
+   "snack"
+  ]
  },
  {
   "slug": "mantequilla-de-mani",
@@ -1063,7 +1295,11 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Mantequilla de cacahuete"
+  "wiki": "Mantequilla de cacahuete",
+  "momentos": [
+   "desayuno",
+   "snack"
+  ]
  },
  {
   "slug": "semillas-de-chia",
@@ -1081,7 +1317,11 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Salvia hispanica"
+  "wiki": "Salvia hispanica",
+  "momentos": [
+   "desayuno",
+   "snack"
+  ]
  },
  {
   "slug": "semillas-de-girasol",
@@ -1099,7 +1339,11 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Pipa (semilla)"
+  "wiki": "Pipa (semilla)",
+  "momentos": [
+   "desayuno",
+   "snack"
+  ]
  },
  {
   "slug": "sardinas",
@@ -1115,7 +1359,11 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Sardina"
+  "wiki": "Sardina",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "tilapia",
@@ -1131,7 +1379,10 @@
    "sin-gluten",
    "sin-lactosa"
   ],
-  "wiki": "Oreochromis niloticus"
+  "wiki": "Oreochromis niloticus",
+  "momentos": [
+   "principal"
+  ]
  },
  {
   "slug": "leche-entera",
@@ -1147,7 +1398,12 @@
    "vegetariano",
    "sin-gluten"
   ],
-  "wiki": "Leche"
+  "wiki": "Leche",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  },
  {
   "slug": "queso-ricotta",
@@ -1163,6 +1419,11 @@
    "vegetariano",
    "sin-gluten"
   ],
-  "wiki": "Ricotta"
+  "wiki": "Ricotta",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
  }
 ]

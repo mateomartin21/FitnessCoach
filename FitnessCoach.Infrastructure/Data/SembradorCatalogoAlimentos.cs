@@ -65,6 +65,7 @@ namespace FitnessCoach.Infrastructure.Data
                 PorcionMinimaG = c.PorcionMinimaG,
                 PorcionMaximaG = c.PorcionMaximaG,
                 EtiquetasDieta = c.EtiquetasDieta ?? new(),
+                MomentosAptos = c.MomentosAptos ?? new(),
                 UrlImagen = c.UrlImagen,
                 AutorImagen = c.AutorImagen,
                 LicenciaImagen = c.LicenciaImagen
@@ -94,6 +95,7 @@ namespace FitnessCoach.Infrastructure.Data
             [JsonPropertyName("porcionMinimaG")] public double PorcionMinimaG { get; set; }
             [JsonPropertyName("porcionMaximaG")] public double PorcionMaximaG { get; set; }
             [JsonPropertyName("etiquetasDieta")] public List<string>? EtiquetasDieta { get; set; }
+            [JsonPropertyName("momentosAptos")] public List<string>? MomentosAptos { get; set; }
             [JsonPropertyName("urlImagen")] public string? UrlImagen { get; set; }
             [JsonPropertyName("autorImagen")] public string? AutorImagen { get; set; }
             [JsonPropertyName("licenciaImagen")] public string? LicenciaImagen { get; set; }

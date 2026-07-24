@@ -8,13 +8,13 @@ namespace FitnessCoach.Tests.Patterns
 {
     public class EstrategiaAlimentacionFalsa : IEstrategiaAlimentacion
     {
-        public PlanAlimentacion GenerarPlan()
+        public PlanAlimentacion GenerarPlan(ObjetivoMacros macrosDiarios)
         {
             return new PlanAlimentacion
             {
                 NombrePlan = "Plan de Prueba",
                 Objetivo = "Prueba",
-                CaloriasObjetivo = "2000",
+                Objetivos = macrosDiarios,
                 Descripcion = "Plan falso para pruebas",
                 Comidas = new List<ComidaDia>(),
                 RecomendacionesGenerales = new List<string> { "Recomendación original" }
@@ -24,6 +24,8 @@ namespace FitnessCoach.Tests.Patterns
 
     public class PlanConHidratacionTests
     {
+        private static readonly ObjetivoMacros Macros = new(2000, 150, 56, 200);
+
         [Fact]
         public void GenerarPlan_AgregaLasTresRecomendacionesDeHidratacion()
         {
@@ -31,7 +33,7 @@ namespace FitnessCoach.Tests.Patterns
             var decorator = new PlanConHidratacion(new EstrategiaAlimentacionFalsa());
 
             // Act
-            var plan = decorator.GenerarPlan();
+            var plan = decorator.GenerarPlan(Macros);
 
             // Assert
             Assert.Equal(4, plan.RecomendacionesGenerales.Count); // 1 original + 3 de hidratación
@@ -47,11 +49,11 @@ namespace FitnessCoach.Tests.Patterns
             var decorator = new PlanConHidratacion(new EstrategiaAlimentacionFalsa());
 
             // Act
-            var plan = decorator.GenerarPlan();
+            var plan = decorator.GenerarPlan(Macros);
 
             // Assert — el decorator solo debe tocar RecomendacionesGenerales
             Assert.Equal("Plan de Prueba", plan.NombrePlan);
-            Assert.Equal("2000", plan.CaloriasObjetivo);
+            Assert.Equal(Macros, plan.Objetivos);
         }
     }
 }

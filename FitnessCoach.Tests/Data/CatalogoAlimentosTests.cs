@@ -146,6 +146,31 @@ namespace FitnessCoach.Tests.Data
         }
 
         [Fact]
+        public void TodoAlimentoDeclaraEnQueComidasVa()
+        {
+            var sinMomento = Catalogo.Where(a => a.MomentosAptos.Count == 0).Select(a => a.Slug).ToList();
+
+            Assert.Empty(sinMomento);
+        }
+
+        [Theory]
+        [InlineData("desayuno")]
+        [InlineData("principal")]
+        [InlineData("snack")]
+        public void CadaMomentoDelDiaTieneProteinaCarbohidratoYFruta(string momento)
+        {
+            // Sin alimentos de alguna de estas categorías para ese momento, la comida
+            // se arma con lo que sobre y deja de tener sentido culinario.
+            foreach (var categoria in new[] { "proteina", "carbohidrato", "fruta" })
+            {
+                var disponibles = Catalogo.Count(a => a.Categoria == categoria && a.VaEn(momento));
+
+                Assert.True(disponibles >= 2,
+                    $"Solo hay {disponibles} alimentos de '{categoria}' para '{momento}'.");
+            }
+        }
+
+        [Fact]
         public void CadaGrupoDeIntercambioTieneConQueSustituir()
         {
             // Un grupo con un solo alimento no ofrece alternativas: o sobra el grupo,

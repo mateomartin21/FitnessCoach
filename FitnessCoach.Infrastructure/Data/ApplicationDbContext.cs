@@ -162,6 +162,8 @@ namespace FitnessCoach.Infrastructure.Data
 
                 entity.Property(a => a.EtiquetasDieta).HasConversion(ConversorListaTexto).Metadata
                     .SetValueComparer(ComparadorListaTexto);
+                entity.Property(a => a.MomentosAptos).HasConversion(ConversorListaTexto).Metadata
+                    .SetValueComparer(ComparadorListaTexto);
 
                 // Las calorias y la atribucion se derivan de otras columnas.
                 entity.Ignore(a => a.CaloriasPor100g);
