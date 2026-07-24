@@ -13,8 +13,10 @@ builder.Services.AddControllers();
 // OpenAPI integrado de .NET 9/10 (sin Swashbuckle)
 builder.Services.AddOpenApi();
 
-builder.Services.AddSingleton<FitnessCoach.Domain.Ports.IRepositorioUsuario,
-                              FitnessCoach.Infrastructure.Repositories.RepositorioUsuarioMemoria>();
+// Persistencia real: el puerto IRepositorioUsuario ahora apunta al adaptador SQL.
+// Scoped = una instancia por peticion HTTP, que es lo que EF Core espera para su DbContext.
+builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioUsuario,
+                           FitnessCoach.Infrastructure.Repositories.RepositorioUsuarioSql>();
 
 // Servicio de cálculo calórico
 builder.Services.AddScoped<FitnessCoach.Application.Services.ICalculadorCalorico,
