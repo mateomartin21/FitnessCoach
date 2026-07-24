@@ -12,14 +12,17 @@ namespace FitnessCoach.Controllers
         private readonly IServicioPerfilUsuario _perfiles;
         private readonly IServicioProgreso _progreso;
         private readonly IServicioEntrenamientos _entrenamientos;
+        private readonly IServicioRecords _records;
 
         public ProgresoController(IServicioPerfilUsuario perfiles,
                                   IServicioProgreso progreso,
-                                  IServicioEntrenamientos entrenamientos)
+                                  IServicioEntrenamientos entrenamientos,
+                                  IServicioRecords records)
         {
             _perfiles = perfiles;
             _progreso = progreso;
             _entrenamientos = entrenamientos;
+            _records = records;
         }
 
         private string IdentityId => User.FindFirstValue(ClaimTypes.NameIdentifier)!;
@@ -109,6 +112,54 @@ namespace FitnessCoach.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RegistrarRecord(RegistrarRecordViewModel modelo, string? volverA = null)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["MensajeProgreso"] = "No se pudo registrar la marca: revisá el peso y las repeticiones.";
+                return Redirect(DestinoSeguro(volverA));
+            }
+
+            var resultado = _records.Registrar(IdentityId, modelo.EjercicioSlug, modelo.EjercicioNombre,
+                                               modelo.PesoKg, modelo.Repeticiones);
+
+            TempData["MensajeProgreso"] = resultado switch
+            {
+                { EsNuevoRecord: true, MejoraKg: null } =>
+                    $"Primera marca en {modelo.EjercicioNombre}: {modelo.PesoKg} kg × {modelo.Repeticiones}.",
+                { EsNuevoRecord: true, MejoraKg: > 0 } =>
+                    $"¡Nuevo récord en {modelo.EjercicioNombre}! +{resultado.MejoraKg} kg.",
+                { EsNuevoRecord: true } =>
+                    $"¡Nuevo récord en {modelo.EjercicioNombre}! Mismo peso, más repeticiones.",
+                _ => $"Tu récord en {modelo.EjercicioNombre} sigue siendo " +
+                     $"{resultado.Record.PesoKg} kg × {resultado.Record.Repeticiones}."
+            };
+
+            return Redirect(DestinoSeguro(volverA));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EliminarRecord(int id)
+        {
+            if (!_records.Eliminar(IdentityId, id))
+                return NotFound();
+
+            TempData["MensajeProgreso"] = "Récord eliminado.";
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Solo se acepta volver a una ruta propia: un returnUrl sin validar es una
+        /// redirección abierta hacia cualquier sitio externo.
+        /// </summary>
+        private string DestinoSeguro(string? volverA) =>
+            !string.IsNullOrWhiteSpace(volverA) && Url.IsLocalUrl(volverA)
+                ? volverA
+                : Url.Action("Index", "Progreso")!;
+
         private ProgresoViewModel ArmarVista(
             RegistrarPesoViewModel? nuevo = null,
             RegistrarEntrenamientoViewModel? nuevoEntrenamiento = null)
@@ -122,7 +173,8 @@ namespace FitnessCoach.Controllers
                 PesoActual = usuario.PesoKg,
                 NuevoEntrenamiento = nuevoEntrenamiento ?? new RegistrarEntrenamientoViewModel(),
                 Entrenamientos = _entrenamientos.ObtenerHistorial(IdentityId).ToList(),
-                Rachas = _entrenamientos.ObtenerRachas(IdentityId)
+                Rachas = _entrenamientos.ObtenerRachas(IdentityId),
+                Records = _records.ObtenerTodos(IdentityId).ToList()
             };
         }
     }

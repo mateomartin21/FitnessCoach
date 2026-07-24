@@ -23,7 +23,11 @@ namespace FitnessCoach.Models
 
         public Rachas Rachas { get; set; } = Rachas.Vacia;
 
+        public List<RecordPersonal> Records { get; set; } = new();
+
         public bool TieneEntrenamientos => Entrenamientos.Count > 0;
+
+        public bool TieneRecords => Records.Count > 0;
 
         public bool TieneRegistros => Historial.Count > 0;
 

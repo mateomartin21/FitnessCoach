@@ -83,7 +83,8 @@
                                                         data-video="@ej.Ejercicio.VideoYoutubeId"
                                                         data-busqueda="@busqueda"
                                                         data-grupo="@ej.Ejercicio.GrupoMuscular"
-                                                        data-equipo="@ej.Ejercicio.Equipo">
+                                                        data-equipo="@ej.Ejercicio.Equipo"
+                                                        data-slug="@ej.Ejercicio.Slug">
                                                     <i class="fas fa-circle-info"></i> Ver técnica
                                                 </button>
                                                 @* Las instrucciones viajan como HTML, no como JSON en un atributo:
@@ -142,6 +143,33 @@
                         <a id="modalEjercicioYoutube" class="btn btn-sm btn-outline-danger mt-2" target="_blank" rel="noopener">
                             <i class="fab fa-youtube me-1"></i>Ver más en YouTube
                         </a>
+
+                        <hr style="border-color:#2a2a4a;" />
+
+                        <h6 class="text-uppercase text-muted small">
+                            <i class="fas fa-trophy me-1" style="color:#f59e0b;"></i>Registrar marca
+                        </h6>
+                        <form asp-controller="Progreso" asp-action="RegistrarRecord" method="post" class="row g-2">
+                            <input type="hidden" name="EjercicioSlug" id="recordSlug" />
+                            <input type="hidden" name="EjercicioNombre" id="recordNombre" />
+                            <input type="hidden" name="volverA" value="@Context.Request.Path" />
+                            <div class="col-5">
+                                <label class="form-label small mb-1">Peso (kg)</label>
+                                <input type="number" step="0.5" min="0" name="PesoKg" value="0" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-5">
+                                <label class="form-label small mb-1">Reps</label>
+                                <input type="number" min="1" name="Repeticiones" value="1" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-sm fc-btn-primary w-100" title="Guardar marca">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </div>
+                            <div class="col-12">
+                                <small class="text-muted">Solo se guarda si supera tu marca anterior.</small>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -211,6 +239,10 @@
                 document.getElementById('modalEjercicioGrupo').textContent = datos.grupo;
                 document.getElementById('modalEjercicioEquipo').textContent = datos.equipo;
                 document.getElementById('modalEjercicioYoutube').href = datos.busqueda;
+
+                // El formulario de marca ya sabe de qué ejercicio se trata: sin selector.
+                document.getElementById('recordSlug').value = boton.dataset.slug;
+                document.getElementById('recordNombre').value = datos.nombre;
 
                 const lista = document.getElementById('modalEjercicioInstrucciones');
                 lista.innerHTML = '';

@@ -81,6 +81,25 @@ namespace FitnessCoach.Infrastructure.Data
 
                     entrenamiento.ToTable("EntrenamientosCompletados");
                 });
+
+                entity.OwnsMany(u => u.RecordsPersonales, record =>
+                {
+                    record.WithOwner().HasForeignKey("UsuarioPerfilId");
+                    record.HasKey(r => r.Id);
+
+                    record.Property(r => r.Fecha)
+                        .HasConversion(
+                            fecha => fecha,
+                            fecha => DateTime.SpecifyKind(fecha, DateTimeKind.Utc));
+
+                    // Un solo record vigente por ejercicio y por usuario.
+                    record.HasIndex("UsuarioPerfilId", nameof(RecordPersonal.EjercicioSlug)).IsUnique();
+
+                    // Se calcula desde peso y repeticiones; no es columna.
+                    record.Ignore(r => r.Volumen);
+
+                    record.ToTable("RecordsPersonales");
+                });
             
                 entity.HasIndex(u => u.IdentityUserId)
                     .IsUnique()

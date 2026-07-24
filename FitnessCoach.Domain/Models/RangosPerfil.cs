@@ -27,5 +27,11 @@ namespace FitnessCoach.Domain.Models
         // Un entrenamiento de menos de 5 minutos o de más de 5 horas es error de captura.
         public const int DuracionMinimaMin = 5;
         public const int DuracionMaximaMin = 300;
+
+        // Récords: el peso movido no es el peso corporal, así que tiene su propio rango.
+        // Desde 0 porque hay ejercicios sin carga externa (dominadas, plancha).
+        public const double PesoRecordMinimoKg = 0;
+        public const double PesoRecordMaximoKg = 500;
+        public const int RepeticionesMaximas = 500;
     }
 }

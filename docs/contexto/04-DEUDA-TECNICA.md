@@ -9,9 +9,9 @@
 | Severidad | Total | Abiertas |
 |-----------|-------|----------|
 | 🔴 Crítica (seguridad / pérdida de datos) | 7 | 0 |
-| 🟠 Alta (bug funcional o riesgo real) | 8 | 2 |
-| 🟡 Media (calidad, mantenibilidad) | 11 | 3 |
-| **Total** | **26** | **5** |
+| 🟠 Alta (bug funcional o riesgo real) | 9 | 3 |
+| 🟡 Media (calidad, mantenibilidad) | 12 | 4 |
+| **Total** | **28** | **7** |
 
 > **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23.
 >
@@ -82,6 +82,13 @@
 **Riesgo:** además del riesgo en sí, es un warning permanente en el log del pipeline de CI, lo que entrena a ignorar los warnings.
 **Resolución:** Fase 0 — actualizar el paquete.
 **Estado:** ✅ Resuelta en Fase 0 (commit `b9031bb`). `dotnet build` ya no emite `NU1903`.
+
+### D-27 · El plan de alimentación ignora las calorías calculadas del usuario
+**Dónde:** `Domain/Patterns/Strategy/Alimentacion/*.cs` → `CaloriasObjetivo = "1800-2000 kcal/día"`
+**Qué pasa:** cada estrategia de alimentación trae un rango calórico fijo escrito a mano. `CalculadorCaloricoService` calcula el requerimiento real de cada persona (Mifflin-St Jeor + multiplicador del objetivo), la app lo muestra en la pantalla de Perfil, y el plan de comidas lo ignora: dos usuarios con 1900 y 2600 kcal calculadas reciben exactamente el mismo plan.
+**Riesgo:** la app se contradice a sí misma en pantallas contiguas, y el plan que entrega no sirve para el objetivo de quien lo recibe. Es el consejo nutricional lo que queda mal, no solo el código.
+**Resolución:** que la estrategia reciba las calorías objetivo del usuario y escale las porciones, en lugar de declararlas fijas. Detectada el 24/07/2026 al cerrar la Fase 5.
+**Estado:** ⬜ Abierta
 
 ### D-09 · Los errores de Gemini se devuelven como si fueran consejos
 **Dónde:** `Infrastructure/Adapters/GeminiCoachService.cs`
@@ -183,6 +190,13 @@
 **Riesgo:** el documento formal más importante del proyecto se ve roto para quien lo evalúe.
 **Resolución:** Fase 0.
 **Estado:** ✅ Resuelta en Fase 0 (commit `b9031bb`). ADR-07 renderiza correctamente en GitHub.
+
+### D-28 · Los planes de alimentación están hardcodeados dentro de las estrategias
+**Dónde:** `Domain/Patterns/Strategy/Alimentacion/AlimentacionPerderPeso.cs`, `AlimentacionGanarMusculo.cs`, `AlimentacionRecomposicion.cs`
+**Qué pasa:** exactamente el mismo problema que la Fase 5 resolvió para los ejercicios, pero en alimentación. Las comidas viven incrustadas en cada Strategy y los alimentos son `List<string>` de texto plano: no hay entidad `Alimento`, ni catálogo, ni macros por alimento (los macros están sumados a mano por comida).
+**Riesgo:** agregar o cambiar una comida obliga a editar una clase de dominio y recompilar; no hay variedad ni rotación posible (todos los usuarios con el mismo objetivo comen literalmente lo mismo todos los días); y no se pueden sustituir alimentos por alergias, preferencias o disponibilidad.
+**Resolución:** replicar el patrón del catálogo de ejercicios — entidad `Alimento` persistida con macros, y estrategias que **componen** el plan desde el catálogo. Se hace junto con D-27, que necesita esa estructura para escalar porciones. Detectada el 24/07/2026 al cerrar la Fase 5.
+**Estado:** ⬜ Abierta
 
 ### D-20 · El prompt del Lobo Coach está hardcodeado en el adaptador
 **Dónde:** `Infrastructure/Adapters/GeminiCoachService.cs`
