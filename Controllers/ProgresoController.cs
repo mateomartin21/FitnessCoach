@@ -22,26 +22,18 @@ namespace FitnessCoach.Controllers
         public IActionResult Index()
         {
             var usuario = _perfiles.ObtenerOCrear(IdentityId);
-            var historial = usuario.HistorialProgreso.OrderByDescending(r => r.Fecha).ToList();
-            ViewBag.PesoActual = usuario.PesoKg;
-            return View(historial);
+            return View(ArmarVista(usuario));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RegistrarPeso(RegistrarPesoViewModel modelo)
+        public IActionResult RegistrarPeso([Bind(Prefix = "Nuevo")] RegistrarPesoViewModel modelo)
         {
+            var usuario = _perfiles.ObtenerOCrear(IdentityId);
+
             // Nada se guarda hasta saber que los datos son válidos.
             if (!ModelState.IsValid)
-            {
-                TempData["ErrorProgreso"] = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .FirstOrDefault();
-                return RedirectToAction("Index");
-            }
-
-            var usuario = _perfiles.ObtenerOCrear(IdentityId);
+                return View("Index", ArmarVista(usuario, modelo));
 
             usuario.HistorialProgreso.Add(new RegistroProgreso
             {
@@ -52,7 +44,15 @@ namespace FitnessCoach.Controllers
             usuario.PesoKg = modelo.NuevoPeso;
 
             _perfiles.Guardar(usuario);
+            TempData["MensajeProgreso"] = "Registro guardado.";
             return RedirectToAction("Index");
         }
+
+        private static ProgresoViewModel ArmarVista(UsuarioPerfil usuario, RegistrarPesoViewModel? nuevo = null) => new()
+        {
+            Nuevo = nuevo ?? new RegistrarPesoViewModel { NuevoPeso = usuario.PesoKg },
+            Historial = usuario.HistorialProgreso.OrderByDescending(r => r.Fecha).ToList(),
+            PesoActual = usuario.PesoKg
+        };
     }
 }
