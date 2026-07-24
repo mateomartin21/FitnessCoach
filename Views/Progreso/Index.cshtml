@@ -85,6 +85,7 @@
                                     <th>Peso</th>
                                     <th>Cambio</th>
                                     <th>Notas</th>
+                                    <th class="text-end">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -109,6 +110,20 @@
                                         </td>
                                         <td class="small text-muted">
                                             @(string.IsNullOrWhiteSpace(registro.Notas) ? "—" : registro.Notas)
+                                        </td>
+                                        <td class="text-end text-nowrap">
+                                            <a asp-controller="Progreso" asp-action="Editar" asp-route-id="@registro.Id"
+                                               class="btn btn-sm btn-outline-secondary" title="Editar">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                            <form asp-controller="Progreso" asp-action="Eliminar" method="post"
+                                                  class="d-inline m-0"
+                                                  onsubmit="return confirm('¿Eliminar este registro? No se puede deshacer.');">
+                                                <input type="hidden" name="id" value="@registro.Id" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 }
