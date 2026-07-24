@@ -128,7 +128,7 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 - Patrones GOF implementados y **probados**: Strategy (rutinas y alimentación), Decorator (calentamiento, enfriamiento, hidratación), Factory Method (`ObjetivoFitnessFactory`).
 - Cálculo calórico (Mifflin-St Jeor + multiplicador por objetivo).
 - Integración con Gemini funcionando, con timeout de 15s y la API key fuera del repo (user-secrets).
-- 95 pruebas xUnit en verde.
+- 121 pruebas xUnit en verde.
 - Pipeline de CI corriendo en cada push y PR, con check verde confirmado.
 - `ApplicationDbContext` + migración `InitialCreate` existen y están bien modelados.
 - **Persistencia real conectada (Fase 1, ADR-09).** `RepositorioUsuarioSql` (`Scoped`) consume el `DbContext`; los datos sobreviven al reinicio del servidor. Se conserva `RepositorioUsuarioMemoria` como segundo adaptador del puerto.
@@ -138,13 +138,16 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 
 - **Tracker de progreso (Fase 4, ADR-12).** Historial de peso con edición y borrado, entrenamientos completados, racha actual y mejor racha, y gráfica de evolución con Chart.js servido localmente. Todas las fechas en UTC, convertidas al mostrar.
 
+- **Catálogo de ejercicios (Fase 5, ADR-13).** 1.323 ejercicios en español con GIF, instrucciones, grupo muscular y equipo. Las estrategias componen las rutinas desde el catálogo con rotación estable por usuario, y hay récords personales por ejercicio.
+
 ### ❌ Existe pero NO está conectado / no funciona como se documentó
 
 - **La API REST se quedó atrás del producto (D-26).** Solo expone perfil, calorías y el historial de peso en modo lectura/alta; no cubre edición, borrado ni entrenamientos. No es un riesgo de seguridad, es superficie desactualizada.
+- **El plan de alimentación ignora las calorías calculadas del usuario (D-27).** La app muestra un requerimiento personalizado en Perfil y después entrega un plan con un rango fijo de "1800-2000 kcal" para todos. Las comidas además siguen hardcodeadas dentro de las estrategias (D-28). Lo resuelve la Fase 5.5.
 
 ### ⏳ No existe todavía
 
-Catálogo de ejercicios, GIFs, récords personales, gamificación, fallback de IA, rediseño visual. → Ver `06-ROADMAP.md`.
+Catálogo de alimentos, gamificación, fallback de IA, rediseño visual. → Ver `06-ROADMAP.md`.
 
 ---
 
@@ -163,6 +166,7 @@ Catálogo de ejercicios, GIFs, récords personales, gamificación, fallback de I
 | ADR-10 | Autenticación con ASP.NET Identity manteniendo el dominio libre de framework |
 | ADR-11 | Validación en dos capas y defensa en profundidad del login |
 | ADR-12 | El tracker como historial de hechos, con reglas en la capa de aplicación |
+| ADR-13 | Catálogo de ejercicios como dato, y contenido desacoplado de las estrategias |
 
 **Convención establecida:** cada ADR abre citando explícitamente su relación con el anterior ("Este ADR extiende el ADR-N…"). Cada uno tiene: Contexto → Decisión → Alternativas Consideradas → Consecuencias → Estado actual.
 

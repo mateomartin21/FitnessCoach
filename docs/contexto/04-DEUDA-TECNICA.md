@@ -10,14 +10,14 @@
 |-----------|-------|----------|
 | 🔴 Crítica (seguridad / pérdida de datos) | 7 | 0 |
 | 🟠 Alta (bug funcional o riesgo real) | 9 | 3 |
-| 🟡 Media (calidad, mantenibilidad) | 12 | 4 |
-| **Total** | **28** | **7** |
+| 🟡 Media (calidad, mantenibilidad) | 13 | 5 |
+| **Total** | **29** | **8** |
 
 > **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23.
 >
-> **No queda ninguna deuda crítica abierta.** Las dos altas abiertas son D-09 (errores de Gemini, Fase 6) y D-26 (la API no cubre el tracker, Fase 10).
+> **No queda ninguna deuda crítica abierta.** Las tres altas abiertas son D-09 (errores de Gemini, Fase 6), D-26 (la API no cubre el tracker, Fase 10) y D-27 (el plan de comidas ignora las calorías calculadas).
 >
-> **Deuda nueva detectada en la Fase 4:** D-25 y D-26.
+> **Deuda nueva detectada en la Fase 4:** D-25 y D-26. **En la Fase 5:** D-27, D-28 y D-29.
 
 ---
 
@@ -196,6 +196,13 @@
 **Qué pasa:** exactamente el mismo problema que la Fase 5 resolvió para los ejercicios, pero en alimentación. Las comidas viven incrustadas en cada Strategy y los alimentos son `List<string>` de texto plano: no hay entidad `Alimento`, ni catálogo, ni macros por alimento (los macros están sumados a mano por comida).
 **Riesgo:** agregar o cambiar una comida obliga a editar una clase de dominio y recompilar; no hay variedad ni rotación posible (todos los usuarios con el mismo objetivo comen literalmente lo mismo todos los días); y no se pueden sustituir alimentos por alergias, preferencias o disponibilidad.
 **Resolución:** replicar el patrón del catálogo de ejercicios — entidad `Alimento` persistida con macros, y estrategias que **componen** el plan desde el catálogo. Se hace junto con D-27, que necesita esa estructura para escalar porciones. Detectada el 24/07/2026 al cerrar la Fase 5.
+**Estado:** ⬜ Abierta
+
+### D-29 · Los GIFs del catálogo dependen de un CDN externo con licencia poco clara
+**Dónde:** columna `UrlGif` de la tabla `Ejercicios`, apuntando a `cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0`
+**Qué pasa:** los 1323 GIFs se sirven desde un repositorio de terceros vía jsDelivr. El propio repositorio aclara que *"los GIFs pertenecen a sus respectivos autores"* y que solo aporta "una capa de organización", así que los derechos de las animaciones no están claros. Además la app depende de ese CDN para mostrarlas.
+**Riesgo:** el técnico está acotado — la URL está pineada a una versión y, si el CDN falla, la cadena de medios degrada a placeholder sin romper la pantalla (ADR-13). El legal es el que importa: para un trabajo académico es bajo, pero si el proyecto se publicara habría que revisar la procedencia de cada GIF o reemplazarlos.
+**Resolución:** decisión de producto, no técnica. Si el proyecto sale del ámbito académico: material propio, banco con licencia explícita, o quitar las animaciones y dejar solo instrucciones y enlace a video.
 **Estado:** ⬜ Abierta
 
 ### D-20 · El prompt del Lobo Coach está hardcodeado en el adaptador
