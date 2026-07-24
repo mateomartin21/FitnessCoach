@@ -55,16 +55,20 @@ namespace FitnessCoach.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
+            // lockoutOnFailure: true — cada fallo cuenta para el bloqueo configurado en Program.cs.
             var result = await _signInManager.PasswordSignInAsync(
-                model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
 
             if (result.Succeeded)
             {
                 return RedirectToAction("Index", "Perfil");
             }
 
-            // Mensaje identico ante cualquier fallo: sin enumeracion de usuarios (estandar 1.4)
-            ModelState.AddModelError(string.Empty, "Correo o contraseña incorrectos.");
+            // Mensaje identico ante cualquier fallo, incluido el bloqueo: sin enumeracion de
+            // usuarios (estandar 1.4). Decir "tu cuenta esta bloqueada" confirmaria que existe,
+            // asi que el aviso del bloqueo se da siempre y no revela nada de esta cuenta.
+            ModelState.AddModelError(string.Empty,
+                "Correo o contraseña incorrectos. Tras varios intentos fallidos la cuenta se bloquea temporalmente.");
             return View(model);
         }
 

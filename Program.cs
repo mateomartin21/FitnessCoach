@@ -16,6 +16,10 @@ builder.Services.AddControllers();
 // OpenAPI integrado de .NET 9/10 (sin Swashbuckle)
 builder.Services.AddOpenApi();
 
+// El chat del Lobo Coach postea JSON por fetch(), no un formulario: sin esto,
+// [ValidateAntiForgeryToken] solo buscaria el token en los campos del form y nunca lo encontraria.
+builder.Services.AddAntiforgery(options => options.HeaderName = "RequestVerificationToken");
+
 // Persistencia real: el puerto IRepositorioUsuario ahora apunta al adaptador SQL.
 // Scoped = una instancia por peticion HTTP, que es lo que EF Core espera para su DbContext.
 builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioUsuario,
@@ -46,8 +50,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // ASP.NET Identity sobre el mismo DbContext.
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
-    options.Password.RequiredLength = 6;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = false;
+
+    // Freno a la fuerza bruta: 5 intentos fallidos y la cuenta queda bloqueada 15 minutos.
+    options.Lockout.AllowedForNewUsers = true;
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+
     options.User.RequireUniqueEmail = true;
     options.SignIn.RequireConfirmedAccount = false;
 })

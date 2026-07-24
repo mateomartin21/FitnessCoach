@@ -9,7 +9,7 @@
                 <img src="~/images/branding/principal.png" alt="Lobo Coach" style="height:70px; width:auto; filter: drop-shadow(0 0 10px rgba(255,107,53,0.5));" />
                 <div>
                     <h5 class="fw-bold mb-0" style="color:var(--fc-primary);">Lobo Coach</h5>
-                    <small class="text-muted">Entrenador Personal con IA — Gemini 2.0 Flash</small>
+                    <small class="text-muted">Entrenador Personal con IA ï¿½ Gemini 2.0 Flash</small>
                     <div class="d-flex align-items-center gap-1 mt-1">
                         <span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
                         <small style="color:#22c55e; font-size:0.7rem;">En linea</small>
@@ -43,6 +43,8 @@
     </div>
 </div>
 
+@Html.AntiForgeryToken()
+
 @section Scripts {
 <script>
     function preguntaRapida(btn) {
@@ -61,9 +63,13 @@
         const typing = agregarTyping();
 
         try {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
             const res = await fetch('/IaCoach/Consultar', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': token
+                },
                 body: JSON.stringify({ mensaje })
             });
             const data = await res.json();

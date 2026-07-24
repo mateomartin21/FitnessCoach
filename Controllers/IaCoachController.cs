@@ -25,6 +25,7 @@ namespace FitnessCoach.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]   // el token llega por la cabecera RequestVerificationToken (ver Program.cs)
         public async Task<IActionResult> Consultar([FromBody] ConsultaRequest request)
         {
             // Sin [ApiController] el ModelState no se verifica solo: hay que mirarlo a mano.
