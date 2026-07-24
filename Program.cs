@@ -62,6 +62,10 @@ builder.Services.AddRateLimiter(options =>
 builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioUsuario,
                            FitnessCoach.Infrastructure.Repositories.RepositorioUsuarioSql>();
 
+// Catalogo de ejercicios: segundo puerto con su adaptador SQL (solo lectura).
+builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioEjercicios,
+                           FitnessCoach.Infrastructure.Repositories.RepositorioEjerciciosSql>();
+
 // Servicio de cálculo calórico
 builder.Services.AddScoped<FitnessCoach.Application.Services.ICalculadorCalorico,
                            FitnessCoach.Application.Services.CalculadorCaloricoService>();
@@ -140,6 +144,16 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 var app = builder.Build();
+
+// Siembra del catalogo de ejercicios: solo hace algo si la tabla esta vacia.
+using (var alcance = app.Services.CreateScope())
+{
+    var contexto = alcance.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var registro = alcance.ServiceProvider.GetRequiredService<ILoggerFactory>()
+        .CreateLogger("SembradorCatalogo");
+
+    await SembradorCatalogoEjercicios.SembrarAsync(contexto, registro);
+}
 
 // Pipeline HTTP
 if (!app.Environment.IsDevelopment())

@@ -1,8 +1,12 @@
 using FitnessCoach.Domain.Models;
+using FitnessCoach.Domain.Models.Entrenamiento;
 using FitnessCoach.Domain.Models.Objetivos;
 using FitnessCoach.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Text.Json;
 
 namespace FitnessCoach.Infrastructure.Data
 {
@@ -12,7 +16,21 @@ namespace FitnessCoach.Infrastructure.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
 
+        private static readonly JsonSerializerOptions OpcionesJson = new(JsonSerializerDefaults.Web);
+
+        private static readonly ValueConverter<List<string>, string> ConversorListaTexto = new(
+            lista => JsonSerializer.Serialize(lista, OpcionesJson),
+            texto => JsonSerializer.Deserialize<List<string>>(texto, OpcionesJson) ?? new List<string>());
+
+        // Sin este comparador EF compara las listas por referencia y no detecta cambios
+        // dentro de la coleccion.
+        private static readonly ValueComparer<List<string>> ComparadorListaTexto = new(
+            (a, b) => (a ?? new List<string>()).SequenceEqual(b ?? new List<string>()),
+            lista => lista.Aggregate(0, (acumulado, item) => HashCode.Combine(acumulado, item.GetHashCode())),
+            lista => lista.ToList());
+
         public DbSet<UsuarioPerfil> UsuariosPerfil => Set<UsuarioPerfil>();
+        public DbSet<Ejercicio> Ejercicios => Set<Ejercicio>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -69,6 +87,40 @@ namespace FitnessCoach.Infrastructure.Data
                     .HasFilter("[IdentityUserId] IS NOT NULL");
 
             });
+
+            builder.Entity<Ejercicio>(entity =>
+            {
+                entity.ToTable("Ejercicios");
+                entity.HasKey(e => e.Id);
+
+                // El slug es como se identifica un ejercicio desde fuera de la base
+                // (rutinas, URLs), asi que tiene que ser unico de verdad.
+                entity.HasIndex(e => e.Slug).IsUnique();
+                entity.Property(e => e.Slug).HasMaxLength(200).IsRequired();
+
+                entity.Property(e => e.Nombre).HasMaxLength(200).IsRequired();
+                entity.Property(e => e.GrupoMuscular).HasMaxLength(60);
+                entity.Property(e => e.ParteCuerpo).HasMaxLength(60);
+                entity.Property(e => e.Equipo).HasMaxLength(60);
+                entity.Property(e => e.Categoria).HasMaxLength(60);
+                entity.Property(e => e.UrlGif).HasMaxLength(500);
+                entity.Property(e => e.VideoYoutubeId).HasMaxLength(40);
+
+                // Las listas de texto se guardan como JSON en una columna. Son datos de
+                // solo lectura del catalogo: no se consultan por elemento ni se editan
+                // sueltos, asi que una tabla aparte solo agregaria joins sin beneficio.
+                entity.Property(e => e.MusculosSecundarios).HasConversion(ConversorListaTexto).Metadata
+                    .SetValueComparer(ComparadorListaTexto);
+                entity.Property(e => e.Instrucciones).HasConversion(ConversorListaTexto).Metadata
+                    .SetValueComparer(ComparadorListaTexto);
+
+                // TerminoBusquedaVideo se calcula desde el nombre; no es una columna.
+                entity.Ignore(e => e.TerminoBusquedaVideo);
+            });
+
+            // Indices para los filtros que usan las estrategias al componer rutinas.
+            builder.Entity<Ejercicio>().HasIndex(e => e.GrupoMuscular);
+            builder.Entity<Ejercicio>().HasIndex(e => e.Equipo);
         }
     }
 }
