@@ -136,6 +136,82 @@
     </div>
 </div>
 
+@if (Model.PuedeGraficar)
+{
+    <div class="card shadow mt-4">
+        <div class="card-header py-3" style="border-left: 4px solid #22c55e;">
+            <h5 class="mb-0"><i class="fas fa-chart-area me-2" style="color:#22c55e;"></i>Evolución del peso</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="grafica-peso" height="90"
+                    data-etiquetas="@Json.Serialize(Model.EtiquetasGrafica)"
+                    data-pesos="@Json.Serialize(Model.PesosGrafica)"></canvas>
+        </div>
+    </div>
+}
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    @if (Model.PuedeGraficar)
+    {
+        <script src="~/lib/chart.js/dist/chart.umd.min.js"></script>
+        <script>
+            (function () {
+                const canvas = document.getElementById('grafica-peso');
+                const etiquetas = JSON.parse(canvas.dataset.etiquetas);
+                const pesos = JSON.parse(canvas.dataset.pesos);
+
+                const grisTenue = '#2a2a4a';
+                const textoTenue = '#8b8b9e';
+
+                new Chart(canvas, {
+                    type: 'line',
+                    data: {
+                        labels: etiquetas,
+                        datasets: [{
+                            label: 'Peso (kg)',
+                            data: pesos,
+                            borderColor: '#22c55e',
+                            backgroundColor: 'rgba(34, 197, 94, 0.12)',
+                            pointBackgroundColor: '#22c55e',
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: contexto => `${contexto.parsed.y} kg`
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: grisTenue },
+                                ticks: { color: textoTenue }
+                            },
+                            y: {
+                                // Sin empezar en cero: la variación de peso se ve en pocos kilos
+                                // y un eje desde 0 la aplastaría hasta hacerla ilegible.
+                                beginAtZero: false,
+                                grid: { color: grisTenue },
+                                ticks: {
+                                    color: textoTenue,
+                                    callback: valor => valor + ' kg'
+                                }
+                            }
+                        }
+                    }
+                });
+            })();
+        </script>
+    }
 }

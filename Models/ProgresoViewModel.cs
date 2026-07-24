@@ -30,6 +30,18 @@ namespace FitnessCoach.Models
             }
         }
 
+        /// <summary>Con un solo punto no hay evolución que dibujar.</summary>
+        public bool PuedeGraficar => Historial.Count >= 2;
+
+        /// <summary>Registros en orden cronológico, que es como se lee una gráfica.</summary>
+        private IEnumerable<RegistroProgreso> EnOrdenCronologico => Historial.OrderBy(r => r.Fecha);
+
+        public List<string> EtiquetasGrafica =>
+            EnOrdenCronologico.Select(r => r.Fecha.ToLocalTime().ToString("dd/MM")).ToList();
+
+        public List<double> PesosGrafica =>
+            EnOrdenCronologico.Select(r => r.PesoKg).ToList();
+
         /// <summary>Diferencia de un registro contra el inmediatamente anterior en el tiempo.</summary>
         public double? VariacionRespectoAlAnterior(int indice)
         {
