@@ -20,6 +20,13 @@ namespace FitnessCoach.Infrastructure.Repositories
                 .FirstOrDefault(u => u.Id == id);
         }
 
+                public UsuarioPerfil? ObtenerPorIdentityUserId(string identityUserId)
+        {
+            return _context.UsuariosPerfil
+                .FirstOrDefault(u => u.IdentityUserId == identityUserId);
+        }
+
+
         public void Guardar(UsuarioPerfil usuario)
         {
             var yaRastreada = usuario.Id != 0

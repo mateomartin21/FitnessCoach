@@ -1,62 +1,46 @@
+using FitnessCoach.Application.Services;
 using FitnessCoach.Domain.Models;
-using FitnessCoach.Domain.Ports;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FitnessCoach.Controllers
 {
+    [Authorize]
     public class ProgresoController : Controller
     {
-        private readonly IRepositorioUsuario _repositorio;
+        private readonly IServicioPerfilUsuario _perfiles;
 
-        public ProgresoController(IRepositorioUsuario repositorio)
+        public ProgresoController(IServicioPerfilUsuario perfiles)
         {
-            _repositorio = repositorio;
+            _perfiles = perfiles;
         }
 
-        // 1. Mostrar la pantalla con el historial
+        private string IdentityId => User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
         public IActionResult Index()
         {
-            var usuario = _repositorio.ObtenerPorId(1);
-            if (usuario == null)
-            {
-                return RedirectToAction("Index", "Perfil");
-            }
-
-            // Ordenamos la lista para que el registro más nuevo salga arriba
+            var usuario = _perfiles.ObtenerOCrear(IdentityId);
             var historial = usuario.HistorialProgreso.OrderByDescending(r => r.Fecha).ToList();
-
-            // Pasamos el peso actual a la vista usando ViewBag
             ViewBag.PesoActual = usuario.PesoKg;
-
             return View(historial);
         }
 
-        // 2. Recibir el formulario, guardar y recargar la página (Server-side rendering)
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult RegistrarPeso(double NuevoPeso, string Notas)
         {
-            var usuario = _repositorio.ObtenerPorId(1);
+            var usuario = _perfiles.ObtenerOCrear(IdentityId);
 
-            if (usuario != null)
+            usuario.HistorialProgreso.Add(new RegistroProgreso
             {
-                // Crear el nuevo punto en el historial
-                var nuevoRegistro = new RegistroProgreso
-                {
-                    Fecha = DateTime.Now,
-                    PesoKg = NuevoPeso,
-                    Notas = Notas ?? ""
-                };
+                Fecha = DateTime.Now,
+                PesoKg = NuevoPeso,
+                Notas = Notas ?? ""
+            });
+            usuario.PesoKg = NuevoPeso;
 
-                usuario.HistorialProgreso.Add(nuevoRegistro);
-
-                // Actualizamos el peso maestro del usuario para que sus calorías cambien
-                usuario.PesoKg = NuevoPeso;
-
-                // Guardar cambios en nuestro repositorio temporal
-                _repositorio.Guardar(usuario);
-            }
-
-            // Redirigir a la misma pantalla para ver la tabla actualizada
+            _perfiles.Guardar(usuario);
             return RedirectToAction("Index");
         }
     }

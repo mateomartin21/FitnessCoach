@@ -24,6 +24,8 @@ builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioUsuario,
 // Servicio de cálculo calórico
 builder.Services.AddScoped<FitnessCoach.Application.Services.ICalculadorCalorico,
                            FitnessCoach.Application.Services.CalculadorCaloricoService>();
+builder.Services.AddScoped<FitnessCoach.Application.Services.IServicioPerfilUsuario,
+                           FitnessCoach.Application.Services.ServicioPerfilUsuario>();
 
 // Generador de rutinas
 builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorRutinas,
