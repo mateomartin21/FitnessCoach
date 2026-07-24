@@ -128,20 +128,20 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 - Patrones GOF implementados y **probados**: Strategy (rutinas y alimentación), Decorator (calentamiento, enfriamiento, hidratación), Factory Method (`ObjetivoFitnessFactory`).
 - Cálculo calórico (Mifflin-St Jeor + multiplicador por objetivo).
 - Integración con Gemini funcionando, con timeout de 15s y la API key fuera del repo (user-secrets).
-- 21 pruebas xUnit en verde.
+- 34 pruebas xUnit en verde.
 - Pipeline de CI corriendo en cada push y PR, con check verde confirmado.
 - `ApplicationDbContext` + migración `InitialCreate` existen y están bien modelados.
 - **Persistencia real conectada (Fase 1, ADR-09).** `RepositorioUsuarioSql` (`Scoped`) consume el `DbContext`; los datos sobreviven al reinicio del servidor. Se conserva `RepositorioUsuarioMemoria` como segundo adaptador del puerto.
+- **Autenticación y multiusuario (Fase 2, ADR-10).** ASP.NET Identity con registro, login y logout de vistas propias. Cada usuario ve solo lo suyo: `ServicioPerfilUsuario` resuelve el perfil desde `IdentityUserId` y el dominio no referencia ningún paquete de Identity. La API cuelga de `/api/perfil` sin id en la URL.
 
 ### ❌ Existe pero NO está conectado / no funciona como se documentó
 
-- **No hay autenticación.** Toda la app opera sobre un usuario fijo con `Id = 1`, hardcodeado en `PerfilController`, `ProgresoController` e `IaCoachController`.
-- **Los endpoints REST están completamente abiertos**, sin autenticación ni autorización.
-- `Program.cs` llama a `UseAuthorization()` pero nunca a `UseAuthentication()` — la línea no hace nada.
+- **Sin validación de entrada (D-04).** `UsuarioPerfil` y `RegistroProgreso` no tienen anotaciones, y `PerfilController.GuardarPerfil` no consulta `ModelState`: hoy se puede guardar peso negativo o estatura 0 desde el formulario. Es lo que resuelve la Fase 3.
+- **El login no bloquea tras intentos fallidos (D-22)** y `IaCoachController.Consultar` es el único POST sin token antiforgery (D-21).
 
 ### ⏳ No existe todavía
 
-Login, tracker real, catálogo de ejercicios, GIFs, gamificación, fallback de IA, rediseño visual. → Ver `06-ROADMAP.md`.
+Tracker real, catálogo de ejercicios, GIFs, gamificación, fallback de IA, rediseño visual. → Ver `06-ROADMAP.md`.
 
 ---
 
@@ -157,6 +157,7 @@ Login, tracker real, catálogo de ejercicios, GIFs, gamificación, fallback de I
 | ADR-07 | Deuda técnica: persistencia EF Core + SQL Server, seguridad de la API key de Gemini |
 | ADR-08 | Suite de pruebas xUnit + pipeline de Integración Continua |
 | ADR-09 | Cierre de la deuda de persistencia: adaptador SQL real para `IRepositorioUsuario` |
+| ADR-10 | Autenticación con ASP.NET Identity manteniendo el dominio libre de framework |
 
 **Convención establecida:** cada ADR abre citando explícitamente su relación con el anterior ("Este ADR extiende el ADR-N…"). Cada uno tiene: Contexto → Decisión → Alternativas Consideradas → Consecuencias → Estado actual.
 

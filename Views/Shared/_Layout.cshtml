@@ -46,6 +46,33 @@
                                 <i class="fas fa-robot me-1"></i>IA Coach
                             </a>
                         </li>
+                                                @if (User.Identity is not null && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item d-flex align-items-center">
+                                <span class="nav-link fc-nav-link"><i class="fas fa-user me-1"></i>@User.Identity.Name</span>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline m-0">
+                                    <button type="submit" class="nav-link fc-nav-link btn btn-link" style="border:none; box-shadow:none;">
+                                        <i class="fas fa-right-from-bracket me-1"></i>Salir
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link fc-nav-link" asp-controller="Account" asp-action="Login">
+                                    <i class="fas fa-right-to-bracket me-1"></i>Entrar
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link fc-nav-link" asp-controller="Account" asp-action="Register">
+                                    <i class="fas fa-user-plus me-1"></i>Registro
+                                </a>
+                            </li>
+                        }
+
                     </ul>
                 </div>
             </div>

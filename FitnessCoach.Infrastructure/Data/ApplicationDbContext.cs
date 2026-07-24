@@ -1,11 +1,14 @@
 using FitnessCoach.Domain.Models;
 using FitnessCoach.Domain.Models.Objetivos;
+using FitnessCoach.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitnessCoach.Infrastructure.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
 
@@ -34,6 +37,11 @@ namespace FitnessCoach.Infrastructure.Data
                     progreso.HasKey("Id");
                     progreso.ToTable("RegistrosProgreso");
                 });
+            
+                entity.HasIndex(u => u.IdentityUserId)
+                    .IsUnique()
+                    .HasFilter("[IdentityUserId] IS NOT NULL");
+
             });
         }
     }

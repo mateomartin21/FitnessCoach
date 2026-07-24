@@ -31,21 +31,29 @@ Los nuevos API Controllers se ubican en `Web/ApiControllers/`, manteniendo la de
 
 ### Endpoints implementados
 
-**UsuariosApi** — gestión de perfiles de usuario:
+> **Actualizado en Fase 2 (autenticación).** El contrato original identificaba al
+> usuario con un id en la URL (`/api/usuarios/{id}`), lo que permitía leer y escribir
+> datos de cualquier cuenta (deuda D-01, IDOR). Todos los endpoints pasaron a colgar de
+> `/api/perfil` y operan siempre sobre el usuario autenticado: el dueño se resuelve desde
+> la identidad de la petición, no desde la URL. Ver ADR-10.
+
+**UsuariosApi** — perfil del usuario autenticado (requiere sesión):
 
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| `GET` | `/api/usuarios/{id}` | Obtiene el perfil de un usuario por ID |
-| `POST` | `/api/usuarios` | Crea un nuevo perfil de usuario |
-| `GET` | `/api/usuarios/{id}/calorias` | Calcula las calorías diarias recomendadas |
+| `GET` | `/api/perfil` | Obtiene el perfil del usuario autenticado |
+| `GET` | `/api/perfil/calorias` | Calcula las calorías diarias recomendadas |
 
-**ProgresoApi** — historial de progreso de peso:
+**ProgresoApi** — historial de progreso de peso (requiere sesión):
 
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| `GET` | `/api/usuarios/{usuarioId}/progreso` | Obtiene el historial completo ordenado por fecha |
-| `GET` | `/api/usuarios/{usuarioId}/progreso/ultimo` | Obtiene el registro más reciente |
-| `POST` | `/api/usuarios/{usuarioId}/progreso` | Agrega un nuevo registro de peso |
+| `GET` | `/api/perfil/progreso` | Obtiene el historial completo ordenado por fecha |
+| `GET` | `/api/perfil/progreso/ultimo` | Obtiene el registro más reciente |
+| `POST` | `/api/perfil/progreso` | Agrega un nuevo registro de peso |
+
+Sin sesión iniciada, las rutas bajo `/api` responden `401` (no redirigen al login, que es
+el comportamiento por defecto de la cookie de Identity y sirve solo para navegadores).
 
 ### Documentación
 

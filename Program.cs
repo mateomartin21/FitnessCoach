@@ -1,6 +1,9 @@
 using FitnessCoach.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using FitnessCoach.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +24,8 @@ builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioUsuario,
 // Servicio de cálculo calórico
 builder.Services.AddScoped<FitnessCoach.Application.Services.ICalculadorCalorico,
                            FitnessCoach.Application.Services.CalculadorCaloricoService>();
+builder.Services.AddScoped<FitnessCoach.Application.Services.IServicioPerfilUsuario,
+                           FitnessCoach.Application.Services.ServicioPerfilUsuario>();
 
 // Generador de rutinas
 builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorRutinas,
@@ -38,6 +43,48 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+// ASP.NET Identity sobre el mismo DbContext.
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.User.RequireUniqueEmail = true;
+    options.SignIn.RequireConfirmedAccount = false;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
+
+// Rutas de la cookie de autenticacion (usaremos vistas propias en /Account).
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Account/Login";
+
+    // Las rutas /api son para clientes, no para navegadores: responden 401/403
+    // en vez de redirigir a la pantalla de login.
+    options.Events.OnRedirectToLogin = context =>
+    {
+        if (context.Request.Path.StartsWithSegments("/api"))
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            return Task.CompletedTask;
+        }
+        context.Response.Redirect(context.RedirectUri);
+        return Task.CompletedTask;
+    };
+    options.Events.OnRedirectToAccessDenied = context =>
+    {
+        if (context.Request.Path.StartsWithSegments("/api"))
+        {
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            return Task.CompletedTask;
+        }
+        context.Response.Redirect(context.RedirectUri);
+        return Task.CompletedTask;
+    };
+});
+
 var app = builder.Build();
 
 // Pipeline HTTP
@@ -52,6 +99,7 @@ app.MapOpenApi();
 app.MapScalarApiReference();
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapStaticAssets();
 

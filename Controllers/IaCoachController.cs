@@ -1,17 +1,20 @@
-using FitnessCoach.Domain.Ports;
+using FitnessCoach.Application.Services;
 using FitnessCoach.Infrastructure.Adapters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FitnessCoach.Controllers
 {
+    [Authorize]
     public class IaCoachController : Controller
     {
-        private readonly IRepositorioUsuario _repositorio;
+        private readonly IServicioPerfilUsuario _perfiles;
         private readonly GeminiCoachService _gemini;
 
-        public IaCoachController(IRepositorioUsuario repositorio, GeminiCoachService gemini)
+        public IaCoachController(IServicioPerfilUsuario perfiles, GeminiCoachService gemini)
         {
-            _repositorio = repositorio;
+            _perfiles = perfiles;
             _gemini = gemini;
         }
 
@@ -23,7 +26,7 @@ namespace FitnessCoach.Controllers
         [HttpPost]
         public async Task<IActionResult> Consultar([FromBody] ConsultaRequest request)
         {
-            var usuario = _repositorio.ObtenerPorId(1);
+            var usuario = _perfiles.Obtener(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             var perfil = usuario == null ? "Usuario sin perfil configurado." :
                 $"Nombre: {usuario.Nombre}, Edad: {usuario.Edad} anos, Peso: {usuario.PesoKg}kg, Estatura: {usuario.EstaturaCm}cm, Objetivo: {usuario.ObjetivoActual?.Nombre ?? "No definido"}";
 

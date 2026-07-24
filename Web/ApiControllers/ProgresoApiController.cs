@@ -1,39 +1,43 @@
+using FitnessCoach.Application.Services;
 using FitnessCoach.Domain.Models;
-using FitnessCoach.Domain.Ports;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace FitnessCoach.Web.ApiControllers
 {
     /// <summary>
-    /// Endpoints para registro y consulta del historial de progreso de peso.
+    /// Historial de progreso de peso del usuario autenticado.
+    /// La ruta ya no lleva el id del usuario: el dueño sale de la identidad.
     /// </summary>
     [ApiController]
-    [Route("api/usuarios/{usuarioId}/progreso")]
+    [Authorize]
+    [Route("api/perfil/progreso")]
     [Produces("application/json")]
     public class ProgresoApiController : ControllerBase
     {
-        private readonly IRepositorioUsuario _repositorio;
+        private readonly IServicioPerfilUsuario _perfiles;
 
-        public ProgresoApiController(IRepositorioUsuario repositorio)
+        public ProgresoApiController(IServicioPerfilUsuario perfiles)
         {
-            _repositorio = repositorio;
+            _perfiles = perfiles;
         }
 
+        private string IdentityId => User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
         /// <summary>
-        /// Obtiene el historial de progreso completo de un usuario.
+        /// Obtiene el historial de progreso completo del usuario autenticado.
         /// </summary>
-        /// <param name="usuarioId">ID del usuario</param>
         /// <returns>Lista de registros de progreso ordenados por fecha</returns>
         /// <response code="200">Historial devuelto exitosamente</response>
-        /// <response code="404">No existe un usuario con ese ID</response>
+        /// <response code="401">No hay sesión iniciada</response>
         [HttpGet]
         [ProducesResponseType(typeof(List<RegistroProgreso>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult ObtenerHistorial(int usuarioId)
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public IActionResult ObtenerHistorial()
         {
-            var usuario = _repositorio.ObtenerPorId(usuarioId);
-            if (usuario == null)
-                return NotFound(new { mensaje = $"No se encontró un usuario con ID {usuarioId}." });
+            var usuario = _perfiles.ObtenerOCrear(IdentityId);
 
             var historial = usuario.HistorialProgreso
                 .OrderByDescending(r => r.Fecha)
@@ -43,58 +47,73 @@ namespace FitnessCoach.Web.ApiControllers
         }
 
         /// <summary>
-        /// Obtiene el registro de progreso más reciente de un usuario.
+        /// Obtiene el registro de progreso más reciente del usuario autenticado.
         /// </summary>
-        /// <param name="usuarioId">ID del usuario</param>
         /// <returns>Registro de progreso más reciente</returns>
         /// <response code="200">Registro encontrado</response>
-        /// <response code="404">Usuario no encontrado o sin historial</response>
+        /// <response code="401">No hay sesión iniciada</response>
+        /// <response code="404">Todavía no hay registros de progreso</response>
         [HttpGet("ultimo")]
         [ProducesResponseType(typeof(RegistroProgreso), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult ObtenerUltimo(int usuarioId)
+        public IActionResult ObtenerUltimo()
         {
-            var usuario = _repositorio.ObtenerPorId(usuarioId);
-            if (usuario == null)
-                return NotFound(new { mensaje = $"No se encontró un usuario con ID {usuarioId}." });
+            var usuario = _perfiles.ObtenerOCrear(IdentityId);
 
             var ultimo = usuario.HistorialProgreso
                 .OrderByDescending(r => r.Fecha)
                 .FirstOrDefault();
 
             if (ultimo == null)
-                return NotFound(new { mensaje = "El usuario aún no tiene registros de progreso." });
+                return NotFound(new { mensaje = "Todavía no tenés registros de progreso." });
 
             return Ok(ultimo);
         }
 
         /// <summary>
-        /// Agrega un nuevo registro de progreso para un usuario.
+        /// Agrega un nuevo registro de progreso al usuario autenticado.
         /// </summary>
-        /// <param name="usuarioId">ID del usuario</param>
-        /// <param name="registro">Datos del registro (peso y notas)</param>
+        /// <param name="registro">Peso y notas del registro</param>
         /// <returns>El registro creado</returns>
         /// <response code="201">Registro agregado exitosamente</response>
         /// <response code="400">Datos inválidos</response>
-        /// <response code="404">No existe un usuario con ese ID</response>
+        /// <response code="401">No hay sesión iniciada</response>
         [HttpPost]
         [ProducesResponseType(typeof(RegistroProgreso), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult AgregarRegistro(int usuarioId, [FromBody] RegistroProgreso registro)
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public IActionResult AgregarRegistro([FromBody] NuevoRegistroRequest registro)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var usuario = _repositorio.ObtenerPorId(usuarioId);
-            if (usuario == null)
-                return NotFound(new { mensaje = $"No se encontró un usuario con ID {usuarioId}." });
+            var usuario = _perfiles.ObtenerOCrear(IdentityId);
 
-            registro.Fecha = DateTime.UtcNow;
-            usuario.HistorialProgreso.Add(registro);
-            _repositorio.Guardar(usuario);
+            // La fecha la pone el servidor, nunca el cliente.
+            var nuevo = new RegistroProgreso
+            {
+                Fecha = DateTime.UtcNow,
+                PesoKg = registro.PesoKg,
+                Notas = registro.Notas ?? string.Empty
+            };
 
-            return CreatedAtAction(nameof(ObtenerUltimo), new { usuarioId }, registro);
+            usuario.HistorialProgreso.Add(nuevo);
+            _perfiles.Guardar(usuario);
+
+            return CreatedAtAction(nameof(ObtenerUltimo), null, nuevo);
         }
+    }
+
+    /// <summary>
+    /// Lo único que el cliente puede mandar al crear un registro.
+    /// </summary>
+    public class NuevoRegistroRequest
+    {
+        [Range(20, 400, ErrorMessage = "El peso debe estar entre 20 y 400 kg.")]
+        public double PesoKg { get; set; }
+
+        [StringLength(500)]
+        public string? Notas { get; set; }
     }
 }

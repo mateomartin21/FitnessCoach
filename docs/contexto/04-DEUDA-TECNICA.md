@@ -2,18 +2,20 @@
 
 > **Documento vivo.** Es el inventario honesto de lo que está mal. Cuando algo se resuelve se marca ✅ con la fase que lo resolvió — **no se borra la línea**, el historial sirve para los ADRs y para la sustentación del proyecto.
 >
-> Última revisión completa del código: **22/07/2026**, rama `CD/CI`.
+> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **24/07/2026** al cerrar la Fase 2 (rama `fase-2/identity-login`).
 
 ## Resumen
 
 | Severidad | Total | Abiertas |
 |-----------|-------|----------|
-| 🔴 Crítica (seguridad / pérdida de datos) | 7 | 5 |
-| 🟠 Alta (bug funcional o riesgo real) | 5 | 4 |
-| 🟡 Media (calidad, mantenibilidad) | 8 | 1 |
-| **Total** | **20** | **10** |
+| 🔴 Crítica (seguridad / pérdida de datos) | 7 | 1 |
+| 🟠 Alta (bug funcional o riesgo real) | 6 | 4 |
+| 🟡 Media (calidad, mantenibilidad) | 9 | 2 |
+| **Total** | **22** | **7** |
 
-> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Queda abierta de calidad solo D-20 (prompt del Lobo, Fase 6).
+> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11.
+>
+> **Deuda nueva detectada en la Fase 2:** D-21 y D-22. De las críticas solo queda abierta D-04 (validación de entrada, Fase 3).
 
 ---
 
@@ -24,14 +26,14 @@
 **Qué pasa:** ningún atributo `[Authorize]`. Cualquiera con la URL puede leer el perfil de cualquier usuario (`GET /api/usuarios/{id}`), leer su historial de peso (`GET /api/usuarios/{id}/progreso`), crear perfiles ilimitados (`POST /api/usuarios`) y escribir registros de progreso en la cuenta de otro (`POST /api/usuarios/{id}/progreso`).
 **Riesgo:** IDOR total. Es el hallazgo más grave del proyecto.
 **Resolución:** Fase 2. `[Authorize]` + resolver el dueño desde la identidad autenticada, nunca desde la URL.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 2 (commit `926ae0c`, ADR-10). Las rutas pasaron a `/api/perfil` y `/api/perfil/progreso`: **el id del usuario dejó de existir como parámetro de entrada**, así que no hay nada que manipular ni comprobación que olvidar. `[Authorize]` en ambos controladores y sin sesión responden `401` en vez de redirigir al login.
 
 ### D-02 · Usuario único hardcodeado (`Id = 1`)
 **Dónde:** `PerfilController.Index`, `PerfilController.GuardarPerfil` (fija `Id = 1`), `ProgresoController.Index`, `ProgresoController.RegistrarPeso`, `IaCoachController.Consultar`
 **Qué pasa:** toda la aplicación opera sobre un único perfil fijo. No existe el concepto de "mi cuenta".
 **Riesgo:** si dos personas usan la app, comparten y se sobrescriben el perfil mutuamente. Además `GuardarPerfil` fuerza `Id = 1`, así que cualquier alta sobrescribe al usuario existente.
 **Resolución:** Fase 2.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 2 (commit `1dc0e52`, ADR-10). `ServicioPerfilUsuario` resuelve el perfil desde `IdentityUserId`; no queda ningún `ObtenerPorId(1)` en el código. Un índice único filtrado sobre `IdentityUserId` garantiza en la base la invariante "un usuario = un perfil".
 
 ### D-03 · La base de datos existe pero no se usa
 **Dónde:** `Program.cs`
@@ -52,7 +54,7 @@
 **Qué pasa:** acciones `[HttpPost]` que modifican estado, sin `[ValidateAntiForgeryToken]`.
 **Riesgo:** una vez que exista login, un sitio externo podría hacer que el navegador del usuario autenticado modifique su perfil sin su consentimiento.
 **Resolución:** Fase 2.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 2 (commits `3a078b6` y `1dc0e52`, ADR-10). `[ValidateAntiForgeryToken]` en `PerfilController.GuardarPerfil`, `ProgresoController.RegistrarPeso` y las tres acciones POST de `AccountController`. **Excepción:** `IaCoachController.Consultar` quedó sin el atributo — registrada aparte como D-21.
 
 ### D-06 · Repositorio singleton con estado mutable no sincronizado
 **Dónde:** `Program.cs` (`AddSingleton`) + `RepositorioUsuarioMemoria`
@@ -66,7 +68,7 @@
 **Qué pasa:** el pipeline llama a `app.UseAuthorization()` pero nunca a `app.UseAuthentication()`. Sin el primero, el segundo no tiene identidad que evaluar — la línea existe pero no hace nada.
 **Riesgo:** da falsa sensación de que hay seguridad configurada.
 **Resolución:** Fase 2.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 2 (commit `bb8b0f9`, ADR-10). `app.UseAuthentication()` agregado antes de `app.UseAuthorization()`, con Identity registrado sobre `ApplicationDbContext`.
 
 ---
 
@@ -98,13 +100,20 @@
 **Qué pasa:** sin autenticación ni límite. Cada llamada crea un perfil nuevo.
 **Riesgo:** vector trivial de denegación de servicio / llenado de la base.
 **Resolución:** Fase 2 (junto con D-01; además el índice único de la Fase 2 impide más de un perfil por usuario).
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 2 (commit `926ae0c`, ADR-10). El endpoint se eliminó: el perfil se crea solo, la primera vez que el usuario autenticado entra (`ServicioPerfilUsuario.ObtenerOCrear`). El índice único filtrado hace imposible el duplicado aunque el alta se invocara dos veces.
 
 ### D-12 · `RegistroProgreso` sin identidad propia en el dominio
 **Dónde:** `Domain/Models/RegistroProgreso.cs` + `ApplicationDbContext.OnModelCreating`
 **Qué pasa:** el `Id` existe solo como *shadow property* de EF Core. El dominio no puede referirse a un registro individual.
 **Riesgo:** hoy no molesta, pero bloquea funcionalidad de la Fase 4 (editar o borrar un registro específico del historial).
 **Resolución:** Fase 4.
+**Estado:** ⬜ Abierta
+
+### D-22 · Login sin bloqueo por intentos fallidos
+**Dónde:** `Controllers/AccountController.cs` → `PasswordSignInAsync(..., lockoutOnFailure: false)`
+**Qué pasa:** Identity trae bloqueo temporal de cuenta tras N intentos fallidos, pero se registró desactivado. Nada limita la cantidad de contraseñas que se pueden probar contra una cuenta.
+**Riesgo:** fuerza bruta sin fricción, agravado porque la política de contraseñas es laxa (`RequiredLength = 6`, sin exigir caracteres no alfanuméricos). Con un correo válido conocido, probar contraseñas comunes es cuestión de tiempo. Detectada al escribir el ADR-10.
+**Resolución:** Fase 3 — `lockoutOnFailure: true` y configurar `options.Lockout` (ventana y número de intentos); endurecer de paso la política de contraseñas.
 **Estado:** ⬜ Abierta
 
 ---
@@ -164,6 +173,13 @@
 **Qué pasa:** el prompt que define la personalidad del Lobo Coach está incrustado como string dentro del adaptador HTTP. Mezcla "cómo hablo con la API de Google" con "quién es el Lobo Coach".
 **Riesgo:** la personalidad del personaje es central a la visión del producto (`05-VISION-PRODUCTO.md`) y va a evolucionar mucho. Tenerla dentro del adaptador significa que cambiar de proveedor de IA implicaría reescribir la personalidad, y viceversa.
 **Resolución:** Fase 6 — extraer la construcción del prompt fuera del adaptador.
+**Estado:** ⬜ Abierta
+
+### D-21 · `IaCoachController.Consultar` es un POST sin `[ValidateAntiForgeryToken]`
+**Dónde:** `Controllers/IaCoachController.cs` (acción `Consultar`), consumida por `fetch()` desde `Views/IaCoach/Index.cshtml`
+**Qué pasa:** al cerrar D-05 en la Fase 2 se cubrieron las acciones POST de formularios, pero ésta quedó fuera porque no viene de un formulario Razor: la llama JavaScript con `Content-Type: application/json`.
+**Riesgo:** bajo en la práctica — un POST cross-origin con ese `Content-Type` dispara *preflight* CORS, que falla al no haber política que lo permita. Pero es una excepción no declarada a la regla de `03-ESTANDARES.md` §5, y depende de un detalle del navegador en vez de una defensa explícita. Consumir la acción gasta cuota de la API de Gemini.
+**Resolución:** Fase 3 — enviar el token antiforgery en la cabecera `RequestVerificationToken` desde el `fetch()` y validarlo en la acción, o mover la acción a la API con su propio esquema.
 **Estado:** ⬜ Abierta
 
 ---

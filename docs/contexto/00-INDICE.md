@@ -47,7 +47,7 @@ Y adjunta:
 | Campo | Valor |
 |-------|-------|
 | Creado | 22/07/2026 |
-| Última actualización | 23/07/2026 |
-| Rama de referencia | `fase-1/persistencia-sql` (contra `CD/CI`) |
-| Último ADR | ADR-09 (persistencia SQL real) |
-| Fase activa del roadmap | Fase 2 — Identity, multiusuario y blindaje (siguiente) |
+| Última actualización | 24/07/2026 |
+| Rama de referencia | `fase-2/identity-login` (contra `CD/CI`) |
+| Último ADR | ADR-10 (autenticación con Identity, dominio libre de framework) |
+| Fase activa del roadmap | Fase 3 — Validación y robustez de dominio (siguiente) |

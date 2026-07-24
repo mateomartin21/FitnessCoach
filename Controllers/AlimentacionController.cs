@@ -1,23 +1,25 @@
-using FitnessCoach.Domain.Ports;
 using FitnessCoach.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FitnessCoach.Controllers
 {
+    [Authorize]
     public class AlimentacionController : Controller
     {
-        private readonly IRepositorioUsuario _repositorio;
+        private readonly IServicioPerfilUsuario _perfiles;
         private readonly IGeneradorAlimentacion _generador;
 
-        public AlimentacionController(IRepositorioUsuario repositorio, IGeneradorAlimentacion generador)
+        public AlimentacionController(IServicioPerfilUsuario perfiles, IGeneradorAlimentacion generador)
         {
-            _repositorio = repositorio;
+            _perfiles = perfiles;
             _generador = generador;
         }
 
         public IActionResult Index()
         {
-            var usuario = _repositorio.ObtenerPorId(1);
+            var usuario = _perfiles.Obtener(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             if (usuario == null || usuario.ObjetivoActual == null)
                 return RedirectToAction("Index", "Perfil");
 

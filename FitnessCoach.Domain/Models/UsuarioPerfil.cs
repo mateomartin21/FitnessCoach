@@ -2,14 +2,16 @@ using FitnessCoach.Domain.Models.Objetivos;
 
 namespace FitnessCoach.Domain.Models
 {
-    public class UsuarioPerfil
-    {
-        public int Id { get; set; }
-        public string? Nombre { get; set; }
-        public double PesoKg { get; set; }
-        public double EstaturaCm { get; set; }
-        public int Edad { get; set; }
-        public ObjetivoFitness? ObjetivoActual { get; set; }
-        public List<RegistroProgreso> HistorialProgreso { get; set; } = new();
-    }
+public class UsuarioPerfil
+{
+    public int Id { get; set; }
+    public string? IdentityUserId { get; set; }   // <-- NUEVA: a que cuenta de Identity pertenece este perfil
+    public string? Nombre { get; set; }
+    public double PesoKg { get; set; }
+    public double EstaturaCm { get; set; }
+    public int Edad { get; set; }
+    public ObjetivoFitness? ObjetivoActual { get; set; }
+    public List<RegistroProgreso> HistorialProgreso { get; set; } = new();
+}
+
 }
