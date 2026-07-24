@@ -3,6 +3,8 @@ using FitnessCoach.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.Options;
 
 namespace FitnessCoach.Controllers
 {
@@ -11,13 +13,18 @@ namespace FitnessCoach.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IdentityOptions _opcionesIdentity;
 
         public AccountController(UserManager<ApplicationUser> userManager,
-                                 SignInManager<ApplicationUser> signInManager)
+                                 SignInManager<ApplicationUser> signInManager,
+                                 IOptions<IdentityOptions> opcionesIdentity)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _opcionesIdentity = opcionesIdentity.Value;
         }
+
+        private int MinutosDeBloqueo => (int)_opcionesIdentity.Lockout.DefaultLockoutTimeSpan.TotalMinutes;
 
         [HttpGet]
         [AllowAnonymous]
@@ -26,6 +33,7 @@ namespace FitnessCoach.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [EnableRateLimiting("login")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -46,11 +54,20 @@ namespace FitnessCoach.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login() => View();
+        public IActionResult Login(bool demasiadosIntentos = false)
+        {
+            // Llega asi desde el rate limiter (ver Program.cs) cuando una IP se pasa de envios.
+            if (demasiadosIntentos)
+                ModelState.AddModelError(string.Empty,
+                    "Demasiados intentos desde esta conexión. Esperá un minuto antes de volver a intentar.");
+
+            return View();
+        }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [EnableRateLimiting("login")]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -64,11 +81,22 @@ namespace FitnessCoach.Controllers
                 return RedirectToAction("Index", "Perfil");
             }
 
-            // Mensaje identico ante cualquier fallo, incluido el bloqueo: sin enumeracion de
-            // usuarios (estandar 1.4). Decir "tu cuenta esta bloqueada" confirmaria que existe,
-            // asi que el aviso del bloqueo se da siempre y no revela nada de esta cuenta.
+            // Se avisa del bloqueo de forma explicita: es una excepcion deliberada al mensaje
+            // generico del estandar 1.4 (confirma que la cuenta existe) a cambio de que la
+            // persona entienda por que no puede entrar. Ver ADR-11.
+            if (result.IsLockedOut)
+            {
+                ModelState.AddModelError(string.Empty,
+                    $"Tu cuenta quedó bloqueada temporalmente por varios intentos fallidos. " +
+                    $"Volvé a intentar en {MinutosDeBloqueo} minutos.");
+                return View(model);
+            }
+
+            // Para el resto de los fallos el mensaje sigue siendo identico y no distingue
+            // si el correo existe o si la contrasena es incorrecta (estandar 1.4).
             ModelState.AddModelError(string.Empty,
-                "Correo o contraseña incorrectos. Tras varios intentos fallidos la cuenta se bloquea temporalmente.");
+                $"Correo o contraseña incorrectos. Tras {_opcionesIdentity.Lockout.MaxFailedAccessAttempts} " +
+                $"intentos fallidos la cuenta se bloquea {MinutosDeBloqueo} minutos.");
             return View(model);
         }
 

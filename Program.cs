@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using FitnessCoach.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,41 @@ builder.Services.AddOpenApi();
 // El chat del Lobo Coach postea JSON por fetch(), no un formulario: sin esto,
 // [ValidateAntiForgeryToken] solo buscaria el token en los campos del form y nunca lo encontraria.
 builder.Services.AddAntiforgery(options => options.HeaderName = "RequestVerificationToken");
+
+// Limite de intentos por IP en las pantallas de sesion.
+// Complementa al bloqueo de cuenta de Identity, que cuenta fallos POR CUENTA y por eso
+// no frena el "password spraying": una sola contrasena probada contra miles de correos
+// distintos nunca acumula 5 fallos en ninguno. Esto se cuenta por origen, no por cuenta.
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddPolicy("login", contexto =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: contexto.Connection.RemoteIpAddress?.ToString() ?? "sin-ip",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 10,               // 10 envios por minuto desde la misma IP
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0                  // sin cola: lo que sobra se rechaza, no espera
+            }));
+
+    options.OnRejected = async (contexto, token) =>
+    {
+        if (contexto.Lease.TryGetMetadata(MetadataName.RetryAfter, out var esperar))
+            contexto.HttpContext.Response.Headers.RetryAfter = ((int)esperar.TotalSeconds).ToString();
+
+        if (contexto.HttpContext.Request.Path.StartsWithSegments("/api"))
+        {
+            contexto.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+            await contexto.HttpContext.Response.WriteAsJsonAsync(
+                new { mensaje = "Demasiadas peticiones. Espera un minuto y vuelve a intentar." }, token);
+            return;
+        }
+
+        // En el navegador conviene devolver la pantalla de login con una explicacion,
+        // no un 429 crudo que el usuario no sabria interpretar.
+        contexto.HttpContext.Response.Redirect("/Account/Login?demasiadosIntentos=true");
+    };
+});
 
 // Persistencia real: el puerto IRepositorioUsuario ahora apunta al adaptador SQL.
 // Scoped = una instancia por peticion HTTP, que es lo que EF Core espera para su DbContext.
@@ -112,6 +149,7 @@ app.MapOpenApi();
 app.MapScalarApiReference();
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapStaticAssets();
