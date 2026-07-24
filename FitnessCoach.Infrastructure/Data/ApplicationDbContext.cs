@@ -33,9 +33,35 @@ namespace FitnessCoach.Infrastructure.Data
                 entity.OwnsMany(u => u.HistorialProgreso, progreso =>
                 {
                     progreso.WithOwner().HasForeignKey("UsuarioPerfilId");
-                    progreso.Property<int>("Id");
-                    progreso.HasKey("Id");
+
+                    // El Id ahora es una propiedad del dominio, no una shadow property:
+                    // sin esto no se puede editar ni borrar un registro concreto (D-12).
+                    progreso.HasKey(r => r.Id);
+
+                    // SQL Server guarda datetime2 sin zona, asi que al leer vuelve con
+                    // Kind = Unspecified y un ToLocalTime() posterior no convertiria nada.
+                    // Marcarlo como UTC al materializar hace que la conversion a local funcione.
+                    progreso.Property(r => r.Fecha)
+                        .HasConversion(
+                            fecha => fecha,
+                            fecha => DateTime.SpecifyKind(fecha, DateTimeKind.Utc));
+
                     progreso.ToTable("RegistrosProgreso");
+                });
+
+                entity.OwnsMany(u => u.EntrenamientosCompletados, entrenamiento =>
+                {
+                    entrenamiento.WithOwner().HasForeignKey("UsuarioPerfilId");
+                    entrenamiento.HasKey(e => e.Id);
+
+                    // Mismo tratamiento que el historial de peso: sin esto la fecha vuelve
+                    // como Unspecified y la conversion a local no haria nada.
+                    entrenamiento.Property(e => e.Fecha)
+                        .HasConversion(
+                            fecha => fecha,
+                            fecha => DateTime.SpecifyKind(fecha, DateTimeKind.Utc));
+
+                    entrenamiento.ToTable("EntrenamientosCompletados");
                 });
             
                 entity.HasIndex(u => u.IdentityUserId)

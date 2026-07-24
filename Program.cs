@@ -67,6 +67,10 @@ builder.Services.AddScoped<FitnessCoach.Application.Services.ICalculadorCalorico
                            FitnessCoach.Application.Services.CalculadorCaloricoService>();
 builder.Services.AddScoped<FitnessCoach.Application.Services.IServicioPerfilUsuario,
                            FitnessCoach.Application.Services.ServicioPerfilUsuario>();
+builder.Services.AddScoped<FitnessCoach.Application.Services.IServicioProgreso,
+                           FitnessCoach.Application.Services.ServicioProgreso>();
+builder.Services.AddScoped<FitnessCoach.Application.Services.IServicioEntrenamientos,
+                           FitnessCoach.Application.Services.ServicioEntrenamientos>();
 
 // Generador de rutinas
 builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorRutinas,

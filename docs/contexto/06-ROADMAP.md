@@ -145,6 +145,12 @@ Tracker       Catálogo de        Resiliencia
 
 ## Fase 4 — Tracker de progreso
 
+> **✅ Cerrada el 24/07/2026** (rama `fase-4/tracker`, ADR-12) — seis commits: identidad y UTC (`d112705`), la vista que faltaba (`9c04380`), edición y borrado (`c26722c`), gráfica (`ce63aff`), entrenamientos y rachas (`8e9edb6`) y documentación. D-10, D-12 y D-23 resueltas. 95/95 pruebas en verde.
+>
+> **Los récords personales por ejercicio se movieron a la Fase 5**: dependen de que los ejercicios tengan identidad, y hoy están hardcodeados dentro de cada Strategy. Usar el nombre como clave habría sido frágil y la Fase 5 tendría que migrar esos datos.
+>
+> Deuda nueva: **D-25** (rachas contadas en la zona del servidor → Fase 10) y **D-26** (la API no cubre el tracker → Fase 10).
+
 **Objetivo:** convertir el historial de peso en un tracker de verdad, al estilo Hevy/Jefit.
 
 **Resuelve:** D-10, D-12, D-23
@@ -155,12 +161,12 @@ Tracker       Catálogo de        Resiliencia
 - Todas las fechas en UTC; conversión solo al mostrar
 - Registro de **entrenamientos completados**, no solo de peso
 - Cálculo de rachas (días consecutivos)
-- Récords personales por ejercicio
+- ~~Récords personales por ejercicio~~ → **movido a la Fase 5** (necesita la entidad `Ejercicio`)
 - Gráfica de evolución del peso
 - Vista de historial con edición y borrado
 
 **Definition of Done:** un usuario puede registrar un entrenamiento, verlo en su historial, ver su racha actual y su gráfica de peso. Todo cubierto por pruebas.
-**ADR:** ADR-12 si el modelo de dominio cambia de forma significativa.
+**ADR:** ADR-12 — el tracker como historial de hechos, con reglas en la capa de aplicación.
 **Rama sugerida:** `fase-4/tracker`
 
 ---
@@ -170,7 +176,8 @@ Tracker       Catálogo de        Resiliencia
 **Objetivo:** contenido real. Que dos usuarios con el mismo objetivo no vean exactamente lo mismo.
 
 **Entregables:**
-- Entidad `Ejercicio` como concepto de primera clase (hoy es una clase suelta dentro de las estrategias), con: nombre, grupo muscular, nivel, equipo necesario, URL de GIF, instrucciones
+- Entidad `Ejercicio` como concepto de primera clase (hoy es una clase suelta dentro de las estrategias, y encima vive en `Entrenamiento.cs`, cuyo nombre no coincide con el tipo), con: nombre, grupo muscular, nivel, equipo necesario, URL de GIF, instrucciones
+- **Récords personales por ejercicio** (movido desde la Fase 4): una vez que `Ejercicio` tiene identidad, se puede registrar y comparar el mejor peso/repeticiones sin usar el nombre como clave
 - Catálogo persistido en base de datos (con datos semilla), no hardcodeado dentro de cada Strategy
 - Las estrategias pasan a **componer rutinas desde el catálogo** en vez de tener los ejercicios incrustados
 - GIFs demostrativos, con énfasis en principiantes
@@ -270,6 +277,8 @@ Tracker       Catálogo de        Resiliencia
 
 **Entregables:**
 - Rate limiter listo para producción (D-24): almacén compartido en vez de memoria del proceso, y `UseForwardedHeaders` para no contar todo el tráfico bajo la IP del balanceador
+- Zona horaria del usuario (D-25): guardarla en el perfil y contar las rachas en su calendario, no en el del servidor
+- Completar la API REST con el tracker (D-26): edición y borrado de registros, entrenamientos y rachas
 - Revisión de consultas de EF Core (detectar N+1, agregar `AsNoTracking` donde aplique)
 - Índices de base de datos según los patrones de consulta reales
 - Caché donde tenga sentido (catálogo de ejercicios)
@@ -302,7 +311,7 @@ Tracker       Catálogo de        Resiliencia
 | 1 | ✅ Completada | `fase-1/persistencia-sql` | (contra `CD/CI`) | ADR-09 | ✅ |
 | 2 | ✅ Completada | `fase-2/identity-login` | (contra `CD/CI`) | ADR-10 | ✅ |
 | 3 | ✅ Completada | `fase-3/validacion` | (contra `CD/CI`) | ADR-11 | ✅ |
-| 4 | ⬜ Pendiente | — | — | — | — |
+| 4 | ✅ Completada | `fase-4/tracker` | (contra `CD/CI`) | ADR-12 | ✅ |
 | 5 | ⬜ Pendiente | — | — | — | — |
 | 6 | ⬜ Pendiente | — | — | — | — |
 | 7 | ⬜ Pendiente | — | — | — | — |

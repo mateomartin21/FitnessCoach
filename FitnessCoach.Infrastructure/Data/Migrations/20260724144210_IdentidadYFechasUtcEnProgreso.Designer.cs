@@ -4,6 +4,7 @@ using FitnessCoach.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessCoach.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260724144210_IdentidadYFechasUtcEnProgreso")]
+    partial class IdentidadYFechasUtcEnProgreso
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,43 +264,6 @@ namespace FitnessCoach.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("FitnessCoach.Domain.Models.UsuarioPerfil", b =>
                 {
-                    b.OwnsMany("FitnessCoach.Domain.Models.EntrenamientoCompletado", "EntrenamientosCompletados", b1 =>
-                        {
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<int>("DuracionMinutos")
-                                .HasColumnType("int");
-
-                            b1.Property<DateTime>("Fecha")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("NombreRutina")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
-
-                            b1.Property<string>("Notas")
-                                .IsRequired()
-                                .HasMaxLength(500)
-                                .HasColumnType("nvarchar(500)");
-
-                            b1.Property<int>("UsuarioPerfilId")
-                                .HasColumnType("int");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("UsuarioPerfilId");
-
-                            b1.ToTable("EntrenamientosCompletados", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("UsuarioPerfilId");
-                        });
-
                     b.OwnsMany("FitnessCoach.Domain.Models.RegistroProgreso", "HistorialProgreso", b1 =>
                         {
                             b1.Property<int>("Id")
@@ -329,8 +295,6 @@ namespace FitnessCoach.Infrastructure.Data.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("UsuarioPerfilId");
                         });
-
-                    b.Navigation("EntrenamientosCompletados");
 
                     b.Navigation("HistorialProgreso");
                 });

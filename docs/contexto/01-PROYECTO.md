@@ -128,7 +128,7 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 - Patrones GOF implementados y **probados**: Strategy (rutinas y alimentación), Decorator (calentamiento, enfriamiento, hidratación), Factory Method (`ObjetivoFitnessFactory`).
 - Cálculo calórico (Mifflin-St Jeor + multiplicador por objetivo).
 - Integración con Gemini funcionando, con timeout de 15s y la API key fuera del repo (user-secrets).
-- 66 pruebas xUnit en verde.
+- 95 pruebas xUnit en verde.
 - Pipeline de CI corriendo en cada push y PR, con check verde confirmado.
 - `ApplicationDbContext` + migración `InitialCreate` existen y están bien modelados.
 - **Persistencia real conectada (Fase 1, ADR-09).** `RepositorioUsuarioSql` (`Scoped`) consume el `DbContext`; los datos sobreviven al reinicio del servidor. Se conserva `RepositorioUsuarioMemoria` como segundo adaptador del puerto.
@@ -136,13 +136,15 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 
 - **Validación en dos capas (Fase 3, ADR-11).** Anotaciones con los rangos de `RangosPerfil` en entidades, ViewModels y API, más guardas dentro del cálculo calórico que lanzan en vez de devolver un número falso. El login suma bloqueo de cuenta y límite de intentos por IP.
 
+- **Tracker de progreso (Fase 4, ADR-12).** Historial de peso con edición y borrado, entrenamientos completados, racha actual y mejor racha, y gráfica de evolución con Chart.js servido localmente. Todas las fechas en UTC, convertidas al mostrar.
+
 ### ❌ Existe pero NO está conectado / no funciona como se documentó
 
-- **La vista de Progreso no existe (D-23).** `ProgresoController.Index` devuelve `View(historial)` contra un archivo que no está en el repo: entrar a `/Progreso` lanza una excepción. No se nota porque el menú no enlaza esa pantalla. La construye la Fase 4.
+- **La API REST se quedó atrás del producto (D-26).** Solo expone perfil, calorías y el historial de peso en modo lectura/alta; no cubre edición, borrado ni entrenamientos. No es un riesgo de seguridad, es superficie desactualizada.
 
 ### ⏳ No existe todavía
 
-Tracker real, catálogo de ejercicios, GIFs, gamificación, fallback de IA, rediseño visual. → Ver `06-ROADMAP.md`.
+Catálogo de ejercicios, GIFs, récords personales, gamificación, fallback de IA, rediseño visual. → Ver `06-ROADMAP.md`.
 
 ---
 
@@ -160,6 +162,7 @@ Tracker real, catálogo de ejercicios, GIFs, gamificación, fallback de IA, redi
 | ADR-09 | Cierre de la deuda de persistencia: adaptador SQL real para `IRepositorioUsuario` |
 | ADR-10 | Autenticación con ASP.NET Identity manteniendo el dominio libre de framework |
 | ADR-11 | Validación en dos capas y defensa en profundidad del login |
+| ADR-12 | El tracker como historial de hechos, con reglas en la capa de aplicación |
 
 **Convención establecida:** cada ADR abre citando explícitamente su relación con el anterior ("Este ADR extiende el ADR-N…"). Cada uno tiene: Contexto → Decisión → Alternativas Consideradas → Consecuencias → Estado actual.
 

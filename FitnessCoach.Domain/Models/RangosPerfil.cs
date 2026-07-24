@@ -21,5 +21,11 @@ namespace FitnessCoach.Domain.Models
         public const int NombreLargoMaximo = 100;
 
         public const int NotasLargoMaximo = 500;
+
+        public const int NombreRutinaLargoMaximo = 100;
+
+        // Un entrenamiento de menos de 5 minutos o de más de 5 horas es error de captura.
+        public const int DuracionMinimaMin = 5;
+        public const int DuracionMaximaMin = 300;
     }
 }

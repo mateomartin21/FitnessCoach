@@ -1,0 +1,336 @@
+@model FitnessCoach.Models.ProgresoViewModel
+@{
+    ViewData["Title"] = "Mi Progreso";
+}
+
+@if (TempData["MensajeProgreso"] != null)
+{
+    <div class="alert alert-success py-2 small">@TempData["MensajeProgreso"]</div>
+}
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="p-3 rounded text-center h-100" style="background:linear-gradient(135deg,#1a1a2e,#16213e); border:2px solid var(--fc-primary);">
+            <i class="fas fa-fire mb-1" style="color:var(--fc-primary);"></i>
+            <small class="text-muted d-block text-uppercase" style="font-size:0.7rem;">Racha actual</small>
+            <strong class="h4 mb-0 d-block" style="color:var(--fc-primary);">@Model.Rachas.Actual</strong>
+            <small class="text-muted">@(Model.Rachas.Actual == 1 ? "día" : "días")</small>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="p-3 rounded text-center h-100" style="background:#0f0f1a; border:1px solid #2a2a4a;">
+            <i class="fas fa-trophy mb-1" style="color:#f59e0b;"></i>
+            <small class="text-muted d-block text-uppercase" style="font-size:0.7rem;">Mejor racha</small>
+            <strong class="h4 mb-0 d-block">@Model.Rachas.MasLarga</strong>
+            <small class="text-muted">@(Model.Rachas.MasLarga == 1 ? "día" : "días")</small>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="p-3 rounded text-center h-100" style="background:#0f0f1a; border:1px solid #2a2a4a;">
+            <i class="fas fa-dumbbell mb-1" style="color:#00d4ff;"></i>
+            <small class="text-muted d-block text-uppercase" style="font-size:0.7rem;">Entrenamientos</small>
+            <strong class="h4 mb-0 d-block">@Model.Entrenamientos.Count</strong>
+            <small class="text-muted">en total</small>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="p-3 rounded text-center h-100" style="background:#0f0f1a; border:1px solid #2a2a4a;">
+            <i class="fas fa-weight-scale mb-1" style="color:#22c55e;"></i>
+            <small class="text-muted d-block text-uppercase" style="font-size:0.7rem;">Peso actual</small>
+            <strong class="h4 mb-0 d-block">@Model.PesoActual</strong>
+            <small class="text-muted">kg</small>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-5">
+        <div class="card shadow h-100">
+            <div class="card-header py-3" style="border-left: 4px solid var(--fc-primary);">
+                <h5 class="mb-0"><i class="fas fa-weight-scale me-2" style="color:var(--fc-primary);"></i>Registrar Peso</h5>
+            </div>
+            <div class="card-body">
+                <form asp-controller="Progreso" asp-action="RegistrarPeso" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                    <div class="mb-3">
+                        <label asp-for="Nuevo.NuevoPeso" class="form-label"></label>
+                        <input asp-for="Nuevo.NuevoPeso" type="number" step="0.1" class="form-control" />
+                        <span asp-validation-for="Nuevo.NuevoPeso" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Nuevo.Notas" class="form-label"></label>
+                        <textarea asp-for="Nuevo.Notas" class="form-control" rows="3"
+                                  placeholder="Cómo te sentiste, qué entrenaste..."></textarea>
+                        <span asp-validation-for="Nuevo.Notas" class="text-danger small"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2">
+                        <i class="fas fa-plus me-2"></i>Guardar Registro
+                    </button>
+                </form>
+
+                @if (Model.VariacionTotalKg is not null)
+                {
+                    var variacion = Model.VariacionTotalKg.Value;
+                    <div class="p-3 rounded text-center mt-4" style="background:#0f0f1a; border:1px solid #2a2a4a;">
+                        <small class="text-muted d-block text-uppercase" style="font-size:0.7rem;">Variación desde el primer registro</small>
+                        <strong class="h5 mb-0 d-block mt-1" style="color:@(variacion <= 0 ? "#22c55e" : "#f59e0b");">
+                            @(variacion > 0 ? "+" : "")@variacion kg
+                        </strong>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="card shadow h-100">
+            <div class="card-header py-3" style="border-left: 4px solid #00d4ff;">
+                <h5 class="mb-0"><i class="fas fa-clock-rotate-left me-2" style="color:#00d4ff;"></i>Historial</h5>
+            </div>
+            <div class="card-body">
+                @if (!Model.TieneRegistros)
+                {
+                    <div class="text-center py-5">
+                        <i class="fas fa-chart-line mb-3" style="font-size:2.5rem; color:#2a2a4a;"></i>
+                        <p class="text-muted mb-0">Todavía no registraste ningún peso.</p>
+                        <p class="text-muted small">Anotá el primero y vas a poder seguir tu evolución acá.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle mb-0">
+                            <thead>
+                                <tr class="text-muted" style="font-size:0.75rem; text-transform:uppercase;">
+                                    <th>Fecha</th>
+                                    <th>Peso</th>
+                                    <th>Cambio</th>
+                                    <th>Notas</th>
+                                    <th class="text-end">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Historial.Count; i++)
+                                {
+                                    var registro = Model.Historial[i];
+                                    var cambio = Model.VariacionRespectoAlAnterior(i);
+                                    <tr>
+                                        <td class="small">@registro.Fecha.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td><strong>@registro.PesoKg kg</strong></td>
+                                        <td class="small">
+                                            @if (cambio is null)
+                                            {
+                                                <span class="text-muted">—</span>
+                                            }
+                                            else
+                                            {
+                                                <span style="color:@(cambio <= 0 ? "#22c55e" : "#f59e0b");">
+                                                    @(cambio > 0 ? "+" : "")@cambio kg
+                                                </span>
+                                            }
+                                        </td>
+                                        <td class="small text-muted">
+                                            @(string.IsNullOrWhiteSpace(registro.Notas) ? "—" : registro.Notas)
+                                        </td>
+                                        <td class="text-end text-nowrap">
+                                            <a asp-controller="Progreso" asp-action="Editar" asp-route-id="@registro.Id"
+                                               class="btn btn-sm btn-outline-secondary" title="Editar">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                            <form asp-controller="Progreso" asp-action="Eliminar" method="post"
+                                                  class="d-inline m-0"
+                                                  onsubmit="return confirm('¿Eliminar este registro? No se puede deshacer.');">
+                                                <input type="hidden" name="id" value="@registro.Id" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-md-5">
+        <div class="card shadow h-100">
+            <div class="card-header py-3" style="border-left: 4px solid #ff6b35;">
+                <h5 class="mb-0"><i class="fas fa-dumbbell me-2" style="color:#ff6b35;"></i>Registrar Entrenamiento</h5>
+            </div>
+            <div class="card-body">
+                <form asp-controller="Progreso" asp-action="RegistrarEntrenamiento" method="post">
+                    <div class="mb-3">
+                        <label asp-for="NuevoEntrenamiento.NombreRutina" class="form-label"></label>
+                        <input asp-for="NuevoEntrenamiento.NombreRutina" class="form-control"
+                               placeholder="Full Body, Piernas, Cardio..." />
+                        <span asp-validation-for="NuevoEntrenamiento.NombreRutina" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NuevoEntrenamiento.DuracionMinutos" class="form-label"></label>
+                        <input asp-for="NuevoEntrenamiento.DuracionMinutos" type="number" class="form-control" />
+                        <span asp-validation-for="NuevoEntrenamiento.DuracionMinutos" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NuevoEntrenamiento.Notas" class="form-label"></label>
+                        <textarea asp-for="NuevoEntrenamiento.Notas" class="form-control" rows="2"></textarea>
+                        <span asp-validation-for="NuevoEntrenamiento.Notas" class="text-danger small"></span>
+                    </div>
+                    <button type="submit" class="btn fc-btn-primary w-100 py-2">
+                        <i class="fas fa-check me-2"></i>Marcar como hecho
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="card shadow h-100">
+            <div class="card-header py-3" style="border-left: 4px solid #f59e0b;">
+                <h5 class="mb-0"><i class="fas fa-list-check me-2" style="color:#f59e0b;"></i>Entrenamientos recientes</h5>
+            </div>
+            <div class="card-body">
+                @if (!Model.TieneEntrenamientos)
+                {
+                    <div class="text-center py-5">
+                        <i class="fas fa-dumbbell mb-3" style="font-size:2.5rem; color:#2a2a4a;"></i>
+                        <p class="text-muted mb-0">Todavía no marcaste ningún entrenamiento.</p>
+                        <p class="text-muted small">Cada día que entrenes suma a tu racha.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle mb-0">
+                            <thead>
+                                <tr class="text-muted" style="font-size:0.75rem; text-transform:uppercase;">
+                                    <th>Fecha</th>
+                                    <th>Entrenamiento</th>
+                                    <th>Duración</th>
+                                    <th class="text-end"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var entrenamiento in Model.Entrenamientos.Take(10))
+                                {
+                                    <tr>
+                                        <td class="small">@entrenamiento.Fecha.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                                        <td>
+                                            <strong>@entrenamiento.NombreRutina</strong>
+                                            @if (!string.IsNullOrWhiteSpace(entrenamiento.Notas))
+                                            {
+                                                <div class="small text-muted">@entrenamiento.Notas</div>
+                                            }
+                                        </td>
+                                        <td class="small">@entrenamiento.DuracionMinutos min</td>
+                                        <td class="text-end">
+                                            <form asp-controller="Progreso" asp-action="EliminarEntrenamiento" method="post"
+                                                  class="d-inline m-0"
+                                                  onsubmit="return confirm('¿Eliminar este entrenamiento? No se puede deshacer.');">
+                                                <input type="hidden" name="id" value="@entrenamiento.Id" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        @if (Model.Entrenamientos.Count > 10)
+                        {
+                            <p class="text-muted small mb-0 mt-3">
+                                Mostrando los 10 más recientes de @Model.Entrenamientos.Count.
+                            </p>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.PuedeGraficar)
+{
+    <div class="card shadow mt-4">
+        <div class="card-header py-3" style="border-left: 4px solid #22c55e;">
+            <h5 class="mb-0"><i class="fas fa-chart-area me-2" style="color:#22c55e;"></i>Evolución del peso</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="grafica-peso" height="90"
+                    data-etiquetas="@Json.Serialize(Model.EtiquetasGrafica)"
+                    data-pesos="@Json.Serialize(Model.PesosGrafica)"></canvas>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    @if (Model.PuedeGraficar)
+    {
+        <script src="~/lib/chart.js/dist/chart.umd.min.js"></script>
+        <script>
+            (function () {
+                const canvas = document.getElementById('grafica-peso');
+                const etiquetas = JSON.parse(canvas.dataset.etiquetas);
+                const pesos = JSON.parse(canvas.dataset.pesos);
+
+                const grisTenue = '#2a2a4a';
+                const textoTenue = '#8b8b9e';
+
+                new Chart(canvas, {
+                    type: 'line',
+                    data: {
+                        labels: etiquetas,
+                        datasets: [{
+                            label: 'Peso (kg)',
+                            data: pesos,
+                            borderColor: '#22c55e',
+                            backgroundColor: 'rgba(34, 197, 94, 0.12)',
+                            pointBackgroundColor: '#22c55e',
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: contexto => `${contexto.parsed.y} kg`
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: grisTenue },
+                                ticks: { color: textoTenue }
+                            },
+                            y: {
+                                // Sin empezar en cero: la variación de peso se ve en pocos kilos
+                                // y un eje desde 0 la aplastaría hasta hacerla ilegible.
+                                beginAtZero: false,
+                                grid: { color: grisTenue },
+                                ticks: {
+                                    color: textoTenue,
+                                    callback: valor => valor + ' kg'
+                                }
+                            }
+                        }
+                    }
+                });
+            })();
+        </script>
+    }
+}
