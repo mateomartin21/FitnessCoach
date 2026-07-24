@@ -1,44 +1,73 @@
-using FitnessCoach.Domain.Models.Entrenamiento;
+using FitnessCoach.Domain.Ports;
 
 namespace FitnessCoach.Domain.Patterns.Strategy
 {
-    public class EstrategiaGanarMusculo : IEstrategiaRutina
+    public class EstrategiaGanarMusculo : EstrategiaRutinaBase
     {
-        public Rutina GenerarRutina()
+        public EstrategiaGanarMusculo(IRepositorioEjercicios catalogo, int semillaRotacion = 0)
+            : base(catalogo, semillaRotacion) { }
+
+        protected override string NombreRutina => "Hipertrofia Máxima (5 Días)";
+        protected override string Nivel => "Avanzado";
+
+        // Hipertrofia: cargas altas, así que barra y mancuerna antes que banda elástica.
+        protected override IReadOnlyList<string> EquiposPreferidos =>
+            new[] { "barbell", "dumbbell", "cable", "ez-bar", "lever" };
+
+        protected override IReadOnlyList<PlantillaDia> Plan => new PlantillaDia[]
         {
-            var rutina = new Rutina { NombreRutina = "Hipertrofia Máxima (5 Días)", Nivel = "Avanzado" };
-            rutina.Dias.Add(new DiaEntrenamiento
+            new()
             {
                 NombreDia = "Lunes",
                 Enfoque = "Pecho y Tríceps",
-                Ejercicios = new List<EjercicioPrescrito> {
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Press Inclinado con Mancuernas" }, Series = 4, Repeticiones = "8-10" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Press de Banca" }, Series = 3, Repeticiones = "8-12" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Fondos en Paralelas" }, Series = 3, Repeticiones = "Al fallo" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Rompecráneos" }, Series = 4, Repeticiones = "10-12" }
-            }
-            });
-            rutina.Dias.Add(new DiaEntrenamiento
+                Bloques = new BloqueEjercicios[]
+                {
+                    new("pectorals", 3, 4, "8-10"),
+                    new("triceps", 2, 4, "10-12")
+                }
+            },
+            new()
             {
                 NombreDia = "Martes",
                 Enfoque = "Espalda y Bíceps",
-                Ejercicios = new List<EjercicioPrescrito> {
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Dominadas" }, Series = 4, Repeticiones = "6-10" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Remo con Barra" }, Series = 4, Repeticiones = "10-12" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Curl de Bíceps" }, Series = 4, Repeticiones = "8-10" }
-            }
-            });
-            rutina.Dias.Add(new DiaEntrenamiento
+                Bloques = new BloqueEjercicios[]
+                {
+                    new("lats", 2, 4, "8-10"),
+                    new("upper-back", 1, 4, "10-12"),
+                    new("biceps", 2, 4, "8-10")
+                }
+            },
+            new()
+            {
+                NombreDia = "Miércoles",
+                Enfoque = "Piernas",
+                Bloques = new BloqueEjercicios[]
+                {
+                    new("quads", 2, 4, "8-10"),
+                    new("hamstrings", 2, 4, "10-12"),
+                    new("calves", 1, 4, "15-20")
+                }
+            },
+            new()
             {
                 NombreDia = "Jueves",
-                Enfoque = "Piernas",
-                Ejercicios = new List<EjercicioPrescrito> {
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Sentadilla Libre" }, Series = 4, Repeticiones = "8-10" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Prensa de Piernas" }, Series = 4, Repeticiones = "12-15" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Peso Muerto Rumano" }, Series = 4, Repeticiones = "10" }
+                Enfoque = "Hombros y Trapecio",
+                Bloques = new BloqueEjercicios[]
+                {
+                    new("delts", 3, 4, "10-12"),
+                    new("traps", 1, 3, "12-15")
+                }
+            },
+            new()
+            {
+                NombreDia = "Viernes",
+                Enfoque = "Glúteos y Core",
+                Bloques = new BloqueEjercicios[]
+                {
+                    new("glutes", 2, 4, "10-12"),
+                    new("abs", 2, 3, "15-20")
+                }
             }
-            });
-            return rutina;
-        }
+        };
     }
 }

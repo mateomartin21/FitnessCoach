@@ -1,46 +1,57 @@
-using FitnessCoach.Domain.Models.Entrenamiento;
+using FitnessCoach.Domain.Ports;
 
 namespace FitnessCoach.Domain.Patterns.Strategy
 {
-    public class EstrategiaPerderPeso : IEstrategiaRutina
+    public class EstrategiaPerderPeso : EstrategiaRutinaBase
     {
-        public Rutina GenerarRutina()
+        public EstrategiaPerderPeso(IRepositorioEjercicios catalogo, int semillaRotacion = 0)
+            : base(catalogo, semillaRotacion) { }
+
+        protected override string NombreRutina => "Quema de Grasa: Full Body Activo (3 Días)";
+        protected override string Nivel => "Principiante/Intermedio";
+
+        // Principiantes: peso corporal y mancuerna antes que barra libre, que exige técnica.
+        protected override IReadOnlyList<string> EquiposPreferidos =>
+            new[] { "bodyweight", "dumbbell", "band", "kettlebell", "cable" };
+
+        protected override IReadOnlyList<PlantillaDia> Plan => new PlantillaDia[]
         {
-            var rutina = new Rutina { NombreRutina = "Quema de Grasa: Full Body Activo (3 Días)", Nivel = "Principiante/Intermedio" };
-            rutina.Dias.Add(new DiaEntrenamiento
+            new()
             {
                 NombreDia = "Lunes",
                 Enfoque = "Cuerpo Completo + Cardio",
-                Ejercicios = new List<EjercicioPrescrito> {
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Sentadilla Goblet" }, Series = 4, Repeticiones = "12-15" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Flexiones" }, Series = 3, Repeticiones = "Al fallo" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Remo con Mancuernas" }, Series = 3, Repeticiones = "12-15" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Plancha" }, Series = 3, Repeticiones = "45 seg" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Caminadora Inclinada" }, Series = 1, Repeticiones = "25 min" }
-            }
-            });
-            rutina.Dias.Add(new DiaEntrenamiento
+                Bloques = new BloqueEjercicios[]
+                {
+                    new("quads", 2, 4, "12-15"),
+                    new("pectorals", 1, 3, "Al fallo"),
+                    new("upper-back", 1, 3, "12-15"),
+                    new("abs", 1, 3, "45 seg"),
+                    new("cardio", 1, 1, "25 min")
+                }
+            },
+            new()
             {
                 NombreDia = "Miércoles",
                 Enfoque = "Cuerpo Completo B + Cardio",
-                Ejercicios = new List<EjercicioPrescrito> {
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Zancadas Inversas" }, Series = 3, Repeticiones = "12 por pierna" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Press Militar" }, Series = 3, Repeticiones = "12-15" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Jalón al Pecho" }, Series = 3, Repeticiones = "15" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Bicicleta Estática" }, Series = 1, Repeticiones = "25 min" }
-            }
-            });
-            rutina.Dias.Add(new DiaEntrenamiento
+                Bloques = new BloqueEjercicios[]
+                {
+                    new("glutes", 2, 3, "12 por pierna"),
+                    new("delts", 1, 3, "12-15"),
+                    new("lats", 1, 3, "15"),
+                    new("cardio", 1, 1, "25 min")
+                }
+            },
+            new()
             {
                 NombreDia = "Viernes",
                 Enfoque = "Circuito Metabólico",
-                Ejercicios = new List<EjercicioPrescrito> {
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Sentadillas con Salto" }, Series = 4, Repeticiones = "15" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Mountain Climbers" }, Series = 4, Repeticiones = "30 seg" },
-                new EjercicioPrescrito { Ejercicio = new Ejercicio { Nombre = "Burpees" }, Series = 4, Repeticiones = "10-12" }
+                Bloques = new BloqueEjercicios[]
+                {
+                    new("quads", 2, 4, "15"),
+                    new("abs", 2, 4, "30 seg"),
+                    new("cardio", 1, 1, "20 min")
+                }
             }
-            });
-            return rutina;
-        }
+        };
     }
 }

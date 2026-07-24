@@ -23,7 +23,9 @@ namespace FitnessCoach.Controllers
             if (usuario == null || usuario.ObjetivoActual == null)
                 return RedirectToAction("Index", "Perfil");
 
-            var rutinaGenerada = _generador.GenerarRutinaParaObjetivo(usuario.ObjetivoActual);
+            // El Id del perfil como semilla: dos usuarios con el mismo objetivo reciben
+            // ejercicios distintos, y cada uno ve siempre la misma rutina.
+            var rutinaGenerada = _generador.GenerarRutinaParaObjetivo(usuario.ObjetivoActual, usuario.Id);
             return View(rutinaGenerada);
         }
     }
