@@ -22,7 +22,7 @@ namespace FitnessCoach.Controllers
                 return RedirectToAction("Index", "Perfil");
             }
 
-            // Ordenamos la lista para que el registro m·s nuevo salga arriba
+            // Ordenamos la lista para que el registro m√°s nuevo salga arriba
             var historial = usuario.HistorialProgreso.OrderByDescending(r => r.Fecha).ToList();
 
             // Pasamos el peso actual a la vista usando ViewBag
@@ -31,7 +31,7 @@ namespace FitnessCoach.Controllers
             return View(historial);
         }
 
-        // 2. Recibir el formulario, guardar y recargar la p·gina (Server-side rendering)
+        // 2. Recibir el formulario, guardar y recargar la p√°gina (Server-side rendering)
         [HttpPost]
         public IActionResult RegistrarPeso(double NuevoPeso, string Notas)
         {
@@ -49,7 +49,7 @@ namespace FitnessCoach.Controllers
 
                 usuario.HistorialProgreso.Add(nuevoRegistro);
 
-                // Actualizamos el peso maestro del usuario para que sus calorÌas cambien
+                // Actualizamos el peso maestro del usuario para que sus calor√≠as cambien
                 usuario.PesoKg = NuevoPeso;
 
                 // Guardar cambios en nuestro repositorio temporal

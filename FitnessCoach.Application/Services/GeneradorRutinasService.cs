@@ -9,7 +9,7 @@ namespace FitnessCoach.Application.Services
     {
         public Rutina GenerarRutinaParaObjetivo(ObjetivoFitness objetivo)
         {
-            // PATRÓN STRATEGY — selecciona la estrategia según el objetivo
+            // PATRÃ“N STRATEGY â€” selecciona la estrategia segÃºn el objetivo
             IEstrategiaRutina estrategia = objetivo switch
             {
                 ObjetivoPerderPeso => new EstrategiaPerderPeso(),
@@ -18,7 +18,7 @@ namespace FitnessCoach.Application.Services
                 _ => new EstrategiaRecomposicion()
             };
 
-            // PATRÓN DECORATOR — envuelve la estrategia con calentamiento y enfriamiento
+            // PATRÃ“N DECORATOR â€” envuelve la estrategia con calentamiento y enfriamiento
             IEstrategiaRutina rutinaDecorada = new RutinaConEnfriamiento(
                                                new RutinaConCalentamiento(estrategia));
 

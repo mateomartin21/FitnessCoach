@@ -10,7 +10,7 @@ namespace FitnessCoach.Controllers
         private readonly IRepositorioUsuario _repositorio;
         private readonly IGeneradorRutinas _generador;
 
-        // Inyección del repositorio de datos y del servicio de rutinas
+        // InyecciÃ³n del repositorio de datos y del servicio de rutinas
         public RutinasController(IRepositorioUsuario repositorio, IGeneradorRutinas generador)
         {
             _repositorio = repositorio;
