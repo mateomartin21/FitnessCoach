@@ -24,7 +24,7 @@ C4Container
     Person(usuario, "Usuario", "Persona que usa la plataforma")
 
     System_Boundary(fitnessCoach, "FitnessCoach") {
-        Container(app, "FitnessCoach (ASP.NET Core)", "MVC + Web API en un mismo proceso", "Sirve las vistas (Perfil, Rutinas, Progreso) y expone /api/usuarios y /api/usuarios/{id}/progreso. Program.cs actua como composition root")
+        Container(app, "FitnessCoach (ASP.NET Core)", "MVC + Web API en un mismo proceso", "Sirve las vistas (Perfil, Rutinas, Progreso) y expone /api/perfil y /api/perfil/progreso. Program.cs actua como composition root")
         ContainerDb(memoria, "Almacenamiento en memoria", "RepositorioUsuarioMemoria", "Guarda los usuarios y su progreso en memoria; no hay base de datos persistente todavia")
     }
 
