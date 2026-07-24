@@ -28,6 +28,7 @@ public class UsuarioPerfil
     public ObjetivoFitness? ObjetivoActual { get; set; }
     public List<RegistroProgreso> HistorialProgreso { get; set; } = new();
     public List<EntrenamientoCompletado> EntrenamientosCompletados { get; set; } = new();
+    public List<RecordPersonal> RecordsPersonales { get; set; } = new();
 }
 
 }

@@ -21,9 +21,14 @@ namespace FitnessCoach.Tests.Patterns
                     {
                         NombreDia = "Lunes",
                         Enfoque = "Prueba",
-                        Ejercicios = new List<Ejercicio>
+                        Ejercicios = new List<EjercicioPrescrito>
                         {
-                            new Ejercicio { Nombre = "Ejercicio Original", Series = 3, Repeticiones = "10" }
+                            new EjercicioPrescrito
+                            {
+                                Ejercicio = new Ejercicio { Slug = "original", Nombre = "Ejercicio Original" },
+                                Series = 3,
+                                Repeticiones = "10"
+                            }
                         }
                     }
                 }

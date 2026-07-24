@@ -4,6 +4,7 @@ using FitnessCoach.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessCoach.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260724170328_CatalogoDeEjercicios")]
+    partial class CatalogoDeEjercicios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -364,47 +367,6 @@ namespace FitnessCoach.Infrastructure.Data.Migrations
                                 .HasForeignKey("UsuarioPerfilId");
                         });
 
-                    b.OwnsMany("FitnessCoach.Domain.Models.RecordPersonal", "RecordsPersonales", b1 =>
-                        {
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<string>("EjercicioNombre")
-                                .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)");
-
-                            b1.Property<string>("EjercicioSlug")
-                                .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)");
-
-                            b1.Property<DateTime>("Fecha")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<double>("PesoKg")
-                                .HasColumnType("float");
-
-                            b1.Property<int>("Repeticiones")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("UsuarioPerfilId")
-                                .HasColumnType("int");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("UsuarioPerfilId", "EjercicioSlug")
-                                .IsUnique();
-
-                            b1.ToTable("RecordsPersonales", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("UsuarioPerfilId");
-                        });
-
                     b.OwnsMany("FitnessCoach.Domain.Models.RegistroProgreso", "HistorialProgreso", b1 =>
                         {
                             b1.Property<int>("Id")
@@ -440,8 +402,6 @@ namespace FitnessCoach.Infrastructure.Data.Migrations
                     b.Navigation("EntrenamientosCompletados");
 
                     b.Navigation("HistorialProgreso");
-
-                    b.Navigation("RecordsPersonales");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

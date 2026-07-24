@@ -1,3 +1,4 @@
+@using FitnessCoach.Domain.Models.Entrenamiento
 @model FitnessCoach.Domain.Models.Entrenamiento.Rutina
 @{
     ViewData["Title"] = "Mi Rutina";
@@ -8,6 +9,13 @@
     <span class="badge px-3 py-2" style="background:var(--fc-primary); font-size:0.9rem;">@Model.Nivel</span>
     <p class="text-muted mt-2 small">Incluye calentamiento y enfriamiento automatico (Patron Decorator)</p>
 </div>
+
+@if (Model.Dias.Count == 0)
+{
+    <div class="alert alert-warning">
+        No se pudo componer una rutina: el catálogo de ejercicios está vacío.
+    </div>
+}
 
 <div class="accordion" id="accordionRutina">
     @for (int i = 0; i < Model.Dias.Count; i++)
@@ -26,10 +34,11 @@
             <div id="dia-@i" class="accordion-collapse collapse @(isFirst ? "show" : "")">
                 <div class="accordion-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover mb-0">
+                        <table class="table table-hover mb-0 align-middle">
                             <thead style="background:#1a1a2e;">
                                 <tr>
-                                    <th class="ps-3">Ejercicio</th>
+                                    <th class="ps-3" style="width:70px;"></th>
+                                    <th>Ejercicio</th>
                                     <th class="text-center">Series</th>
                                     <th class="text-center">Reps</th>
                                     <th>Notas</th>
@@ -40,12 +49,54 @@
                                 {
                                     var isWarmup = ej.Nombre.Contains("Calentamiento");
                                     var isCooldown = ej.Nombre.Contains("Enfriamiento");
+                                    // Los del catálogo tienen grupo muscular; el calentamiento y el
+                                    // enfriamiento son consignas genéricas y no lo tienen.
+                                    var esDelCatalogo = !string.IsNullOrWhiteSpace(ej.Ejercicio.GrupoMuscular);
+                                    var medios = FabricaMediosEjercicio.Crear(ej.Ejercicio);
+                                    var gif = medios.FirstOrDefault(m => m.Tipo == TipoMedio.Gif).Url;
+                                    var busqueda = medios.First(m => m.Tipo == TipoMedio.EnlaceBusqueda).Url;
+
                                     <tr style="@(isWarmup ? "border-left: 3px solid #00d4ff;" : isCooldown ? "border-left: 3px solid #7c3aed;" : "border-left: 3px solid var(--fc-primary);")">
-                                        <td class="ps-3 fw-bold">
+                                        <td class="ps-3">
+                                            @if (esDelCatalogo)
+                                            {
+                                                <img src="@(gif ?? FabricaMediosEjercicio.RutaPlaceholder)"
+                                                     alt="@ej.Nombre"
+                                                     loading="lazy"
+                                                     class="rounded"
+                                                     style="width:56px; height:56px; object-fit:cover; background:#0f0f1a;"
+                                                     onerror="this.onerror=null; this.src='@FabricaMediosEjercicio.RutaPlaceholder';" />
+                                            }
+                                        </td>
+                                        <td class="fw-bold">
                                             @if (isWarmup) { <i class="fas fa-wind me-1" style="color:#00d4ff;"></i> }
                                             else if (isCooldown) { <i class="fas fa-snowflake me-1" style="color:#7c3aed;"></i> }
                                             else { <i class="fas fa-bolt me-1" style="color:var(--fc-primary);"></i> }
                                             @ej.Nombre
+                                            @if (esDelCatalogo)
+                                            {
+                                                <button type="button"
+                                                        class="btn btn-sm btn-link p-0 ms-2 fc-ver-ejercicio"
+                                                        style="color:#00d4ff; text-decoration:none;"
+                                                        data-nombre="@ej.Nombre"
+                                                        data-gif="@gif"
+                                                        data-video="@ej.Ejercicio.VideoYoutubeId"
+                                                        data-busqueda="@busqueda"
+                                                        data-grupo="@ej.Ejercicio.GrupoMuscular"
+                                                        data-equipo="@ej.Ejercicio.Equipo"
+                                                        data-slug="@ej.Ejercicio.Slug">
+                                                    <i class="fas fa-circle-info"></i> Ver técnica
+                                                </button>
+                                                @* Las instrucciones viajan como HTML, no como JSON en un atributo:
+                                                   Json.Serialize devuelve contenido ya codificado y el JSON llegaba
+                                                   mal formado al dataset. Acá Razor escapa cada paso por su cuenta. *@
+                                                <ol class="d-none fc-instrucciones">
+                                                    @foreach (var paso in ej.Ejercicio.Instrucciones)
+                                                    {
+                                                        <li>@paso</li>
+                                                    }
+                                                </ol>
+                                            }
                                         </td>
                                         <td class="text-center">@ej.Series</td>
                                         <td class="text-center">@ej.Repeticiones</td>
@@ -66,3 +117,163 @@
         <i class="fas fa-user-cog me-2"></i>Cambiar Objetivo
     </a>
 </div>
+
+<!-- Un solo modal reutilizable: se rellena desde los data-* del botón -->
+<div class="modal fade" id="modalEjercicio" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" style="background:#16213e; border:1px solid #2a2a4a;">
+            <div class="modal-header" style="border-bottom:1px solid #2a2a4a;">
+                <h5 class="modal-title" id="modalEjercicioTitulo" style="color:var(--fc-primary);"></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div id="modalEjercicioMedio" class="rounded overflow-hidden"
+                             style="background:#0f0f1a; min-height:220px; display:flex; align-items:center; justify-content:center;">
+                        </div>
+                        <div class="mt-2 d-flex gap-2 flex-wrap">
+                            <span class="badge bg-secondary" id="modalEjercicioGrupo"></span>
+                            <span class="badge bg-secondary" id="modalEjercicioEquipo"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-uppercase text-muted small">Cómo se hace</h6>
+                        <ol class="ps-3 small" id="modalEjercicioInstrucciones"></ol>
+                        <a id="modalEjercicioYoutube" class="btn btn-sm btn-outline-danger mt-2" target="_blank" rel="noopener">
+                            <i class="fab fa-youtube me-1"></i>Ver más en YouTube
+                        </a>
+
+                        <hr style="border-color:#2a2a4a;" />
+
+                        <h6 class="text-uppercase text-muted small">
+                            <i class="fas fa-trophy me-1" style="color:#f59e0b;"></i>Registrar marca
+                        </h6>
+                        <form asp-controller="Progreso" asp-action="RegistrarRecord" method="post" class="row g-2">
+                            <input type="hidden" name="EjercicioSlug" id="recordSlug" />
+                            <input type="hidden" name="EjercicioNombre" id="recordNombre" />
+                            <input type="hidden" name="volverA" value="@Context.Request.Path" />
+                            <div class="col-5">
+                                <label class="form-label small mb-1">Peso (kg)</label>
+                                <input type="number" step="0.5" min="0" name="PesoKg" value="0" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-5">
+                                <label class="form-label small mb-1">Reps</label>
+                                <input type="number" min="1" name="Repeticiones" value="1" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-sm fc-btn-primary w-100" title="Guardar marca">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </div>
+                            <div class="col-12">
+                                <small class="text-muted">Solo se guarda si supera tu marca anterior.</small>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    (function () {
+        const placeholder = '@FabricaMediosEjercicio.RutaPlaceholder';
+        const modalEl = document.getElementById('modalEjercicio');
+        const modal = new bootstrap.Modal(modalEl);
+
+        // Cadena de medios: se intenta el GIF; si el navegador no lo carga se pasa al
+        // video embebido, y si tampoco hay, al placeholder local. El enlace a YouTube
+        // se muestra siempre, porque una búsqueda nunca queda rota.
+        function pintarMedio(contenedor, datos) {
+            contenedor.innerHTML = '';
+
+            if (datos.gif) {
+                const img = document.createElement('img');
+                img.src = datos.gif;
+                img.alt = datos.nombre;
+                img.className = 'img-fluid';
+                img.onerror = function () { img.onerror = null; caerAlSiguiente(contenedor, datos); };
+                contenedor.appendChild(img);
+                return;
+            }
+            caerAlSiguiente(contenedor, datos);
+        }
+
+        function caerAlSiguiente(contenedor, datos) {
+            contenedor.innerHTML = '';
+
+            if (datos.video) {
+                const iframe = document.createElement('iframe');
+                iframe.src = 'https://www.youtube-nocookie.com/embed/' + datos.video;
+                iframe.width = '100%';
+                iframe.height = '260';
+                iframe.allowFullscreen = true;
+                iframe.setAttribute('frameborder', '0');
+                contenedor.appendChild(iframe);
+                return;
+            }
+
+            const img = document.createElement('img');
+            img.src = placeholder;
+            img.alt = datos.nombre;
+            img.style.maxWidth = '140px';
+            img.style.opacity = '0.6';
+            contenedor.appendChild(img);
+        }
+
+        document.querySelectorAll('.fc-ver-ejercicio').forEach(function (boton) {
+            boton.addEventListener('click', function () {
+                const datos = {
+                    nombre: boton.dataset.nombre,
+                    gif: boton.dataset.gif,
+                    video: boton.dataset.video,
+                    busqueda: boton.dataset.busqueda,
+                    grupo: boton.dataset.grupo,
+                    equipo: boton.dataset.equipo
+                };
+
+                document.getElementById('modalEjercicioTitulo').textContent = datos.nombre;
+                document.getElementById('modalEjercicioGrupo').textContent = datos.grupo;
+                document.getElementById('modalEjercicioEquipo').textContent = datos.equipo;
+                document.getElementById('modalEjercicioYoutube').href = datos.busqueda;
+
+                // El formulario de marca ya sabe de qué ejercicio se trata: sin selector.
+                document.getElementById('recordSlug').value = boton.dataset.slug;
+                document.getElementById('recordNombre').value = datos.nombre;
+
+                const lista = document.getElementById('modalEjercicioInstrucciones');
+                lista.innerHTML = '';
+
+                // Los pasos ya están renderizados y escapados por Razor junto al botón.
+                const origen = boton.parentElement.querySelector('.fc-instrucciones');
+                const pasos = origen ? origen.querySelectorAll('li') : [];
+
+                if (pasos.length === 0) {
+                    const vacio = document.createElement('li');
+                    vacio.className = 'text-muted';
+                    vacio.textContent = 'Sin instrucciones cargadas para este ejercicio.';
+                    lista.appendChild(vacio);
+                } else {
+                    pasos.forEach(function (paso) {
+                        const li = document.createElement('li');
+                        li.className = 'mb-1';
+                        li.textContent = paso.textContent;
+                        lista.appendChild(li);
+                    });
+                }
+
+                pintarMedio(document.getElementById('modalEjercicioMedio'), datos);
+                modal.show();
+            });
+        });
+
+        // Cortar la reproducción al cerrar: si no, el video sigue sonando de fondo.
+        modalEl.addEventListener('hidden.bs.modal', function () {
+            document.getElementById('modalEjercicioMedio').innerHTML = '';
+        });
+    })();
+</script>
+}

@@ -26,6 +26,11 @@ Fase 4        Fase 5             Fase 6
 Tracker       Catálogo de        Resiliencia
               ejercicios         de IA
    │              │                  │
+   │              ▼                  │
+   │         Fase 5.5                │
+   │         Catálogo de             │
+   │         alimentos               │
+   │              │                  │
    │              │                  ▼
    │              │              Fase 7
    │              │              IA expandida
@@ -173,6 +178,14 @@ Tracker       Catálogo de        Resiliencia
 
 ## Fase 5 — Catálogo de ejercicios y variedad
 
+> **✅ Cerrada el 24/07/2026** (rama `fase-5/catalogo-ejercicios`, ADR-13) — seis commits: separación del modelo (`10f73da`), catálogo persistido (`e0257b3`), estrategias componiendo desde el catálogo (`a885b97`), vista con GIF e instrucciones (`7ff4aa8`), corrección de las instrucciones (`1c52d97`) y récords personales (`cab00e5`). 121/121 pruebas en verde.
+>
+> **1.323 ejercicios** en español con GIF e instrucciones, contra los ~30 nombres hardcodeados anteriores. Los récords personales heredados de la Fase 4 quedaron cerrados acá.
+>
+> Sobre la advertencia de abajo: los tests de `GeneradorRutinasService` **no necesitaron cambiar sus asserts** — solo se les inyectó un catálogo falso. Lo mismo con los del Decorator.
+>
+> Deuda nueva: **D-27** y **D-28** (alimentación, ver Fase 5.5), **D-29** (licencia de los GIFs).
+
 **Objetivo:** contenido real. Que dos usuarios con el mismo objetivo no vean exactamente lo mismo.
 
 **Entregables:**
@@ -188,6 +201,30 @@ Tracker       Catálogo de        Resiliencia
 **Rama sugerida:** `fase-5/catalogo-ejercicios`
 
 > ⚠ Es la fase con más impacto sobre las pruebas existentes. Los tests de `GeneradorRutinasService` que hoy verifican `rutina.Nivel` pueden necesitar ajuste — revisar antes de empezar.
+
+---
+
+## Fase 5.5 — Catálogo de alimentos y planes personalizados
+
+**Objetivo:** que el plan de comidas deje de ser un folleto fijo y responda a las calorías reales de cada usuario. Es el espejo exacto de la Fase 5, pero en alimentación.
+
+**Resuelve:** D-27, D-28
+
+**Por qué existe esta fase:** al cerrar la Fase 5 quedó a la vista que la alimentación arrastra los mismos problemas que los ejercicios acababan de resolver, más uno propio y peor: `CaloriasObjetivo = "1800-2000 kcal/día"` está escrito a mano en cada estrategia, así que **el plan ignora el cálculo calórico que la propia app le muestra al usuario en la pantalla de Perfil**. Dos personas con 1900 y 2600 kcal calculadas reciben el mismo plan.
+
+**Entregables:**
+- Entidad `Alimento` persistida con macros por porción (hoy los alimentos son `List<string>` de texto plano y los macros están sumados a mano por comida)
+- Catálogo de alimentos con datos semilla, mismo enfoque que el de ejercicios (archivo de datos + sembrador)
+- Las estrategias de alimentación **componen** el plan desde el catálogo en vez de tenerlo incrustado
+- **El plan escala a las calorías calculadas del usuario**, no a un rango fijo (D-27)
+- Sustitución de alimentos: poder cambiar uno por otro equivalente en macros
+- Pruebas de que el plan generado respeta el objetivo calórico dentro de un margen
+
+**Definition of Done:** dos usuarios con requerimientos calóricos distintos reciben planes distintos y coherentes con el número que la app les muestra en Perfil. Agregar un alimento no requiere tocar ninguna clase de Strategy.
+**ADR:** ADR-14 — catálogo de alimentos y personalización calórica.
+**Rama sugerida:** `fase-5.5/catalogo-alimentos`
+
+> Va acá y no más adelante porque es barato inmediatamente después de la Fase 5: el patrón (entidad + catálogo + semilla + estrategias que componen) ya está resuelto y probado; se replica. Dejarlo para el final significaría rehacer las estrategias de alimentación dos veces.
 
 ---
 
@@ -209,7 +246,7 @@ Tracker       Catálogo de        Resiliencia
 - Pruebas del fallback con proveedores falsos
 
 **Definition of Done:** prueba de fuego §7, punto 6 — con internet desconectado, el Lobo responde con gracia y la app no se cae.
-**ADR:** ADR-14 — resiliencia de IA mediante patrón de proveedores intercambiables.
+**ADR:** ADR-15 — resiliencia de IA mediante patrón de proveedores intercambiables.
 **Rama sugerida:** `fase-6/resiliencia-ia`
 
 ---
@@ -227,7 +264,7 @@ Tracker       Catálogo de        Resiliencia
 - Comentarios contextuales del Lobo en las pantallas clave
 
 **Definition of Done:** el análisis usa datos reales del usuario (no genéricos) y degrada con gracia si la IA no está disponible.
-**ADR:** ADR-15 si el diseño de la integración cambia sustancialmente.
+**ADR:** ADR-16 si el diseño de la integración cambia sustancialmente.
 **Rama sugerida:** `fase-7/ia-analisis`
 
 ---
@@ -246,7 +283,7 @@ Tracker       Catálogo de        Resiliencia
 - El Lobo reacciona a cada uno de estos eventos
 
 **Definition of Done:** las mecánicas se calculan desde datos reales, y están cubiertas por pruebas (es lógica de dominio pura, ideal para xUnit).
-**ADR:** ADR-16.
+**ADR:** ADR-17.
 **Rama sugerida:** `fase-8/gamificacion`
 
 ---
@@ -266,7 +303,7 @@ Tracker       Catálogo de        Resiliencia
 - Sonidos 8-bit en acciones clave *(opcional)*
 
 **Definition of Done:** ninguna pantalla parece una plantilla de Bootstrap. La app se reconoce como propia en una captura.
-**ADR:** ADR-17 — decisión de identidad visual y su implementación.
+**ADR:** ADR-18 — decisión de identidad visual y su implementación.
 **Rama sugerida:** `fase-9/pixel-art`
 
 ---
@@ -312,7 +349,8 @@ Tracker       Catálogo de        Resiliencia
 | 2 | ✅ Completada | `fase-2/identity-login` | (contra `CD/CI`) | ADR-10 | ✅ |
 | 3 | ✅ Completada | `fase-3/validacion` | (contra `CD/CI`) | ADR-11 | ✅ |
 | 4 | ✅ Completada | `fase-4/tracker` | (contra `CD/CI`) | ADR-12 | ✅ |
-| 5 | ⬜ Pendiente | — | — | — | — |
+| 5 | ✅ Completada | `fase-5/catalogo-ejercicios` | (contra `CD/CI`) | ADR-13 | ✅ |
+| 5.5 | ⬜ Pendiente | — | — | — | — |
 | 6 | ⬜ Pendiente | — | — | — | — |
 | 7 | ⬜ Pendiente | — | — | — | — |
 | 8 | ⬜ Pendiente | — | — | — | — |

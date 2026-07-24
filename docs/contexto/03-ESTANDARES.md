@@ -105,7 +105,7 @@ Si se captura, o se maneja de verdad, o se registra con `ILogger` y se relanza. 
 
 ## 3. Pruebas
 
-**Estado actual:** 95 pruebas xUnit, todas en verde, corriendo en CI.
+**Estado actual:** 121 pruebas xUnit, todas en verde, corriendo en CI.
 
 ### Reglas
 
