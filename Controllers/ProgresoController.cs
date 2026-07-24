@@ -45,7 +45,7 @@ namespace FitnessCoach.Controllers
 
             usuario.HistorialProgreso.Add(new RegistroProgreso
             {
-                Fecha = DateTime.Now,
+                Fecha = DateTime.UtcNow,   // siempre UTC; la vista convierte al mostrar (D-10)
                 PesoKg = modelo.NuevoPeso,
                 Notas = modelo.Notas ?? ""
             });
