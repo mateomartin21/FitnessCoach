@@ -1,34 +1,35 @@
 using System.Text;
 using System.Text.Json;
 using FitnessCoach.Domain.Ports;
-using Microsoft.Extensions.Configuration;
 
 namespace FitnessCoach.Infrastructure.Adapters
 {
     /// <summary>
     /// Proveedor de IA real: le manda el prompt a la API de Gemini y devuelve el texto.
     ///
-    /// Ahora solo se ocupa de "cómo hablo con Google": recibe el prompt ya armado (la
+    /// Solo se ocupa de "cómo hablo con Google": recibe el prompt ya armado (la
     /// personalidad del Lobo vive en Application, D-20) y ante cualquier problema
     /// **lanza** <see cref="CoachIAException"/> en vez de devolver el error como texto
-    /// (D-09). Así la cadena puede distinguir un fallo y pasar al respaldo.
+    /// (D-09). Así la cadena puede distinguir un fallo y pasar al siguiente proveedor.
+    ///
+    /// El modelo y la clave llegan por constructor (no los lee de la config): así la
+    /// fábrica puede crear varias instancias con modelos distintos para el fallback.
     /// </summary>
     public class GeminiCoachService : IProveedorIA
     {
         private readonly HttpClient _httpClient;
-        private readonly string? _apiKey;
+        private readonly string _apiKey;
         private readonly string _model;
 
-        public GeminiCoachService(HttpClient httpClient, IConfiguration config)
+        public GeminiCoachService(HttpClient httpClient, string apiKey, string model)
         {
             _httpClient = httpClient;
-            // No se lanza en el constructor: sin clave, el fallo ocurre al llamar y la
-            // cadena cae al respaldo, en vez de tumbar el arranque de toda la app.
-            _apiKey = config["Gemini:ApiKey"];
-            _model = config["Gemini:Model"] ?? "gemini-2.0-flash";
+            _apiKey = apiKey;
+            _model = model;
+            Nombre = $"Gemini ({model})";
         }
 
-        public string Nombre => "Gemini";
+        public string Nombre { get; }
         public bool EsRespaldo => false;
 
         public async Task<string> GenerarAsync(ConsultaIA consulta, CancellationToken cancellationToken = default)
@@ -58,8 +59,8 @@ namespace FitnessCoach.Infrastructure.Adapters
             catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
             {
                 // Red caída o timeout: el caso típico de "sin internet". Se lanza para
-                // que la cadena lo registre y pase al respaldo.
-                throw new CoachIAException("No se pudo contactar a la API de Gemini.", ex);
+                // que la cadena lo registre y pase al siguiente proveedor.
+                throw new CoachIAException($"No se pudo contactar a la API de Gemini ({_model}).", ex);
             }
 
             return ExtraerTexto(responseJson);

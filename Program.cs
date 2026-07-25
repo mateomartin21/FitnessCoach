@@ -94,20 +94,35 @@ builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorAlimentac
 builder.Services.AddScoped<FitnessCoach.Application.Services.IServicioDiario,
                            FitnessCoach.Application.Services.ServicioDiario>();
 
-// Proveedores de IA del Lobo Coach, EN ORDEN: primero el real (Gemini), y si falla,
-// el respaldo offline que responde por reglas sin red. La cadena (CoachResiliente)
-// los recibe como IEnumerable en este mismo orden.
-builder.Services.AddHttpClient<FitnessCoach.Domain.Ports.IProveedorIA,
-                               FitnessCoach.Infrastructure.Adapters.GeminiCoachService>(client =>
+// Cliente HTTP compartido por los proveedores de IA (timeout acotado para que un
+// proveedor colgado no cuelgue toda la consulta: se corta y la cadena sigue).
+builder.Services.AddHttpClient("ia", client =>
 {
     client.Timeout = TimeSpan.FromSeconds(15);
 });
-builder.Services.AddScoped<FitnessCoach.Domain.Ports.IProveedorIA,
-                           FitnessCoach.Application.Coaching.CoachOfflineService>();
 
-// El coach que consume el controlador: prueba los proveedores y garantiza respuesta.
-builder.Services.AddScoped<FitnessCoach.Application.Coaching.ICoachIA,
-                           FitnessCoach.Application.Coaching.CoachResiliente>();
+// Factory que arma los proveedores de IA reales según la configuración (Gemini y,
+// si hay clave, Groq/OpenRouter). Agregar un proveedor es tocar solo la fábrica.
+builder.Services.AddScoped<FitnessCoach.Domain.Ports.IFabricaProveedoresIA,
+                           FitnessCoach.Infrastructure.Adapters.FabricaProveedoresIA>();
+
+// El respaldo offline: última garantía, sin red. Vive en Application (es testeable).
+builder.Services.AddScoped<FitnessCoach.Application.Coaching.CoachOfflineService>();
+
+// El coach que consume el controlador: la cadena de la fábrica + el offline al final.
+// Prueba los proveedores en orden y garantiza siempre una respuesta del Lobo.
+builder.Services.AddScoped<FitnessCoach.Application.Coaching.ICoachIA>(sp =>
+{
+    var fabrica = sp.GetRequiredService<FitnessCoach.Domain.Ports.IFabricaProveedoresIA>();
+    var offline = sp.GetRequiredService<FitnessCoach.Application.Coaching.CoachOfflineService>();
+    var log = sp.GetRequiredService<ILogger<FitnessCoach.Application.Coaching.CoachResiliente>>();
+
+    var proveedores = fabrica.CrearProveedores()
+        .Append<FitnessCoach.Domain.Ports.IProveedorIA>(offline)
+        .ToList();
+
+    return new FitnessCoach.Application.Coaching.CoachResiliente(proveedores, log);
+});
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
