@@ -94,9 +94,38 @@ builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorAlimentac
 builder.Services.AddScoped<FitnessCoach.Application.Services.IServicioDiario,
                            FitnessCoach.Application.Services.ServicioDiario>();
 
-builder.Services.AddHttpClient<FitnessCoach.Infrastructure.Adapters.GeminiCoachService>(client =>
+// Cliente HTTP compartido por los proveedores de IA (timeout acotado para que un
+// proveedor colgado no cuelgue toda la consulta: se corta y la cadena sigue).
+builder.Services.AddHttpClient("ia", client =>
 {
     client.Timeout = TimeSpan.FromSeconds(15);
+});
+
+// Factory que arma los proveedores de IA reales según la configuración (Gemini y,
+// si hay clave, Groq/OpenRouter). Agregar un proveedor es tocar solo la fábrica.
+builder.Services.AddScoped<FitnessCoach.Domain.Ports.IFabricaProveedoresIA,
+                           FitnessCoach.Infrastructure.Adapters.FabricaProveedoresIA>();
+
+// El respaldo offline: última garantía, sin red. Vive en Application (es testeable).
+builder.Services.AddScoped<FitnessCoach.Application.Coaching.CoachOfflineService>();
+
+// Arma el contexto rico (plan, rutina, diario, récords, catálogo) para cada consulta.
+builder.Services.AddScoped<FitnessCoach.Application.Coaching.IArmadorContextoCoach,
+                           FitnessCoach.Application.Coaching.ArmadorContextoCoach>();
+
+// El coach que consume el controlador: la cadena de la fábrica + el offline al final.
+// Prueba los proveedores en orden y garantiza siempre una respuesta del Lobo.
+builder.Services.AddScoped<FitnessCoach.Application.Coaching.ICoachIA>(sp =>
+{
+    var fabrica = sp.GetRequiredService<FitnessCoach.Domain.Ports.IFabricaProveedoresIA>();
+    var offline = sp.GetRequiredService<FitnessCoach.Application.Coaching.CoachOfflineService>();
+    var log = sp.GetRequiredService<ILogger<FitnessCoach.Application.Coaching.CoachResiliente>>();
+
+    var proveedores = fabrica.CrearProveedores()
+        .Append<FitnessCoach.Domain.Ports.IProveedorIA>(offline)
+        .ToList();
+
+    return new FitnessCoach.Application.Coaching.CoachResiliente(proveedores, log);
 });
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

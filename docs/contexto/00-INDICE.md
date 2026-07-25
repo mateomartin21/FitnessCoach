@@ -48,6 +48,6 @@ Y adjunta:
 |-------|-------|
 | Creado | 22/07/2026 |
 | Última actualización | 24/07/2026 |
-| Rama de referencia | `fase-5.6/preferencias-adherencia` (contra `CD/CI`) |
-| Último ADR | ADR-15 (preferencias y adherencia) |
-| Fase activa del roadmap | Fase 6 — Resiliencia de IA (siguiente) |
+| Rama de referencia | `fase-6/resiliencia-ia` (contra `CD/CI`) |
+| Último ADR | ADR-16 (resiliencia de IA + IA expandida) |
+| Fase activa del roadmap | Fase 8 — Gamificación (la 7 quedó casi absorbida por la 6) |
