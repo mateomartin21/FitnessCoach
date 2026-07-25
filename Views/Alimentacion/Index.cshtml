@@ -57,6 +57,10 @@
     </div>
 </div>
 
+@* El Lobo mira el plan y el diario de hoy y sugiere el ajuste más importante,
+   siempre con alimentos que existen en la app. *@
+<partial name="_AnalisisLobo" model="@("dieta")" />
+
 <div class="row g-3 mb-4">
     @foreach (var comida in Model.Comidas)
     {

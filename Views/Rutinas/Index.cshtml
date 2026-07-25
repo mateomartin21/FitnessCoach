@@ -17,6 +17,10 @@
     </div>
 }
 
+@* El Lobo revisa la rutina según el objetivo y da un consejo concreto sobre los
+   ejercicios que ya la componen. *@
+<partial name="_AnalisisLobo" model="@("rutina")" />
+
 <div class="accordion" id="accordionRutina">
     @for (int i = 0; i < Model.Dias.Count; i++)
     {

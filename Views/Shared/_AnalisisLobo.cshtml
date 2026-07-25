@@ -1,0 +1,77 @@
+@*
+    Tarjeta reutilizable del Lobo analizando un aspecto del usuario con sus datos
+    reales. El modelo es el aspecto: "progreso", "dieta", "rutina" o "semana".
+    El endpoint /IaCoach/Analizar ya resuelve cada uno contra el contexto rico.
+
+    La respuesta se inserta con textContent (nunca innerHTML): es texto que viene
+    de la IA y no debe poder inyectar nada en la pagina. Los ids llevan el aspecto
+    como sufijo para que dos tarjetas en la misma pantalla no choquen.
+*@
+@model string
+@{
+    var aspecto = string.IsNullOrWhiteSpace(Model) ? "progreso" : Model.ToLowerInvariant();
+    var (titulo, invitacion, cargando) = aspecto switch
+    {
+        "dieta" => (
+            "El Lobo revisa tu dieta",
+            "Tocá el botón y el Lobo mira tu plan y lo que registraste hoy.",
+            "El Lobo esta mirando tu plan..."),
+        "rutina" => (
+            "El Lobo revisa tu rutina",
+            "Tocá el botón y el Lobo mira tu rutina según tu objetivo.",
+            "El Lobo esta mirando tu rutina..."),
+        "semana" => (
+            "El resumen de tu semana",
+            "Tocá el botón y el Lobo te narra cómo venís: entrenamientos, racha y peso.",
+            "El Lobo esta repasando tu semana..."),
+        _ => (
+            "El Lobo analiza tu progreso",
+            "Tocá el botón y el Lobo mira tus números, tus récords y lo que venís comiendo.",
+            "El Lobo esta mirando tus numeros..."),
+    };
+    var botonId = $"btnAnalizar-{aspecto}";
+    var salidaId = $"analisis-{aspecto}";
+}
+
+<div class="fc-feature-card mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="mb-0">
+            <img src="/images/branding/logo.png" alt="Lobo" width="24" height="24" class="rounded me-2" style="object-fit:cover;" />
+            @titulo
+        </h5>
+        <button id="@botonId" class="btn fc-btn-primary btn-sm" data-aspecto="@aspecto" data-cargando="@cargando">
+            <i class="fas fa-wand-magic-sparkles me-1"></i>Pedir análisis
+        </button>
+    </div>
+    <div id="@salidaId" class="small" style="color:#ccc; white-space:pre-line;">
+        @invitacion
+    </div>
+</div>
+@Html.AntiForgeryToken()
+
+<script>
+    (function () {
+        const boton = document.getElementById('@botonId');
+        const salida = document.getElementById('@salidaId');
+        if (!boton || !salida) return;
+
+        boton.addEventListener('click', async () => {
+            boton.disabled = true;
+            salida.textContent = boton.dataset.cargando;
+            try {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                const res = await fetch('/IaCoach/Analizar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                    body: JSON.stringify({ aspecto: boton.dataset.aspecto })
+                });
+                const data = await res.json();
+                salida.textContent = data.respuesta;
+            } catch {
+                salida.textContent = 'No pude traer el analisis ahora, campeon. Proba de nuevo en un momento.';
+            } finally {
+                boton.disabled = false;
+            }
+        });
+    })();
+</script>
