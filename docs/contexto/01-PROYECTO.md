@@ -140,14 +140,15 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 
 - **Catálogo de ejercicios (Fase 5, ADR-13).** 1.323 ejercicios en español con GIF, instrucciones, grupo muscular y equipo. Las estrategias componen las rutinas desde el catálogo con rotación estable por usuario, y hay récords personales por ejercicio.
 
+- **Nutrición personalizada (Fase 5.5, ADR-14).** 67 alimentos con macros de USDA e imágenes atribuidas de Wikimedia. Los macros del día se calculan desde el peso y el objetivo, las estrategias componen el plan desde el catálogo y escalan las porciones, cada porción trae sustituciones equivalentes, y los alimentos respetan el momento del día. Descargo médico visible. Cierra D-27 y D-28.
+
 ### ❌ Existe pero NO está conectado / no funciona como se documentó
 
 - **La API REST se quedó atrás del producto (D-26).** Solo expone perfil, calorías y el historial de peso en modo lectura/alta; no cubre edición, borrado ni entrenamientos. No es un riesgo de seguridad, es superficie desactualizada.
-- **El plan de alimentación ignora las calorías calculadas del usuario (D-27).** La app muestra un requerimiento personalizado en Perfil y después entrega un plan con un rango fijo de "1800-2000 kcal" para todos. Las comidas además siguen hardcodeadas dentro de las estrategias (D-28). Lo resuelve la Fase 5.5.
 
 ### ⏳ No existe todavía
 
-Catálogo de alimentos, gamificación, fallback de IA, rediseño visual. → Ver `06-ROADMAP.md`.
+Preferencias/exclusiones de dieta y registro de adherencia (Fase 5.6), gamificación, fallback de IA, rediseño visual. → Ver `06-ROADMAP.md`.
 
 ---
 
