@@ -1,0 +1,183 @@
+@model FitnessCoach.Models.DiarioViewModel
+@{
+    ViewData["Title"] = "Mi diario de comidas";
+    var r = Model.Resumen;
+    var diaAnterior = Model.Dia.AddDays(-1);
+    var diaSiguiente = Model.Dia.AddDays(1);
+    int Pct(int consumido, int objetivo) => objetivo <= 0 ? 0 : Math.Min(100, (int)Math.Round(consumido * 100.0 / objetivo));
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <a asp-action="Index" asp-route-dia="@diaAnterior.ToString("yyyy-MM-dd")" class="btn fc-btn-outline btn-sm">
+        <i class="fas fa-chevron-left"></i>
+    </a>
+    <div class="text-center">
+        <h2 class="fw-bold mb-0" style="color:var(--fc-primary);">@(Model.EsHoy ? "Hoy" : Model.Dia.ToString("dd/MM/yyyy"))</h2>
+        <div class="small text-muted">@Model.Dia.ToString("dddd d 'de' MMMM")</div>
+    </div>
+    @if (!Model.EsHoy)
+    {
+        <a asp-action="Index" asp-route-dia="@diaSiguiente.ToString("yyyy-MM-dd")" class="btn fc-btn-outline btn-sm">
+            <i class="fas fa-chevron-right"></i>
+        </a>
+    }
+    else
+    {
+        <span style="width:38px;"></span>
+    }
+</div>
+
+@if (TempData["ErrorDiario"] is string error)
+{
+    <div class="alert mb-4" style="background:#2a1620; border:1px solid #5a2a3a; color:#e6b8c8;">
+        <i class="fas fa-exclamation-circle me-2"></i>@error
+    </div>
+}
+
+@* Resumen del día contra el objetivo. *@
+<div class="fc-feature-card mb-4">
+    <div class="d-flex justify-content-between align-items-baseline mb-2">
+        <h6 class="fw-bold mb-0" style="color:var(--fc-primary);">Calorías del día</h6>
+        <div>
+            <span style="font-size:1.4rem; font-weight:700; color:#eee;">@r.CaloriasConsumidas</span>
+            <span class="text-muted">/ @r.Objetivo.Calorias kcal</span>
+        </div>
+    </div>
+    <div class="progress mb-1" style="height:10px; background:#0f0f1a;">
+        <div class="progress-bar" role="progressbar"
+             style="width:@Pct(r.CaloriasConsumidas, r.Objetivo.Calorias)%; background:@(r.SePaso ? "#e06a8a" : "var(--fc-primary)");">
+        </div>
+    </div>
+    <div class="small text-muted mb-3">
+        @if (r.Objetivo.Calorias == 0)
+        {
+            <text>Completá tu perfil para ver tu objetivo de calorías.</text>
+        }
+        else if (r.SePaso)
+        {
+            <text>Te pasaste del objetivo por @(r.CaloriasConsumidas - r.Objetivo.Calorias) kcal.</text>
+        }
+        else
+        {
+            <text>Te quedan @r.CaloriasRestantes kcal para llegar al objetivo.</text>
+        }
+    </div>
+
+    <div class="row g-2 text-center">
+        @foreach (var (nombre, consumido, objetivo, color) in new[] {
+            ("Proteína", r.ProteinaConsumidaG, r.Objetivo.ProteinaG, "#00d4ff"),
+            ("Carbos", r.CarbohidratoConsumidoG, r.Objetivo.CarbohidratoG, "#ffd700"),
+            ("Grasas", r.GrasaConsumidaG, r.Objetivo.GrasaG, "#a78bfa") })
+        {
+            <div class="col-4">
+                <div class="small text-muted">@nombre</div>
+                <div style="font-weight:700; color:@color;">@consumido<span class="text-muted" style="font-weight:400;"> / @objetivo g</span></div>
+                <div class="progress mt-1" style="height:5px; background:#0f0f1a;">
+                    <div class="progress-bar" style="width:@Pct(consumido, objetivo)%; background:@color;"></div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@* Registrar una comida entera del plan de un toque. *@
+@if (Model.Plan is not null && Model.Plan.Comidas.Count > 0)
+{
+    <div class="fc-feature-card mb-4">
+        <h6 class="fw-bold mb-3" style="color:var(--fc-primary);">
+            <i class="fas fa-bolt me-2"></i>Registrar del plan
+        </h6>
+        <div class="d-flex flex-wrap gap-2">
+            @foreach (var comida in Model.Plan.Comidas)
+            {
+                <form asp-action="RegistrarComida" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="nombreComida" value="@comida.NombreComida" />
+                    <input type="hidden" name="dia" value="@Model.Dia.ToString("yyyy-MM-dd")" />
+                    <button type="submit" class="btn fc-btn-outline btn-sm">
+                        <i class="fas fa-plus me-1"></i>@comida.NombreComida
+                        <span class="text-muted">(@comida.Calorias kcal)</span>
+                    </button>
+                </form>
+            }
+        </div>
+    </div>
+}
+
+@* Agregar cualquier alimento del catálogo. *@
+<div class="fc-feature-card mb-4">
+    <h6 class="fw-bold mb-3" style="color:var(--fc-primary);">
+        <i class="fas fa-plus-circle me-2"></i>Agregar un alimento
+    </h6>
+    <form asp-action="Registrar" method="post" class="row g-2 align-items-end">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="dia" value="@Model.Dia.ToString("yyyy-MM-dd")" />
+        <div class="col-12 col-md-7">
+            <label class="form-label small text-muted">Alimento</label>
+            <select name="alimentoSlug" class="form-select" required>
+                <option value="" disabled selected>Elegí un alimento…</option>
+                @foreach (var grupo in Model.CatalogoPorCategoria)
+                {
+                    <optgroup label="@grupo.Key">
+                        @foreach (var a in grupo.OrderBy(a => a.Nombre))
+                        {
+                            <option value="@a.Slug">@a.Nombre (@a.DescripcionPorcion)</option>
+                        }
+                    </optgroup>
+                }
+            </select>
+        </div>
+        <div class="col-8 col-md-3">
+            <label class="form-label small text-muted">Cantidad (g)</label>
+            <input type="number" name="gramos" class="form-control" value="100" min="1" max="2000" required />
+        </div>
+        <div class="col-4 col-md-2">
+            <button type="submit" class="btn fc-btn-primary w-100">Agregar</button>
+        </div>
+    </form>
+</div>
+
+@* Lo registrado en el día. *@
+<div class="fc-feature-card mb-4">
+    <h6 class="fw-bold mb-3" style="color:var(--fc-primary);">
+        <i class="fas fa-list me-2"></i>Lo que comiste
+    </h6>
+
+    @if (r.SinRegistros)
+    {
+        <p class="text-muted small mb-0">Todavía no registraste nada este día.</p>
+    }
+    else
+    {
+        <ul class="list-unstyled mb-0">
+            @foreach (var registro in r.Registros)
+            {
+                <li class="d-flex justify-content-between align-items-center py-2"
+                    style="border-bottom:1px solid #2a2a4a;">
+                    <div>
+                        <span style="color:#eee;">@registro.AlimentoNombre</span>
+                        <span class="text-muted small">· @registro.Gramos.ToString("0") g</span>
+                        <div class="small text-muted">
+                            @Math.Round(registro.Calorias) kcal ·
+                            P@Math.Round(registro.ProteinaG) C@Math.Round(registro.CarbohidratoG) G@Math.Round(registro.GrasaG)
+                        </div>
+                    </div>
+                    <form asp-action="Borrar" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@registro.Id" />
+                        <input type="hidden" name="dia" value="@Model.Dia.ToString("yyyy-MM-dd")" />
+                        <button type="submit" class="btn btn-sm" style="color:#e06a8a;" title="Quitar">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+<div class="text-center mb-4">
+    <a asp-controller="Alimentacion" asp-action="Index" class="btn fc-btn-outline px-4">
+        <i class="fas fa-utensils me-2"></i>Ver mi plan
+    </a>
+</div>
