@@ -142,13 +142,15 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 
 - **Nutrición personalizada (Fase 5.5, ADR-14).** 67 alimentos con macros de USDA e imágenes atribuidas de Wikimedia. Los macros del día se calculan desde el peso y el objetivo, las estrategias componen el plan desde el catálogo y escalan las porciones, cada porción trae sustituciones equivalentes, y los alimentos respetan el momento del día. Descargo médico visible. Cierra D-27 y D-28.
 
+- **Preferencias y adherencia (Fase 5.6, ADR-15).** El perfil guarda dietas (vegetariano, vegano, sin gluten, sin lactosa) y alimentos excluidos; el plan y las sustituciones los respetan (un vegetariano nunca ve carne). Diario de comidas para registrar lo comido —del plan o del catálogo— y seguir los macros del día contra el objetivo. Cierra el apartado de nutrición.
+
 ### ❌ Existe pero NO está conectado / no funciona como se documentó
 
 - **La API REST se quedó atrás del producto (D-26).** Solo expone perfil, calorías y el historial de peso en modo lectura/alta; no cubre edición, borrado ni entrenamientos. No es un riesgo de seguridad, es superficie desactualizada.
 
 ### ⏳ No existe todavía
 
-Preferencias/exclusiones de dieta y registro de adherencia (Fase 5.6), gamificación, fallback de IA, rediseño visual. → Ver `06-ROADMAP.md`.
+Gamificación, fallback de IA, rediseño visual. → Ver `06-ROADMAP.md`.
 
 ---
 

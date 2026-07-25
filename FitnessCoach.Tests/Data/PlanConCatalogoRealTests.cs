@@ -134,5 +134,46 @@ namespace FitnessCoach.Tests.Data
 
             Assert.Equal(planes.Count, planes.Distinct().Count());
         }
+
+        [Fact]
+        public void UnVegetarianoConAlergia_RecibeUnPlanCompletoSinNadaExcluido()
+        {
+            // La prueba que cierra la fase: preferencias reales sobre el catálogo real.
+            var usuario = Usuario(new ObjetivoRecomposicion(), 70, 172, 28);
+            usuario.Preferencias.DietasSeguidas.Add("vegetariano");
+            usuario.Preferencias.AlimentosExcluidos.Add("mani");          // alergia
+            usuario.Preferencias.AlimentosExcluidos.Add("mantequilla-de-mani");
+
+            var plan = Generador().GenerarPlanPara(usuario);
+
+            var todos = plan.Comidas.SelectMany(c => c.Porciones)
+                .SelectMany(p => new[] { p.Alimento }.Concat(p.Sustitutos.Select(s => s.Alimento)))
+                .ToList();
+
+            // Nada excluido, ni como comida ni como sustituto.
+            Assert.All(todos, a => Assert.True(a.Cumple("vegetariano"), $"'{a.Nombre}' no es vegetariano."));
+            Assert.DoesNotContain(todos, a => a.Slug is "mani" or "mantequilla-de-mani");
+
+            // Y sigue siendo un plan que sirve: comidas completas y proteína cubierta.
+            Assert.All(plan.Comidas, c => Assert.NotEmpty(c.Porciones));
+            Assert.True(plan.ProteinaTotalG >= plan.Objetivos.ProteinaG * 0.75,
+                $"El plan vegetariano aporta {plan.ProteinaTotalG} g sobre {plan.Objetivos.ProteinaG} g objetivo.");
+        }
+
+        [Fact]
+        public void UnVeganoRecibeUnPlanSinProductoAnimal()
+        {
+            var usuario = Usuario(new ObjetivoPerderPeso(), 68, 170, 32);
+            usuario.Preferencias.DietasSeguidas.Add("vegano");
+
+            var plan = Generador().GenerarPlanPara(usuario);
+
+            var todos = plan.Comidas.SelectMany(c => c.Porciones)
+                .SelectMany(p => new[] { p.Alimento }.Concat(p.Sustitutos.Select(s => s.Alimento)))
+                .ToList();
+
+            Assert.NotEmpty(plan.Comidas);
+            Assert.All(todos, a => Assert.True(a.Cumple("vegano"), $"'{a.Nombre}' no es vegano."));
+        }
     }
 }

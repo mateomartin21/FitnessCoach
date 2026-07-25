@@ -4,6 +4,7 @@ using FitnessCoach.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessCoach.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260725045439_PreferenciasAlimentarias")]
+    partial class PreferenciasAlimentarias
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -442,55 +445,6 @@ namespace FitnessCoach.Infrastructure.Data.Migrations
                                 .HasForeignKey("UsuarioPerfilId");
                         });
 
-                    b.OwnsMany("FitnessCoach.Domain.Models.Alimentacion.RegistroComida", "Diario", b1 =>
-                        {
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<string>("AlimentoNombre")
-                                .IsRequired()
-                                .HasMaxLength(120)
-                                .HasColumnType("nvarchar(120)");
-
-                            b1.Property<string>("AlimentoSlug")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
-
-                            b1.Property<double>("Calorias")
-                                .HasColumnType("float");
-
-                            b1.Property<double>("CarbohidratoG")
-                                .HasColumnType("float");
-
-                            b1.Property<DateTime>("Fecha")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<double>("Gramos")
-                                .HasColumnType("float");
-
-                            b1.Property<double>("GrasaG")
-                                .HasColumnType("float");
-
-                            b1.Property<double>("ProteinaG")
-                                .HasColumnType("float");
-
-                            b1.Property<int>("UsuarioPerfilId")
-                                .HasColumnType("int");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("UsuarioPerfilId");
-
-                            b1.ToTable("RegistrosComida", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("UsuarioPerfilId");
-                        });
-
                     b.OwnsMany("FitnessCoach.Domain.Models.EntrenamientoCompletado", "EntrenamientosCompletados", b1 =>
                         {
                             b1.Property<int>("Id")
@@ -600,8 +554,6 @@ namespace FitnessCoach.Infrastructure.Data.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("UsuarioPerfilId");
                         });
-
-                    b.Navigation("Diario");
 
                     b.Navigation("EntrenamientosCompletados");
 

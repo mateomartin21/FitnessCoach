@@ -32,7 +32,7 @@ Tracker       Catálogo de        Resiliencia
    │         personalizada           │
    │              │                  │
    │              ▼                  │
-   │         Fase 5.6                │
+   │         Fase 5.6 ✅             │
    │         Preferencias y          │
    │         adherencia              │
    │              │                  │
@@ -233,24 +233,26 @@ Tracker       Catálogo de        Resiliencia
 
 ---
 
-## Fase 5.6 — Preferencias, exclusiones y adherencia
+## Fase 5.6 — Preferencias, exclusiones y adherencia ✅
+
+**Estado:** ✅ **Cerrada** el 25/07/2026 (rama `fase-5.6/preferencias-adherencia`, ADR-15). 259/259 pruebas.
 
 **Objetivo:** que el plan respete lo que la persona puede y quiere comer, y que pueda seguir si lo cumple. Cierra el apartado de nutrición.
 
-**Depende de:** Fase 5.5 (el catálogo, las etiquetas de dieta y el motor de composición ya están; esta fase los usa).
+**Dependió de:** Fase 5.5 (el catálogo, las etiquetas de dieta y el motor de composición ya estaban; esta fase los usó).
 
-**Entregables:**
-- **Preferencias y exclusiones:** filtrar el catálogo por dieta (vegetariano, vegano, sin gluten, sin lactosa) y por alergias/alimentos excluidos. Las etiquetas (`EtiquetasDieta`) ya están sembradas en cada alimento esperando este filtro
-- Guardar esas preferencias en el perfil del usuario
-- El plan y las sustituciones respetan las exclusiones: un vegetariano nunca ve pollo, ni como comida ni como alternativa
-- **Registro de adherencia:** marcar qué comidas se cumplieron y seguir los macros del día (planificado vs. real)
-- Pruebas de que ningún plan ni sustituto viola una exclusión activa
+**Entregado:**
+- ✅ `PreferenciasAlimentarias` (objeto de valor en el perfil): dietas seguidas (vegetariano, vegano, sin gluten, sin lactosa) y alimentos excluidos por slug, con la regla `Permite(Alimento)` y sus pruebas
+- ✅ El motor filtra por preferencias **arriba de todo** en la selección, así que ni los fallbacks ni las sustituciones devuelven algo vetado
+- ✅ Pantalla para editar preferencias; el POST solo acepta dietas conocidas y slugs del catálogo
+- ✅ `RegistroComida` (diario) como colección owned del perfil, con snapshot de macros; `ServicioDiario` para registrar/borrar/resumir y `ResumenDiario` como cálculo puro (consumido vs objetivo)
+- ✅ Pantalla de diario: registrar una comida del plan de un toque o cualquier alimento del catálogo, ver el día contra el objetivo, borrar, navegar por fecha
+- ✅ Pruebas de que un vegetariano con alergia y un vegano reciben planes sin nada excluido, contra el catálogo real
 
-**Definition of Done:** un usuario vegetariano con alergia declarada recibe un plan completo que nunca incluye lo excluido, y puede registrar lo que comió con seguimiento de macros del día.
-**ADR:** ADR nuevo si el diseño de preferencias/adherencia lo amerita (el número se asigna al escribirlo; la Fase 6 ya reserva ADR-15).
-**Rama sugerida:** `fase-5.6/preferencias-adherencia`
+**Definition of Done:** ✅ un usuario vegetariano con alergia declarada recibe un plan completo que nunca incluye lo excluido, y puede registrar lo que comió con seguimiento de macros del día.
+**ADR:** ADR-15.
 
-> Va inmediatamente después de la 5.5 por la misma razón que aquella siguió a la 5: el catálogo, las etiquetas y el motor ya están hechos y probados; esta fase es sobre todo filtrado y una entidad de registro. Cierra nutrición antes de pasar a la línea de IA.
+> Fue inmediatamente después de la 5.5 por la misma razón que aquella siguió a la 5: el catálogo, las etiquetas y el motor ya estaban hechos y probados; esta fase fue sobre todo filtrado y una entidad de registro. Cierra nutrición antes de pasar a la línea de IA.
 
 ---
 
@@ -272,7 +274,7 @@ Tracker       Catálogo de        Resiliencia
 - Pruebas del fallback con proveedores falsos
 
 **Definition of Done:** prueba de fuego §7, punto 6 — con internet desconectado, el Lobo responde con gracia y la app no se cae.
-**ADR:** ADR-15 — resiliencia de IA mediante patrón de proveedores intercambiables.
+**ADR:** ADR-16 — resiliencia de IA mediante patrón de proveedores intercambiables (era ADR-15; se corrió al escribir el ADR-15 de la Fase 5.6).
 **Rama sugerida:** `fase-6/resiliencia-ia`
 
 ---
@@ -290,7 +292,7 @@ Tracker       Catálogo de        Resiliencia
 - Comentarios contextuales del Lobo en las pantallas clave
 
 **Definition of Done:** el análisis usa datos reales del usuario (no genéricos) y degrada con gracia si la IA no está disponible.
-**ADR:** ADR-16 si el diseño de la integración cambia sustancialmente.
+**ADR:** ADR-17 si el diseño de la integración cambia sustancialmente.
 **Rama sugerida:** `fase-7/ia-analisis`
 
 ---
