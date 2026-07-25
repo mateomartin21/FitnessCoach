@@ -44,6 +44,25 @@ Pregunta de tu pupilo: {mensaje}";
         }
 
         /// <summary>
+        /// El pedido con que el Lobo analiza un aspecto del usuario, para las tarjetas
+        /// de análisis fuera del chat. Se resuelve contra el mismo contexto rico, así
+        /// que la respuesta usa los datos reales de la persona.
+        /// </summary>
+        public static string PedidoDeAnalisis(string aspecto) => aspecto?.ToLowerInvariant() switch
+        {
+            "dieta" =>
+                "Revisa mi plan de alimentacion y lo que registre en el diario de hoy. Decime en pocas " +
+                "lineas si voy encaminado y el ajuste mas importante, usando solo alimentos de mi plan o " +
+                "de la lista disponible.",
+            "rutina" =>
+                "Revisa mi rutina actual segun mi objetivo. Decime en pocas lineas si esta bien encarada y " +
+                "un consejo concreto para sacarle mas provecho, refiriendote a los ejercicios de mi rutina.",
+            _ =>
+                "Analiza mi progreso reciente: mi peso, mis records y lo que vengo comiendo. Decime en pocas " +
+                "lineas como voy y el ajuste mas importante que harias ahora mismo."
+        };
+
+        /// <summary>
         /// Lo que dice el Lobo cuando ningún proveedor de IA pudo responder. En su voz,
         /// sin exponer el error técnico: el usuario ve al personaje encogiéndose de
         /// hombros, no un stack trace (05-VISION-PRODUCTO).

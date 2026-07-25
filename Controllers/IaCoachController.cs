@@ -47,6 +47,26 @@ namespace FitnessCoach.Controllers
             var respuesta = await _coach.ConsultarAsync(request.Mensaje, contexto);
             return Ok(new { respuesta = respuesta.Texto, degradada = respuesta.EsDegradada });
         }
+
+        /// <summary>
+        /// El Lobo analiza un aspecto del usuario (progreso, dieta o rutina) usando sus
+        /// datos reales. Es la IA como capa sobre el sistema, no un chat: se dispara
+        /// desde las pantallas de progreso/dieta/rutina.
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Analizar([FromBody] AnalisisRequest request)
+        {
+            var usuario = _perfiles.Obtener(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            if (usuario is null || usuario.ObjetivoActual is null)
+                return Ok(new { respuesta = "Configura tu perfil y tu objetivo primero, campeon, y te hago el analisis.", degradada = true });
+
+            var contexto = _contexto.Construir(usuario);
+            var pedido = PersonalidadLoboCoach.PedidoDeAnalisis(request?.Aspecto ?? "progreso");
+
+            var respuesta = await _coach.ConsultarAsync(pedido, contexto);
+            return Ok(new { respuesta = respuesta.Texto, degradada = respuesta.EsDegradada });
+        }
     }
 
     public class ConsultaRequest
@@ -54,5 +74,11 @@ namespace FitnessCoach.Controllers
         [Required(ErrorMessage = "El mensaje es obligatorio.")]
         [StringLength(2000, MinimumLength = 1, ErrorMessage = "El mensaje debe tener entre 1 y 2000 caracteres.")]
         public string Mensaje { get; set; } = string.Empty;
+    }
+
+    public class AnalisisRequest
+    {
+        /// <summary>Qué mirar: "progreso", "dieta" o "rutina". Cualquier otro cae en progreso.</summary>
+        public string Aspecto { get; set; } = "progreso";
     }
 }

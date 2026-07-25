@@ -44,6 +44,18 @@ namespace FitnessCoach.Tests.Coaching
             Assert.Contains("SUS datos", prompt);
         }
 
+        [Theory]
+        [InlineData("dieta", "plan de alimentacion")]
+        [InlineData("rutina", "rutina")]
+        [InlineData("progreso", "progreso")]
+        [InlineData("cualquier-otra-cosa", "progreso")]   // cae en progreso por defecto
+        public void ElPedidoDeAnalisis_ApuntaAlAspectoPedido(string aspecto, string esperado)
+        {
+            var pedido = PersonalidadLoboCoach.PedidoDeAnalisis(aspecto);
+
+            Assert.Contains(esperado, pedido, StringComparison.OrdinalIgnoreCase);
+        }
+
         [Fact]
         public void LaRespuestaSinSenal_EstaEnLaVozDelLobo_NoEsUnErrorTecnico()
         {
