@@ -103,6 +103,24 @@ namespace FitnessCoach.Infrastructure.Data
                     record.ToTable("RecordsPersonales");
                 });
 
+                entity.OwnsMany(u => u.Diario, comida =>
+                {
+                    comida.WithOwner().HasForeignKey("UsuarioPerfilId");
+                    comida.HasKey(r => r.Id);
+
+                    // Igual que el resto de las fechas: se lee como UTC para que la
+                    // conversión a local de la vista funcione.
+                    comida.Property(r => r.Fecha)
+                        .HasConversion(
+                            fecha => fecha,
+                            fecha => DateTime.SpecifyKind(fecha, DateTimeKind.Utc));
+
+                    comida.Property(r => r.AlimentoSlug).HasMaxLength(100);
+                    comida.Property(r => r.AlimentoNombre).HasMaxLength(120);
+
+                    comida.ToTable("RegistrosComida");
+                });
+
                 // Preferencias es un objeto de valor sin identidad propia: vive en la
                 // misma fila del perfil (OwnsOne), con las dos listas como columnas JSON.
                 entity.OwnsOne(u => u.Preferencias, prefs =>

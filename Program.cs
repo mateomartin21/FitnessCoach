@@ -90,6 +90,10 @@ builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorRutinas,
 
 builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorAlimentacion, FitnessCoach.Application.Services.GeneradorAlimentacionService>();
 
+// Diario de adherencia
+builder.Services.AddScoped<FitnessCoach.Application.Services.IServicioDiario,
+                           FitnessCoach.Application.Services.ServicioDiario>();
+
 builder.Services.AddHttpClient<FitnessCoach.Infrastructure.Adapters.GeminiCoachService>(client =>
 {
     client.Timeout = TimeSpan.FromSeconds(15);

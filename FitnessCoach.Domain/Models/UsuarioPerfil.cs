@@ -33,6 +33,9 @@ public class UsuarioPerfil
 
     /// <summary>Qué puede y qué no puede comer: filtra el plan de alimentación.</summary>
     public PreferenciasAlimentarias Preferencias { get; set; } = new();
+
+    /// <summary>Lo que el usuario registró haber comido, para seguir su adherencia.</summary>
+    public List<RegistroComida> Diario { get; set; } = new();
 }
 
 }
