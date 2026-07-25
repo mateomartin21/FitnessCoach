@@ -3,6 +3,15 @@
     ViewData["Title"] = "Mi Plan Alimenticio";
 }
 
+@if (TempData["PreferenciasGuardadas"] is true)
+{
+    <div class="alert d-flex align-items-center gap-2 mb-4"
+         style="background:#12261a; border:1px solid #1f5133; color:#b8e6c8;">
+        <i class="fas fa-check-circle"></i>
+        <span class="small">Preferencias guardadas. Tu plan ya las tiene en cuenta.</span>
+    </div>
+}
+
 <div class="text-center mb-4">
     <h2 class="fw-bold" style="color:var(--fc-primary);">@Model.NombrePlan</h2>
     <span class="badge px-3 py-2 me-2" style="background:var(--fc-primary); font-size:0.9rem;">@Model.Objetivo</span>
@@ -154,7 +163,10 @@
 </div>
 
 <div class="text-center mb-4">
-    <a asp-controller="Rutinas" asp-action="Index" class="btn fc-btn-primary px-4 me-2">
+    <a asp-action="Preferencias" class="btn fc-btn-primary px-4 me-2">
+        <i class="fas fa-sliders-h me-2"></i>Mis preferencias
+    </a>
+    <a asp-controller="Rutinas" asp-action="Index" class="btn fc-btn-outline px-4 me-2">
         <i class="fas fa-fire me-2"></i>Ver Mi Rutina
     </a>
     <a asp-controller="Perfil" asp-action="Index" class="btn fc-btn-outline px-4">
