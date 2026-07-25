@@ -74,6 +74,36 @@ namespace FitnessCoach.Tests.Coaching
         }
 
         [Fact]
+        public void ElContextoResumeLaSemanaConEntrenamientosYRacha()
+        {
+            var u = Usuario();
+            u.EntrenamientosCompletados.Add(new EntrenamientoCompletado
+            {
+                Fecha = DateTime.UtcNow, NombreRutina = "Full Body", DuracionMinutos = 45
+            });
+
+            var ctx = Armador().Construir(u);
+
+            Assert.Contains("ESTA SEMANA", ctx);
+            Assert.Contains("Full Body", ctx);
+            Assert.Contains("Racha actual: 1", ctx);
+        }
+
+        [Fact]
+        public void UnEntrenamientoViejo_NoCuentaEnLaSemana()
+        {
+            var u = Usuario();
+            u.EntrenamientosCompletados.Add(new EntrenamientoCompletado
+            {
+                Fecha = DateTime.UtcNow.AddDays(-30), NombreRutina = "Full Body", DuracionMinutos = 45
+            });
+
+            var ctx = Armador().Construir(u);
+
+            Assert.DoesNotContain("Full Body", ctx);   // fuera de los 7 días
+        }
+
+        [Fact]
         public void UnBloqueQueFalla_NoTumbaTodoElContexto()
         {
             // El generador de plan lanza; el resto del contexto igual se arma.

@@ -48,6 +48,7 @@ namespace FitnessCoach.Tests.Coaching
         [InlineData("dieta", "plan de alimentacion")]
         [InlineData("rutina", "rutina")]
         [InlineData("progreso", "progreso")]
+        [InlineData("semana", "ESTA SEMANA")]             // narra el resumen semanal
         [InlineData("cualquier-otra-cosa", "progreso")]   // cae en progreso por defecto
         public void ElPedidoDeAnalisis_ApuntaAlAspectoPedido(string aspecto, string esperado)
         {

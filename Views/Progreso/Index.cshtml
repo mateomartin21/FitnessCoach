@@ -8,8 +8,10 @@
     <div class="alert alert-success py-2 small">@TempData["MensajeProgreso"]</div>
 }
 
-@* La IA como capa sobre los datos: el Lobo mira el progreso real y opina. Bajo
-   demanda, para no gastar una llamada a la IA en cada carga de la pantalla. *@
+@* La IA como capa sobre los datos: el Lobo mira lo real y opina. Bajo demanda,
+   para no gastar una llamada a la IA en cada carga de la pantalla. El resumen de
+   la semana arriba; el análisis puntual del progreso, debajo. *@
+<partial name="_AnalisisLobo" model="@("semana")" />
 <partial name="_AnalisisLobo" model="@("progreso")" />
 
 <div class="row g-3 mb-4">
