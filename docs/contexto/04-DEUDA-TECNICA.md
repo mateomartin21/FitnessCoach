@@ -2,7 +2,7 @@
 
 > **Documento vivo.** Es el inventario honesto de lo que está mal. Cuando algo se resuelve se marca ✅ con la fase que lo resolvió — **no se borra la línea**, el historial sirve para los ADRs y para la sustentación del proyecto.
 >
-> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **25/07/2026** al cerrar la Fase 6 (rama `fase-6/resiliencia-ia`).
+> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **25/07/2026** al cerrar la Fase 7 (rama `fase-7/ia-pulido`). La Fase 7 fue pulido de IA y no cerró ninguna deuda formal ni abrió deuda nueva.
 
 ## Resumen
 

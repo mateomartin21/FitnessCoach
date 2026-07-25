@@ -37,8 +37,8 @@ Tracker       Catálogo de        Resiliencia IA
    │         adherencia              │
    │              │                  │
    │              │                  ▼
-   │              │              Fase 7
-   │              │              IA pulido (opcional)
+   │              │              Fase 7 ✅
+   │              │              IA pulido
    │              │                  │
    └──────────────┴──────────────────┘
                   ▼
@@ -280,18 +280,19 @@ Tracker       Catálogo de        Resiliencia IA
 
 ---
 
-## Fase 7 — IA expandida (casi absorbida por la Fase 6)
+## Fase 7 — IA expandida (pulido) ✅
 
-**Estado:** el grueso se hizo en la Fase 6 (contexto rico, análisis sobre datos reales, IA como capa). Queda como **pulido opcional**.
+**Estado:** ✅ **Cerrada** el 25/07/2026 (rama `fase-7/ia-pulido`, ADR-17). 297/297 pruebas. El grueso ya se había hecho en la Fase 6 (contexto rico, análisis sobre datos reales, IA como capa); esta fase cerró los flecos.
 
-**Depende de:** Fase 4 (datos) y Fase 6 (IA confiable) — ambas hechas.
+**Dependió de:** Fase 4 (datos) y Fase 6 (IA confiable).
 
-**Lo que resta:**
-- Comentarios contextuales del Lobo en más pantallas (dieta, rutina), reusando el endpoint `Analizar` con `aspecto` = dieta/rutina (ya soportado)
-- Resumen semanal narrado en la voz del Lobo (lo único genuinamente nuevo)
+**Entregado:**
+- ✅ Tarjeta de análisis del Lobo extraída a un partial reutilizable (`_AnalisisLobo.cshtml`) parametrizado por aspecto, en las pantallas de Progreso, Alimentación (dieta) y Rutina (rutina) — reusando el endpoint `Analizar` que ya lo soportaba
+- ✅ Bloque `== ESTA SEMANA ==` en el contexto (entrenamientos de 7 días, racha y variación de peso), que mejora además todas las respuestas del chat
+- ✅ Resumen semanal narrado en la voz del Lobo (aspecto `semana`), con su tarjeta en Progreso
 
-**Definition of Done:** el análisis usa datos reales del usuario (ya cumplido en Fase 6) y degrada con gracia si la IA no está disponible (ya cumplido).
-**ADR:** ADR-17 si el resumen semanal cambia el diseño; si no, no hace falta.
+**Definition of Done:** ✅ el análisis usa datos reales del usuario y degrada con gracia si la IA no está disponible (heredado de la Fase 6). La capacidad de análisis por aspecto, que estaba latente, quedó ofrecida en las pantallas.
+**ADR:** ADR-17 — el Lobo en toda la app y el resumen semanal narrado.
 **Rama sugerida:** `fase-7/ia-pulido`
 
 ---
@@ -377,9 +378,10 @@ Tracker       Catálogo de        Resiliencia IA
 | 3 | ✅ Completada | `fase-3/validacion` | (contra `CD/CI`) | ADR-11 | ✅ |
 | 4 | ✅ Completada | `fase-4/tracker` | (contra `CD/CI`) | ADR-12 | ✅ |
 | 5 | ✅ Completada | `fase-5/catalogo-ejercicios` | (contra `CD/CI`) | ADR-13 | ✅ |
-| 5.5 | ⬜ Pendiente | — | — | — | — |
-| 6 | ⬜ Pendiente | — | — | — | — |
-| 7 | ⬜ Pendiente | — | — | — | — |
+| 5.5 | ✅ Completada | `fase-5.5/nutricion-personalizada` | (contra `CD/CI`) | ADR-14 | ✅ |
+| 5.6 | ✅ Completada | `fase-5.6/preferencias-adherencia` | (contra `CD/CI`) | ADR-15 | ✅ |
+| 6 | ✅ Completada | `fase-6/resiliencia-ia` | (contra `CD/CI`) | ADR-16 | ✅ |
+| 7 | ✅ Completada | `fase-7/ia-pulido` | (contra `CD/CI`) | ADR-17 | ✅ |
 | 8 | ⬜ Pendiente | — | — | — | — |
 | 9 | ⬜ Pendiente | — | — | — | — |
 | 10 | ⬜ Pendiente | — | — | — | — |

@@ -47,7 +47,7 @@ Y adjunta:
 | Campo | Valor |
 |-------|-------|
 | Creado | 22/07/2026 |
-| Última actualización | 24/07/2026 |
-| Rama de referencia | `fase-6/resiliencia-ia` (contra `CD/CI`) |
-| Último ADR | ADR-16 (resiliencia de IA + IA expandida) |
-| Fase activa del roadmap | Fase 8 — Gamificación (la 7 quedó casi absorbida por la 6) |
+| Última actualización | 25/07/2026 |
+| Rama de referencia | `fase-7/ia-pulido` (contra `CD/CI`) |
+| Último ADR | ADR-17 (el Lobo en toda la app + resumen semanal) |
+| Fase activa del roadmap | Fase 8 — Gamificación (la línea de IA, Fases 6 y 7, quedó cerrada) |
