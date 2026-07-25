@@ -115,6 +115,41 @@ namespace FitnessCoach.Domain.Models.Alimentacion
                 GrasaG: GrasaPor100g * factor);
         }
 
+        /// <summary>
+        /// El macro que define al alimento: "proteina", "carbohidrato" o "grasa".
+        ///
+        /// Para la mayoría lo dice la categoría. Los lácteos y las mezclas se resuelven
+        /// por lo que realmente aportan: el yogur griego es proteína, la ricotta es grasa.
+        /// Verduras y frutas no cuadran macros, pero su carbohidrato es lo más definitorio.
+        ///
+        /// Es lo que decide con qué se puede sustituir un alimento y qué se iguala al
+        /// hacerlo, así que vive acá y no enterrado en la estrategia que arma el plan.
+        /// </summary>
+        public string MacroPrincipal => Categoria switch
+        {
+            "proteina" => "proteina",
+            "carbohidrato" or "fruta" or "verdura" => "carbohidrato",
+            "grasa" => "grasa",
+            _ => ProteinaPor100g * KcalPorGramoProteina >= GrasaPor100g * KcalPorGramoGrasa
+                ? "proteina"
+                : "grasa"
+        };
+
+        /// <summary>Los gramos del macro principal en una porción concreta.</summary>
+        public double GramosDelMacroPrincipal(double gramos)
+        {
+            var macros = MacrosPara(gramos);
+            return MacroPrincipal switch
+            {
+                "proteina" => macros.ProteinaG,
+                "carbohidrato" => macros.CarbohidratoG,
+                _ => macros.GrasaG
+            };
+        }
+
+        private const int KcalPorGramoProteina = ObjetivoMacros.KcalPorGramoProteina;
+        private const int KcalPorGramoGrasa = ObjetivoMacros.KcalPorGramoGrasa;
+
         public bool Cumple(string etiqueta) =>
             EtiquetasDieta.Contains(etiqueta, StringComparer.OrdinalIgnoreCase);
 

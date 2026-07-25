@@ -16,6 +16,13 @@ namespace FitnessCoach.Domain.Models.Alimentacion
         public MacrosPorcion Macros => Alimento.MacrosPara(Gramos);
 
         /// <summary>
+        /// Alternativas equivalentes del mismo grupo de intercambio. Vacío hasta que la
+        /// estrategia las calcula: no todas las porciones necesitan mostrarlas.
+        /// </summary>
+        public IReadOnlyList<SustitucionAlimento> Sustitutos { get; set; } =
+            Array.Empty<SustitucionAlimento>();
+
+        /// <summary>
         /// Cómo se lee en el plan. Lleva la medida casera entre paréntesis porque
         /// nadie tiene una balanza en la mano cada vez que come.
         /// </summary>

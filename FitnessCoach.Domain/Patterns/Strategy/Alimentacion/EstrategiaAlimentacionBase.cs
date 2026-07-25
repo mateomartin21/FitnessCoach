@@ -129,7 +129,26 @@ namespace FitnessCoach.Domain.Patterns.Strategy.Alimentacion
 
             CompletarProteina(comida, ref proteinaPendiente, plantilla.Momento, indice, yaUsados);
 
+            PoblarSustitutos(comida, plantilla.Momento);
+
             return comida;
+        }
+
+        /// <summary>
+        /// Calcula, para cada porción, sus alternativas del mismo grupo de intercambio.
+        /// Los candidatos se acotan al momento del día para no ofrecer avena de cena en
+        /// lugar del arroz: comparten grupo "cereal" pero no la hora.
+        /// </summary>
+        private void PoblarSustitutos(ComidaDia comida, string momento)
+        {
+            foreach (var porcion in comida.Porciones)
+            {
+                var candidatos = _catalogo
+                    .ObtenerPorGrupoIntercambio(porcion.Alimento.GrupoIntercambio)
+                    .Where(a => a.VaEn(momento));
+
+                porcion.Sustitutos = CalculadorEquivalencias.Para(porcion, candidatos);
+            }
         }
 
         /// <summary>
@@ -180,16 +199,11 @@ namespace FitnessCoach.Domain.Patterns.Strategy.Alimentacion
             alimento.Categoria is "verdura" or "fruta";
 
         /// <summary>
-        /// Qué macro le toca cubrir a cada alimento. Los lácteos se tratan según lo que
-        /// realmente aporten: el yogur griego es proteína, la ricotta es grasa.
+        /// Qué macro le toca cubrir a cada alimento. Lo decide el propio alimento
+        /// (<see cref="Alimento.MacroPrincipal"/>), que es también lo que define con
+        /// qué se lo puede sustituir.
         /// </summary>
-        private static string MacroQueAporta(Alimento alimento) => alimento.Categoria switch
-        {
-            "proteina" => "proteina",
-            "carbohidrato" => "carbohidrato",
-            "grasa" => "grasa",
-            _ => alimento.ProteinaPor100g * 4 >= alimento.GrasaPor100g * 9 ? "proteina" : "grasa"
-        };
+        private static string MacroQueAporta(Alimento alimento) => alimento.MacroPrincipal;
 
         /// <summary>Orden de servido: proteína, después carbohidrato, la grasa al final.</summary>
         private static int Prioridad(Alimento alimento) => MacroQueAporta(alimento) switch

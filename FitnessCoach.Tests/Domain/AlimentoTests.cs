@@ -95,6 +95,44 @@ namespace FitnessCoach.Tests.Domain
             Assert.Equal(esperado, PechugaDePollo().Cumple(etiqueta));
         }
 
+        [Theory]
+        [InlineData("proteina", 22.5, 0, 2.62, "proteina")]
+        [InlineData("carbohidrato", 2.7, 28.2, 0.3, "carbohidrato")]
+        [InlineData("grasa", 0, 0, 100, "grasa")]
+        [InlineData("fruta", 1.1, 22.8, 0.3, "carbohidrato")]
+        [InlineData("verdura", 2.8, 6.6, 0.4, "carbohidrato")]
+        public void MacroPrincipal_LoDefineLaCategoria(
+            string categoria, double prot, double carbo, double grasa, string esperado)
+        {
+            var alimento = new Alimento
+            {
+                Slug = "x", Categoria = categoria,
+                ProteinaPor100g = prot, CarbohidratoPor100g = carbo, GrasaPor100g = grasa
+            };
+
+            Assert.Equal(esperado, alimento.MacroPrincipal);
+        }
+
+        [Fact]
+        public void MacroPrincipal_ParaUnLacteo_DependeDeSusMacros()
+        {
+            // El yogur griego es proteína; la ricotta, con más grasa, es grasa.
+            var yogur = new Alimento { Categoria = "lacteo", ProteinaPor100g = 9.5, GrasaPor100g = 0.24 };
+            var ricotta = new Alimento { Categoria = "lacteo", ProteinaPor100g = 11.4, GrasaPor100g = 7.91 };
+
+            Assert.Equal("proteina", yogur.MacroPrincipal);
+            Assert.Equal("grasa", ricotta.MacroPrincipal);
+        }
+
+        [Fact]
+        public void GramosDelMacroPrincipal_DevuelveElMacroQueCorresponde()
+        {
+            var pollo = PechugaDePollo();   // proteína
+
+            // 200 g × 22.5 g/100 g = 45 g de proteína
+            Assert.Equal(45.0, pollo.GramosDelMacroPrincipal(200), precision: 2);
+        }
+
         [Fact]
         public void SinImagen_NoHayAtribucionQueMostrar()
         {

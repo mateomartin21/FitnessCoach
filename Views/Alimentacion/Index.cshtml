@@ -61,23 +61,43 @@
                 <ul class="list-unstyled mb-3">
                     @foreach (var porcion in comida.Porciones)
                     {
-                        <li class="d-flex align-items-center gap-2 mb-2">
-                            @if (porcion.Alimento.UrlImagen is not null)
+                        <li class="mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                @if (porcion.Alimento.UrlImagen is not null)
+                                {
+                                    <img src="@porcion.Alimento.UrlImagen"
+                                         alt="@porcion.Alimento.Nombre"
+                                         title="@porcion.Alimento.AtribucionImagen"
+                                         loading="lazy"
+                                         width="40" height="40"
+                                         class="rounded flex-shrink-0"
+                                         style="object-fit:cover; background:#0f0f1a;" />
+                                }
+                                else
+                                {
+                                    <span class="rounded flex-shrink-0 d-inline-block text-center"
+                                          style="width:40px; height:40px; line-height:40px; background:#0f0f1a; color:var(--fc-primary);">&#9656;</span>
+                                }
+                                <span class="small" style="color:#ccc;">@porcion.Descripcion</span>
+                            </div>
+
+                            @* Alternativas equivalentes del mismo grupo de intercambio. *@
+                            @if (porcion.Sustitutos.Count > 0)
                             {
-                                <img src="@porcion.Alimento.UrlImagen"
-                                     alt="@porcion.Alimento.Nombre"
-                                     title="@porcion.Alimento.AtribucionImagen"
-                                     loading="lazy"
-                                     width="40" height="40"
-                                     class="rounded flex-shrink-0"
-                                     style="object-fit:cover; background:#0f0f1a;" />
+                                <details class="mt-1 ms-5">
+                                    <summary class="small" style="color:#888; cursor:pointer;">
+                                        o cambiá por&hellip;
+                                    </summary>
+                                    <ul class="list-unstyled mt-1 mb-0">
+                                        @foreach (var sustituto in porcion.Sustitutos)
+                                        {
+                                            <li class="small" style="color:#aaa;">
+                                                <span style="color:var(--fc-primary); margin-right:6px;">&#8644;</span>@sustituto.Descripcion
+                                            </li>
+                                        }
+                                    </ul>
+                                </details>
                             }
-                            else
-                            {
-                                <span class="rounded flex-shrink-0 d-inline-block text-center"
-                                      style="width:40px; height:40px; line-height:40px; background:#0f0f1a; color:var(--fc-primary);">&#9656;</span>
-                            }
-                            <span class="small" style="color:#ccc;">@porcion.Descripcion</span>
                         </li>
                     }
                 </ul>

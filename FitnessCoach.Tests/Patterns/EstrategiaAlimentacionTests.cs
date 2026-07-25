@@ -217,6 +217,61 @@ namespace FitnessCoach.Tests.Patterns
         }
 
         [Fact]
+        public void LasPorcionesTraenSustitutosDelMismoGrupoDeIntercambio()
+        {
+            var plan = PlanDePrueba();
+
+            // Al menos alguna porción debe ofrecer alternativas; y toda alternativa
+            // tiene que ser del mismo grupo de intercambio que la original.
+            var conSustitutos = plan.Comidas
+                .SelectMany(c => c.Porciones)
+                .Where(p => p.Sustitutos.Count > 0)
+                .ToList();
+
+            Assert.NotEmpty(conSustitutos);
+            foreach (var porcion in conSustitutos)
+            {
+                Assert.All(porcion.Sustitutos, s =>
+                    Assert.Equal(porcion.Alimento.GrupoIntercambio, s.Alimento.GrupoIntercambio));
+            }
+        }
+
+        [Fact]
+        public void UnSustitutoNoEsElMismoAlimentoDeLaPorcion()
+        {
+            var plan = PlanDePrueba();
+
+            foreach (var porcion in plan.Comidas.SelectMany(c => c.Porciones))
+            {
+                Assert.DoesNotContain(porcion.Sustitutos,
+                    s => s.Alimento.Slug == porcion.Alimento.Slug);
+            }
+        }
+
+        [Fact]
+        public void LosSustitutosRespetanElMomentoDeLaComida()
+        {
+            var catalogo = RepositorioAlimentosFalso.ConCatalogoDePrueba();
+            var plan = new AlimentacionRecomposicion(catalogo).GenerarPlan(Macros);
+
+            var momentoDe = new Dictionary<string, string>
+            {
+                ["Desayuno"] = "desayuno",
+                ["Almuerzo"] = "principal",
+                ["Merienda"] = "snack",
+                ["Cena"] = "principal"
+            };
+
+            foreach (var comida in plan.Comidas)
+            {
+                var momento = momentoDe[comida.NombreComida];
+                foreach (var sustituto in comida.Porciones.SelectMany(p => p.Sustitutos))
+                    Assert.True(sustituto.Alimento.VaEn(momento),
+                        $"'{sustituto.Alimento.Nombre}' no va en '{comida.NombreComida}'.");
+            }
+        }
+
+        [Fact]
         public void LaDescripcionDeLaPorcionIncluyeLosGramosYElAlimento()
         {
             var porcion = PlanDePrueba().Comidas.First().Porciones.First();
