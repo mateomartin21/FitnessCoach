@@ -34,7 +34,7 @@ namespace FitnessCoach.Application.Coaching
                        "verduras. Tu plan de alimentacion ya tiene los numeros y hasta los reemplazos; " +
                        "seguilo y vas bien.";
 
-            if (Menciona(pregunta, "descanso", "dormir", "sueno", "recupera", "cansado"))
+            if (Menciona(pregunta, "descans", "dormir", "sueno", "recupera", "cansad"))
                 return "el musculo se construye descansando, no solo entrenando. Dormi tus siete u ocho " +
                        "horas y respeta los dias de descanso: no es vagancia, es parte del plan.";
 
