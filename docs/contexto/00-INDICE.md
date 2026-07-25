@@ -48,6 +48,6 @@ Y adjunta:
 |-------|-------|
 | Creado | 22/07/2026 |
 | Última actualización | 24/07/2026 |
-| Rama de referencia | `fase-5.5/nutricion-personalizada` (contra `CD/CI`) |
-| Último ADR | ADR-14 (nutrición personalizada) |
-| Fase activa del roadmap | Fase 5.6 — Preferencias/exclusiones y adherencia (siguiente) |
+| Rama de referencia | `fase-5.6/preferencias-adherencia` (contra `CD/CI`) |
+| Último ADR | ADR-15 (preferencias y adherencia) |
+| Fase activa del roadmap | Fase 6 — Resiliencia de IA (siguiente) |
