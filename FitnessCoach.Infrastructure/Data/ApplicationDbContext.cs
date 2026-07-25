@@ -102,7 +102,21 @@ namespace FitnessCoach.Infrastructure.Data
 
                     record.ToTable("RecordsPersonales");
                 });
-            
+
+                // Preferencias es un objeto de valor sin identidad propia: vive en la
+                // misma fila del perfil (OwnsOne), con las dos listas como columnas JSON.
+                entity.OwnsOne(u => u.Preferencias, prefs =>
+                {
+                    prefs.Property(p => p.DietasSeguidas)
+                        .HasConversion(ConversorListaTexto).Metadata.SetValueComparer(ComparadorListaTexto);
+                    prefs.Property(p => p.AlimentosExcluidos)
+                        .HasConversion(ConversorListaTexto).Metadata.SetValueComparer(ComparadorListaTexto);
+
+                    prefs.Ignore(p => p.SinRestricciones);
+                });
+                // OwnsOne exige que la propiedad nunca sea null al materializar.
+                entity.Navigation(u => u.Preferencias).IsRequired();
+
                 entity.HasIndex(u => u.IdentityUserId)
                     .IsUnique()
                     .HasFilter("[IdentityUserId] IS NOT NULL");

@@ -31,12 +31,15 @@ namespace FitnessCoach.Application.Services
             var calorias = _calculadorCalorico.CalcularCaloriasDiarias(usuario);
             var macros = CalculadorMacros.Calcular(usuario, calorias);
 
+            var semilla = SemillaDe(usuario);
+            var preferencias = usuario.Preferencias;
+
             IEstrategiaAlimentacion estrategia = usuario.ObjetivoActual switch
             {
-                ObjetivoPerderPeso => new AlimentacionPerderPeso(_catalogo, SemillaDe(usuario)),
-                ObjetivoGanarMusculo => new AlimentacionGanarMusculo(_catalogo, SemillaDe(usuario)),
-                ObjetivoRecomposicion => new AlimentacionRecomposicion(_catalogo, SemillaDe(usuario)),
-                _ => new AlimentacionRecomposicion(_catalogo, SemillaDe(usuario))
+                ObjetivoPerderPeso => new AlimentacionPerderPeso(_catalogo, semilla, preferencias),
+                ObjetivoGanarMusculo => new AlimentacionGanarMusculo(_catalogo, semilla, preferencias),
+                ObjetivoRecomposicion => new AlimentacionRecomposicion(_catalogo, semilla, preferencias),
+                _ => new AlimentacionRecomposicion(_catalogo, semilla, preferencias)
             };
 
             return new PlanConHidratacion(estrategia).GenerarPlan(macros);

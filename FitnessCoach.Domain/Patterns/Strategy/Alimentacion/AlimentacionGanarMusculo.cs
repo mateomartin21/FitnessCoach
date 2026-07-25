@@ -1,11 +1,13 @@
+using FitnessCoach.Domain.Models.Alimentacion;
 using FitnessCoach.Domain.Ports;
 
 namespace FitnessCoach.Domain.Patterns.Strategy.Alimentacion
 {
     public class AlimentacionGanarMusculo : EstrategiaAlimentacionBase
     {
-        public AlimentacionGanarMusculo(IRepositorioAlimentos catalogo, int semillaRotacion = 0)
-            : base(catalogo, semillaRotacion) { }
+        public AlimentacionGanarMusculo(IRepositorioAlimentos catalogo, int semillaRotacion = 0,
+            PreferenciasAlimentarias? preferencias = null)
+            : base(catalogo, semillaRotacion, preferencias) { }
 
         protected override string NombrePlan => "Plan Superávit Calórico";
         protected override string Objetivo => "Ganancia Muscular";

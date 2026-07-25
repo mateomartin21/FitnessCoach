@@ -24,14 +24,21 @@ namespace FitnessCoach.Domain.Patterns.Strategy.Alimentacion
     {
         private readonly IRepositorioAlimentos _catalogo;
         private readonly int _semillaRotacion;
+        private readonly PreferenciasAlimentarias _preferencias;
 
         /// <summary>Las porciones se redondean a esto: nadie pesa 137 g de arroz.</summary>
         private const double MultiploDeRedondeoG = 5;
 
-        protected EstrategiaAlimentacionBase(IRepositorioAlimentos catalogo, int semillaRotacion = 0)
+        protected EstrategiaAlimentacionBase(
+            IRepositorioAlimentos catalogo,
+            int semillaRotacion = 0,
+            PreferenciasAlimentarias? preferencias = null)
         {
             _catalogo = catalogo ?? throw new ArgumentNullException(nameof(catalogo));
             _semillaRotacion = semillaRotacion;
+            // Sin preferencias, un objeto vacío deja pasar todo: evita comprobar null
+            // en cada filtro.
+            _preferencias = preferencias ?? new PreferenciasAlimentarias();
         }
 
         protected abstract string NombrePlan { get; }
@@ -137,7 +144,8 @@ namespace FitnessCoach.Domain.Patterns.Strategy.Alimentacion
         /// <summary>
         /// Calcula, para cada porción, sus alternativas del mismo grupo de intercambio.
         /// Los candidatos se acotan al momento del día para no ofrecer avena de cena en
-        /// lugar del arroz: comparten grupo "cereal" pero no la hora.
+        /// lugar del arroz, y a las preferencias del usuario: no tiene sentido sugerir
+        /// como cambio algo que él mismo excluyó.
         /// </summary>
         private void PoblarSustitutos(ComidaDia comida, string momento)
         {
@@ -145,7 +153,7 @@ namespace FitnessCoach.Domain.Patterns.Strategy.Alimentacion
             {
                 var candidatos = _catalogo
                     .ObtenerPorGrupoIntercambio(porcion.Alimento.GrupoIntercambio)
-                    .Where(a => a.VaEn(momento));
+                    .Where(a => a.VaEn(momento) && _preferencias.Permite(a));
 
                 porcion.Sustitutos = CalculadorEquivalencias.Para(porcion, candidatos);
             }
@@ -219,7 +227,11 @@ namespace FitnessCoach.Domain.Patterns.Strategy.Alimentacion
         private IEnumerable<Alimento> Elegir(
             RolAlimento rol, string momento, int indiceComida, HashSet<string> yaUsados)
         {
-            var todos = _catalogo.ObtenerPorCategoria(rol.Categoria);
+            // El filtro de preferencias va primero, antes que el de momento y que los
+            // fallbacks: nada de lo que sigue debe poder devolver un alimento vetado.
+            var todos = _catalogo.ObtenerPorCategoria(rol.Categoria)
+                .Where(_preferencias.Permite)
+                .ToList();
 
             // Solo lo que cae bien a esa hora. Si el filtro deja el papel sin nada, se
             // vuelve al catálogo entero: un desayuno raro es mejor que un desayuno vacío.

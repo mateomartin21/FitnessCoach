@@ -1,11 +1,13 @@
+using FitnessCoach.Domain.Models.Alimentacion;
 using FitnessCoach.Domain.Ports;
 
 namespace FitnessCoach.Domain.Patterns.Strategy.Alimentacion
 {
     public class AlimentacionRecomposicion : EstrategiaAlimentacionBase
     {
-        public AlimentacionRecomposicion(IRepositorioAlimentos catalogo, int semillaRotacion = 0)
-            : base(catalogo, semillaRotacion) { }
+        public AlimentacionRecomposicion(IRepositorioAlimentos catalogo, int semillaRotacion = 0,
+            PreferenciasAlimentarias? preferencias = null)
+            : base(catalogo, semillaRotacion, preferencias) { }
 
         protected override string NombrePlan => "Plan de Recomposición Corporal";
         protected override string Objetivo => "Recomposición y Fuerza";
