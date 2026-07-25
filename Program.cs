@@ -109,6 +109,10 @@ builder.Services.AddScoped<FitnessCoach.Domain.Ports.IFabricaProveedoresIA,
 // El respaldo offline: última garantía, sin red. Vive en Application (es testeable).
 builder.Services.AddScoped<FitnessCoach.Application.Coaching.CoachOfflineService>();
 
+// Arma el contexto rico (plan, rutina, diario, récords, catálogo) para cada consulta.
+builder.Services.AddScoped<FitnessCoach.Application.Coaching.IArmadorContextoCoach,
+                           FitnessCoach.Application.Coaching.ArmadorContextoCoach>();
+
 // El coach que consume el controlador: la cadena de la fábrica + el offline al final.
 // Prueba los proveedores en orden y garantiza siempre una respuesta del Lobo.
 builder.Services.AddScoped<FitnessCoach.Application.Coaching.ICoachIA>(sp =>

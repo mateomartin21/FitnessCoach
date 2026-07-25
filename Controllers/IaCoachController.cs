@@ -12,11 +12,13 @@ namespace FitnessCoach.Controllers
     {
         private readonly IServicioPerfilUsuario _perfiles;
         private readonly ICoachIA _coach;
+        private readonly IArmadorContextoCoach _contexto;
 
-        public IaCoachController(IServicioPerfilUsuario perfiles, ICoachIA coach)
+        public IaCoachController(IServicioPerfilUsuario perfiles, ICoachIA coach, IArmadorContextoCoach contexto)
         {
             _perfiles = perfiles;
             _coach = coach;
+            _contexto = contexto;
         }
 
         public IActionResult Index()
@@ -33,12 +35,16 @@ namespace FitnessCoach.Controllers
                 return BadRequest(new { respuesta = "El mensaje no es válido. Escribí entre 1 y 2000 caracteres." });
 
             var usuario = _perfiles.Obtener(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var perfil = usuario == null ? "Usuario sin perfil configurado." :
-                $"Nombre: {usuario.Nombre}, Edad: {usuario.Edad} anos, Peso: {usuario.PesoKg}kg, Estatura: {usuario.EstaturaCm}cm, Objetivo: {usuario.ObjetivoActual?.Nombre ?? "No definido"}";
+
+            // Contexto rico: el Lobo ve el plan, la rutina, el diario y los récords reales,
+            // no solo cuatro datos del perfil. Sin perfil todavía, un contexto mínimo.
+            var contexto = usuario is null
+                ? "El usuario todavía no configuró su perfil."
+                : _contexto.Construir(usuario);
 
             // La cadena siempre devuelve algo: si la IA falló, viene la respuesta del Lobo
             // en modo sin conexión, nunca un error. El controlador ya no distingue casos.
-            var respuesta = await _coach.ConsultarAsync(request.Mensaje, perfil);
+            var respuesta = await _coach.ConsultarAsync(request.Mensaje, contexto);
             return Ok(new { respuesta = respuesta.Texto, degradada = respuesta.EsDegradada });
         }
     }
