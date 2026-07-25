@@ -4,6 +4,12 @@
     <ProjectReference Include="..\FitnessCoach.Domain\FitnessCoach.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Solo las abstracciones de logging: la capa de aplicación pide un ILogger,
+         no elige una implementación. -->
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.9" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
