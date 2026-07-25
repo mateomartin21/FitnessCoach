@@ -94,10 +94,20 @@ builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorAlimentac
 builder.Services.AddScoped<FitnessCoach.Application.Services.IServicioDiario,
                            FitnessCoach.Application.Services.ServicioDiario>();
 
-builder.Services.AddHttpClient<FitnessCoach.Infrastructure.Adapters.GeminiCoachService>(client =>
+// Proveedores de IA del Lobo Coach, EN ORDEN: primero el real (Gemini), y si falla,
+// el respaldo offline que responde por reglas sin red. La cadena (CoachResiliente)
+// los recibe como IEnumerable en este mismo orden.
+builder.Services.AddHttpClient<FitnessCoach.Domain.Ports.IProveedorIA,
+                               FitnessCoach.Infrastructure.Adapters.GeminiCoachService>(client =>
 {
     client.Timeout = TimeSpan.FromSeconds(15);
 });
+builder.Services.AddScoped<FitnessCoach.Domain.Ports.IProveedorIA,
+                           FitnessCoach.Application.Coaching.CoachOfflineService>();
+
+// El coach que consume el controlador: prueba los proveedores y garantiza respuesta.
+builder.Services.AddScoped<FitnessCoach.Application.Coaching.ICoachIA,
+                           FitnessCoach.Application.Coaching.CoachResiliente>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

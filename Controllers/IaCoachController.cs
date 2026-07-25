@@ -1,5 +1,5 @@
+using FitnessCoach.Application.Coaching;
 using FitnessCoach.Application.Services;
-using FitnessCoach.Infrastructure.Adapters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -11,12 +11,12 @@ namespace FitnessCoach.Controllers
     public class IaCoachController : Controller
     {
         private readonly IServicioPerfilUsuario _perfiles;
-        private readonly GeminiCoachService _gemini;
+        private readonly ICoachIA _coach;
 
-        public IaCoachController(IServicioPerfilUsuario perfiles, GeminiCoachService gemini)
+        public IaCoachController(IServicioPerfilUsuario perfiles, ICoachIA coach)
         {
             _perfiles = perfiles;
-            _gemini = gemini;
+            _coach = coach;
         }
 
         public IActionResult Index()
@@ -36,8 +36,10 @@ namespace FitnessCoach.Controllers
             var perfil = usuario == null ? "Usuario sin perfil configurado." :
                 $"Nombre: {usuario.Nombre}, Edad: {usuario.Edad} anos, Peso: {usuario.PesoKg}kg, Estatura: {usuario.EstaturaCm}cm, Objetivo: {usuario.ObjetivoActual?.Nombre ?? "No definido"}";
 
-            var respuesta = await _gemini.ConsultarAsync(request.Mensaje, perfil);
-            return Ok(new { respuesta });
+            // La cadena siempre devuelve algo: si la IA falló, viene la respuesta del Lobo
+            // en modo sin conexión, nunca un error. El controlador ya no distingue casos.
+            var respuesta = await _coach.ConsultarAsync(request.Mensaje, perfil);
+            return Ok(new { respuesta = respuesta.Texto, degradada = respuesta.EsDegradada });
         }
     }
 
