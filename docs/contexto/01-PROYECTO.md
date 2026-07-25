@@ -144,6 +144,8 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 
 - **Preferencias y adherencia (Fase 5.6, ADR-15).** El perfil guarda dietas (vegetariano, vegano, sin gluten, sin lactosa) y alimentos excluidos; el plan y las sustituciones los respetan (un vegetariano nunca ve carne). Diario de comidas para registrar lo comido —del plan o del catálogo— y seguir los macros del día contra el objetivo. Cierra el apartado de nutrición.
 
+- **IA resiliente y contextual (Fase 6, ADR-16).** El Lobo Coach ya no muere si Gemini falla: una cadena de proveedores (Factory) prueba Gemini, luego Groq/OpenRouter si hay clave gratuita, y por último un respaldo offline por reglas que nunca falla. Los errores son excepciones registradas, no texto. La IA recibe contexto rico (plan, rutina, diario, récords) anclado al catálogo real —solo recomienda lo que existe, no inventa— y analiza el progreso desde la pantalla, no solo en el chat. Cierra D-09 y D-20.
+
 ### ❌ Existe pero NO está conectado / no funciona como se documentó
 
 - **La API REST se quedó atrás del producto (D-26).** Solo expone perfil, calorías y el historial de peso en modo lectura/alta; no cubre edición, borrado ni entrenamientos. No es un riesgo de seguridad, es superficie desactualizada.

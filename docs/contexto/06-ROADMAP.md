@@ -22,9 +22,9 @@ Fase 3  Validación y robustez de dominio
    │
    ├──────────────┬──────────────────┐
    ▼              ▼                  ▼
-Fase 4        Fase 5             Fase 6
-Tracker       Catálogo de        Resiliencia
-              ejercicios         de IA
+Fase 4        Fase 5             Fase 6 ✅
+Tracker       Catálogo de        Resiliencia IA
+              ejercicios         (+ IA expandida)
    │              │                  │
    │              ▼                  │
    │         Fase 5.5 ✅             │
@@ -38,7 +38,7 @@ Tracker       Catálogo de        Resiliencia
    │              │                  │
    │              │                  ▼
    │              │              Fase 7
-   │              │              IA expandida
+   │              │              IA pulido (opcional)
    │              │                  │
    └──────────────┴──────────────────┘
                   ▼
@@ -256,44 +256,43 @@ Tracker       Catálogo de        Resiliencia
 
 ---
 
-## Fase 6 — Resiliencia de IA
+## Fase 6 — Resiliencia de IA (ampliada) ✅
 
-**Objetivo:** que si Gemini falla, el Lobo Coach no muera. Encaja perfecto con la línea de patrones GOF del proyecto.
+**Estado:** ✅ **Cerrada** el 25/07/2026 (rama `fase-6/resiliencia-ia`, ADR-16). 294/294 pruebas.
 
-**Resuelve:** D-09, D-20
+**Objetivo:** que si Gemini falla, el Lobo Coach no muera — y, por pedido del usuario, que la IA vea los datos reales, no invente y sea una capa sobre el sistema, no un chat aislado. Absorbió el grueso de la Fase 7.
 
-**Entregables:**
-- Puerto `ICoachIA` en `Domain/Ports/` — hoy los controladores dependen de la clase concreta `GeminiCoachService`, lo cual es una violación de la regla de dependencias
-- `GeminiCoachService` implementa ese puerto
-- Al menos un proveedor alternativo (otro modelo, u otro proveedor)
-- **Fallback:** Strategy + Factory, o Chain of Responsibility, para pasar al siguiente proveedor ante un fallo
-- Respuesta degradada garantizada si todos fallan (el Lobo responde algo con personalidad, nunca un error crudo)
-- Los errores se propagan de verdad (excepción o tipo resultado), no como texto de respuesta
-- El prompt de personalidad del Lobo se extrae del adaptador HTTP
-- Registro de fallos con `ILogger`
-- Pruebas del fallback con proveedores falsos
+**Resolvió:** D-09, D-20
 
-**Definition of Done:** prueba de fuego §7, punto 6 — con internet desconectado, el Lobo responde con gracia y la app no se cae.
-**ADR:** ADR-16 — resiliencia de IA mediante patrón de proveedores intercambiables (era ADR-15; se corrió al escribir el ADR-15 de la Fase 5.6).
-**Rama sugerida:** `fase-6/resiliencia-ia`
+**Entregado:**
+- ✅ Puerto `IProveedorIA` (Domain/Ports); el controlador depende de `ICoachIA`, no del adaptador concreto
+- ✅ Errores como `CoachIAException`, registrados con `ILogger` — nunca devueltos como texto (D-09)
+- ✅ Personalidad del Lobo en Application, fuera del adaptador, con más carácter y reglas de no-invención (D-20)
+- ✅ `CoachResiliente` (Chain of Responsibility) + `IFabricaProveedoresIA` (Factory)
+- ✅ Cadena gratuita por capas: Gemini (2 modelos) → Groq/OpenRouter si hay clave (otra empresa, gratis) → offline por reglas (última garantía, sin red)
+- ✅ `ArmadorContextoCoach`: contexto rico (perfil, plan, rutina, diario, récords) anclado al catálogo real de alimentos
+- ✅ La IA como capa: endpoint `Analizar` + tarjeta "El Lobo analiza tu progreso" en la pantalla de Progreso, con datos reales
+
+**Definition of Done:** ✅ prueba de fuego §7, punto 6 — con internet desconectado, el Lobo responde con gracia (offline) y la app no se cae.
+**ADR:** ADR-16.
+
+> Pendiente sin código: configurar una clave gratuita de Groq u OpenRouter (`Groq:ApiKey` / `OpenRouter:ApiKey` en user-secrets) para el respaldo inteligente de otra empresa. Sin ella, la cadena es Gemini → Gemini secundario → offline.
 
 ---
 
-## Fase 7 — IA expandida
+## Fase 7 — IA expandida (casi absorbida por la Fase 6)
 
-**Objetivo:** que la IA deje de ser solo un chat y participe en la experiencia.
+**Estado:** el grueso se hizo en la Fase 6 (contexto rico, análisis sobre datos reales, IA como capa). Queda como **pulido opcional**.
 
-**Depende de:** Fase 4 (necesita datos que analizar) y Fase 6 (necesita ser confiable antes de ponerla en más lugares).
+**Depende de:** Fase 4 (datos) y Fase 6 (IA confiable) — ambas hechas.
 
-**Entregables:**
-- Análisis de progreso: la IA lee el historial real y comenta la evolución
-- Resumen semanal narrado en la voz del Lobo
-- Recomendaciones de ajuste basadas en datos reales
-- Comentarios contextuales del Lobo en las pantallas clave
+**Lo que resta:**
+- Comentarios contextuales del Lobo en más pantallas (dieta, rutina), reusando el endpoint `Analizar` con `aspecto` = dieta/rutina (ya soportado)
+- Resumen semanal narrado en la voz del Lobo (lo único genuinamente nuevo)
 
-**Definition of Done:** el análisis usa datos reales del usuario (no genéricos) y degrada con gracia si la IA no está disponible.
-**ADR:** ADR-17 si el diseño de la integración cambia sustancialmente.
-**Rama sugerida:** `fase-7/ia-analisis`
+**Definition of Done:** el análisis usa datos reales del usuario (ya cumplido en Fase 6) y degrada con gracia si la IA no está disponible (ya cumplido).
+**ADR:** ADR-17 si el resumen semanal cambia el diseño; si no, no hace falta.
+**Rama sugerida:** `fase-7/ia-pulido`
 
 ---
 

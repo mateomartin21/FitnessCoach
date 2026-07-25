@@ -2,20 +2,20 @@
 
 > **Documento vivo.** Es el inventario honesto de lo que está mal. Cuando algo se resuelve se marca ✅ con la fase que lo resolvió — **no se borra la línea**, el historial sirve para los ADRs y para la sustentación del proyecto.
 >
-> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **25/07/2026** al cerrar la Fase 5.6 (rama `fase-5.6/preferencias-adherencia`).
+> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **25/07/2026** al cerrar la Fase 6 (rama `fase-6/resiliencia-ia`).
 
 ## Resumen
 
 | Severidad | Total | Abiertas |
 |-----------|-------|----------|
 | 🔴 Crítica (seguridad / pérdida de datos) | 7 | 0 |
-| 🟠 Alta (bug funcional o riesgo real) | 9 | 2 |
-| 🟡 Media (calidad, mantenibilidad) | 13 | 4 |
-| **Total** | **29** | **6** |
+| 🟠 Alta (bug funcional o riesgo real) | 9 | 1 |
+| 🟡 Media (calidad, mantenibilidad) | 13 | 3 |
+| **Total** | **29** | **4** |
 
-> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23. Fase 5.5 → D-27, D-28.
+> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23. Fase 5.5 → D-27, D-28. Fase 6 → D-09, D-20.
 >
-> **No queda ninguna deuda crítica abierta.** Las dos altas abiertas son D-09 (errores de Gemini, Fase 6) y D-26 (la API no cubre el tracker, Fase 10).
+> **No queda ninguna deuda crítica abierta.** La única alta abierta es D-26 (la API no cubre el tracker, Fase 10). Las tres medias abiertas: D-24 (rate limiter en memoria), D-25 (zona horaria del servidor) y D-29 (licencia de los GIFs).
 >
 > **Deuda nueva detectada en la Fase 4:** D-25 y D-26. **En la Fase 5:** D-27, D-28 y D-29.
 
@@ -95,7 +95,7 @@
 **Qué pasa:** ante un fallo de la API, el método devuelve un `string` con el texto del error (`"Error de conexion con el coach: ..."`) por el mismo canal que una respuesta válida. El `catch (Exception)` final es mudo: no registra nada.
 **Riesgo:** el llamador no puede distinguir éxito de fallo, lo cual **bloquea por completo** el mecanismo de fallback planeado para la Fase 6. Además, los fallos no quedan registrados en ningún lado.
 **Resolución:** Fase 6 (rediseño con excepción propia o tipo resultado).
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 6 (commits `706d84a`, `8ef5209` y `6371090`, ADR-16). `IProveedorIA` lanza `CoachIAException` ante cualquier fallo en vez de devolver el error como texto; `CoachResiliente` distingue el fallo, lo registra con `ILogger` y pasa al siguiente proveedor. Si todos caen, el Lobo responde con su frase de "sin señal", nunca un error crudo.
 
 ### D-10 · Inconsistencia en el manejo de fechas
 **Dónde:** `ProgresoController.RegistrarPeso` usa `DateTime.Now`; `ProgresoApiController.AgregarRegistro` usa `DateTime.UtcNow`
@@ -210,7 +210,7 @@
 **Qué pasa:** el prompt que define la personalidad del Lobo Coach está incrustado como string dentro del adaptador HTTP. Mezcla "cómo hablo con la API de Google" con "quién es el Lobo Coach".
 **Riesgo:** la personalidad del personaje es central a la visión del producto (`05-VISION-PRODUCTO.md`) y va a evolucionar mucho. Tenerla dentro del adaptador significa que cambiar de proveedor de IA implicaría reescribir la personalidad, y viceversa.
 **Resolución:** Fase 6 — extraer la construcción del prompt fuera del adaptador.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 6 (commits `706d84a` y `c679077`, ADR-16). La personalidad vive en `PersonalidadLoboCoach` (Application): arma el prompt y guarda la respuesta de "sin señal". El adaptador de Gemini solo recibe el prompt ya armado. De paso se le dio más carácter al Lobo y reglas de no-invención ancladas al catálogo.
 
 ### D-21 · `IaCoachController.Consultar` es un POST sin `[ValidateAntiForgeryToken]`
 **Dónde:** `Controllers/IaCoachController.cs` (acción `Consultar`), consumida por `fetch()` desde `Views/IaCoach/Index.cshtml`
