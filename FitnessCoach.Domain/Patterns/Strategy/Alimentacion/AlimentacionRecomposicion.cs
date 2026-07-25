@@ -1,39 +1,50 @@
-using FitnessCoach.Domain.Models.Alimentacion;
+using FitnessCoach.Domain.Ports;
 
 namespace FitnessCoach.Domain.Patterns.Strategy.Alimentacion
 {
-    public class AlimentacionRecomposicion : IEstrategiaAlimentacion
+    public class AlimentacionRecomposicion : EstrategiaAlimentacionBase
     {
-        public PlanAlimentacion GenerarPlan()
+        public AlimentacionRecomposicion(IRepositorioAlimentos catalogo, int semillaRotacion = 0)
+            : base(catalogo, semillaRotacion) { }
+
+        protected override string NombrePlan => "Plan de Recomposición Corporal";
+        protected override string Objetivo => "Recomposición y Fuerza";
+
+        protected override string Descripcion =>
+            "Calorías de mantenimiento con proteína alta: el objetivo es ganar músculo y perder " +
+            "grasa a la vez, así que el peso en la balanza puede moverse poco aunque el cuerpo cambie.";
+
+        protected override IReadOnlyList<PlantillaComida> Estructura => new[]
         {
-            return new PlanAlimentacion
+            new PlantillaComida
             {
-                NombrePlan = "Plan Mantenimiento Inteligente",
-                Objetivo = "Recomposición Corporal",
-                CaloriasObjetivo = "2200-2500 kcal/día",
-                Descripcion = "Calorías de mantenimiento con alta proteína. Ciclo de carbohidratos según días de entrenamiento.",
-                Comidas = new List<ComidaDia>
-                {
-                    new ComidaDia { NombreComida = "Desayuno", Hora = "07:00", Calorias = 480, Proteinas = 35, Carbohidratos = 50, Grasas = 12,
-                        Alimentos = new List<string> { "3 huevos enteros revueltos", "80g avena con agua y canela", "1 fruta mediana", "Café negro" } },
-                    new ComidaDia { NombreComida = "Snack Mañana", Hora = "10:30", Calorias = 220, Proteinas = 22, Carbohidratos = 20, Grasas = 6,
-                        Alimentos = new List<string> { "150g yogur griego", "1 puñado de nueces (20g)", "1 fruta pequeña" } },
-                    new ComidaDia { NombreComida = "Almuerzo", Hora = "13:00", Calorias = 600, Proteinas = 48, Carbohidratos = 55, Grasas = 14,
-                        Alimentos = new List<string> { "200g pechuga de pollo o atún", "130g arroz integral", "Ensalada mixta grande", "1/4 aguacate" } },
-                    new ComidaDia { NombreComida = "Merienda", Hora = "16:30", Calorias = 250, Proteinas = 28, Carbohidratos = 20, Grasas = 7,
-                        Alimentos = new List<string> { "100g queso cottage", "2 tortitas de arroz", "Verduras crudas" } },
-                    new ComidaDia { NombreComida = "Cena", Hora = "20:00", Calorias = 500, Proteinas = 42, Carbohidratos = 35, Grasas = 16,
-                        Alimentos = new List<string> { "200g pescado blanco o salmón", "120g batata al horno", "Vegetales al vapor abundantes", "Aceite de oliva extra virgen" } }
-                },
-                RecomendacionesGenerales = new List<string>
-                {
-                    "Los días de entrenamiento aumentar carbohidratos en 50-80g",
-                    "Los días de descanso reducir carbohidratos y aumentar grasas saludables",
-                    "Mantener proteína constante todos los días (mínimo 2g por kg de peso)",
-                    "Hidratarse con mínimo 2.5 litros de agua",
-                    "Controlar porciones con la palma de la mano como referencia"
-                }
-            };
-        }
+                Nombre = "Desayuno", Momento = "desayuno", Hora = "07:30", ParteDelDia = 0.25,
+                Roles = new[] { new RolAlimento("proteina"), new RolAlimento("carbohidrato"), new RolAlimento("fruta") }
+            },
+            new PlantillaComida
+            {
+                Nombre = "Almuerzo", Momento = "principal", Hora = "13:00", ParteDelDia = 0.30,
+                Roles = new[] { new RolAlimento("proteina"), new RolAlimento("carbohidrato"), new RolAlimento("verdura", 2), new RolAlimento("grasa") }
+            },
+            new PlantillaComida
+            {
+                Nombre = "Merienda", Momento = "snack", Hora = "17:00", ParteDelDia = 0.18,
+                Roles = new[] { new RolAlimento("lacteo"), new RolAlimento("fruta"), new RolAlimento("grasa") }
+            },
+            new PlantillaComida
+            {
+                Nombre = "Cena", Momento = "principal", Hora = "20:30", ParteDelDia = 0.27,
+                Roles = new[] { new RolAlimento("proteina"), new RolAlimento("carbohidrato"), new RolAlimento("verdura", 2) }
+            }
+        };
+
+        protected override IReadOnlyList<string> Recomendaciones => new[]
+        {
+            "Sostener la proteína alta todos los días: es lo que dirige las calorías al músculo y no a la grasa",
+            "Medir el progreso con fotos y medidas, no solo con la balanza",
+            "Entrenar con cargas progresivas: sin el estímulo, las calorías no se convierten en músculo",
+            "Mantener las verduras en las dos comidas principales",
+            "Ser paciente: la recomposición es el proceso más lento de los tres"
+        };
     }
 }

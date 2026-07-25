@@ -27,9 +27,14 @@ Tracker       Catálogo de        Resiliencia
               ejercicios         de IA
    │              │                  │
    │              ▼                  │
-   │         Fase 5.5                │
-   │         Catálogo de             │
-   │         alimentos               │
+   │         Fase 5.5 ✅             │
+   │         Nutrición               │
+   │         personalizada           │
+   │              │                  │
+   │              ▼                  │
+   │         Fase 5.6                │
+   │         Preferencias y          │
+   │         adherencia              │
    │              │                  │
    │              │                  ▼
    │              │              Fase 7
@@ -204,27 +209,48 @@ Tracker       Catálogo de        Resiliencia
 
 ---
 
-## Fase 5.5 — Catálogo de alimentos y planes personalizados
+## Fase 5.5 — Catálogo de alimentos y planes personalizados ✅
+
+**Estado:** ✅ **Cerrada** el 24/07/2026 (rama `fase-5.5/nutricion-personalizada`, ADR-14). 227/227 pruebas.
 
 **Objetivo:** que el plan de comidas deje de ser un folleto fijo y responda a las calorías reales de cada usuario. Es el espejo exacto de la Fase 5, pero en alimentación.
 
-**Resuelve:** D-27, D-28
+**Resolvió:** D-27, D-28
 
-**Por qué existe esta fase:** al cerrar la Fase 5 quedó a la vista que la alimentación arrastra los mismos problemas que los ejercicios acababan de resolver, más uno propio y peor: `CaloriasObjetivo = "1800-2000 kcal/día"` está escrito a mano en cada estrategia, así que **el plan ignora el cálculo calórico que la propia app le muestra al usuario en la pantalla de Perfil**. Dos personas con 1900 y 2600 kcal calculadas reciben el mismo plan.
+**Por qué existió esta fase:** al cerrar la Fase 5 quedó a la vista que la alimentación arrastraba los mismos problemas que los ejercicios acababan de resolver, más uno propio y peor: `CaloriasObjetivo = "1800-2000 kcal/día"` estaba escrito a mano en cada estrategia, así que **el plan ignoraba el cálculo calórico que la propia app le muestra al usuario en Perfil**.
+
+**Entregado:**
+- ✅ `CalculadorMacros`: reparte las calorías en proteína (por peso), grasa (% del total) y carbohidratos (por diferencia), con pisos de seguridad
+- ✅ Entidad `Alimento` persistida con macros por 100 g; 67 alimentos sembrados desde USDA (volcado SR Legacy, dominio público) con imágenes de Wikimedia atribuidas
+- ✅ Puerto `IRepositorioAlimentos` + adaptador SQL de solo lectura + doble en pruebas
+- ✅ Las tres estrategias **componen** el plan desde el catálogo (`PlantillaComida` + `RolAlimento`) y escalan las porciones a los macros del usuario — murió el rango fijo (D-27)
+- ✅ Sustituciones por equivalencia de macros en cada porción, acotadas por grupo de intercambio y momento del día
+- ✅ Filtro de momento del día (que el desayuno no traiga tempeh con pasta) y descargo médico visible
+- ✅ Pruebas que validan el JSON de la semilla y corren el generador contra el catálogo real con cinco perfiles distintos
+
+**Definition of Done:** ✅ dos usuarios con requerimientos calóricos distintos reciben planes distintos y coherentes con el número que la app les muestra en Perfil. Agregar un alimento es una línea de JSON, sin tocar ninguna Strategy.
+**ADR:** ADR-14.
+
+---
+
+## Fase 5.6 — Preferencias, exclusiones y adherencia
+
+**Objetivo:** que el plan respete lo que la persona puede y quiere comer, y que pueda seguir si lo cumple. Cierra el apartado de nutrición.
+
+**Depende de:** Fase 5.5 (el catálogo, las etiquetas de dieta y el motor de composición ya están; esta fase los usa).
 
 **Entregables:**
-- Entidad `Alimento` persistida con macros por porción (hoy los alimentos son `List<string>` de texto plano y los macros están sumados a mano por comida)
-- Catálogo de alimentos con datos semilla, mismo enfoque que el de ejercicios (archivo de datos + sembrador)
-- Las estrategias de alimentación **componen** el plan desde el catálogo en vez de tenerlo incrustado
-- **El plan escala a las calorías calculadas del usuario**, no a un rango fijo (D-27)
-- Sustitución de alimentos: poder cambiar uno por otro equivalente en macros
-- Pruebas de que el plan generado respeta el objetivo calórico dentro de un margen
+- **Preferencias y exclusiones:** filtrar el catálogo por dieta (vegetariano, vegano, sin gluten, sin lactosa) y por alergias/alimentos excluidos. Las etiquetas (`EtiquetasDieta`) ya están sembradas en cada alimento esperando este filtro
+- Guardar esas preferencias en el perfil del usuario
+- El plan y las sustituciones respetan las exclusiones: un vegetariano nunca ve pollo, ni como comida ni como alternativa
+- **Registro de adherencia:** marcar qué comidas se cumplieron y seguir los macros del día (planificado vs. real)
+- Pruebas de que ningún plan ni sustituto viola una exclusión activa
 
-**Definition of Done:** dos usuarios con requerimientos calóricos distintos reciben planes distintos y coherentes con el número que la app les muestra en Perfil. Agregar un alimento no requiere tocar ninguna clase de Strategy.
-**ADR:** ADR-14 — catálogo de alimentos y personalización calórica.
-**Rama sugerida:** `fase-5.5/catalogo-alimentos`
+**Definition of Done:** un usuario vegetariano con alergia declarada recibe un plan completo que nunca incluye lo excluido, y puede registrar lo que comió con seguimiento de macros del día.
+**ADR:** ADR nuevo si el diseño de preferencias/adherencia lo amerita (el número se asigna al escribirlo; la Fase 6 ya reserva ADR-15).
+**Rama sugerida:** `fase-5.6/preferencias-adherencia`
 
-> Va acá y no más adelante porque es barato inmediatamente después de la Fase 5: el patrón (entidad + catálogo + semilla + estrategias que componen) ya está resuelto y probado; se replica. Dejarlo para el final significaría rehacer las estrategias de alimentación dos veces.
+> Va inmediatamente después de la 5.5 por la misma razón que aquella siguió a la 5: el catálogo, las etiquetas y el motor ya están hechos y probados; esta fase es sobre todo filtrado y una entidad de registro. Cierra nutrición antes de pasar a la línea de IA.
 
 ---
 

@@ -2,20 +2,20 @@
 
 > **Documento vivo.** Es el inventario honesto de lo que está mal. Cuando algo se resuelve se marca ✅ con la fase que lo resolvió — **no se borra la línea**, el historial sirve para los ADRs y para la sustentación del proyecto.
 >
-> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **24/07/2026** al cerrar la Fase 4 (rama `fase-4/tracker`).
+> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **24/07/2026** al cerrar la Fase 5.5 (rama `fase-5.5/nutricion-personalizada`).
 
 ## Resumen
 
 | Severidad | Total | Abiertas |
 |-----------|-------|----------|
 | 🔴 Crítica (seguridad / pérdida de datos) | 7 | 0 |
-| 🟠 Alta (bug funcional o riesgo real) | 9 | 3 |
-| 🟡 Media (calidad, mantenibilidad) | 13 | 5 |
-| **Total** | **29** | **8** |
+| 🟠 Alta (bug funcional o riesgo real) | 9 | 2 |
+| 🟡 Media (calidad, mantenibilidad) | 13 | 4 |
+| **Total** | **29** | **6** |
 
-> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23.
+> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23. Fase 5.5 → D-27, D-28.
 >
-> **No queda ninguna deuda crítica abierta.** Las tres altas abiertas son D-09 (errores de Gemini, Fase 6), D-26 (la API no cubre el tracker, Fase 10) y D-27 (el plan de comidas ignora las calorías calculadas).
+> **No queda ninguna deuda crítica abierta.** Las dos altas abiertas son D-09 (errores de Gemini, Fase 6) y D-26 (la API no cubre el tracker, Fase 10).
 >
 > **Deuda nueva detectada en la Fase 4:** D-25 y D-26. **En la Fase 5:** D-27, D-28 y D-29.
 
@@ -88,7 +88,7 @@
 **Qué pasa:** cada estrategia de alimentación trae un rango calórico fijo escrito a mano. `CalculadorCaloricoService` calcula el requerimiento real de cada persona (Mifflin-St Jeor + multiplicador del objetivo), la app lo muestra en la pantalla de Perfil, y el plan de comidas lo ignora: dos usuarios con 1900 y 2600 kcal calculadas reciben exactamente el mismo plan.
 **Riesgo:** la app se contradice a sí misma en pantallas contiguas, y el plan que entrega no sirve para el objetivo de quien lo recibe. Es el consejo nutricional lo que queda mal, no solo el código.
 **Resolución:** que la estrategia reciba las calorías objetivo del usuario y escale las porciones, en lugar de declararlas fijas. Detectada el 24/07/2026 al cerrar la Fase 5.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 5.5 (commits `3e35f64` y `c620f5e`, ADR-14). `CalculadorMacros` reparte las calorías calculadas en gramos de proteína/grasa/carbohidrato (proteína por peso, grasa como % del total, carbohidratos por diferencia), y `EstrategiaAlimentacionBase` escala las porciones de cada comida a esos macros. El rango fijo `"1800-2000 kcal/día"` dejó de existir: dos usuarios con distinto peso reciben planes distintos, verificado contra el catálogo real con cinco perfiles.
 
 ### D-09 · Los errores de Gemini se devuelven como si fueran consejos
 **Dónde:** `Infrastructure/Adapters/GeminiCoachService.cs`
@@ -196,7 +196,7 @@
 **Qué pasa:** exactamente el mismo problema que la Fase 5 resolvió para los ejercicios, pero en alimentación. Las comidas viven incrustadas en cada Strategy y los alimentos son `List<string>` de texto plano: no hay entidad `Alimento`, ni catálogo, ni macros por alimento (los macros están sumados a mano por comida).
 **Riesgo:** agregar o cambiar una comida obliga a editar una clase de dominio y recompilar; no hay variedad ni rotación posible (todos los usuarios con el mismo objetivo comen literalmente lo mismo todos los días); y no se pueden sustituir alimentos por alergias, preferencias o disponibilidad.
 **Resolución:** replicar el patrón del catálogo de ejercicios — entidad `Alimento` persistida con macros, y estrategias que **componen** el plan desde el catálogo. Se hace junto con D-27, que necesita esa estructura para escalar porciones. Detectada el 24/07/2026 al cerrar la Fase 5.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 5.5 (commits `1bc816d`, `c620f5e` y `ce69c66`, ADR-14). Entidad `Alimento` persistida con macros por 100 g (67 alimentos sembrados desde USDA), puerto `IRepositorioAlimentos` con adaptador SQL, y las tres estrategias pasaron a declarar la estructura del día (`PlantillaComida` + `RolAlimento`) mientras `EstrategiaAlimentacionBase` compone el plan desde el catálogo. Agregar un alimento es una línea de JSON. Además trae sustituciones por equivalencia de macros, que la estructura de texto plano anterior hacía imposibles.
 
 ### D-29 · Los GIFs del catálogo dependen de un CDN externo con licencia poco clara
 **Dónde:** columna `UrlGif` de la tabla `Ejercicios`, apuntando a `cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0`

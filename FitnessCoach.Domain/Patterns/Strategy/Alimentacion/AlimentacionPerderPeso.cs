@@ -1,39 +1,57 @@
-using FitnessCoach.Domain.Models.Alimentacion;
+using FitnessCoach.Domain.Ports;
 
 namespace FitnessCoach.Domain.Patterns.Strategy.Alimentacion
 {
-    public class AlimentacionPerderPeso : IEstrategiaAlimentacion
+    public class AlimentacionPerderPeso : EstrategiaAlimentacionBase
     {
-        public PlanAlimentacion GenerarPlan()
+        public AlimentacionPerderPeso(IRepositorioAlimentos catalogo, int semillaRotacion = 0)
+            : base(catalogo, semillaRotacion) { }
+
+        protected override string NombrePlan => "Plan Déficit Calórico";
+        protected override string Objetivo => "Pérdida de Grasa";
+
+        protected override string Descripcion =>
+            "Alto en proteína para preservar masa muscular durante el déficit, con verduras " +
+            "en todas las comidas principales: aportan volumen y saciedad por muy pocas calorías.";
+
+        // Cinco comidas para que ninguna quede tan chica que dé hambre a la hora.
+        // El almuerzo y la cena se llevan la mayor parte; los snacks sostienen el medio.
+        protected override IReadOnlyList<PlantillaComida> Estructura => new[]
         {
-            return new PlanAlimentacion
+            new PlantillaComida
             {
-                NombrePlan = "Plan Déficit Calórico",
-                Objetivo = "Pérdida de Grasa",
-                CaloriasObjetivo = "1800-2000 kcal/día",
-                Descripcion = "Alto en proteína, bajo en carbohidratos simples. Déficit de 300-500 kcal respecto al mantenimiento.",
-                Comidas = new List<ComidaDia>
-                {
-                    new ComidaDia { NombreComida = "Desayuno", Hora = "07:00", Calorias = 380, Proteinas = 30, Carbohidratos = 35, Grasas = 10,
-                        Alimentos = new List<string> { "4 claras de huevo + 1 huevo entero revueltos", "70g avena en agua con canela", "1 manzana mediana" } },
-                    new ComidaDia { NombreComida = "Snack Mañana", Hora = "10:00", Calorias = 180, Proteinas = 20, Carbohidratos = 15, Grasas = 5,
-                        Alimentos = new List<string> { "150g yogur griego natural 0%", "1 puñado de arándanos", "10g proteína en polvo opcional" } },
-                    new ComidaDia { NombreComida = "Almuerzo", Hora = "13:00", Calorias = 520, Proteinas = 45, Carbohidratos = 45, Grasas = 12,
-                        Alimentos = new List<string> { "180g pechuga de pollo a la plancha", "120g arroz integral cocido", "Ensalada grande con limón y aceite de oliva", "1 taza de brócoli al vapor" } },
-                    new ComidaDia { NombreComida = "Merienda", Hora = "16:30", Calorias = 200, Proteinas = 25, Carbohidratos = 10, Grasas = 6,
-                        Alimentos = new List<string> { "2 tortitas de arroz", "100g atún en agua", "Pepino y zanahoria en bastones" } },
-                    new ComidaDia { NombreComida = "Cena", Hora = "20:00", Calorias = 420, Proteinas = 40, Carbohidratos = 20, Grasas = 15,
-                        Alimentos = new List<string> { "200g salmón o merluza al horno", "150g batata cocida", "Ensalada de espinacas con tomate", "1 cucharada aceite de oliva" } }
-                },
-                RecomendacionesGenerales = new List<string>
-                {
-                    "Consumir mínimo 2.5 litros de agua al día",
-                    "No saltarse comidas para evitar catabolismo muscular",
-                    "Priorizar proteína en cada comida para preservar masa muscular",
-                    "Evitar azúcares simples y ultraprocesados",
-                    "Cenar al menos 2 horas antes de dormir"
-                }
-            };
-        }
+                Nombre = "Desayuno", Momento = "desayuno", Hora = "07:00", ParteDelDia = 0.22,
+                Roles = new[] { new RolAlimento("proteina"), new RolAlimento("carbohidrato"), new RolAlimento("fruta") }
+            },
+            new PlantillaComida
+            {
+                Nombre = "Snack de media mañana", Momento = "snack", Hora = "10:00", ParteDelDia = 0.12,
+                Roles = new[] { new RolAlimento("lacteo"), new RolAlimento("fruta") }
+            },
+            new PlantillaComida
+            {
+                Nombre = "Almuerzo", Momento = "principal", Hora = "13:00", ParteDelDia = 0.30,
+                Roles = new[] { new RolAlimento("proteina"), new RolAlimento("carbohidrato"), new RolAlimento("verdura", 2) }
+            },
+            new PlantillaComida
+            {
+                Nombre = "Merienda", Momento = "snack", Hora = "16:30", ParteDelDia = 0.12,
+                Roles = new[] { new RolAlimento("proteina"), new RolAlimento("verdura") }
+            },
+            new PlantillaComida
+            {
+                Nombre = "Cena", Momento = "principal", Hora = "20:00", ParteDelDia = 0.24,
+                Roles = new[] { new RolAlimento("proteina"), new RolAlimento("verdura", 2), new RolAlimento("grasa") }
+            }
+        };
+
+        protected override IReadOnlyList<string> Recomendaciones => new[]
+        {
+            "Priorizar proteína en cada comida: es lo que protege el músculo mientras se pierde grasa",
+            "Llenar medio plato con verduras en el almuerzo y la cena",
+            "No saltarse comidas: llegar con hambre extrema a la siguiente lleva a comer de más",
+            "Cocinar a la plancha, al horno o al vapor antes que fritos",
+            "Cenar al menos dos horas antes de dormir"
+        };
     }
 }

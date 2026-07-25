@@ -1,10 +1,15 @@
+using FitnessCoach.Domain.Models;
 using FitnessCoach.Domain.Models.Alimentacion;
-using FitnessCoach.Domain.Models.Objetivos;
 
 namespace FitnessCoach.Application.Services
 {
     public interface IGeneradorAlimentacion
     {
-        PlanAlimentacion GenerarPlanParaObjetivo(ObjetivoFitness objetivo);
+        /// <summary>
+        /// Genera el plan para un usuario concreto. Recibe el perfil entero y no solo
+        /// el objetivo porque las porciones dependen del peso: el objetivo dice cuánta
+        /// proteína por kilo, el peso dice cuántos kilos.
+        /// </summary>
+        PlanAlimentacion GenerarPlanPara(UsuarioPerfil usuario);
     }
 }

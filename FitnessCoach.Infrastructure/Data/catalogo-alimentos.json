@@ -1,0 +1,1898 @@
+[
+  {
+    "slug": "pechuga-de-pollo",
+    "nombre": "Pechuga de pollo",
+    "nombreIngles": "Chicken, broiler or fryers, breast, skinless, boneless, meat only, raw",
+    "fdcId": 171077,
+    "categoria": "proteina",
+    "grupoIntercambio": "proteina-magra",
+    "proteinaPor100g": 22.5,
+    "carbohidratoPor100g": 0,
+    "grasaPor100g": 2.62,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 pechuga mediana",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Chickens_in_market.jpg/500px-Chickens_in_market.jpg",
+    "autorImagen": "Tomás Castelazo",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "muslo-de-pollo",
+    "nombre": "Muslo de pollo sin piel",
+    "nombreIngles": "Chicken, broilers or fryers, dark meat, thigh, meat only, raw",
+    "fdcId": 173627,
+    "categoria": "proteina",
+    "grupoIntercambio": "proteina-media",
+    "proteinaPor100g": 19.7,
+    "carbohidratoPor100g": 0,
+    "grasaPor100g": 4.12,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 130,
+    "descripcionPorcion": "2 muslos",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 220,
+    "etiquetasDieta": [
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Chickens_in_market.jpg/500px-Chickens_in_market.jpg",
+    "autorImagen": "Tomás Castelazo",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "pavo-pechuga",
+    "nombre": "Pechuga de pavo",
+    "nombreIngles": "Turkey, whole, breast, meat only, raw",
+    "fdcId": 171098,
+    "categoria": "proteina",
+    "grupoIntercambio": "proteina-magra",
+    "proteinaPor100g": 23.7,
+    "carbohidratoPor100g": 0.14,
+    "grasaPor100g": 1.48,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 filete grande",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Gall-dindi.jpg/500px-Gall-dindi.jpg",
+    "autorImagen": "Riki7",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "carne-magra-res",
+    "nombre": "Carne magra de res",
+    "nombreIngles": "Beef, round, top round, steak, separable lean only, trimmed to 1/8\" fat, choice, raw",
+    "fdcId": 171820,
+    "categoria": "proteina",
+    "grupoIntercambio": "proteina-media",
+    "proteinaPor100g": 22.7,
+    "carbohidratoPor100g": 0,
+    "grasaPor100g": 4.78,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 bife mediano",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Korean.cuisine-Deungsim.gui-01.jpg/500px-Korean.cuisine-Deungsim.gui-01.jpg",
+    "autorImagen": "by ayustety",
+    "licenciaImagen": "CC BY-SA 2.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "lomo-de-cerdo",
+    "nombre": "Lomo de cerdo",
+    "nombreIngles": "Pork, fresh, loin, tenderloin, separable lean only, raw",
+    "fdcId": 168249,
+    "categoria": "proteina",
+    "grupoIntercambio": "proteina-magra",
+    "proteinaPor100g": 21,
+    "carbohidratoPor100g": 0,
+    "grasaPor100g": 2.17,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 porción mediana",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Lomo_en_adobo-2009.jpg/500px-Lomo_en_adobo-2009.jpg",
+    "autorImagen": "Tamorlan",
+    "licenciaImagen": "CC BY 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "salmon",
+    "nombre": "Salmón",
+    "nombreIngles": "Fish, salmon, Atlantic, farmed, raw",
+    "fdcId": 175167,
+    "categoria": "proteina",
+    "grupoIntercambio": "pescado-graso",
+    "proteinaPor100g": 20.4,
+    "carbohidratoPor100g": 0,
+    "grasaPor100g": 13.4,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 filete",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 220,
+    "etiquetasDieta": [
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Salmo_trutta_Trout_Aquarium_Atlanterhavsparken_Norway.jpg/500px-Salmo_trutta_Trout_Aquarium_Atlanterhavsparken_Norway.jpg",
+    "autorImagen": "Hans-Petter Fjeld",
+    "licenciaImagen": "CC BY-SA 2.5",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "merluza",
+    "nombre": "Merluza",
+    "nombreIngles": "Fish, cod, Atlantic, raw",
+    "fdcId": 171955,
+    "categoria": "proteina",
+    "grupoIntercambio": "pescado-blanco",
+    "proteinaPor100g": 17.8,
+    "carbohidratoPor100g": 0,
+    "grasaPor100g": 0.67,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 180,
+    "descripcionPorcion": "1 filete grande",
+    "porcionMinimaG": 100,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Gadus_morhua_Cod-2b-Atlanterhavsparken-Norway.JPG/500px-Gadus_morhua_Cod-2b-Atlanterhavsparken-Norway.JPG",
+    "autorImagen": "Hans-Petter Fjeld",
+    "licenciaImagen": "CC BY-SA 2.5",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "atun-en-agua",
+    "nombre": "Atún en agua",
+    "nombreIngles": "Fish, tuna, light, canned in water, without salt, drained solids",
+    "fdcId": 171986,
+    "categoria": "proteina",
+    "grupoIntercambio": "proteina-magra",
+    "proteinaPor100g": 25.5,
+    "carbohidratoPor100g": 0,
+    "grasaPor100g": 0.82,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 100,
+    "descripcionPorcion": "1 lata escurrida",
+    "porcionMinimaG": 60,
+    "porcionMaximaG": 180,
+    "etiquetasDieta": [
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Lata_de_at%C3%BAn-Albo.jpg/500px-Lata_de_at%C3%BAn-Albo.jpg",
+    "autorImagen": "Tamorlan",
+    "licenciaImagen": "CC BY 3.0",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "camaron",
+    "nombre": "Camarón",
+    "nombreIngles": "Crustaceans, shrimp, raw",
+    "fdcId": 175179,
+    "categoria": "proteina",
+    "grupoIntercambio": "proteina-magra",
+    "proteinaPor100g": 20.1,
+    "carbohidratoPor100g": 0,
+    "grasaPor100g": 0.51,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 taza",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 220,
+    "etiquetasDieta": [
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Lysmata_amboinensis_in_Tropicarium-Oceanarium_Budapest.JPG/500px-Lysmata_amboinensis_in_Tropicarium-Oceanarium_Budapest.JPG",
+    "autorImagen": "Хомелка",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "huevo-entero",
+    "nombre": "Huevo entero",
+    "nombreIngles": "Egg, whole, raw, fresh",
+    "fdcId": 171287,
+    "categoria": "proteina",
+    "grupoIntercambio": "proteina-media",
+    "proteinaPor100g": 12.6,
+    "carbohidratoPor100g": 0.72,
+    "grasaPor100g": 9.51,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 100,
+    "descripcionPorcion": "2 huevos medianos",
+    "porcionMinimaG": 50,
+    "porcionMaximaG": 200,
+    "etiquetasDieta": [
+      "vegetariano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Eggs_in_basket_2020_G1.jpg/500px-Eggs_in_basket_2020_G1.jpg",
+    "autorImagen": "George Chernilevsky",
+    "licenciaImagen": "CC BY-SA 4.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "clara-de-huevo",
+    "nombre": "Clara de huevo",
+    "nombreIngles": "Egg, white, raw, fresh",
+    "fdcId": 172183,
+    "categoria": "proteina",
+    "grupoIntercambio": "proteina-magra",
+    "proteinaPor100g": 10.9,
+    "carbohidratoPor100g": 0.73,
+    "grasaPor100g": 0.17,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 100,
+    "descripcionPorcion": "3 claras",
+    "porcionMinimaG": 60,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "vegetariano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Chicken_egg01_monovular.jpg/500px-Chicken_egg01_monovular.jpg",
+    "autorImagen": "miya",
+    "licenciaImagen": "CC BY 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "tofu",
+    "nombre": "Tofu firme",
+    "nombreIngles": "Tofu, raw, firm, prepared with calcium sulfate",
+    "fdcId": 172475,
+    "categoria": "proteina",
+    "grupoIntercambio": "proteina-vegetal",
+    "proteinaPor100g": 17.3,
+    "carbohidratoPor100g": 2.78,
+    "grasaPor100g": 8.72,
+    "fibraPor100g": 2.3,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 bloque pequeño",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Ganmodoki.jpg/500px-Ganmodoki.jpg",
+    "autorImagen": "Pieria(Uploader and Photographer)",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "tempeh",
+    "nombre": "Tempeh",
+    "nombreIngles": "Tempeh",
+    "fdcId": 174272,
+    "categoria": "proteina",
+    "grupoIntercambio": "proteina-vegetal",
+    "proteinaPor100g": 20.3,
+    "carbohidratoPor100g": 7.64,
+    "grasaPor100g": 10.8,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 120,
+    "descripcionPorcion": "1 porción",
+    "porcionMinimaG": 60,
+    "porcionMaximaG": 200,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Tempeh_tempe.jpg/500px-Tempeh_tempe.jpg",
+    "autorImagen": "Sakurai Midori",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "lentejas-cocidas",
+    "nombre": "Lentejas cocidas",
+    "nombreIngles": "Lentils, mature seeds, cooked, boiled, without salt",
+    "fdcId": 172421,
+    "categoria": "proteina",
+    "grupoIntercambio": "legumbre",
+    "proteinaPor100g": 9.02,
+    "carbohidratoPor100g": 20.1,
+    "grasaPor100g": 0.38,
+    "fibraPor100g": 7.9,
+    "porcionTipicaG": 180,
+    "descripcionPorcion": "1 taza cocidas",
+    "porcionMinimaG": 100,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Illustration_Lens_culinaris0.jpg/500px-Illustration_Lens_culinaris0.jpg",
+    "autorImagen": "Wikimedia Commons",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "garbanzos-cocidos",
+    "nombre": "Garbanzos cocidos",
+    "nombreIngles": "Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt",
+    "fdcId": 173757,
+    "categoria": "proteina",
+    "grupoIntercambio": "legumbre",
+    "proteinaPor100g": 8.86,
+    "carbohidratoPor100g": 27.4,
+    "grasaPor100g": 2.59,
+    "fibraPor100g": 7.6,
+    "porcionTipicaG": 160,
+    "descripcionPorcion": "1 taza cocidos",
+    "porcionMinimaG": 100,
+    "porcionMaximaG": 280,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Chickpea.jpg",
+    "autorImagen": "Wikimedia Commons",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "frijoles-negros",
+    "nombre": "Frijoles negros cocidos",
+    "nombreIngles": "Beans, black, mature seeds, cooked, boiled, without salt",
+    "fdcId": 173735,
+    "categoria": "proteina",
+    "grupoIntercambio": "legumbre",
+    "proteinaPor100g": 8.86,
+    "carbohidratoPor100g": 23.7,
+    "grasaPor100g": 0.54,
+    "fibraPor100g": 8.7,
+    "porcionTipicaG": 170,
+    "descripcionPorcion": "1 taza cocidos",
+    "porcionMinimaG": 100,
+    "porcionMaximaG": 280,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Black_Beans_2.JPG/500px-Black_Beans_2.JPG",
+    "autorImagen": "Wilfredor",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "yogur-griego",
+    "nombre": "Yogur griego natural",
+    "nombreIngles": "Yogurt, Greek, nonfat, plain, CHOBANI",
+    "fdcId": 171312,
+    "categoria": "lacteo",
+    "grupoIntercambio": "lacteo-proteico",
+    "proteinaPor100g": 9.53,
+    "carbohidratoPor100g": 3.43,
+    "grasaPor100g": 0.24,
+    "fibraPor100g": 0.2,
+    "porcionTipicaG": 170,
+    "descripcionPorcion": "1 pote",
+    "porcionMinimaG": 100,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "sin-gluten"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Turkish_strained_yogurt.jpg/500px-Turkish_strained_yogurt.jpg",
+    "autorImagen": "Takeaway",
+    "licenciaImagen": "CC BY-SA 4.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "queso-cottage",
+    "nombre": "Queso cottage",
+    "nombreIngles": "Cheese, cottage, lowfat, 2% milkfat",
+    "fdcId": 172182,
+    "categoria": "lacteo",
+    "grupoIntercambio": "lacteo-proteico",
+    "proteinaPor100g": 10.4,
+    "carbohidratoPor100g": 4.76,
+    "grasaPor100g": 2.27,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "3/4 taza",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "vegetariano",
+      "sin-gluten"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Cottage_Cheese.jpg/500px-Cottage_Cheese.jpg",
+    "autorImagen": "Stu Spivack - flickr.com",
+    "licenciaImagen": "CC BY-SA 2.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "leche-descremada",
+    "nombre": "Leche descremada",
+    "nombreIngles": "Milk, nonfat, fluid, with added vitamin A and vitamin D (fat free or skim)",
+    "fdcId": 171269,
+    "categoria": "lacteo",
+    "grupoIntercambio": "lacteo-liquido",
+    "proteinaPor100g": 3.37,
+    "carbohidratoPor100g": 4.96,
+    "grasaPor100g": 0.08,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 240,
+    "descripcionPorcion": "1 vaso",
+    "porcionMinimaG": 150,
+    "porcionMaximaG": 400,
+    "etiquetasDieta": [
+      "vegetariano",
+      "sin-gluten"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Skimmed_milk.jpg/500px-Skimmed_milk.jpg",
+    "autorImagen": "Renee Comet (Photographer)",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "queso-mozzarella",
+    "nombre": "Queso mozzarella",
+    "nombreIngles": "Cheese, mozzarella, part skim milk",
+    "fdcId": 170847,
+    "categoria": "lacteo",
+    "grupoIntercambio": "lacteo-graso",
+    "proteinaPor100g": 24.3,
+    "carbohidratoPor100g": 2.77,
+    "grasaPor100g": 15.9,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 40,
+    "descripcionPorcion": "2 rebanadas",
+    "porcionMinimaG": 20,
+    "porcionMaximaG": 80,
+    "etiquetasDieta": [
+      "vegetariano",
+      "sin-gluten"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Mozzarella_di_bufala3.jpg/500px-Mozzarella_di_bufala3.jpg",
+    "autorImagen": "Popo le Chien",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "arroz-blanco",
+    "nombre": "Arroz blanco cocido",
+    "nombreIngles": "Rice, white, long-grain, regular, enriched, cooked",
+    "fdcId": 168878,
+    "categoria": "carbohidrato",
+    "grupoIntercambio": "cereal",
+    "proteinaPor100g": 2.69,
+    "carbohidratoPor100g": 28.2,
+    "grasaPor100g": 0.28,
+    "fibraPor100g": 0.4,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 taza cocido",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/White%2C_Brown%2C_Red_%26_Wild_rice.jpg/500px-White%2C_Brown%2C_Red_%26_Wild_rice.jpg",
+    "autorImagen": "Earth100",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "arroz-integral",
+    "nombre": "Arroz integral cocido",
+    "nombreIngles": "Rice, brown, long-grain, cooked (Includes foods for USDA's Food Distribution Program)",
+    "fdcId": 169704,
+    "categoria": "carbohidrato",
+    "grupoIntercambio": "cereal",
+    "proteinaPor100g": 2.74,
+    "carbohidratoPor100g": 25.6,
+    "grasaPor100g": 0.97,
+    "fibraPor100g": 1.6,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 taza cocido",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/2/27/Oryza_sativa_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-232.jpg",
+    "autorImagen": "Franz Eugen Köhler, Köhler's Medizinal-Pflanzen",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "avena",
+    "nombre": "Avena en hojuelas",
+    "nombreIngles": "Cereals, oats, regular and quick, not fortified, dry",
+    "fdcId": 173904,
+    "categoria": "carbohidrato",
+    "grupoIntercambio": "cereal",
+    "proteinaPor100g": 13.2,
+    "carbohidratoPor100g": 67.7,
+    "grasaPor100g": 6.52,
+    "fibraPor100g": 10.1,
+    "porcionTipicaG": 60,
+    "descripcionPorcion": "3/4 taza en seco",
+    "porcionMinimaG": 30,
+    "porcionMaximaG": 120,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Illustration_Avena_sativa0.jpg/500px-Illustration_Avena_sativa0.jpg",
+    "autorImagen": "Wikimedia Commons",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "snack"
+    ]
+  },
+  {
+    "slug": "quinoa-cocida",
+    "nombre": "Quinoa cocida",
+    "nombreIngles": "Quinoa, cooked",
+    "fdcId": 168917,
+    "categoria": "carbohidrato",
+    "grupoIntercambio": "cereal",
+    "proteinaPor100g": 4.4,
+    "carbohidratoPor100g": 21.3,
+    "grasaPor100g": 1.92,
+    "fibraPor100g": 2.8,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 taza cocida",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 280,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Quinoa_farmer_in_Cachilaya.JPG/500px-Quinoa_farmer_in_Cachilaya.JPG",
+    "autorImagen": "Michael Hermann",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "pasta-integral",
+    "nombre": "Pasta integral cocida",
+    "nombreIngles": "Pasta, whole-wheat, cooked (Includes foods for USDA's Food Distribution Program)",
+    "fdcId": 168910,
+    "categoria": "carbohidrato",
+    "grupoIntercambio": "cereal",
+    "proteinaPor100g": 5.99,
+    "carbohidratoPor100g": 30.1,
+    "grasaPor100g": 1.71,
+    "fibraPor100g": 3.9,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 taza cocida",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/%28Pasta%29_by_David_Adam_Kess_%28pic.2%29.jpg/500px-%28Pasta%29_by_David_Adam_Kess_%28pic.2%29.jpg",
+    "autorImagen": "David Adam Kess",
+    "licenciaImagen": "CC BY-SA 4.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "pan-integral",
+    "nombre": "Pan integral",
+    "nombreIngles": "Bread, whole-wheat, commercially prepared",
+    "fdcId": 172688,
+    "categoria": "carbohidrato",
+    "grupoIntercambio": "cereal",
+    "proteinaPor100g": 12.4,
+    "carbohidratoPor100g": 42.7,
+    "grasaPor100g": 3.5,
+    "fibraPor100g": 6,
+    "porcionTipicaG": 60,
+    "descripcionPorcion": "2 rebanadas",
+    "porcionMinimaG": 30,
+    "porcionMaximaG": 120,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Brown_Bread_and_Irish_Butter.JPG/500px-Brown_Bread_and_Irish_Butter.JPG",
+    "autorImagen": "Benreis",
+    "licenciaImagen": "CC BY 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "tortilla-de-maiz",
+    "nombre": "Tortilla de maíz",
+    "nombreIngles": "Tortillas, ready-to-bake or -fry, corn",
+    "fdcId": 175036,
+    "categoria": "carbohidrato",
+    "grupoIntercambio": "cereal",
+    "proteinaPor100g": 5.7,
+    "carbohidratoPor100g": 44.6,
+    "grasaPor100g": 2.85,
+    "fibraPor100g": 6.3,
+    "porcionTipicaG": 75,
+    "descripcionPorcion": "3 tortillas",
+    "porcionMinimaG": 40,
+    "porcionMaximaG": 150,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Tortillas_de_maiz_blanco_%28M%C3%A9xico%29_01.jpg/500px-Tortillas_de_maiz_blanco_%28M%C3%A9xico%29_01.jpg",
+    "autorImagen": "ProtoplasmaKid",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "papa-cocida",
+    "nombre": "Papa cocida",
+    "nombreIngles": "Potatoes, flesh and skin, raw",
+    "fdcId": 170026,
+    "categoria": "carbohidrato",
+    "grupoIntercambio": "tuberculo",
+    "proteinaPor100g": 2.05,
+    "carbohidratoPor100g": 17.5,
+    "grasaPor100g": 0.09,
+    "fibraPor100g": 2.1,
+    "porcionTipicaG": 200,
+    "descripcionPorcion": "1 papa grande",
+    "porcionMinimaG": 100,
+    "porcionMaximaG": 350,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/S._tuberosum-5.JPG/500px-S._tuberosum-5.JPG",
+    "autorImagen": "Philmarin",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "batata",
+    "nombre": "Batata (camote)",
+    "nombreIngles": "Sweet potato, raw, unprepared (Includes foods for USDA's Food Distribution Program)",
+    "fdcId": 168482,
+    "categoria": "carbohidrato",
+    "grupoIntercambio": "tuberculo",
+    "proteinaPor100g": 1.57,
+    "carbohidratoPor100g": 20.1,
+    "grasaPor100g": 0.05,
+    "fibraPor100g": 3,
+    "porcionTipicaG": 180,
+    "descripcionPorcion": "1 batata mediana",
+    "porcionMinimaG": 100,
+    "porcionMaximaG": 320,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/5aday_sweet_potato.jpg/500px-5aday_sweet_potato.jpg",
+    "autorImagen": "Wikimedia Commons",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "platano-macho",
+    "nombre": "Plátano macho",
+    "nombreIngles": "Plantains, yellow, raw",
+    "fdcId": 169130,
+    "categoria": "carbohidrato",
+    "grupoIntercambio": "tuberculo",
+    "proteinaPor100g": 1.3,
+    "carbohidratoPor100g": 31.9,
+    "grasaPor100g": 0.35,
+    "fibraPor100g": 1.7,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 plátano",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 260,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Banana.plant.kewgardens.arp.jpg/500px-Banana.plant.kewgardens.arp.jpg",
+    "autorImagen": "Adrian Pingstone",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "maiz-dulce",
+    "nombre": "Maíz dulce",
+    "nombreIngles": "Corn, sweet, yellow, raw",
+    "fdcId": 169998,
+    "categoria": "carbohidrato",
+    "grupoIntercambio": "tuberculo",
+    "proteinaPor100g": 3.27,
+    "carbohidratoPor100g": 18.7,
+    "grasaPor100g": 1.35,
+    "fibraPor100g": 2,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 taza de granos",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/VegCorn.jpg/500px-VegCorn.jpg",
+    "autorImagen": "Wikimedia Commons",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "manzana",
+    "nombre": "Manzana",
+    "nombreIngles": "Apples, raw, with skin (Includes foods for USDA's Food Distribution Program)",
+    "fdcId": 171688,
+    "categoria": "fruta",
+    "grupoIntercambio": "fruta",
+    "proteinaPor100g": 0.26,
+    "carbohidratoPor100g": 13.8,
+    "grasaPor100g": 0.17,
+    "fibraPor100g": 2.4,
+    "porcionTipicaG": 180,
+    "descripcionPorcion": "1 manzana mediana",
+    "porcionMinimaG": 100,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Owoce_Jab%C5%82ko.jpg/500px-Owoce_Jab%C5%82ko.jpg",
+    "autorImagen": "Agnieszka Kwiecień, Nova",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "banana",
+    "nombre": "Banana",
+    "nombreIngles": "Bananas, raw",
+    "fdcId": 173944,
+    "categoria": "fruta",
+    "grupoIntercambio": "fruta",
+    "proteinaPor100g": 1.09,
+    "carbohidratoPor100g": 22.8,
+    "grasaPor100g": 0.33,
+    "fibraPor100g": 2.6,
+    "porcionTipicaG": 120,
+    "descripcionPorcion": "1 banana mediana",
+    "porcionMinimaG": 70,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Bananas.jpg/500px-Bananas.jpg",
+    "autorImagen": "Steve Hopson, www.stevehopson.com",
+    "licenciaImagen": "CC BY-SA 2.5",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "naranja",
+    "nombre": "Naranja",
+    "nombreIngles": "Oranges, raw, all commercial varieties",
+    "fdcId": 169097,
+    "categoria": "fruta",
+    "grupoIntercambio": "fruta",
+    "proteinaPor100g": 0.94,
+    "carbohidratoPor100g": 11.8,
+    "grasaPor100g": 0.12,
+    "fibraPor100g": 2.4,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 naranja grande",
+    "porcionMinimaG": 100,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Oranges_-_whole-halved-segment.jpg/500px-Oranges_-_whole-halved-segment.jpg",
+    "autorImagen": "Ivar Leidus",
+    "licenciaImagen": "CC BY-SA 4.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "fresas",
+    "nombre": "Fresas",
+    "nombreIngles": "Strawberries, raw",
+    "fdcId": 167762,
+    "categoria": "fruta",
+    "grupoIntercambio": "fruta",
+    "proteinaPor100g": 0.67,
+    "carbohidratoPor100g": 7.68,
+    "grasaPor100g": 0.3,
+    "fibraPor100g": 2,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 taza",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Strawberries.JPG/500px-Strawberries.JPG",
+    "autorImagen": "Wikimedia Commons",
+    "licenciaImagen": "CC BY-SA 2.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "arandanos",
+    "nombre": "Arándanos",
+    "nombreIngles": "Blueberries, raw",
+    "fdcId": 171711,
+    "categoria": "fruta",
+    "grupoIntercambio": "fruta",
+    "proteinaPor100g": 0.74,
+    "carbohidratoPor100g": 14.5,
+    "grasaPor100g": 0.33,
+    "fibraPor100g": 2.4,
+    "porcionTipicaG": 100,
+    "descripcionPorcion": "1 puñado grande",
+    "porcionMinimaG": 50,
+    "porcionMaximaG": 200,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Blueberries.jpg/500px-Blueberries.jpg",
+    "autorImagen": "Wikimedia Commons",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "pina",
+    "nombre": "Piña",
+    "nombreIngles": "Pineapple, raw, all varieties",
+    "fdcId": 169124,
+    "categoria": "fruta",
+    "grupoIntercambio": "fruta",
+    "proteinaPor100g": 0.54,
+    "carbohidratoPor100g": 13.1,
+    "grasaPor100g": 0.12,
+    "fibraPor100g": 1.4,
+    "porcionTipicaG": 165,
+    "descripcionPorcion": "1 taza en cubos",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/%E0%B4%95%E0%B5%88%E0%B4%A4%E0%B4%9A%E0%B5%8D%E0%B4%9A%E0%B4%95%E0%B5%8D%E0%B4%95.jpg/500px-%E0%B4%95%E0%B5%88%E0%B4%A4%E0%B4%9A%E0%B5%8D%E0%B4%9A%E0%B4%95%E0%B5%8D%E0%B4%95.jpg",
+    "autorImagen": "Suniltg de Wikipedia en malayálam",
+    "licenciaImagen": "CC BY 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "mango",
+    "nombre": "Mango",
+    "nombreIngles": "Mangos, raw",
+    "fdcId": 169910,
+    "categoria": "fruta",
+    "grupoIntercambio": "fruta",
+    "proteinaPor100g": 0.82,
+    "carbohidratoPor100g": 15,
+    "grasaPor100g": 0.38,
+    "fibraPor100g": 1.6,
+    "porcionTipicaG": 165,
+    "descripcionPorcion": "1 taza en cubos",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 280,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/c/cc/The_Botanical_Magazine._Mango.jpg",
+    "autorImagen": "Walter Hood Fitch (1817-1892) del. et lith.  Description by John Smith (1798 - 1888)",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "papaya",
+    "nombre": "Papaya",
+    "nombreIngles": "Papayas, raw",
+    "fdcId": 169926,
+    "categoria": "fruta",
+    "grupoIntercambio": "fruta",
+    "proteinaPor100g": 0.47,
+    "carbohidratoPor100g": 10.8,
+    "grasaPor100g": 0.26,
+    "fibraPor100g": 1.7,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 taza en cubos",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Carica_papaya_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-029.jpg/500px-Carica_papaya_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-029.jpg",
+    "autorImagen": "Franz Eugen Köhler, Köhler's Medizinal-Pflanzen",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "kiwi",
+    "nombre": "Kiwi",
+    "nombreIngles": "Kiwifruit, green, raw",
+    "fdcId": 168153,
+    "categoria": "fruta",
+    "grupoIntercambio": "fruta",
+    "proteinaPor100g": 1.14,
+    "carbohidratoPor100g": 14.7,
+    "grasaPor100g": 0.52,
+    "fibraPor100g": 3,
+    "porcionTipicaG": 140,
+    "descripcionPorcion": "2 kiwis",
+    "porcionMinimaG": 70,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Actinidia_deliciosa_13_R.jpg/500px-Actinidia_deliciosa_13_R.jpg",
+    "autorImagen": "Rob Hille",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "uvas",
+    "nombre": "Uvas",
+    "nombreIngles": "Grapes, red or green (European type, such as Thompson seedless), raw",
+    "fdcId": 174683,
+    "categoria": "fruta",
+    "grupoIntercambio": "fruta",
+    "proteinaPor100g": 0.72,
+    "carbohidratoPor100g": 18.1,
+    "grasaPor100g": 0.16,
+    "fibraPor100g": 0.9,
+    "porcionTipicaG": 120,
+    "descripcionPorcion": "1 racimo pequeño",
+    "porcionMinimaG": 60,
+    "porcionMaximaG": 220,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Vitis_vinifera_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-145.jpg",
+    "autorImagen": "Franz Eugen Köhler, Köhler's Medizinal-Pflanzen",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "pera",
+    "nombre": "Pera",
+    "nombreIngles": "Pears, raw",
+    "fdcId": 169118,
+    "categoria": "fruta",
+    "grupoIntercambio": "fruta",
+    "proteinaPor100g": 0.36,
+    "carbohidratoPor100g": 15.2,
+    "grasaPor100g": 0.14,
+    "fibraPor100g": 3.1,
+    "porcionTipicaG": 180,
+    "descripcionPorcion": "1 pera mediana",
+    "porcionMinimaG": 100,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Owoce_Gruszka.jpg/500px-Owoce_Gruszka.jpg",
+    "autorImagen": "Agnieszka Kwiecień, Nova",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "sandia",
+    "nombre": "Sandía",
+    "nombreIngles": "Watermelon, raw",
+    "fdcId": 167765,
+    "categoria": "fruta",
+    "grupoIntercambio": "fruta",
+    "proteinaPor100g": 0.61,
+    "carbohidratoPor100g": 7.55,
+    "grasaPor100g": 0.15,
+    "fibraPor100g": 0.4,
+    "porcionTipicaG": 200,
+    "descripcionPorcion": "1 rebanada grande",
+    "porcionMinimaG": 100,
+    "porcionMaximaG": 400,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Flore_m%C3%A9dicale_des_Antilles%2C_ou%2C_Trait%C3%A9_des_plantes_usuelles_%28Pl._305%29_%287795661744%29.jpg/500px-Flore_m%C3%A9dicale_des_Antilles%2C_ou%2C_Trait%C3%A9_des_plantes_usuelles_%28Pl._305%29_%287795661744%29.jpg",
+    "autorImagen": "Descourtilz, J. Theodore.; Descourtilz, M. E.; Pichard.",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "brocoli",
+    "nombre": "Brócoli",
+    "nombreIngles": "Broccoli, raw",
+    "fdcId": 170379,
+    "categoria": "verdura",
+    "grupoIntercambio": "verdura",
+    "proteinaPor100g": 2.82,
+    "carbohidratoPor100g": 6.64,
+    "grasaPor100g": 0.37,
+    "fibraPor100g": 2.6,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 taza",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Broccoli_bunches.jpg/500px-Broccoli_bunches.jpg",
+    "autorImagen": "fir0002  flagstaffotos [at] gmail.com\n\t\tCanon 20D + Tamron 28-75mm f/2.8",
+    "licenciaImagen": "GFDL 1.2",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "espinaca",
+    "nombre": "Espinaca",
+    "nombreIngles": "Spinach, raw",
+    "fdcId": 168462,
+    "categoria": "verdura",
+    "grupoIntercambio": "verdura",
+    "proteinaPor100g": 2.86,
+    "carbohidratoPor100g": 3.63,
+    "grasaPor100g": 0.39,
+    "fibraPor100g": 2.2,
+    "porcionTipicaG": 100,
+    "descripcionPorcion": "2 tazas crudas",
+    "porcionMinimaG": 50,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Illustration_Spinacia_oleracea0.jpg/500px-Illustration_Spinacia_oleracea0.jpg",
+    "autorImagen": "Otto Wilhelm Thomé",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "lechuga",
+    "nombre": "Lechuga",
+    "nombreIngles": "Lettuce, cos or romaine, raw",
+    "fdcId": 169247,
+    "categoria": "verdura",
+    "grupoIntercambio": "verdura",
+    "proteinaPor100g": 1.23,
+    "carbohidratoPor100g": 3.29,
+    "grasaPor100g": 0.3,
+    "fibraPor100g": 2.1,
+    "porcionTipicaG": 100,
+    "descripcionPorcion": "2 tazas",
+    "porcionMinimaG": 50,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Romaine_lettuce.jpg/500px-Romaine_lettuce.jpg",
+    "autorImagen": "Rainer Zenz",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "tomate",
+    "nombre": "Tomate",
+    "nombreIngles": "Tomatoes, red, ripe, raw, year round average",
+    "fdcId": 170457,
+    "categoria": "verdura",
+    "grupoIntercambio": "verdura",
+    "proteinaPor100g": 0.88,
+    "carbohidratoPor100g": 3.89,
+    "grasaPor100g": 0.2,
+    "fibraPor100g": 1.2,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 tomate grande",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Bright_red_tomato_and_cross_section02.jpg/500px-Bright_red_tomato_and_cross_section02.jpg",
+    "autorImagen": "fir0002  flagstaffotos [at] gmail.com\n\t\tCanon 20D + Sigma 150mm f/2.8",
+    "licenciaImagen": "GFDL 1.2",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "pepino",
+    "nombre": "Pepino",
+    "nombreIngles": "Cucumber, with peel, raw",
+    "fdcId": 168409,
+    "categoria": "verdura",
+    "grupoIntercambio": "verdura",
+    "proteinaPor100g": 0.65,
+    "carbohidratoPor100g": 3.63,
+    "grasaPor100g": 0.11,
+    "fibraPor100g": 0.5,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1/2 pepino",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Cucumis_sativus_0002.JPG/500px-Cucumis_sativus_0002.JPG",
+    "autorImagen": "H. Zell",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "zanahoria",
+    "nombre": "Zanahoria",
+    "nombreIngles": "Carrots, raw",
+    "fdcId": 170393,
+    "categoria": "verdura",
+    "grupoIntercambio": "verdura",
+    "proteinaPor100g": 0.93,
+    "carbohidratoPor100g": 9.58,
+    "grasaPor100g": 0.24,
+    "fibraPor100g": 2.8,
+    "porcionTipicaG": 120,
+    "descripcionPorcion": "2 zanahorias",
+    "porcionMinimaG": 60,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Bunches_of_carrots.jpg/500px-Bunches_of_carrots.jpg",
+    "autorImagen": "Robert Couse-Baker",
+    "licenciaImagen": "CC BY 2.0",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "pimiento",
+    "nombre": "Pimiento",
+    "nombreIngles": "Peppers, sweet, red, raw",
+    "fdcId": 170108,
+    "categoria": "verdura",
+    "grupoIntercambio": "verdura",
+    "proteinaPor100g": 0.99,
+    "carbohidratoPor100g": 6.03,
+    "grasaPor100g": 0.3,
+    "fibraPor100g": 2.1,
+    "porcionTipicaG": 120,
+    "descripcionPorcion": "1 pimiento",
+    "porcionMinimaG": 60,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Illustration_Capsicum_annuum0.jpg/500px-Illustration_Capsicum_annuum0.jpg",
+    "autorImagen": "Franz Eugen Köhler",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "calabacin",
+    "nombre": "Calabacín (zucchini)",
+    "nombreIngles": "Squash, summer, zucchini, includes skin, raw",
+    "fdcId": 169291,
+    "categoria": "verdura",
+    "grupoIntercambio": "verdura",
+    "proteinaPor100g": 1.21,
+    "carbohidratoPor100g": 3.11,
+    "grasaPor100g": 0.32,
+    "fibraPor100g": 1,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 calabacín mediano",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Calabaza_Vines_%28Flor_de_Auyama%29.jpg/500px-Calabaza_Vines_%28Flor_de_Auyama%29.jpg",
+    "autorImagen": "Fox221",
+    "licenciaImagen": "CC BY-SA 4.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "coliflor",
+    "nombre": "Coliflor",
+    "nombreIngles": "Cauliflower, raw",
+    "fdcId": 169986,
+    "categoria": "verdura",
+    "grupoIntercambio": "verdura",
+    "proteinaPor100g": 1.92,
+    "carbohidratoPor100g": 4.97,
+    "grasaPor100g": 0.28,
+    "fibraPor100g": 2,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 taza",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Bloemkool.jpg/500px-Bloemkool.jpg",
+    "autorImagen": "Rasbak",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "cebolla",
+    "nombre": "Cebolla",
+    "nombreIngles": "Onions, raw",
+    "fdcId": 170000,
+    "categoria": "verdura",
+    "grupoIntercambio": "verdura",
+    "proteinaPor100g": 1.1,
+    "carbohidratoPor100g": 9.34,
+    "grasaPor100g": 0.1,
+    "fibraPor100g": 1.7,
+    "porcionTipicaG": 80,
+    "descripcionPorcion": "1/2 cebolla",
+    "porcionMinimaG": 30,
+    "porcionMaximaG": 200,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Two_colors_of_onions.jpg/500px-Two_colors_of_onions.jpg",
+    "autorImagen": "Wikimedia Commons",
+    "licenciaImagen": "GFDL 1.2",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "champinones",
+    "nombre": "Champiñones",
+    "nombreIngles": "Mushrooms, white, raw",
+    "fdcId": 169251,
+    "categoria": "verdura",
+    "grupoIntercambio": "verdura",
+    "proteinaPor100g": 3.09,
+    "carbohidratoPor100g": 3.26,
+    "grasaPor100g": 0.34,
+    "fibraPor100g": 1,
+    "porcionTipicaG": 120,
+    "descripcionPorcion": "1 taza en láminas",
+    "porcionMinimaG": 60,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/ChampignonMushroom.jpg/500px-ChampignonMushroom.jpg",
+    "autorImagen": "chris_73",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "ejotes",
+    "nombre": "Judías verdes (ejotes)",
+    "nombreIngles": "Beans, snap, green, raw",
+    "fdcId": 169961,
+    "categoria": "verdura",
+    "grupoIntercambio": "verdura",
+    "proteinaPor100g": 1.83,
+    "carbohidratoPor100g": 6.97,
+    "grasaPor100g": 0.22,
+    "fibraPor100g": 2.7,
+    "porcionTipicaG": 150,
+    "descripcionPorcion": "1 taza",
+    "porcionMinimaG": 80,
+    "porcionMaximaG": 300,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Phaseolus_vulgaris.jpg/500px-Phaseolus_vulgaris.jpg",
+    "autorImagen": "Wikimedia Commons",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "aguacate",
+    "nombre": "Aguacate (palta)",
+    "nombreIngles": "Avocados, raw, all commercial varieties",
+    "fdcId": 171705,
+    "categoria": "grasa",
+    "grupoIntercambio": "grasa",
+    "proteinaPor100g": 2,
+    "carbohidratoPor100g": 8.53,
+    "grasaPor100g": 14.7,
+    "fibraPor100g": 6.7,
+    "porcionTipicaG": 70,
+    "descripcionPorcion": "1/2 aguacate",
+    "porcionMinimaG": 30,
+    "porcionMaximaG": 150,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Persea_americana1.JPG/500px-Persea_americana1.JPG",
+    "autorImagen": "B.navez",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "aceite-de-oliva",
+    "nombre": "Aceite de oliva",
+    "nombreIngles": "Oil, olive, salad or cooking",
+    "fdcId": 171413,
+    "categoria": "grasa",
+    "grupoIntercambio": "grasa",
+    "proteinaPor100g": 0,
+    "carbohidratoPor100g": 0,
+    "grasaPor100g": 100,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 14,
+    "descripcionPorcion": "1 cucharada",
+    "porcionMinimaG": 5,
+    "porcionMaximaG": 30,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Aceite_de_oliva.png/500px-Aceite_de_oliva.png",
+    "autorImagen": "Pietrablanca",
+    "licenciaImagen": "CC BY-SA 4.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "almendras",
+    "nombre": "Almendras",
+    "nombreIngles": "Nuts, almonds, dry roasted, without salt added",
+    "fdcId": 170158,
+    "categoria": "grasa",
+    "grupoIntercambio": "frutos-secos",
+    "proteinaPor100g": 21,
+    "carbohidratoPor100g": 21,
+    "grasaPor100g": 52.5,
+    "fibraPor100g": 10.9,
+    "porcionTipicaG": 30,
+    "descripcionPorcion": "1 puñado",
+    "porcionMinimaG": 15,
+    "porcionMaximaG": 60,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Almonds_-_in_shell%2C_shell_cracked_open%2C_shelled%2C_blanched.jpg/500px-Almonds_-_in_shell%2C_shell_cracked_open%2C_shelled%2C_blanched.jpg",
+    "autorImagen": "Ivar Leidus",
+    "licenciaImagen": "CC BY-SA 4.0",
+    "momentosAptos": [
+      "desayuno",
+      "snack"
+    ]
+  },
+  {
+    "slug": "nueces",
+    "nombre": "Nueces",
+    "nombreIngles": "Nuts, walnuts, english",
+    "fdcId": 170187,
+    "categoria": "grasa",
+    "grupoIntercambio": "frutos-secos",
+    "proteinaPor100g": 15.2,
+    "carbohidratoPor100g": 13.7,
+    "grasaPor100g": 65.2,
+    "fibraPor100g": 6.7,
+    "porcionTipicaG": 30,
+    "descripcionPorcion": "1 puñado",
+    "porcionMinimaG": 15,
+    "porcionMaximaG": 60,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/20110802Walnussbaum_Plankstadt2.jpg/500px-20110802Walnussbaum_Plankstadt2.jpg",
+    "autorImagen": "AnRo0002",
+    "licenciaImagen": "CC0",
+    "momentosAptos": [
+      "desayuno",
+      "snack"
+    ]
+  },
+  {
+    "slug": "mani",
+    "nombre": "Maní",
+    "nombreIngles": "Peanuts, all types, dry-roasted, without salt",
+    "fdcId": 173806,
+    "categoria": "grasa",
+    "grupoIntercambio": "frutos-secos",
+    "proteinaPor100g": 24.4,
+    "carbohidratoPor100g": 21.3,
+    "grasaPor100g": 49.7,
+    "fibraPor100g": 8.4,
+    "porcionTipicaG": 30,
+    "descripcionPorcion": "1 puñado",
+    "porcionMinimaG": 15,
+    "porcionMaximaG": 60,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Arachis_hypogaea_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-163.jpg/500px-Arachis_hypogaea_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-163.jpg",
+    "autorImagen": "Franz Eugen Köhler, Köhler's Medizinal-Pflanzen",
+    "licenciaImagen": "Public domain",
+    "momentosAptos": [
+      "desayuno",
+      "snack"
+    ]
+  },
+  {
+    "slug": "mantequilla-de-mani",
+    "nombre": "Mantequilla de maní",
+    "nombreIngles": "Peanut butter, smooth style, without salt",
+    "fdcId": 172470,
+    "categoria": "grasa",
+    "grupoIntercambio": "grasa",
+    "proteinaPor100g": 22.2,
+    "carbohidratoPor100g": 22.3,
+    "grasaPor100g": 51.4,
+    "fibraPor100g": 5,
+    "porcionTipicaG": 32,
+    "descripcionPorcion": "2 cucharadas",
+    "porcionMinimaG": 15,
+    "porcionMaximaG": 60,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/PeanutButter.jpg/500px-PeanutButter.jpg",
+    "autorImagen": "PiccoloNamek de Wikipedia en inglés",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "snack"
+    ]
+  },
+  {
+    "slug": "semillas-de-chia",
+    "nombre": "Semillas de chía",
+    "nombreIngles": "Seeds, chia seeds, dried",
+    "fdcId": 170554,
+    "categoria": "grasa",
+    "grupoIntercambio": "semillas",
+    "proteinaPor100g": 16.5,
+    "carbohidratoPor100g": 42.1,
+    "grasaPor100g": 30.7,
+    "fibraPor100g": 34.4,
+    "porcionTipicaG": 20,
+    "descripcionPorcion": "2 cucharadas",
+    "porcionMinimaG": 10,
+    "porcionMaximaG": 40,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Chia_Seeds_macro_2.jpg/500px-Chia_Seeds_macro_2.jpg",
+    "autorImagen": "Daniel Schwen",
+    "licenciaImagen": "CC BY 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "snack"
+    ]
+  },
+  {
+    "slug": "semillas-de-girasol",
+    "nombre": "Semillas de girasol",
+    "nombreIngles": "Seeds, sunflower seed kernels, dry roasted, without salt",
+    "fdcId": 170563,
+    "categoria": "grasa",
+    "grupoIntercambio": "semillas",
+    "proteinaPor100g": 19.3,
+    "carbohidratoPor100g": 24.1,
+    "grasaPor100g": 49.8,
+    "fibraPor100g": 11.1,
+    "porcionTipicaG": 25,
+    "descripcionPorcion": "2 cucharadas",
+    "porcionMinimaG": 10,
+    "porcionMaximaG": 50,
+    "etiquetasDieta": [
+      "vegetariano",
+      "vegano",
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Helianthus_annuus_001.JPG/500px-Helianthus_annuus_001.JPG",
+    "autorImagen": "H. Zell",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "snack"
+    ]
+  },
+  {
+    "slug": "sardinas",
+    "nombre": "Sardinas en lata",
+    "nombreIngles": "Fish, sardine, Atlantic, canned in oil, drained solids with bone",
+    "fdcId": 175139,
+    "categoria": "proteina",
+    "grupoIntercambio": "pescado-graso",
+    "proteinaPor100g": 24.6,
+    "carbohidratoPor100g": 0,
+    "grasaPor100g": 11.4,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 100,
+    "descripcionPorcion": "1 lata escurrida",
+    "porcionMinimaG": 50,
+    "porcionMaximaG": 160,
+    "etiquetasDieta": [
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Sardinas_a_la_plancha-_C%C3%A1diz_-_2009.jpg/500px-Sardinas_a_la_plancha-_C%C3%A1diz_-_2009.jpg",
+    "autorImagen": "Tamorlan",
+    "licenciaImagen": "CC BY 3.0",
+    "momentosAptos": [
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "tilapia",
+    "nombre": "Tilapia",
+    "nombreIngles": "Fish, tilapia, raw",
+    "fdcId": 175176,
+    "categoria": "proteina",
+    "grupoIntercambio": "pescado-blanco",
+    "proteinaPor100g": 20.1,
+    "carbohidratoPor100g": 0,
+    "grasaPor100g": 1.7,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 170,
+    "descripcionPorcion": "1 filete",
+    "porcionMinimaG": 100,
+    "porcionMaximaG": 250,
+    "etiquetasDieta": [
+      "sin-gluten",
+      "sin-lactosa"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Oreochromis-niloticus-Nairobi.JPG/500px-Oreochromis-niloticus-Nairobi.JPG",
+    "autorImagen": "Bjørn Christian Tørrissen",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "principal"
+    ]
+  },
+  {
+    "slug": "leche-entera",
+    "nombre": "Leche entera",
+    "nombreIngles": "Milk, whole, 3.25% milkfat, with added vitamin D",
+    "fdcId": 171265,
+    "categoria": "lacteo",
+    "grupoIntercambio": "lacteo-liquido",
+    "proteinaPor100g": 3.15,
+    "carbohidratoPor100g": 4.8,
+    "grasaPor100g": 3.25,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 240,
+    "descripcionPorcion": "1 vaso",
+    "porcionMinimaG": 150,
+    "porcionMaximaG": 400,
+    "etiquetasDieta": [
+      "vegetariano",
+      "sin-gluten"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Milk_glass.jpg/500px-Milk_glass.jpg",
+    "autorImagen": "Stefan Kühn",
+    "licenciaImagen": "CC BY-SA 3.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  },
+  {
+    "slug": "queso-ricotta",
+    "nombre": "Queso ricotta",
+    "nombreIngles": "Cheese, ricotta, part skim milk",
+    "fdcId": 171248,
+    "categoria": "lacteo",
+    "grupoIntercambio": "lacteo-graso",
+    "proteinaPor100g": 11.4,
+    "carbohidratoPor100g": 5.14,
+    "grasaPor100g": 7.91,
+    "fibraPor100g": 0,
+    "porcionTipicaG": 100,
+    "descripcionPorcion": "1/2 taza",
+    "porcionMinimaG": 50,
+    "porcionMaximaG": 180,
+    "etiquetasDieta": [
+      "vegetariano",
+      "sin-gluten"
+    ],
+    "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Ricotta_pugliese.jpg/500px-Ricotta_pugliese.jpg",
+    "autorImagen": "Saggittarius A",
+    "licenciaImagen": "CC BY 4.0",
+    "momentosAptos": [
+      "desayuno",
+      "principal",
+      "snack"
+    ]
+  }
+]

@@ -10,9 +10,9 @@ namespace FitnessCoach.Domain.Patterns.Decorator
         {
             _estrategia = estrategia;
         }
-        public PlanAlimentacion GenerarPlan()
+        public PlanAlimentacion GenerarPlan(ObjetivoMacros macrosDiarios)
         {
-            var plan = _estrategia.GenerarPlan();
+            var plan = _estrategia.GenerarPlan(macrosDiarios);
             plan.RecomendacionesGenerales.Add("Tomar 500ml de agua al despertar en ayunas");
             plan.RecomendacionesGenerales.Add("Beber 250ml de agua 30 minutos antes de cada comida");
             plan.RecomendacionesGenerales.Add("Evitar bebidas azucaradas y alcohol durante el plan");

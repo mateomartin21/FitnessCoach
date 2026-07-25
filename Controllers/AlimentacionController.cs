@@ -23,7 +23,7 @@ namespace FitnessCoach.Controllers
             if (usuario == null || usuario.ObjetivoActual == null)
                 return RedirectToAction("Index", "Perfil");
 
-            var plan = _generador.GenerarPlanParaObjetivo(usuario.ObjetivoActual);
+            var plan = _generador.GenerarPlanPara(usuario);
             return View(plan);
         }
     }

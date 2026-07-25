@@ -1,4 +1,5 @@
 using FitnessCoach.Domain.Models;
+using FitnessCoach.Domain.Models.Alimentacion;
 using FitnessCoach.Domain.Models.Entrenamiento;
 using FitnessCoach.Domain.Models.Objetivos;
 using FitnessCoach.Infrastructure.Identity;
@@ -31,6 +32,7 @@ namespace FitnessCoach.Infrastructure.Data
 
         public DbSet<UsuarioPerfil> UsuariosPerfil => Set<UsuarioPerfil>();
         public DbSet<Ejercicio> Ejercicios => Set<Ejercicio>();
+        public DbSet<Alimento> Alimentos => Set<Alimento>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -140,6 +142,37 @@ namespace FitnessCoach.Infrastructure.Data
             // Indices para los filtros que usan las estrategias al componer rutinas.
             builder.Entity<Ejercicio>().HasIndex(e => e.GrupoMuscular);
             builder.Entity<Ejercicio>().HasIndex(e => e.Equipo);
+
+            builder.Entity<Alimento>(entity =>
+            {
+                entity.ToTable("Alimentos");
+                entity.HasKey(a => a.Id);
+
+                entity.HasIndex(a => a.Slug).IsUnique();
+                entity.Property(a => a.Slug).HasMaxLength(100).IsRequired();
+
+                entity.Property(a => a.Nombre).HasMaxLength(120).IsRequired();
+                entity.Property(a => a.NombreIngles).HasMaxLength(250);
+                entity.Property(a => a.Categoria).HasMaxLength(40);
+                entity.Property(a => a.GrupoIntercambio).HasMaxLength(40);
+                entity.Property(a => a.DescripcionPorcion).HasMaxLength(120);
+                entity.Property(a => a.UrlImagen).HasMaxLength(500);
+                entity.Property(a => a.AutorImagen).HasMaxLength(250);
+                entity.Property(a => a.LicenciaImagen).HasMaxLength(100);
+
+                entity.Property(a => a.EtiquetasDieta).HasConversion(ConversorListaTexto).Metadata
+                    .SetValueComparer(ComparadorListaTexto);
+                entity.Property(a => a.MomentosAptos).HasConversion(ConversorListaTexto).Metadata
+                    .SetValueComparer(ComparadorListaTexto);
+
+                // Las calorias y la atribucion se derivan de otras columnas.
+                entity.Ignore(a => a.CaloriasPor100g);
+                entity.Ignore(a => a.AtribucionImagen);
+
+                // Indices para los filtros con que las estrategias arman las comidas.
+                entity.HasIndex(a => a.Categoria);
+                entity.HasIndex(a => a.GrupoIntercambio);
+            });
         }
     }
 }
