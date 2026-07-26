@@ -78,7 +78,13 @@
         var l = le.Logro;
         <div class="col-md-6 col-lg-4">
             <div class="fc-feature-card h-100 d-flex gap-3" style="@(le.Desbloqueado ? "border:1px solid #ffd700;" : "opacity:0.65;")">
-                <div style="font-size:2rem; filter:@(le.Desbloqueado ? "none" : "grayscale(1)");">@l.Icono</div>
+                @* Sprite del logro (se descarga a /images/logros/{id}.png). Si todavía no
+                   existe, cae al emoji. Los bloqueados se ven en gris. *@
+                <div class="logro-ico" style="filter:@(le.Desbloqueado ? "none" : "grayscale(1) opacity(0.6)");">
+                    <img src="/images/logros/@(l.Id).png" alt="@l.Nombre" class="koda-sprite" width="48" height="48"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" />
+                    <span class="logro-emoji" style="display:none; font-size:2rem; line-height:1;">@l.Icono</span>
+                </div>
                 <div class="flex-grow-1">
                     <div class="d-flex justify-content-between align-items-start">
                         <h6 class="fw-bold mb-1" style="color:@(le.Desbloqueado ? "#ffd700" : "#ccc");">@l.Nombre</h6>
