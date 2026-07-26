@@ -2,7 +2,7 @@
 
 > **Documento vivo.** Es el inventario honesto de lo que está mal. Cuando algo se resuelve se marca ✅ con la fase que lo resolvió — **no se borra la línea**, el historial sirve para los ADRs y para la sustentación del proyecto.
 >
-> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **25/07/2026** al cerrar la Fase 7 (rama `fase-7/ia-pulido`). La Fase 7 fue pulido de IA y no cerró ninguna deuda formal ni abrió deuda nueva.
+> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **26/07/2026** al cerrar la Fase 8 (rama `fase-8/gamificacion`). La Fase 8 (gamificación) no cerró ninguna deuda formal ni abrió deuda nueva: se derivó de los hechos existentes, sin persistencia propia. Toca de refilón D-25 (la ventana semanal y las rachas se cuentan en la hora del servidor).
 
 ## Resumen
 

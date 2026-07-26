@@ -47,7 +47,7 @@ Y adjunta:
 | Campo | Valor |
 |-------|-------|
 | Creado | 22/07/2026 |
-| Última actualización | 25/07/2026 |
-| Rama de referencia | `fase-7/ia-pulido` (contra `CD/CI`) |
-| Último ADR | ADR-17 (el Lobo en toda la app + resumen semanal) |
-| Fase activa del roadmap | Fase 8 — Gamificación (la línea de IA, Fases 6 y 7, quedó cerrada) |
+| Última actualización | 26/07/2026 |
+| Rama de referencia | `fase-8/gamificacion` (contra `CD/CI`) |
+| Último ADR | ADR-18 (gamificación derivada de los hechos) |
+| Fase activa del roadmap | Fase 9 — Rediseño pixel art y Lobo Coach |
