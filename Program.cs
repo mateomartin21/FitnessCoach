@@ -94,6 +94,10 @@ builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorAlimentac
 builder.Services.AddScoped<FitnessCoach.Application.Services.IServicioDiario,
                            FitnessCoach.Application.Services.ServicioDiario>();
 
+// Gamificación: nivel, logros y misiones derivados de los hechos del usuario
+builder.Services.AddScoped<FitnessCoach.Application.Services.IServicioGamificacion,
+                           FitnessCoach.Application.Services.ServicioGamificacion>();
+
 // Cliente HTTP compartido por los proveedores de IA (timeout acotado para que un
 // proveedor colgado no cuelgue toda la consulta: se corta y la cadena sigue).
 builder.Services.AddHttpClient("ia", client =>

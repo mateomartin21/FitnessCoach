@@ -148,13 +148,15 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 
 - **El Lobo en toda la app y resumen semanal (Fase 7, ADR-17).** El análisis del Lobo, antes solo en Progreso, se ofrece también en las pantallas de dieta y rutina mediante un partial reutilizable, sin código nuevo de IA. El contexto suma el pulso de la semana (entrenamientos de 7 días, racha, variación de peso), que alimenta un resumen semanal narrado en su voz y mejora además las respuestas del chat. Cierra la línea de IA.
 
+- **Gamificación derivada de los hechos (Fase 8, ADR-18).** Nivel, XP, logros y misiones se **calculan** desde el tracker (entrenamientos, récords, peso, diario), sin tablas nuevas ni estado de juego que pueda desincronizarse. La constancia paga más (bono por racha); 12 logros con progreso medible y 3 misiones semanales, cada logro con su reacción del Lobo. Pantalla estilo RPG (barra de XP, nivel, misiones, logros) y aviso en el momento al desbloquear un logro. Todo es lógica de dominio pura y cubierta por pruebas.
+
 ### ❌ Existe pero NO está conectado / no funciona como se documentó
 
 - **La API REST se quedó atrás del producto (D-26).** Solo expone perfil, calorías y el historial de peso en modo lectura/alta; no cubre edición, borrado ni entrenamientos. No es un riesgo de seguridad, es superficie desactualizada.
 
 ### ⏳ No existe todavía
 
-Gamificación, fallback de IA, rediseño visual. → Ver `06-ROADMAP.md`.
+Rediseño visual pixel art (Fase 9) y el pulido final de la Fase 10. → Ver `06-ROADMAP.md`.
 
 ---
 

@@ -42,7 +42,7 @@ Tracker       Catálogo de        Resiliencia IA
    │              │                  │
    └──────────────┴──────────────────┘
                   ▼
-             Fase 8  Gamificación
+             Fase 8 ✅ Gamificación
                   ▼
              Fase 9  Rediseño pixel art + Lobo Coach
                   ▼
@@ -297,21 +297,25 @@ Tracker       Catálogo de        Resiliencia IA
 
 ---
 
-## Fase 8 — Gamificación
+## Fase 8 — Gamificación ✅
+
+**Estado:** ✅ **Cerrada** el 26/07/2026 (rama `fase-8/gamificacion`, ADR-18). 323/323 pruebas.
 
 **Objetivo:** las mecánicas de juego que sostienen la constancia.
 
-**Depende de:** Fase 4 (las mecánicas se alimentan de los datos del tracker).
+**Dependió de:** Fase 4 (las mecánicas se alimentan de los datos del tracker).
 
-**Entregables:**
-- Sistema de logros
-- Niveles / experiencia por constancia
-- Misiones semanales
-- Notificaciones de récord y de racha
-- El Lobo reacciona a cada uno de estos eventos
+**Entregado:**
+- ✅ **Niveles / XP por constancia:** `CalculadorXP` y `CalculadorNivel` (curva creciente de RPG, títulos de lobo). La mejor racha da un bono, para premiar la constancia por sobre la acumulación (05-VISION §77)
+- ✅ **Logros desbloqueables:** 12 logros anclados a hechos reales, con criterio medible (progreso, no solo sí/no) y reacción del Lobo cada uno
+- ✅ **Misiones semanales:** 3 misiones medidas sobre los últimos 7 días, que se reinician con la ventana
+- ✅ **El Lobo reacciona:** aviso en su voz al desbloquear un logro tras registrar un entrenamiento o un récord
+- ✅ Pantalla estilo RPG (barra de XP, nivel, misiones, logros) y entrada en el menú
 
-**Definition of Done:** las mecánicas se calculan desde datos reales, y están cubiertas por pruebas (es lógica de dominio pura, ideal para xUnit).
-**ADR:** ADR-17.
+**Decisión de diseño (ADR-18):** todo se **deriva de los hechos** ya registrados —sin tablas nuevas ni estado de juego persistido—, así no puede desincronizarse y queda como lógica de dominio pura. `EstadisticasUsuario` (snapshot) + calculadores puros en Domain; `ServicioGamificacion` lo arma desde el perfil.
+
+**Definition of Done:** ✅ las mecánicas se calculan desde datos reales y están cubiertas por pruebas (lógica de dominio pura, +26 en la fase).
+**ADR:** ADR-18 — gamificación derivada de los hechos, sin estado paralelo.
 **Rama sugerida:** `fase-8/gamificacion`
 
 ---
@@ -382,6 +386,6 @@ Tracker       Catálogo de        Resiliencia IA
 | 5.6 | ✅ Completada | `fase-5.6/preferencias-adherencia` | (contra `CD/CI`) | ADR-15 | ✅ |
 | 6 | ✅ Completada | `fase-6/resiliencia-ia` | (contra `CD/CI`) | ADR-16 | ✅ |
 | 7 | ✅ Completada | `fase-7/ia-pulido` | (contra `CD/CI`) | ADR-17 | ✅ |
-| 8 | ⬜ Pendiente | — | — | — | — |
+| 8 | ✅ Completada | `fase-8/gamificacion` | (contra `CD/CI`) | ADR-18 | ✅ |
 | 9 | ⬜ Pendiente | — | — | — | — |
 | 10 | ⬜ Pendiente | — | — | — | — |

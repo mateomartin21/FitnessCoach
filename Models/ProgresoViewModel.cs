@@ -19,6 +19,16 @@ namespace FitnessCoach.Models
         /// <summary>Formulario de entrenamiento. Se liga con prefijo "NuevoEntrenamiento".</summary>
         public RegistrarEntrenamientoViewModel NuevoEntrenamiento { get; set; } = new();
 
+        /// <summary>
+        /// Los días de la rutina real del usuario, únicas opciones válidas para marcar un
+        /// entrenamiento: si fuera texto libre, cualquiera anota algo inventado y se lleva
+        /// el XP y los logros sin haber entrenado.
+        /// </summary>
+        public List<string> OpcionesRutina { get; set; } = new();
+
+        /// <summary>Sin objetivo no hay rutina, así que todavía no se puede registrar un entrenamiento.</summary>
+        public bool PuedeRegistrarEntrenamiento => OpcionesRutina.Count > 0;
+
         public List<EntrenamientoCompletado> Entrenamientos { get; set; } = new();
 
         public Rachas Rachas { get; set; } = Rachas.Vacia;
