@@ -8,6 +8,15 @@
     <div class="alert alert-success py-2 small">@TempData["MensajeProgreso"]</div>
 }
 
+@if (TempData["LogroDesbloqueado"] is string logro)
+{
+    <div class="alert d-flex align-items-start gap-3 mb-4"
+         style="background:linear-gradient(135deg,#2a1a3e,#16213e); border:1px solid var(--fc-primary); color:#eee; white-space:pre-line;">
+        <i class="fas fa-trophy mt-1" style="color:#ffd700; font-size:1.4rem;"></i>
+        <div>@logro <a asp-controller="Gamificacion" asp-action="Index" class="d-block small mt-1" style="color:#00d4ff;">Ver todos tus logros →</a></div>
+    </div>
+}
+
 @* La IA como capa sobre los datos: el Lobo mira lo real y opina. Bajo demanda,
    para no gastar una llamada a la IA en cada carga de la pantalla. El resumen de
    la semana arriba; el análisis puntual del progreso, debajo. *@

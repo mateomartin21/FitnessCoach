@@ -1,4 +1,5 @@
 using FitnessCoach.Application.Services;
+using FitnessCoach.Domain.Models.Gamificacion;
 using FitnessCoach.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,16 +14,19 @@ namespace FitnessCoach.Controllers
         private readonly IServicioProgreso _progreso;
         private readonly IServicioEntrenamientos _entrenamientos;
         private readonly IServicioRecords _records;
+        private readonly IServicioGamificacion _gamificacion;
 
         public ProgresoController(IServicioPerfilUsuario perfiles,
                                   IServicioProgreso progreso,
                                   IServicioEntrenamientos entrenamientos,
-                                  IServicioRecords records)
+                                  IServicioRecords records,
+                                  IServicioGamificacion gamificacion)
         {
             _perfiles = perfiles;
             _progreso = progreso;
             _entrenamientos = entrenamientos;
             _records = records;
+            _gamificacion = gamificacion;
         }
 
         private string IdentityId => User.FindFirstValue(ClaimTypes.NameIdentifier)!;
@@ -95,7 +99,11 @@ namespace FitnessCoach.Controllers
             if (!ModelState.IsValid)
                 return View("Index", ArmarVista(nuevoEntrenamiento: modelo));
 
+            // El logro se desbloquea con el hecho recién registrado: comparo la foto de
+            // antes con la de después para avisarle al usuario en el momento.
+            var antes = _gamificacion.Estadisticas(IdentityId);
             _entrenamientos.Registrar(IdentityId, modelo.NombreRutina, modelo.DuracionMinutos, modelo.Notas);
+            NotificarLogrosNuevos(antes);
 
             TempData["MensajeProgreso"] = "Entrenamiento registrado.";
             return RedirectToAction("Index");
@@ -122,8 +130,10 @@ namespace FitnessCoach.Controllers
                 return Redirect(DestinoSeguro(volverA));
             }
 
+            var antes = _gamificacion.Estadisticas(IdentityId);
             var resultado = _records.Registrar(IdentityId, modelo.EjercicioSlug, modelo.EjercicioNombre,
                                                modelo.PesoKg, modelo.Repeticiones);
+            NotificarLogrosNuevos(antes);
 
             TempData["MensajeProgreso"] = resultado switch
             {
@@ -149,6 +159,21 @@ namespace FitnessCoach.Controllers
 
             TempData["MensajeProgreso"] = "Récord eliminado.";
             return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Si el hecho recién registrado desbloqueó algún logro, deja el aviso en la voz
+        /// del Lobo para que la pantalla lo muestre. Compara la foto de antes (recibida)
+        /// con el estado actual del usuario.
+        /// </summary>
+        private void NotificarLogrosNuevos(EstadisticasUsuario antes)
+        {
+            var despues = _gamificacion.Estadisticas(IdentityId);
+            var nuevos = EvaluadorLogros.ReciénDesbloqueados(antes, despues);
+            if (nuevos.Count == 0) return;
+
+            TempData["LogroDesbloqueado"] = string.Join("\n",
+                nuevos.Select(l => $"{l.Icono} ¡Logro desbloqueado: {l.Nombre}! {l.LineaLobo}"));
         }
 
         /// <summary>
