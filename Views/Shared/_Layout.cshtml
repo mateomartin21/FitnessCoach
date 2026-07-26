@@ -18,7 +18,6 @@
         <nav class="navbar navbar-expand-lg fc-navbar">
             <div class="container">
                 <a class="navbar-brand fc-brand" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/branding/logo.png" alt="FitnessCoach" class="fc-navbar-logo me-2" />
                     <span class="fc-brand-text">FitnessCoach</span>
                 </a>
                 <button class="navbar-toggler fc-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
@@ -68,13 +67,11 @@
     <footer class="fc-footer mt-5">
         <div class="container">
             <div class="row gy-4 py-5">
-                <div class="col-lg-4">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <img src="~/images/branding/logo.png" alt="FitnessCoach" class="fc-footer-logo" />
-                        <span class="fw-bold fs-5" style="color:var(--fc-primary);">FitnessCoach</span>
-                    </div>
-                    <p class="text-muted mb-0" style="max-width:290px; font-size:.85rem;">
-                        Tu entrenador personal inteligente. Rutinas, nutrición y un coach —Koda— que te acompaña día a día.
+                <div class="col-lg-5">
+                    <span class="fw-bold fs-4" style="color:var(--fc-primary);">FitnessCoach</span>
+                    <p class="text-muted mb-0 mt-2" style="max-width:340px; font-size:.9rem;">
+                        Tu entrenador personal inteligente. Rutinas, nutrición y un coach —Koda— que te guía,
+                        te analiza y te acompaña día a día.
                     </p>
                 </div>
                 <div class="col-6 col-lg-3">
@@ -86,21 +83,17 @@
                         <a asp-controller="Gamificacion" asp-action="Index" class="fc-footer-link">Logros</a>
                     </div>
                 </div>
-                <div class="col-6 col-lg-3">
-                    <div class="fc-foot-head">Koda &amp; más</div>
+                <div class="col-6 col-lg-4">
+                    <div class="fc-foot-head">Recursos</div>
                     <div class="d-flex flex-column gap-2">
                         <a asp-controller="IaCoach" asp-action="Index" class="fc-footer-link">Koda IA</a>
-                        <a asp-controller="Home" asp-action="Privacy" class="fc-footer-link">Privacidad</a>
+                        <a asp-controller="Home" asp-action="Privacy" class="fc-footer-link">Política de Privacidad</a>
                     </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="fc-foot-head">Proyecto</div>
-                    <p class="text-muted mb-0" style="font-size:.8rem;">Trabajo académico<br />Tecnológico de Software<br />Dr. Pedrozo</p>
                 </div>
             </div>
             <div class="fc-foot-bottom d-flex flex-wrap justify-content-between align-items-center gap-2 py-3">
-                <span>&copy; 2026 FitnessCoach · Proyecto académico</span>
-                <a asp-controller="Home" asp-action="Privacy" class="fc-footer-link">Política de Privacidad</a>
+                <span>&copy; 2026 FitnessCoach. Todos los derechos reservados.</span>
+                <a asp-controller="Home" asp-action="Privacy" class="fc-footer-link">Privacidad</a>
             </div>
         </div>
     </footer>
