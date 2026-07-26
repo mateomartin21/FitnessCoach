@@ -182,9 +182,26 @@
                 <form asp-controller="Progreso" asp-action="RegistrarEntrenamiento" method="post">
                     <div class="mb-3">
                         <label asp-for="NuevoEntrenamiento.NombreRutina" class="form-label"></label>
-                        <input asp-for="NuevoEntrenamiento.NombreRutina" class="form-control"
-                               placeholder="Full Body, Piernas, Cardio..." />
-                        <span asp-validation-for="NuevoEntrenamiento.NombreRutina" class="text-danger small"></span>
+                        @* Solo días reales de la rutina del usuario: no texto libre, para
+                           que no se pueda marcar como hecho algo inventado y ganar el logro. *@
+                        @if (Model.PuedeRegistrarEntrenamiento)
+                        {
+                            <select asp-for="NuevoEntrenamiento.NombreRutina" class="form-select">
+                                <option value="">— Elegí el día que entrenaste —</option>
+                                @foreach (var opcion in Model.OpcionesRutina)
+                                {
+                                    <option value="@opcion">@opcion</option>
+                                }
+                            </select>
+                            <span asp-validation-for="NuevoEntrenamiento.NombreRutina" class="text-danger small"></span>
+                        }
+                        else
+                        {
+                            <div class="small text-muted">
+                                Definí tu objetivo para ver tu rutina y poder registrar entrenamientos.
+                                <a asp-controller="Perfil" asp-action="Index" style="color:#00d4ff;">Ir a mi perfil →</a>
+                            </div>
+                        }
                     </div>
                     <div class="mb-3">
                         <label asp-for="NuevoEntrenamiento.DuracionMinutos" class="form-label"></label>
@@ -196,7 +213,7 @@
                         <textarea asp-for="NuevoEntrenamiento.Notas" class="form-control" rows="2"></textarea>
                         <span asp-validation-for="NuevoEntrenamiento.Notas" class="text-danger small"></span>
                     </div>
-                    <button type="submit" class="btn fc-btn-primary w-100 py-2">
+                    <button type="submit" class="btn fc-btn-primary w-100 py-2" disabled="@(!Model.PuedeRegistrarEntrenamiento)">
                         <i class="fas fa-check me-2"></i>Marcar como hecho
                     </button>
                 </form>
