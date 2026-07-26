@@ -68,20 +68,20 @@ body::after {
     opacity: .45;
 }
 
-/* Titulos en fuente pixel, con tamanos acotados (Press Start 2P es grande) */
-h1, h2, h3, h4, h5, h6,
-.fc-brand, .fc-hero-title, .fc-tag, .fc-stat-label {
+/* La fuente pixel se usa con MODERACION: la marca, el titulo del hero, las etiquetas
+   y los datos cortos. Los titulos normales van en la fuente legible (bien en negrita),
+   para que no se sientan pesados ni se corten. Clase .pixel para pedirla a demanda. */
+.fc-brand, .fc-hero-title, .fc-tag, .fc-stat-label, .pixel {
     font-family: var(--fc-font-pixel) !important;
     letter-spacing: 0 !important;
-    line-height: 1.5 !important;
+    line-height: 1.6 !important;
     text-transform: uppercase;
 }
-h1 { font-size: 1.5rem !important; }
-h2 { font-size: 1.1rem !important; }
-h3 { font-size: 0.95rem !important; }
-h4 { font-size: 0.85rem !important; }
-h5 { font-size: 0.78rem !important; }
-h6 { font-size: 0.72rem !important; }
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--fc-font-body) !important;
+    font-weight: 800;
+    letter-spacing: .005em;
+}
 
 /* ---------- NAVBAR ---------- */
 .fc-navbar {
@@ -96,6 +96,30 @@ h6 { font-size: 0.72rem !important; }
 .fc-nav-link:hover { color: var(--fc-primary-2) !important; background: var(--fc-inset) !important; border-color: var(--fc-ink) !important; }
 .fc-nav-highlight { background: rgba(var(--fc-primary-rgb),0.12) !important; color: var(--fc-primary) !important; }
 .fc-toggler { border: none !important; background: transparent !important; }
+
+/* Seccion activa: resalta dónde estás parado */
+.fc-nav-link.active { color: var(--fc-primary) !important; background: var(--fc-inset) !important; border-color: var(--fc-ink) !important; }
+
+/* CTA de Koda (IA), separado del resto de la navegación */
+.fc-nav-cta {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: #fff !important; background: var(--fc-analisis) !important;
+    border: var(--px) solid var(--fc-ink) !important; box-shadow: var(--px) var(--px) 0 var(--fc-ink);
+    padding: 0.4rem 0.85rem !important; font-weight: 700 !important; font-size: 0.85rem !important;
+    text-decoration: none; transition: transform .05s, box-shadow .05s;
+}
+.fc-nav-cta:hover { color: #fff !important; background: #a882ff !important; }
+.fc-nav-cta:active { transform: translate(var(--px), var(--px)); box-shadow: 0 0 0 var(--fc-ink); }
+
+/* Bloque de cuenta */
+.fc-nav-sep { width: var(--px); height: 24px; align-self: center; background: var(--fc-border); margin: 0 6px; }
+.fc-user-chip { display: inline-flex; align-items: center; gap: 6px; color: var(--fc-text) !important; font-size: 0.82rem; padding: 0.35rem 0.7rem; border: var(--px) solid var(--fc-border); background: var(--fc-inset); }
+.fc-logout { color: var(--fc-muted) !important; background: transparent !important; border: none !important; box-shadow: none !important; font-size: 0.82rem; padding: 0.35rem 0.6rem !important; }
+.fc-logout:hover { color: var(--fc-descanso) !important; }
+
+/* Footer estructurado */
+.fc-foot-head { font-size: 0.68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--fc-muted); font-weight: 700; margin-bottom: 12px; }
+.fc-foot-bottom { border-top: var(--px) solid var(--fc-ink); font-size: 0.78rem; color: var(--fc-muted); }
 
 /* ---------- HERO ---------- */
 .fc-hero { padding: 1rem 0; }
