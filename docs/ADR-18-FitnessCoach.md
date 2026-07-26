@@ -78,6 +78,7 @@ Reusar la IA de la Fase 6. **Se descarta para el aviso inmediato:** gastaría un
 - **La ventana semanal y las rachas se cuentan en la hora del servidor** (D-25, Fase 10): un usuario en otra zona horaria puede ver el corte de "esta semana" desalineado con su medianoche.
 - **La curva de XP y el set de logros son un primer balance**, no un ajuste fino de *game design*. Están pensados para tocarse fácil: agregar un logro es una línea en el catálogo.
 - **El aviso de logro usa TempData:** se muestra una vez tras la acción. No hay un historial de "cuándo desbloqueaste cada logro" (haría falta persistir la fecha del hecho que lo gatilló); la pantalla muestra el estado actual, no la línea de tiempo.
+- **El autorreporte es inherente, pero se cerró el "escribir cualquier cosa":** como los logros de entrenamiento se ganan al marcar un entrenamiento hecho, y ese registro era texto libre, cualquiera podía anotar algo inventado y llevarse el XP. Se ató el registro a los **días reales de la rutina** del usuario (desplegable + validación en el servidor). No verifica que la persona haya entrenado de verdad —ningún tracker autorreportado puede—, pero elimina el input arbitrario.
 
 ---
 
