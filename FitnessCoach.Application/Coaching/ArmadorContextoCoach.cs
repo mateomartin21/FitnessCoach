@@ -41,6 +41,7 @@ namespace FitnessCoach.Application.Coaching
 
             Perfil(sb, usuario);
             Progreso(sb, usuario);
+            EstaSemana(sb, usuario);
             Records(sb, usuario);
             PlanDeComidas(sb, usuario);
             DiarioDeHoy(sb, usuario);
@@ -75,6 +76,55 @@ namespace FitnessCoach.Application.Coaching
             sb.AppendLine("== PESO RECIENTE ==");
             sb.AppendLine(string.Join(" · ", ultimos));
             sb.AppendLine();
+        }
+
+        /// <summary>
+        /// El pulso de los últimos 7 días: entrenamientos hechos, racha y cómo se movió
+        /// el peso. Es lo que alimenta el resumen semanal narrado, y de paso le da al
+        /// Lobo el ritmo reciente en cualquier respuesta. Se cuenta en hora local, igual
+        /// que las rachas de la pantalla de progreso.
+        /// </summary>
+        private static void EstaSemana(StringBuilder sb, UsuarioPerfil u)
+        {
+            try
+            {
+                var hoyLocal = DateOnly.FromDateTime(DateTime.Now);
+                var desde = DateTime.Now.AddDays(-7);
+
+                var entrenosSemana = u.EntrenamientosCompletados
+                    .Where(e => e.Fecha.ToLocalTime() >= desde)
+                    .OrderByDescending(e => e.Fecha)
+                    .ToList();
+
+                var racha = CalculadorRachas.Calcular(
+                    u.EntrenamientosCompletados.Select(e => e.Fecha.ToLocalTime()), hoyLocal);
+
+                var pesosSemana = u.HistorialProgreso
+                    .Where(r => r.Fecha.ToLocalTime() >= desde)
+                    .OrderBy(r => r.Fecha)
+                    .ToList();
+
+                // Sin actividad ni racha ni pesos de la semana, el bloque no aporta nada.
+                if (entrenosSemana.Count == 0 && racha.Actual == 0 && pesosSemana.Count == 0) return;
+
+                sb.AppendLine("== ESTA SEMANA (ultimos 7 dias) ==");
+                sb.AppendLine($"Entrenamientos: {entrenosSemana.Count}. " +
+                              $"Racha actual: {racha.Actual} dia(s), mejor racha {racha.MasLarga}.");
+
+                if (entrenosSemana.Count > 0)
+                    sb.AppendLine("Hizo: " + string.Join("; ",
+                        entrenosSemana.Select(e => $"{e.NombreRutina} ({e.DuracionMinutos}min, {e.Fecha.ToLocalTime():dd/MM})")));
+
+                if (pesosSemana.Count >= 2)
+                {
+                    var delta = pesosSemana[^1].PesoKg - pesosSemana[0].PesoKg;
+                    var signo = delta > 0 ? "+" : "";
+                    sb.AppendLine($"Peso: de {pesosSemana[0].PesoKg}kg a {pesosSemana[^1].PesoKg}kg " +
+                                  $"({signo}{delta:0.#}kg en la semana).");
+                }
+                sb.AppendLine();
+            }
+            catch { /* se omite */ }
         }
 
         private void Records(StringBuilder sb, UsuarioPerfil u)

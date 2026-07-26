@@ -8,23 +8,11 @@
     <div class="alert alert-success py-2 small">@TempData["MensajeProgreso"]</div>
 }
 
-@* La IA como capa sobre los datos: el Lobo mira el progreso real y opina. Bajo
-   demanda, para no gastar una llamada a la IA en cada carga de la pantalla. *@
-<div class="fc-feature-card mb-4">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <h5 class="mb-0">
-            <img src="/images/branding/logo.png" alt="Lobo" width="24" height="24" class="rounded me-2" style="object-fit:cover;" />
-            El Lobo analiza tu progreso
-        </h5>
-        <button id="btnAnalizarProgreso" class="btn fc-btn-primary btn-sm">
-            <i class="fas fa-wand-magic-sparkles me-1"></i>Pedir análisis
-        </button>
-    </div>
-    <div id="analisisLobo" class="small" style="color:#ccc; white-space:pre-line;">
-        Tocá el botón y el Lobo mira tus números, tus récords y lo que venís comiendo.
-    </div>
-</div>
-@Html.AntiForgeryToken()
+@* La IA como capa sobre los datos: el Lobo mira lo real y opina. Bajo demanda,
+   para no gastar una llamada a la IA en cada carga de la pantalla. El resumen de
+   la semana arriba; el análisis puntual del progreso, debajo. *@
+<partial name="_AnalisisLobo" model="@("semana")" />
+<partial name="_AnalisisLobo" model="@("progreso")" />
 
 <div class="row g-3 mb-4">
     <div class="col-6 col-md-3">
@@ -343,31 +331,6 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-
-    <script>
-        // El Lobo analiza el progreso real. Respuesta insertada con textContent (nunca
-        // innerHTML): es texto externo y no debe poder inyectar nada en la pagina.
-        document.getElementById('btnAnalizarProgreso')?.addEventListener('click', async () => {
-            const salida = document.getElementById('analisisLobo');
-            const boton = document.getElementById('btnAnalizarProgreso');
-            boton.disabled = true;
-            salida.textContent = 'El Lobo esta mirando tus numeros...';
-            try {
-                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-                const res = await fetch('/IaCoach/Analizar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
-                    body: JSON.stringify({ aspecto: 'progreso' })
-                });
-                const data = await res.json();
-                salida.textContent = data.respuesta;
-            } catch {
-                salida.textContent = 'No pude traer el analisis ahora, campeon. Proba de nuevo en un momento.';
-            } finally {
-                boton.disabled = false;
-            }
-        });
-    </script>
 
     @if (Model.PuedeGraficar)
     {

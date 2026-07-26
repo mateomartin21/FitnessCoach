@@ -146,6 +146,8 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 
 - **IA resiliente y contextual (Fase 6, ADR-16).** El Lobo Coach ya no muere si Gemini falla: una cadena de proveedores (Factory) prueba Gemini, luego Groq/OpenRouter si hay clave gratuita, y por último un respaldo offline por reglas que nunca falla. Los errores son excepciones registradas, no texto. La IA recibe contexto rico (plan, rutina, diario, récords) anclado al catálogo real —solo recomienda lo que existe, no inventa— y analiza el progreso desde la pantalla, no solo en el chat. Cierra D-09 y D-20.
 
+- **El Lobo en toda la app y resumen semanal (Fase 7, ADR-17).** El análisis del Lobo, antes solo en Progreso, se ofrece también en las pantallas de dieta y rutina mediante un partial reutilizable, sin código nuevo de IA. El contexto suma el pulso de la semana (entrenamientos de 7 días, racha, variación de peso), que alimenta un resumen semanal narrado en su voz y mejora además las respuestas del chat. Cierra la línea de IA.
+
 ### ❌ Existe pero NO está conectado / no funciona como se documentó
 
 - **La API REST se quedó atrás del producto (D-26).** Solo expone perfil, calorías y el historial de peso en modo lectura/alta; no cubre edición, borrado ni entrenamientos. No es un riesgo de seguridad, es superficie desactualizada.

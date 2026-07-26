@@ -57,6 +57,10 @@ Pregunta de tu pupilo: {mensaje}";
             "rutina" =>
                 "Revisa mi rutina actual segun mi objetivo. Decime en pocas lineas si esta bien encarada y " +
                 "un consejo concreto para sacarle mas provecho, refiriendote a los ejercicios de mi rutina.",
+            "semana" =>
+                "Hace un resumen de mi ultima semana con los datos de la seccion ESTA SEMANA: cuantas veces " +
+                "entrene, como viene mi racha y como se movio mi peso. Narralo en tu voz, en 2 o 3 lineas, " +
+                "reconoce lo que hice bien y marcame una cosa concreta para la semana que viene.",
             _ =>
                 "Analiza mi progreso reciente: mi peso, mis records y lo que vengo comiendo. Decime en pocas " +
                 "lineas como voy y el ajuste mas importante que harias ahora mismo."
