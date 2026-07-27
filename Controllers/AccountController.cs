@@ -88,7 +88,7 @@ namespace FitnessCoach.Controllers
             {
                 ModelState.AddModelError(string.Empty,
                     $"Tu cuenta quedó bloqueada temporalmente por varios intentos fallidos. " +
-                    $"Volvé a intentar en {MinutosDeBloqueo} minutos.");
+                    $"Vuelve a intentar en {MinutosDeBloqueo} minutos.");
                 return View(model);
             }
 

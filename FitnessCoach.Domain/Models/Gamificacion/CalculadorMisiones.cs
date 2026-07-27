@@ -11,15 +11,15 @@ namespace FitnessCoach.Domain.Models.Gamificacion
         public static readonly IReadOnlyList<Mision> DeLaSemana = new[]
         {
             new Mision("semana-entrenar", "Constancia semanal",
-                "Entrená 3 veces esta semana.", "🔥", 50,
+                "Entrena 3 veces esta semana.", "🔥", 50,
                 3, e => e.EntrenamientosEstaSemana),
 
             new Mision("semana-pesarse", "Control de peso",
-                "Registrá tu peso al menos una vez esta semana.", "⚖️", 20,
+                "Registra tu peso al menos una vez esta semana.", "⚖️", 20,
                 1, e => e.RegistrosPesoEstaSemana),
 
-            new Mision("semana-diario", "Comé con cabeza",
-                "Anotá tu comida en 4 días esta semana.", "🍽️", 40,
+            new Mision("semana-diario", "Come con cabeza",
+                "Anota tu comida en 4 días esta semana.", "🍽️", 40,
                 4, e => e.DiasConDiarioEstaSemana),
         };
 

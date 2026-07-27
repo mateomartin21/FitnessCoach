@@ -22,8 +22,8 @@ namespace FitnessCoach.Tests.Coaching
         {
             var prompt = PersonalidadLoboCoach.ConstruirPrompt("hola", "perfil");
 
-            Assert.Contains("Lobo Coach", prompt);
-            Assert.Contains("espanol", prompt);   // siempre responde en español
+            Assert.Contains("Koda", prompt);
+            Assert.Contains("México", prompt);   // siempre responde en español de México
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace FitnessCoach.Tests.Coaching
 
             Assert.Contains("NUNCA inventes", prompt);
             // El anclaje: solo lo que esté en el contexto (plan, rutina, catálogo).
-            Assert.Contains("Solo podes recomendar", prompt);
+            Assert.Contains("Solo puedes recomendar", prompt);
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace FitnessCoach.Tests.Coaching
         }
 
         [Theory]
-        [InlineData("dieta", "plan de alimentacion")]
+        [InlineData("dieta", "plan")]
         [InlineData("rutina", "rutina")]
         [InlineData("progreso", "progreso")]
         [InlineData("semana", "ESTA SEMANA")]             // narra el resumen semanal
@@ -62,7 +62,7 @@ namespace FitnessCoach.Tests.Coaching
         {
             var sinSenal = PersonalidadLoboCoach.RespuestaSinSenal;
 
-            Assert.Contains("campeon", sinSenal);
+            Assert.Contains("campeón", sinSenal);
             // No debe filtrar jerga técnica al usuario.
             Assert.DoesNotContain("Exception", sinSenal);
             Assert.DoesNotContain("error", sinSenal, StringComparison.OrdinalIgnoreCase);

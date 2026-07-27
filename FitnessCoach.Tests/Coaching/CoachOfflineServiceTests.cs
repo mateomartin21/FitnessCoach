@@ -19,11 +19,11 @@ namespace FitnessCoach.Tests.Coaching
         }
 
         [Theory]
-        [InlineData("cuanta proteina como al dia?", "proteina")]
+        [InlineData("cuanta proteina como al dia?", "proteína")]
         [InlineData("necesito descansar mas?", "descans")]
         [InlineData("no tengo ganas de entrenar hoy", "hoy")]
         [InlineData("me duele el hombro", "duele")]
-        [InlineData("como armo mi rutina de pecho?", "tecnica")]
+        [InlineData("como armo mi rutina de pecho?", "técnica")]
         public async Task RespondeSegunElTemaDeLaPregunta(string pregunta, string esperado)
         {
             var r = await Preguntar(pregunta);
@@ -37,7 +37,7 @@ namespace FitnessCoach.Tests.Coaching
             // No hace pasar un consejo general por una respuesta a medida.
             var r = await Preguntar("cualquier cosa");
 
-            Assert.Contains("senal", r, StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("señal", r, StringComparison.OrdinalIgnoreCase);
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace FitnessCoach.Tests.Coaching
         {
             var r = await Preguntar("hola");
 
-            Assert.Contains("campeon", r, StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("campeón", r, StringComparison.OrdinalIgnoreCase);
             Assert.DoesNotContain("Exception", r);
             Assert.DoesNotContain("null", r, StringComparison.OrdinalIgnoreCase);
         }

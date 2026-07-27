@@ -36,7 +36,7 @@ namespace FitnessCoach.Domain.Models.Alimentacion
         public const string Descargo =
             "Este plan es orientativo y se genera a partir de fórmulas generales. " +
             "No reemplaza la consulta con un nutricionista o médico, especialmente si " +
-            "tenés alguna condición de salud, tomás medicación, estás embarazada o " +
-            "tenés alergias alimentarias.";
+            "tienes alguna condición de salud, tomas medicación, estás embarazada o " +
+            "tienes alergias alimentarias.";
     }
 }

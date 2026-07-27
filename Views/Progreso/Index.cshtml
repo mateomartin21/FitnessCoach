@@ -108,7 +108,7 @@
                     <div class="text-center py-5">
                         <i class="fas fa-chart-line mb-3" style="font-size:2.5rem; color:#2a2a4a;"></i>
                         <p class="text-muted mb-0">Todavía no registraste ningún peso.</p>
-                        <p class="text-muted small">Anotá el primero y vas a poder seguir tu evolución acá.</p>
+                        <p class="text-muted small">Anota el primero y podrás seguir tu evolución aquí.</p>
                     </div>
                 }
                 else
@@ -187,7 +187,7 @@
                         @if (Model.PuedeRegistrarEntrenamiento)
                         {
                             <select asp-for="NuevoEntrenamiento.NombreRutina" class="form-select">
-                                <option value="">— Elegí el día que entrenaste —</option>
+                                <option value="">— Elige el día que entrenaste —</option>
                                 @foreach (var opcion in Model.OpcionesRutina)
                                 {
                                     <option value="@opcion">@opcion</option>
@@ -198,7 +198,7 @@
                         else
                         {
                             <div class="small text-muted">
-                                Definí tu objetivo para ver tu rutina y poder registrar entrenamientos.
+                                Define tu objetivo para ver tu rutina y poder registrar entrenamientos.
                                 <a asp-controller="Perfil" asp-action="Index" style="color:#00d4ff;">Ir a mi perfil →</a>
                             </div>
                         }

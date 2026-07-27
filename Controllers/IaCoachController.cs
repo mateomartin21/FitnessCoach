@@ -32,7 +32,7 @@ namespace FitnessCoach.Controllers
         {
             // Sin [ApiController] el ModelState no se verifica solo: hay que mirarlo a mano.
             if (!ModelState.IsValid)
-                return BadRequest(new { respuesta = "El mensaje no es válido. Escribí entre 1 y 2000 caracteres." });
+                return BadRequest(new { respuesta = "El mensaje no es válido. Escribe entre 1 y 2000 caracteres." });
 
             var usuario = _perfiles.Obtener(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
@@ -59,7 +59,7 @@ namespace FitnessCoach.Controllers
         {
             var usuario = _perfiles.Obtener(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             if (usuario is null || usuario.ObjetivoActual is null)
-                return Ok(new { respuesta = "Configura tu perfil y tu objetivo primero, campeon, y te hago el analisis.", degradada = true });
+                return Ok(new { respuesta = "Configura tu perfil y tu objetivo primero, campeón, y te hago el análisis.", degradada = true });
 
             var contexto = _contexto.Construir(usuario);
             var pedido = PersonalidadLoboCoach.PedidoDeAnalisis(request?.Aspecto ?? "progreso");

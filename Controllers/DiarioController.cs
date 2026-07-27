@@ -61,7 +61,7 @@ namespace FitnessCoach.Controllers
             if (gramos is > 0 and <= 2000 && _catalogo.ObtenerPorSlug(alimentoSlug) is not null)
                 _diario.Registrar(usuario, alimentoSlug, gramos, elDia);
             else
-                TempData["ErrorDiario"] = "No se pudo registrar: revisá el alimento y la cantidad.";
+                TempData["ErrorDiario"] = "No se pudo registrar: revisa el alimento y la cantidad.";
 
             return RedirectToAction("Index", new { dia = elDia });
         }

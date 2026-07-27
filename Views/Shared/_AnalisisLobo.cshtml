@@ -14,20 +14,20 @@
     {
         "dieta" => (
             "Koda revisa tu dieta",
-            "Tocá el botón y Koda mira tu plan y lo que registraste hoy.",
-            "Koda esta mirando tu plan..."),
+            "Toca el botón y Koda revisa tu plan y lo que registraste hoy.",
+            "Koda está revisando tu plan..."),
         "rutina" => (
             "Koda revisa tu rutina",
-            "Tocá el botón y Koda mira tu rutina según tu objetivo.",
-            "Koda esta mirando tu rutina..."),
+            "Toca el botón y Koda revisa tu rutina según tu objetivo.",
+            "Koda está revisando tu rutina..."),
         "semana" => (
             "El resumen de tu semana",
-            "Tocá el botón y Koda te narra cómo venís: entrenamientos, racha y peso.",
-            "Koda esta repasando tu semana..."),
+            "Toca el botón y Koda te narra cómo vas: entrenamientos, racha y peso.",
+            "Koda está repasando tu semana..."),
         _ => (
             "Koda analiza tu progreso",
-            "Tocá el botón y Koda mira tus números, tus récords y lo que venís comiendo.",
-            "Koda esta mirando tus numeros..."),
+            "Toca el botón y Koda revisa tus números, tus récords y lo que vienes comiendo.",
+            "Koda está revisando tus números..."),
     };
     var botonId = $"btnAnalizar-{aspecto}";
     var salidaId = $"analisis-{aspecto}";
@@ -68,7 +68,7 @@
                 const data = await res.json();
                 salida.textContent = data.respuesta;
             } catch {
-                salida.textContent = 'No pude traer el analisis ahora, campeon. Proba de nuevo en un momento.';
+                salida.textContent = 'No pude traer el análisis ahora, campeón. Prueba de nuevo en un momento.';
             } finally {
                 boton.disabled = false;
             }
