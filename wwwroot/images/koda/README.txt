@@ -35,5 +35,17 @@ ESTADOS (Koda enmarcado, para tarjetas de estado)
 MARCA / LOGO
   koda-logo.png             -> navbar y footer (reemplaza el logo actual)
 
-Nota: mientras no existan, la app usa el logo anterior recoloreado a azul como
-placeholder. No hace falta que estén todos de una: cableo los que vayas subiendo.
+ESTADO ACTUAL (recortados de la hoja de sprites y ya cableados)
+  - koda-principal.png   -> Home (hero, lobo de brazos cruzados)
+  - koda-presentacion.png-> cabecera del chat de Koda (IA Coach)
+  - koda-logo.png (cara) -> avatares del chat y línea de Koda en logros
+  - koda-enfocado.png    -> tarjeta "Koda analiza/revisa" (progreso/dieta/rutina/semana)
+  - koda-celebrando.png  -> tarjeta de nivel/XP en Logros
+  - koda-listo.png       -> cabecera de Mi Rutina
+
+Disponibles ya recortados, aún sin ubicación fija (se pueden usar más adelante):
+  las 6 tarjetas koda-estado-*.png, koda-motivando/analizando/descanso,
+  y las caras koda-motivado/pensativo/sorprendido/neutral/feliz.
+
+La hoja original salió recortada por bounding-box de alfa; el fondo lo quitaste tú.
+Los sprites viejos branding/principal.png y branding/logo.png quedaron sin uso.
