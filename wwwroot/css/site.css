@@ -56,18 +56,6 @@ body {
     font-family: var(--fc-font-body) !important;
 }
 
-/* Scanlines CRT sutiles sobre todo */
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 2000;
-    background: repeating-linear-gradient(0deg, rgba(0,0,0,.13) 0 1px, transparent 1px 3px);
-    mix-blend-mode: multiply;
-    opacity: .45;
-}
-
 /* La fuente pixel se usa con MODERACION: la marca, el titulo del hero, las etiquetas
    y los datos cortos. Los titulos normales van en la fuente legible (bien en negrita),
    para que no se sientan pesados ni se corten. Clase .pixel para pedirla a demanda. */
