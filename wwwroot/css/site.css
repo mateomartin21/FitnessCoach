@@ -150,6 +150,17 @@ h1, h2, h3, h4, h5, h6 {
     0%, 100% { transform: translateY(0) scale(1); }
     50%      { transform: translateY(-7px) scale(1.015); }
 }
+
+/* Medallas de logros (dibujadas en canvas por js/logros.js). */
+.logro-medal { display: block; image-rendering: pixelated; width: 64px; height: 64px; }
+.logro-medal.is-unlocked { animation: fc-medal-pulse 2.6s ease-in-out infinite; }
+@keyframes fc-medal-pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .logro-medal.is-unlocked { animation: none; }
+}
 @media (prefers-reduced-motion: reduce) {
     .koda-glow, .koda-glow-still, .koda-idle {
         animation: none;
