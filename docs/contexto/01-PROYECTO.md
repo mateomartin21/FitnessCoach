@@ -150,13 +150,15 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 
 - **Gamificación derivada de los hechos (Fase 8, ADR-18).** Nivel, XP, logros y misiones se **calculan** desde el tracker (entrenamientos, récords, peso, diario), sin tablas nuevas ni estado de juego que pueda desincronizarse. La constancia paga más (bono por racha); 12 logros con progreso medible y 3 misiones semanales, cada logro con su reacción del Lobo. Pantalla estilo RPG (barra de XP, nivel, misiones, logros) y aviso en el momento al desbloquear un logro. Todo es lógica de dominio pura y cubierta por pruebas.
 
+- **Identidad visual pixel art y Koda con vida (Fase 9, ADR-19).** Sistema de diseño 8-bit en tokens CSS (azul + 6 colores de estado, Press Start 2P auto-hospedada, bordes duros, sin scanlines). El coach se llama **Koda**: 19 sprites recortados de un sheet del usuario, cableados a Inicio, chat, Rutina, Progreso y Logros. Una capa de JavaScript vanilla le da vida (`koda.js`: estados reactivos, micro-interacciones, aura de partículas en canvas) y dibuja las medallas de logros (`logros.js`), reemplazando los emojis. Toda la app —y la voz de la IA— quedó en español de México. Respeta `prefers-reduced-motion`.
+
 ### ❌ Existe pero NO está conectado / no funciona como se documentó
 
 - **La API REST se quedó atrás del producto (D-26).** Solo expone perfil, calorías y el historial de peso en modo lectura/alta; no cubre edición, borrado ni entrenamientos. No es un riesgo de seguridad, es superficie desactualizada.
 
 ### ⏳ No existe todavía
 
-Rediseño visual pixel art (Fase 9) y el pulido final de la Fase 10. → Ver `06-ROADMAP.md`.
+El pulido final de la Fase 10 (optimización, despliegue y cierre). → Ver `06-ROADMAP.md`.
 
 ---
 
@@ -176,6 +178,12 @@ Rediseño visual pixel art (Fase 9) y el pulido final de la Fase 10. → Ver `06
 | ADR-11 | Validación en dos capas y defensa en profundidad del login |
 | ADR-12 | El tracker como historial de hechos, con reglas en la capa de aplicación |
 | ADR-13 | Catálogo de ejercicios como dato, y contenido desacoplado de las estrategias |
+| ADR-14 | Nutrición personalizada: macros calculados y plan compuesto desde el catálogo |
+| ADR-15 | Preferencias y adherencia: dietas/exclusiones y diario de comidas |
+| ADR-16 | IA resiliente (cadena de proveedores) y contextual anclada al catálogo |
+| ADR-17 | El Lobo en toda la app y resumen semanal narrado |
+| ADR-18 | Gamificación derivada de los hechos, sin estado paralelo |
+| ADR-19 | Identidad visual pixel art y Koda presente y con vida |
 
 **Convención establecida:** cada ADR abre citando explícitamente su relación con el anterior ("Este ADR extiende el ADR-N…"). Cada uno tiene: Contexto → Decisión → Alternativas Consideradas → Consecuencias → Estado actual.
 

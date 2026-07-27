@@ -2,7 +2,7 @@
 
 > **Documento vivo.** Es el inventario honesto de lo que está mal. Cuando algo se resuelve se marca ✅ con la fase que lo resolvió — **no se borra la línea**, el historial sirve para los ADRs y para la sustentación del proyecto.
 >
-> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **26/07/2026** al cerrar la Fase 8 (rama `fase-8/gamificacion`). La Fase 8 (gamificación) no cerró ninguna deuda formal ni abrió deuda nueva: se derivó de los hechos existentes, sin persistencia propia. Toca de refilón D-25 (la ventana semanal y las rachas se cuentan en la hora del servidor).
+> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **26/07/2026** al cerrar la Fase 9 (rama `fase-9/identidad-pixel`, ADR-19). La Fase 8 (gamificación) no cerró ni abrió deuda formal. La Fase 9 (identidad pixel art) abrió dos deudas cosméticas/de limpieza: D-30 (halo residual en sprites) y D-31 (PNGs de branding sin uso).
 
 ## Resumen
 
@@ -10,14 +10,14 @@
 |-----------|-------|----------|
 | 🔴 Crítica (seguridad / pérdida de datos) | 7 | 0 |
 | 🟠 Alta (bug funcional o riesgo real) | 9 | 1 |
-| 🟡 Media (calidad, mantenibilidad) | 13 | 3 |
-| **Total** | **29** | **4** |
+| 🟡 Media (calidad, mantenibilidad) | 15 | 5 |
+| **Total** | **31** | **6** |
 
 > **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23. Fase 5.5 → D-27, D-28. Fase 6 → D-09, D-20.
 >
-> **No queda ninguna deuda crítica abierta.** La única alta abierta es D-26 (la API no cubre el tracker, Fase 10). Las tres medias abiertas: D-24 (rate limiter en memoria), D-25 (zona horaria del servidor) y D-29 (licencia de los GIFs).
+> **No queda ninguna deuda crítica abierta.** La única alta abierta es D-26 (la API no cubre el tracker, Fase 10). Las cinco medias abiertas: D-24 (rate limiter en memoria), D-25 (zona horaria del servidor), D-29 (licencia de los GIFs), D-30 (halo residual en sprites) y D-31 (PNGs de branding sin uso).
 >
-> **Deuda nueva detectada en la Fase 4:** D-25 y D-26. **En la Fase 5:** D-27, D-28 y D-29.
+> **Deuda nueva detectada en la Fase 4:** D-25 y D-26. **En la Fase 5:** D-27, D-28 y D-29. **En la Fase 9:** D-30 y D-31.
 
 ---
 
@@ -231,6 +231,20 @@
 **Qué pasa:** dos limitaciones del límite por IP agregado en la Fase 3. (1) El estado vive en la memoria del proceso: con más de una instancia, cada una lleva su propia cuenta y el límite efectivo se multiplica por la cantidad de nodos. (2) `RemoteIpAddress` detrás de un proxy o balanceador es la IP del proxy, así que todos los usuarios caerían en la misma partición y se bloquearían entre sí.
 **Riesgo:** hoy ninguno — corre en una sola instancia y sin proxy. Se vuelve real en el despliegue a EC2, sobre todo si queda detrás de un balanceador; por eso queda como media y no como alta.
 **Resolución:** Fase 10 (optimización y cierre, junto con el despliegue) — almacén compartido para el limitador y `UseForwardedHeaders` configurado con los proxies de confianza.
+**Estado:** ⬜ Abierta
+
+### D-30 · Halo blanco residual en un par de sprites de Koda
+**Dónde:** `wwwroot/images/koda/koda-presentacion.png`, `koda-descanso.png` (y en menor medida otros)
+**Qué pasa:** el recorte de fondo del sprite sheet (hecho fuera de la app) dejó un borde blanco tenue en algunos sprites. Se **disimula** con el glow neón azul y el flote (decisión de diseño, ADR-19), no se eliminó píxel a píxel para no arriesgar el pelaje blanco del lobo.
+**Riesgo:** cosmético. Se nota solo si se mira de cerca y sin el glow.
+**Resolución:** Fase 10 o cuando lleguen sprites limpios — *defringe* del borde (quitar píxeles casi blancos adyacentes a la transparencia) o reemplazo del asset.
+**Estado:** ⬜ Abierta
+
+### D-31 · PNGs `branding/*` sin uso tras cablear los sprites de Koda
+**Dónde:** `wwwroot/images/branding/principal.png`, `logo.png`
+**Qué pasa:** eran el lobo y el logo anteriores; la Fase 9 los reemplazó por los sprites de `images/koda/` y ya no los referencia ninguna vista.
+**Riesgo:** ninguno; es peso muerto en el repo.
+**Resolución:** Fase 10 — borrarlos en la limpieza final tras confirmar que nada los usa.
 **Estado:** ⬜ Abierta
 
 ---
