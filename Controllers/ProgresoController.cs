@@ -110,7 +110,7 @@ namespace FitnessCoach.Controllers
             if (!OpcionesRutina(usuario).Contains(modelo.NombreRutina))
             {
                 ModelState.AddModelError("NuevoEntrenamiento.NombreRutina",
-                    "Elegí un día de tu rutina.");
+                    "Elige un día de tu rutina.");
                 return View("Index", ArmarVista(nuevoEntrenamiento: modelo));
             }
 
@@ -141,7 +141,7 @@ namespace FitnessCoach.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["MensajeProgreso"] = "No se pudo registrar la marca: revisá el peso y las repeticiones.";
+                TempData["MensajeProgreso"] = "No se pudo registrar la marca: revisa el peso y las repeticiones.";
                 return Redirect(DestinoSeguro(volverA));
             }
 

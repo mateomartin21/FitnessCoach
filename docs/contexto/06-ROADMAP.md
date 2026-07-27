@@ -44,7 +44,7 @@ Tracker       Catálogo de        Resiliencia IA
                   ▼
              Fase 8 ✅ Gamificación
                   ▼
-             Fase 9  Rediseño pixel art + Lobo Coach
+             Fase 9 ✅ Rediseño pixel art + Koda
                   ▼
              Fase 10 Optimización y cierre
 ```
@@ -320,23 +320,29 @@ Tracker       Catálogo de        Resiliencia IA
 
 ---
 
-## Fase 9 — Rediseño pixel art y Lobo Coach
+## Fase 9 — Rediseño pixel art y Koda ✅
+
+**Estado:** ✅ **Cerrada** el 26/07/2026 (rama `fase-9/identidad-pixel`, ADR-19). 323/323 pruebas.
 
 **Objetivo:** la transformación visual completa. Ver `05-VISION-PRODUCTO.md`.
 
 **Va al final a propósito:** re-skinnear pantallas ya estables es barato; rediseñar pantallas que aún cambian por debajo es trabajo perdido.
 
 **Entregables:**
-- Sistema de diseño derivado del modelo pixel art del lobo (paleta, tipografía, componentes)
-- Rediseño de todas las vistas
-- Sprites del Lobo con estados (idle, celebrando, decepcionado, pensando)
-- Animaciones y transiciones entre pantallas
-- El Lobo presente y reactivo en las pantallas clave, no solo en el chat
-- Sonidos 8-bit en acciones clave *(opcional)*
+- ✅ Sistema de diseño pixel/8-bit en tokens CSS (paleta azul + 6 colores de estado, Press Start 2P auto-hospedada, bordes duros, sin scanlines)
+- ✅ Rediseño de las vistas (Inicio como patrón; el resto con jerarquía, cabeceras, colores de estado y localización)
+- ✅ Coach renombrado a **Koda**; 19 sprites recortados del sheet del usuario y cableados a las pantallas clave
+- ✅ Koda presente y **reactivo** fuera del chat (`koda.js`: estados, micro-interacciones, aura de partículas en canvas)
+- ✅ Medallas de logros dibujadas en canvas (`logros.js`), reemplazando los emojis
+- ✅ App localizada a español de México (incluida la voz de la IA)
+- ⬜ Sonidos 8-bit *(opcional — no se hicieron)*
+- ⬜ Sprites con animación cuadro a cuadro *(los assets son de un solo cuadro; se logró vida con CSS/JS)*
 
-**Definition of Done:** ninguna pantalla parece una plantilla de Bootstrap. La app se reconoce como propia en una captura.
-**ADR:** ADR-18 — decisión de identidad visual y su implementación.
-**Rama sugerida:** `fase-9/pixel-art`
+**Decisión de diseño (ADR-19):** identidad pixel art como **sistema de tokens** (no un tema más de Bootstrap); Koda como personaje presente y reactivo mediante una capa de **JavaScript vanilla**; el arte del lobo lo aporta el usuario y la app solo lo recibe/recorta.
+
+**Definition of Done:** ✅ ninguna pantalla parece una plantilla de Bootstrap; la app se reconoce como propia en una captura.
+**ADR:** ADR-19 — identidad visual pixel art y Koda presente y con vida.
+**Rama:** `fase-9/identidad-pixel`
 
 ---
 
@@ -387,5 +393,5 @@ Tracker       Catálogo de        Resiliencia IA
 | 6 | ✅ Completada | `fase-6/resiliencia-ia` | (contra `CD/CI`) | ADR-16 | ✅ |
 | 7 | ✅ Completada | `fase-7/ia-pulido` | (contra `CD/CI`) | ADR-17 | ✅ |
 | 8 | ✅ Completada | `fase-8/gamificacion` | (contra `CD/CI`) | ADR-18 | ✅ |
-| 9 | ⬜ Pendiente | — | — | — | — |
+| 9 | ✅ Completada | `fase-9/identidad-pixel` | (contra `CD/CI`) | ADR-19 | ✅ |
 | 10 | ⬜ Pendiente | — | — | — | — |

@@ -66,7 +66,7 @@ namespace FitnessCoach.Web.ApiControllers
                 .FirstOrDefault();
 
             if (ultimo == null)
-                return NotFound(new { mensaje = "Todavía no tenés registros de progreso." });
+                return NotFound(new { mensaje = "Todavía no tienes registros de progreso." });
 
             return Ok(ultimo);
         }

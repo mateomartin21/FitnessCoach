@@ -115,7 +115,7 @@
         <div class="col-12 col-md-7">
             <label class="form-label small text-muted">Alimento</label>
             <select name="alimentoSlug" class="form-select" required>
-                <option value="" disabled selected>Elegí un alimento…</option>
+                <option value="" disabled selected>Elige un alimento…</option>
                 @foreach (var grupo in Model.CatalogoPorCategoria)
                 {
                     <optgroup label="@grupo.Key">
@@ -152,17 +152,21 @@
         <ul class="list-unstyled mb-0">
             @foreach (var registro in r.Registros)
             {
-                <li class="d-flex justify-content-between align-items-center py-2"
-                    style="border-bottom:1px solid #2a2a4a;">
-                    <div>
-                        <span style="color:#eee;">@registro.AlimentoNombre</span>
-                        <span class="text-muted small">· @registro.Gramos.ToString("0") g</span>
-                        <div class="small text-muted">
-                            @Math.Round(registro.Calorias) kcal ·
-                            P@Math.Round(registro.ProteinaG) C@Math.Round(registro.CarbohidratoG) G@Math.Round(registro.GrasaG)
+                <li class="d-flex justify-content-between align-items-center gap-2 py-2"
+                    style="border-bottom:1px solid var(--fc-border);">
+                    <div style="min-width:0;">
+                        <div class="text-truncate">
+                            <span style="color:#eee;">@registro.AlimentoNombre</span>
+                            <span class="text-muted small">· @registro.Gramos.ToString("0") g</span>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2 mt-1" style="font-size:.72rem;">
+                            <span class="text-muted">@Math.Round(registro.Calorias) kcal</span>
+                            <span style="color:#00d4ff;">P @Math.Round(registro.ProteinaG)g</span>
+                            <span style="color:#ffd700;">C @Math.Round(registro.CarbohidratoG)g</span>
+                            <span style="color:#a78bfa;">G @Math.Round(registro.GrasaG)g</span>
                         </div>
                     </div>
-                    <form asp-action="Borrar" method="post" class="d-inline">
+                    <form asp-action="Borrar" method="post" class="d-inline flex-shrink-0">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="id" value="@registro.Id" />
                         <input type="hidden" name="dia" value="@Model.Dia.ToString("yyyy-MM-dd")" />

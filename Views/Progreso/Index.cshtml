@@ -1,14 +1,28 @@
 @model FitnessCoach.Models.ProgresoViewModel
 @{
     ViewData["Title"] = "Mi Progreso";
+    // Si acaba de caer un logro, Koda celebra; si no, aparece analizando datos.
+    var logro = TempData["LogroDesbloqueado"] as string;
+    var kodaProg = logro != null ? "koda-celebrando.png" : "koda-analizando.png";
 }
+
+<div class="d-flex align-items-center justify-content-center gap-3 mb-4 flex-wrap text-center text-sm-start">
+    <img src="~/images/koda/@kodaProg" alt="Koda"
+         class="d-none d-sm-block flex-shrink-0 koda-glow koda-idle koda-interactive" data-koda-aura
+         data-koda-celebra="@(logro != null ? "" : null)"
+         style="height:130px; width:auto; image-rendering:pixelated;" />
+    <div>
+        <h2 class="fw-bold mb-1" style="color:var(--fc-primary);">Tu progreso</h2>
+        <p class="text-muted mb-0 small">Koda revisa tus números, tus récords y tu constancia.</p>
+    </div>
+</div>
 
 @if (TempData["MensajeProgreso"] != null)
 {
     <div class="alert alert-success py-2 small">@TempData["MensajeProgreso"]</div>
 }
 
-@if (TempData["LogroDesbloqueado"] is string logro)
+@if (logro != null)
 {
     <div class="alert d-flex align-items-start gap-3 mb-4"
          style="background:linear-gradient(135deg,#2a1a3e,#16213e); border:1px solid var(--fc-primary); color:#eee; white-space:pre-line;">
@@ -108,7 +122,7 @@
                     <div class="text-center py-5">
                         <i class="fas fa-chart-line mb-3" style="font-size:2.5rem; color:#2a2a4a;"></i>
                         <p class="text-muted mb-0">Todavía no registraste ningún peso.</p>
-                        <p class="text-muted small">Anotá el primero y vas a poder seguir tu evolución acá.</p>
+                        <p class="text-muted small">Anota el primero y podrás seguir tu evolución aquí.</p>
                     </div>
                 }
                 else
@@ -175,8 +189,8 @@
 <div class="row g-4 mt-1">
     <div class="col-md-5">
         <div class="card shadow h-100">
-            <div class="card-header py-3" style="border-left: 4px solid #ff6b35;">
-                <h5 class="mb-0"><i class="fas fa-dumbbell me-2" style="color:#ff6b35;"></i>Registrar Entrenamiento</h5>
+            <div class="card-header py-3" style="border-left: 4px solid var(--fc-entrenar);">
+                <h5 class="mb-0"><i class="fas fa-dumbbell me-2" style="color:var(--fc-entrenar);"></i>Registrar Entrenamiento</h5>
             </div>
             <div class="card-body">
                 <form asp-controller="Progreso" asp-action="RegistrarEntrenamiento" method="post">
@@ -187,7 +201,7 @@
                         @if (Model.PuedeRegistrarEntrenamiento)
                         {
                             <select asp-for="NuevoEntrenamiento.NombreRutina" class="form-select">
-                                <option value="">— Elegí el día que entrenaste —</option>
+                                <option value="">— Elige el día que entrenaste —</option>
                                 @foreach (var opcion in Model.OpcionesRutina)
                                 {
                                     <option value="@opcion">@opcion</option>
@@ -198,7 +212,7 @@
                         else
                         {
                             <div class="small text-muted">
-                                Definí tu objetivo para ver tu rutina y poder registrar entrenamientos.
+                                Define tu objetivo para ver tu rutina y poder registrar entrenamientos.
                                 <a asp-controller="Perfil" asp-action="Index" style="color:#00d4ff;">Ir a mi perfil →</a>
                             </div>
                         }

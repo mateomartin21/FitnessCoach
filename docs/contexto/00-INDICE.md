@@ -48,6 +48,6 @@ Y adjunta:
 |-------|-------|
 | Creado | 22/07/2026 |
 | Última actualización | 26/07/2026 |
-| Rama de referencia | `fase-8/gamificacion` (contra `CD/CI`) |
-| Último ADR | ADR-18 (gamificación derivada de los hechos) |
-| Fase activa del roadmap | Fase 9 — Rediseño pixel art y Lobo Coach |
+| Rama de referencia | `fase-9/identidad-pixel` (contra `CD/CI`) |
+| Último ADR | ADR-19 (identidad visual pixel art y Koda) |
+| Fase activa del roadmap | Fase 10 — Optimización y cierre |
