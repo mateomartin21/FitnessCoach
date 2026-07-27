@@ -134,16 +134,22 @@ h1, h2, h3, h4, h5, h6 {
     50% { transform: translateY(-9px); }
 }
 
-/* Koda con luz neón azul + flote suave: disimula el halo del recorte y le da vida.
-   El glow anima el filter; el flote anima transform, así corren en paralelo. */
-.koda-glow { animation: fc-float 3.4s steps(4) infinite, fc-glow 2.6s ease-in-out infinite; }
+/* Luz neón azul + vida de Koda. El GLOW anima el filter y el IDLE anima el
+   transform (flote + respiración): van en elementos/propiedades distintas, así
+   no se pelean, y el rebote por click (JS, composite:'add') se suma encima. */
+.koda-glow { animation: fc-glow 2.6s ease-in-out infinite; }
 .koda-glow-still { animation: fc-glow 2.6s ease-in-out infinite; }
+.koda-idle { animation: fc-koda-idle 3.6s ease-in-out infinite; will-change: transform; }
 @keyframes fc-glow {
     0%, 100% { filter: drop-shadow(0 0 4px rgba(var(--fc-primary-rgb),.85)) drop-shadow(0 0 13px rgba(var(--fc-primary-rgb),.45)); }
     50%      { filter: drop-shadow(0 0 8px rgba(108,155,255,.95)) drop-shadow(0 0 22px rgba(var(--fc-primary-rgb),.6)); }
 }
+@keyframes fc-koda-idle {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(-7px) scale(1.015); }
+}
 @media (prefers-reduced-motion: reduce) {
-    .koda-glow, .koda-glow-still {
+    .koda-glow, .koda-glow-still, .koda-idle {
         animation: none;
         filter: drop-shadow(0 0 6px rgba(var(--fc-primary-rgb),.7)) drop-shadow(0 0 16px rgba(var(--fc-primary-rgb),.4));
     }
