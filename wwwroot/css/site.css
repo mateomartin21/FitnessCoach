@@ -139,7 +139,9 @@ h1, h2, h3, h4, h5, h6 {
    no se pelean, y el rebote por click (JS, composite:'add') se suma encima. */
 .koda-glow { animation: fc-glow 2.6s ease-in-out infinite; }
 .koda-glow-still { animation: fc-glow 2.6s ease-in-out infinite; }
-.koda-idle { animation: fc-koda-idle 3.6s ease-in-out infinite; will-change: transform; }
+/* koda-idle lleva glow + flote en una sola declaración: si estuvieran en dos
+   clases distintas, la propiedad `animation` de una pisaría a la otra. */
+.koda-idle { animation: fc-glow 2.6s ease-in-out infinite, fc-koda-idle 3.6s ease-in-out infinite; will-change: transform; }
 @keyframes fc-glow {
     0%, 100% { filter: drop-shadow(0 0 4px rgba(var(--fc-primary-rgb),.85)) drop-shadow(0 0 13px rgba(var(--fc-primary-rgb),.45)); }
     50%      { filter: drop-shadow(0 0 8px rgba(108,155,255,.95)) drop-shadow(0 0 22px rgba(var(--fc-primary-rgb),.6)); }

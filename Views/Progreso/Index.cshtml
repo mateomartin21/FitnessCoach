@@ -1,14 +1,28 @@
 @model FitnessCoach.Models.ProgresoViewModel
 @{
     ViewData["Title"] = "Mi Progreso";
+    // Si acaba de caer un logro, Koda celebra; si no, aparece analizando datos.
+    var logro = TempData["LogroDesbloqueado"] as string;
+    var kodaProg = logro != null ? "koda-celebrando.png" : "koda-analizando.png";
 }
+
+<div class="d-flex align-items-center justify-content-center gap-3 mb-4 flex-wrap text-center text-sm-start">
+    <img src="~/images/koda/@kodaProg" alt="Koda"
+         class="d-none d-sm-block flex-shrink-0 koda-glow koda-idle koda-interactive" data-koda-aura
+         data-koda-celebra="@(logro != null ? "" : null)"
+         style="height:130px; width:auto; image-rendering:pixelated;" />
+    <div>
+        <h2 class="fw-bold mb-1" style="color:var(--fc-primary);">Tu progreso</h2>
+        <p class="text-muted mb-0 small">Koda revisa tus números, tus récords y tu constancia.</p>
+    </div>
+</div>
 
 @if (TempData["MensajeProgreso"] != null)
 {
     <div class="alert alert-success py-2 small">@TempData["MensajeProgreso"]</div>
 }
 
-@if (TempData["LogroDesbloqueado"] is string logro)
+@if (logro != null)
 {
     <div class="alert d-flex align-items-start gap-3 mb-4"
          style="background:linear-gradient(135deg,#2a1a3e,#16213e); border:1px solid var(--fc-primary); color:#eee; white-space:pre-line;">
