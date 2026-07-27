@@ -90,14 +90,19 @@ h1, h2, h3, h4, h5, h6 {
 
 /* CTA de Koda (IA), separado del resto de la navegación */
 .fc-nav-cta {
-    display: inline-flex; align-items: center; gap: 6px;
-    color: #fff !important; background: var(--fc-analisis) !important;
+    display: inline-flex; align-items: center; gap: 7px;
+    color: #fff !important; background: var(--fc-primary) !important;
     border: var(--px) solid var(--fc-ink) !important; box-shadow: var(--px) var(--px) 0 var(--fc-ink);
-    padding: 0.4rem 0.85rem !important; font-weight: 700 !important; font-size: 0.85rem !important;
-    text-decoration: none; transition: transform .05s, box-shadow .05s;
+    padding: 0.35rem 0.8rem !important; font-weight: 700 !important; font-size: 0.85rem !important;
+    text-decoration: none; transition: transform .05s, box-shadow .05s, background .1s;
 }
-.fc-nav-cta:hover { color: #fff !important; background: #a882ff !important; }
+.fc-nav-cta:hover { color: #fff !important; background: var(--fc-primary-2) !important; }
 .fc-nav-cta:active { transform: translate(var(--px), var(--px)); box-shadow: 0 0 0 var(--fc-ink); }
+.fc-nav-cta-koda {
+    height: 26px; width: 26px; object-fit: contain; object-position: top;
+    image-rendering: pixelated; flex-shrink: 0; margin: -4px 0;
+    filter: drop-shadow(0 0 3px rgba(255,255,255,.35));
+}
 
 /* Bloque de cuenta */
 .fc-nav-sep { width: var(--px); height: 24px; align-self: center; background: var(--fc-border); margin: 0 6px; }
@@ -127,6 +132,21 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes fc-float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-9px); }
+}
+
+/* Koda con luz neón azul + flote suave: disimula el halo del recorte y le da vida.
+   El glow anima el filter; el flote anima transform, así corren en paralelo. */
+.koda-glow { animation: fc-float 3.4s steps(4) infinite, fc-glow 2.6s ease-in-out infinite; }
+.koda-glow-still { animation: fc-glow 2.6s ease-in-out infinite; }
+@keyframes fc-glow {
+    0%, 100% { filter: drop-shadow(0 0 4px rgba(var(--fc-primary-rgb),.85)) drop-shadow(0 0 13px rgba(var(--fc-primary-rgb),.45)); }
+    50%      { filter: drop-shadow(0 0 8px rgba(108,155,255,.95)) drop-shadow(0 0 22px rgba(var(--fc-primary-rgb),.6)); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .koda-glow, .koda-glow-still {
+        animation: none;
+        filter: drop-shadow(0 0 6px rgba(var(--fc-primary-rgb),.7)) drop-shadow(0 0 16px rgba(var(--fc-primary-rgb),.4));
+    }
 }
 
 /* ---------- BOTONES (8-bit: sombra dura, se hunden al presionar) ---------- */
@@ -222,14 +242,14 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0 12px;
     background: radial-gradient(ellipse at 70% 50%, rgba(var(--fc-primary-rgb),0.10) 0%, transparent 60%);
 }
-.fc-hero-wolf-col { position: relative; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
-.fc-wolf-hero { width: 100%; max-width: 520px; height: auto; object-fit: contain; object-position: top; display: block; }
+.fc-hero-wolf-col { position: relative; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.fc-wolf-hero { width: 100%; max-width: 320px; height: auto; object-fit: contain; object-position: center; display: block; }
 .fc-wolf-img { max-width: 380px; width: 100%; height: auto; animation: fc-float 3s steps(3) infinite; }
 
 /* ---------- CHAT ---------- */
 .fc-msg { display: flex; align-items: flex-end; gap: 10px; }
 .fc-msg-user { flex-direction: row-reverse; }
-.fc-msg-avatar { height: 32px; width: 32px; border-radius: 0; object-fit: cover; image-rendering: pixelated; flex-shrink: 0; filter: brightness(0) saturate(100%) invert(34%) sepia(96%) saturate(1900%) hue-rotate(212deg) brightness(101%) contrast(101%); }
+.fc-msg-avatar { height: 40px; width: 40px; border-radius: 0; object-fit: contain; object-position: top; image-rendering: pixelated; flex-shrink: 0; filter: drop-shadow(0 0 5px rgba(var(--fc-primary-rgb),.55)); }
 .fc-msg-avatar-user { height: 32px; width: 32px; border-radius: 0; background: var(--fc-primary); border: 2px solid var(--fc-ink); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem; flex-shrink: 0; }
 .fc-msg-bubble { max-width: 75%; padding: 0.75rem 1rem; border-radius: 0; font-size: 0.9rem; line-height: 1.5; }
 .fc-msg-bubble-bot { background: var(--fc-card); border: var(--px) solid var(--fc-ink); color: var(--fc-text); }
