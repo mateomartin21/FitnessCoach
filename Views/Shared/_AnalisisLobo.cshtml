@@ -13,21 +13,21 @@
     var (titulo, invitacion, cargando) = aspecto switch
     {
         "dieta" => (
-            "El Lobo revisa tu dieta",
-            "Tocá el botón y el Lobo mira tu plan y lo que registraste hoy.",
-            "El Lobo esta mirando tu plan..."),
+            "Koda revisa tu dieta",
+            "Tocá el botón y Koda mira tu plan y lo que registraste hoy.",
+            "Koda esta mirando tu plan..."),
         "rutina" => (
-            "El Lobo revisa tu rutina",
-            "Tocá el botón y el Lobo mira tu rutina según tu objetivo.",
-            "El Lobo esta mirando tu rutina..."),
+            "Koda revisa tu rutina",
+            "Tocá el botón y Koda mira tu rutina según tu objetivo.",
+            "Koda esta mirando tu rutina..."),
         "semana" => (
             "El resumen de tu semana",
-            "Tocá el botón y el Lobo te narra cómo venís: entrenamientos, racha y peso.",
-            "El Lobo esta repasando tu semana..."),
+            "Tocá el botón y Koda te narra cómo venís: entrenamientos, racha y peso.",
+            "Koda esta repasando tu semana..."),
         _ => (
-            "El Lobo analiza tu progreso",
-            "Tocá el botón y el Lobo mira tus números, tus récords y lo que venís comiendo.",
-            "El Lobo esta mirando tus numeros..."),
+            "Koda analiza tu progreso",
+            "Tocá el botón y Koda mira tus números, tus récords y lo que venís comiendo.",
+            "Koda esta mirando tus numeros..."),
     };
     var botonId = $"btnAnalizar-{aspecto}";
     var salidaId = $"analisis-{aspecto}";
@@ -36,7 +36,7 @@
 <div class="fc-feature-card mb-4">
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h5 class="mb-0">
-            <img src="/images/branding/logo.png" alt="Lobo" width="24" height="24" class="rounded me-2" style="object-fit:cover;" />
+            <img src="/images/branding/logo.png" alt="Koda" width="24" height="24" class="rounded me-2" style="object-fit:cover;" />
             @titulo
         </h5>
         <button id="@botonId" class="btn fc-btn-primary btn-sm" data-aspecto="@aspecto" data-cargando="@cargando">

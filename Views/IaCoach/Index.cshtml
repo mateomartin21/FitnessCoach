@@ -4,32 +4,32 @@
 
 <div class="row justify-content-center">
     <div class="col-md-8">
-        <div class="fc-feature-card mb-0" style="border-radius: 16px 16px 0 0;">
+        <div class="fc-feature-card mb-0">
             <div class="d-flex align-items-center gap-3">
                 <img src="~/images/branding/principal.png" alt="Koda" style="height:70px; width:auto; filter: drop-shadow(0 0 10px rgba(47,107,255,0.5));" />
                 <div>
-                    <h5 class="fw-bold mb-0" style="color:var(--fc-primary);">Lobo Coach</h5>
-                    <small class="text-muted">Entrenador Personal con IA � Gemini 2.0 Flash</small>
+                    <h5 class="fw-bold mb-0" style="color:var(--fc-primary);">Koda</h5>
+                    <small class="text-muted">Tu entrenador personal con IA</small>
                     <div class="d-flex align-items-center gap-1 mt-1">
-                        <span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
-                        <small style="color:#22c55e; font-size:0.7rem;">En linea</small>
+                        <span style="width:8px;height:8px;border-radius:50%;background:var(--fc-logro);display:inline-block;"></span>
+                        <small style="color:var(--fc-logro); font-size:0.7rem;">En línea</small>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="chat-messages" style="background:#0f0f1a; border-left:1px solid #2a2a4a; border-right:1px solid #2a2a4a; height:460px; overflow-y:auto; padding:1.5rem;">
+        <div id="chat-messages" style="background:var(--fc-inset); border-left:var(--px) solid var(--fc-ink); border-right:var(--px) solid var(--fc-ink); height:460px; overflow-y:auto; padding:1.5rem;">
             <div class="fc-msg fc-msg-bot mb-3">
-                <img src="~/images/branding/logo.png" alt="Bot" class="fc-msg-avatar" />
+                <img src="~/images/branding/logo.png" alt="Koda" class="fc-msg-avatar" />
                 <div class="fc-msg-bubble fc-msg-bubble-bot">
-                    Hola, soy tu Lobo Coach. Tengo acceso a tu perfil y te puedo ayudar con rutinas, nutricion, tecnica de ejercicios o motivacion. Que necesitas hoy?
+                    ¡Hola! Soy Koda, tu entrenador. Tengo acceso a tu perfil y te puedo ayudar con rutinas, nutrición, técnica de ejercicios o motivación. ¿Qué necesitás hoy?
                 </div>
             </div>
         </div>
 
-        <div class="fc-feature-card" style="border-radius: 0 0 16px 16px; border-top: 1px solid #2a2a4a;">
+        <div class="fc-feature-card" style="border-top: var(--px) solid var(--fc-ink);">
             <div class="d-flex gap-2">
-                <input type="text" id="user-input" class="form-control" placeholder="Escribe tu consulta al Lobo Coach..." />
+                <input type="text" id="user-input" class="form-control" placeholder="Escribí tu consulta a Koda..." />
                 <button id="send-btn" class="btn fc-btn-primary px-4" onclick="enviarMensaje()">
                     <i class="fas fa-paper-plane"></i>
                 </button>
