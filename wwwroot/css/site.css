@@ -151,9 +151,13 @@ h1, h2, h3, h4, h5, h6 {
     50%      { transform: translateY(-7px) scale(1.015); }
 }
 
-/* Medallas de logros (dibujadas en canvas por js/logros.js). */
-.logro-medal { display: block; image-rendering: pixelated; width: 64px; height: 64px; }
-.logro-medal.is-unlocked { animation: fc-medal-pulse 2.6s ease-in-out infinite; }
+/* Assets pixel de logros y misiones (/images/logros/). */
+.logro-medal { display: block; image-rendering: pixelated; width: 64px; height: 64px; object-fit: contain; }
+.logro-medal.is-locked { filter: grayscale(1) opacity(.5); }
+.logro-medal.is-unlocked {
+    animation: fc-medal-pulse 2.6s ease-in-out infinite;
+    filter: drop-shadow(0 0 6px rgba(255,207,63,.45));
+}
 @keyframes fc-medal-pulse {
     0%, 100% { transform: scale(1); }
     50%      { transform: scale(1.06); }
