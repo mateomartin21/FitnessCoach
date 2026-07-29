@@ -5,6 +5,8 @@ using FitnessCoach.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.HttpOverrides;
+using System.Net;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,10 +24,40 @@ builder.Services.AddOpenApi();
 // [ValidateAntiForgeryToken] solo buscaria el token en los campos del form y nunca lo encontraria.
 builder.Services.AddAntiforgery(options => options.HeaderName = "RequestVerificationToken");
 
+// Detras de un proxy/balanceador (EC2 + ALB), la IP y el esquema reales del cliente
+// llegan en cabeceras X-Forwarded-*. Sin esto, el rate limiter contaria todo el trafico
+// bajo la IP del balanceador y la redireccion a HTTPS podria equivocarse (D-24). Se
+// confia SOLO en los proxies declarados por configuracion (appsettings / variables de
+// entorno), para no aceptar cabeceras falsificadas por un cliente cualquiera.
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    // Por defecto la lista viene con localhost; se limpia para no confiar en nada
+    // salvo lo declarado explicitamente.
+    options.KnownProxies.Clear();
+    options.KnownIPNetworks.Clear();
+
+    foreach (var ip in builder.Configuration.GetSection("ForwardedHeaders:KnownProxies").Get<string[]>() ?? Array.Empty<string>())
+        if (IPAddress.TryParse(ip, out var direccion))
+            options.KnownProxies.Add(direccion);
+
+    foreach (var red in builder.Configuration.GetSection("ForwardedHeaders:KnownNetworks").Get<string[]>() ?? Array.Empty<string>())
+    {
+        var partes = red.Split('/');
+        if (partes.Length == 2 && IPAddress.TryParse(partes[0], out var prefijo) && int.TryParse(partes[1], out var longitud))
+            options.KnownIPNetworks.Add(new System.Net.IPNetwork(prefijo, longitud));
+    }
+});
+
 // Limite de intentos por IP en las pantallas de sesion.
 // Complementa al bloqueo de cuenta de Identity, que cuenta fallos POR CUENTA y por eso
 // no frena el "password spraying": una sola contrasena probada contra miles de correos
 // distintos nunca acumula 5 fallos en ninguno. Esto se cuenta por origen, no por cuenta.
+// NOTA (D-24): el estado del limitador vive en la memoria del proceso. Con una sola
+// instancia (el despliegue actual) alcanza; para varias instancias detras de un
+// balanceador haria falta un almacen compartido (p. ej. Redis), que no forma parte del
+// stack de este proyecto. La particion ya usa la IP real del cliente gracias a
+// UseForwardedHeaders de arriba.
 builder.Services.AddRateLimiter(options =>
 {
     options.AddPolicy("login", contexto =>
@@ -201,6 +233,11 @@ using (var alcance = app.Services.CreateScope())
 }
 
 // Pipeline HTTP
+
+// Lo primero: reescribir IP/esquema desde X-Forwarded-* (segun los proxies de
+// confianza configurados) para que todo lo que sigue vea al cliente real (D-24).
+app.UseForwardedHeaders();
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
