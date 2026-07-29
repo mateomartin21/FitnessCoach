@@ -51,7 +51,10 @@ namespace FitnessCoach.Application.Services
 
             var ahora = DateTime.Now;
             var hoy = DateOnly.FromDateTime(ahora);
-            var desde = ahora.AddDays(-7);
+            // Las misiones son de SEMANA DE CALENDARIO: se reinician todas juntas el
+            // lunes a las 00:00 (hora local), no en una ventana móvil de 7 días.
+            int diasDesdeLunes = ((int)ahora.DayOfWeek + 6) % 7;   // lunes=0 … domingo=6
+            var desde = ahora.Date.AddDays(-diasDesdeLunes);
 
             var fechasEntreno = u.EntrenamientosCompletados
                 .Select(e => e.Fecha.ToLocalTime())

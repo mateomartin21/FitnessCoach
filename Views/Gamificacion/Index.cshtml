@@ -60,7 +60,10 @@
 </div>
 
 @* --- Misiones de la semana --- *@
-<h5 class="fw-bold mb-3"><i class="fas fa-bullseye me-2" style="color:#00d4ff;"></i>Misiones de la semana</h5>
+<div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-1">
+    <h5 class="fw-bold mb-0"><i class="fas fa-bullseye me-2" style="color:#00d4ff;"></i>Misiones de la semana</h5>
+    <span class="text-muted small"><i class="fas fa-rotate me-1"></i>Se reinician cada lunes</span>
+</div>
 <div class="row g-3 mb-4">
     @foreach (var m in Model.Misiones)
     {

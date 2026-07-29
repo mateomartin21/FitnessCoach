@@ -48,8 +48,10 @@ namespace FitnessCoach.Tests.Gamificacion
                 IdentityUserId = "u1", Nombre = "Ana",
                 ObjetivoActual = new ObjetivoPerderPeso()
             };
+            // Ambos son de hoy: caen sí o sí en la semana de calendario actual, sin
+            // depender del día en que corran las pruebas.
             u.EntrenamientosCompletados.Add(new EntrenamientoCompletado { Fecha = DateTime.UtcNow, NombreRutina = "Full Body", DuracionMinutos = 40 });
-            u.EntrenamientosCompletados.Add(new EntrenamientoCompletado { Fecha = DateTime.UtcNow.AddDays(-1), NombreRutina = "Piernas", DuracionMinutos = 50 });
+            u.EntrenamientosCompletados.Add(new EntrenamientoCompletado { Fecha = DateTime.UtcNow, NombreRutina = "Piernas", DuracionMinutos = 50 });
             u.HistorialProgreso.Add(new RegistroProgreso { Fecha = DateTime.UtcNow, PesoKg = 65 });
             u.RecordsPersonales.Add(new RecordPersonal { EjercicioSlug = "sentadilla", EjercicioNombre = "Sentadilla", PesoKg = 60, Repeticiones = 5 });
 
