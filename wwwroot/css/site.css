@@ -16,6 +16,8 @@
     /* Primario y marca (se mantiene el nombre --fc-primary: ahora es azul) */
     --fc-primary: #2f6bff;
     --fc-primary-2: #6c9bff;
+    /* Version para TEXTO: el primario da 4.19:1 sobre el fondo y AA pide 4.5. */
+    --fc-primary-texto: #5b8cff;
     --fc-primary-rgb: 47, 107, 255;
 
     /* Terreno */
@@ -78,15 +80,15 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 var(--px) 0 var(--fc-primary) !important;
     padding: 0.75rem 0 !important;
 }
-.fc-brand { color: var(--fc-primary) !important; font-size: 0.95rem !important; text-decoration: none !important; display: flex; align-items: center; }
+.fc-brand { color: var(--fc-primary-texto) !important; font-size: 0.95rem !important; text-decoration: none !important; display: flex; align-items: center; }
 .fc-brand-text { letter-spacing: 0; }
 .fc-nav-link { color: var(--fc-muted) !important; font-size: 0.85rem !important; padding: 0.5rem 0.9rem !important; border: var(--px) solid transparent !important; border-radius: 0 !important; transition: none !important; }
 .fc-nav-link:hover { color: var(--fc-primary-2) !important; background: var(--fc-inset) !important; border-color: var(--fc-ink) !important; }
-.fc-nav-highlight { background: rgba(var(--fc-primary-rgb),0.12) !important; color: var(--fc-primary) !important; }
+.fc-nav-highlight { background: rgba(var(--fc-primary-rgb),0.12) !important; color: var(--fc-primary-texto) !important; }
 .fc-toggler { border: none !important; background: transparent !important; }
 
 /* Seccion activa: resalta dónde estás parado */
-.fc-nav-link.active { color: var(--fc-primary) !important; background: var(--fc-inset) !important; border-color: var(--fc-ink) !important; }
+.fc-nav-link.active { color: var(--fc-primary-texto) !important; background: var(--fc-inset) !important; border-color: var(--fc-ink) !important; }
 
 /* CTA de Koda (IA), separado del resto de la navegación */
 .fc-nav-cta {
@@ -116,7 +118,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ---------- HERO ---------- */
 .fc-hero { padding: 1rem 0; }
-.fc-tag { display: inline-block; background: rgba(var(--fc-primary-rgb),0.15); color: var(--fc-primary); font-size: 0.6rem; padding: 6px 12px; border: var(--px) solid var(--fc-primary); border-radius: 0; }
+.fc-tag { display: inline-block; background: rgba(var(--fc-primary-rgb),0.15); color: var(--fc-primary-texto); font-size: 0.6rem; padding: 6px 12px; border: var(--px) solid var(--fc-primary); border-radius: 0; }
 .fc-hero-title { font-size: 1.9rem !important; line-height: 1.3 !important; color: var(--fc-text); text-shadow: var(--px) var(--px) 0 var(--fc-ink); }
 .fc-hero-sub { color: var(--fc-muted); font-size: 1rem; max-width: 480px; }
 
@@ -211,7 +213,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .fc-info-bar { background: var(--fc-card); border: var(--px) solid var(--fc-ink); box-shadow: var(--px) var(--px) 0 var(--fc-ink); border-radius: 0; }
 .fc-stat { padding: 0.5rem 1rem; }
-.fc-stat-num { font-size: 1.8rem; font-weight: 900; color: var(--fc-primary); font-variant-numeric: tabular-nums; }
+.fc-stat-num { font-size: 1.8rem; font-weight: 900; color: var(--fc-primary-texto); font-variant-numeric: tabular-nums; }
 .fc-stat-label { font-size: 0.6rem; color: var(--fc-muted); }
 .border-end { border-right: var(--px) solid var(--fc-ink) !important; }
 
@@ -245,11 +247,11 @@ h1, h2, h3, h4, h5, h6 {
 /* ---------- FOOTER ---------- */
 .fc-footer { background: var(--fc-card) !important; border-top: var(--px) solid var(--fc-ink) !important; }
 .fc-footer-link { color: var(--fc-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
-.fc-footer-link:hover { color: var(--fc-primary); }
+.fc-footer-link:hover { color: var(--fc-primary-texto); }
 
 /* ---------- MISC ---------- */
 .text-muted { color: var(--fc-muted) !important; }
-.display-4 { color: var(--fc-primary) !important; }
+.display-4 { color: var(--fc-primary-texto) !important; }
 .btn-warning { color: #fff !important; }
 
 #chat-box::-webkit-scrollbar { width: 8px; }
@@ -278,7 +280,7 @@ h1, h2, h3, h4, h5, h6 {
 .fc-msg-bubble-bot { background: var(--fc-card); border: var(--px) solid var(--fc-ink); color: var(--fc-text); }
 .fc-msg-bubble-user { background: var(--fc-primary); color: #fff; border: var(--px) solid var(--fc-ink); }
 .fc-chip { background: var(--fc-inset); border: var(--px) solid var(--fc-ink); color: var(--fc-muted); font-size: 0.75rem; border-radius: 0; padding: 4px 12px; transition: none; }
-.fc-chip:hover { border-color: var(--fc-primary); color: var(--fc-primary); }
+.fc-chip:hover { border-color: var(--fc-primary); color: var(--fc-primary-texto); }
 
 .ai-message { border-left: var(--px) solid var(--fc-primary); }
 
@@ -290,4 +292,36 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes fc-bounce {
     0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
     40% { transform: scale(1); opacity: 1; }
+}
+
+/* ---------- ACCESIBILIDAD ---------- */
+
+/* Primer tabulador de la pagina: salta la navegacion entera. Fuera de la pantalla
+   hasta que recibe el foco, asi no molesta a quien usa el mouse. */
+.fc-salto-contenido {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 1080;
+    padding: 0.6rem 1rem;
+    background: var(--fc-primary);
+    color: #fff;
+    border: var(--px) solid var(--fc-text);
+    text-decoration: none;
+}
+.fc-salto-contenido:focus { left: 0; }
+
+/* Los campos ya tenian foco visible, el resto no: con teclado no se sabia donde
+   estabas parado. :focus-visible no lo dibuja al hacer clic con el mouse. */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+summary:focus-visible {
+    outline: var(--px) solid var(--fc-primary);
+    outline-offset: 2px;
+}
+
+/* En pantallas de alto contraste el outline hereda el color del sistema. */
+@media (forced-colors: active) {
+    a:focus-visible, button:focus-visible { outline: 3px solid CanvasText; }
 }

@@ -5,7 +5,7 @@
     <div class="col-md-5">
         <div class="card shadow">
             <div class="card-header py-3" style="border-left: 4px solid var(--fc-primary);">
-                <h5 class="mb-0"><i class="fas fa-user-plus me-2" style="color:var(--fc-primary);"></i>Crear cuenta</h5>
+                <h5 class="mb-0"><i class="fas fa-user-plus me-2" style="color:var(--fc-primary-texto);" aria-hidden="true"></i>Crear cuenta</h5>
             </div>
             <div class="card-body">
                 <form asp-controller="Account" asp-action="Register" method="post">
@@ -19,12 +19,12 @@
                         <label asp-for="Password" class="form-label"></label>
                         <div class="input-group">
                             <input asp-for="Password" class="form-control" autocomplete="new-password" />
-                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#Password" tabindex="-1">
-                                <i class="fas fa-eye"></i>
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#Password" aria-label="Mostrar u ocultar la contraseña" aria-pressed="false">
+                                <i class="fas fa-eye" aria-hidden="true"></i>
                             </button>
                         </div>
                         <div class="mt-1" style="color:#c9c9d4; font-size:.85rem;">
-                            <i class="fas fa-circle-info me-1" style="color:var(--fc-primary);"></i>
+                            <i class="fas fa-circle-info me-1" style="color:var(--fc-primary-texto);" aria-hidden="true"></i>
                             Mínimo 8 caracteres, con al menos una <strong>mayúscula</strong>, una <strong>minúscula</strong> y un <strong>número</strong>.
                         </div>                 
                         <span asp-validation-for="Password" class="text-danger small"></span>
@@ -33,14 +33,14 @@
                         <label asp-for="ConfirmPassword" class="form-label"></label>
                         <div class="input-group">
                             <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
-                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#ConfirmPassword" tabindex="-1">
-                                <i class="fas fa-eye"></i>
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#ConfirmPassword" aria-label="Mostrar u ocultar la confirmación" aria-pressed="false">
+                                <i class="fas fa-eye" aria-hidden="true"></i>
                             </button>
                         </div>
                         <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 py-2">
-                        <i class="fas fa-user-plus me-2"></i>Registrarme
+                        <i class="fas fa-user-plus me-2" aria-hidden="true"></i>Registrarme
                     </button>
                 </form>
                 <p class="text-center text-muted small mt-3 mb-0">
@@ -63,6 +63,7 @@
                 input.type = showing ? 'password' : 'text';
                 icon.classList.toggle('fa-eye', showing);
                 icon.classList.toggle('fa-eye-slash', !showing);
+                btn.setAttribute('aria-pressed', String(!showing));
             });
         });
     </script>

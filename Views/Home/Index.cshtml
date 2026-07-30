@@ -7,26 +7,26 @@
     <div class="row align-items-center g-0" style="min-height:80vh;">
         <div class="col-md-6 px-4 px-md-5">
             <div class="fc-tag mb-4">Coach Fit Inteligente</div>
-            <h1 class="fc-hero-title">Alcanza tu<br /><span style="color:var(--fc-primary);">máximo potencial</span></h1>
+            <h1 class="fc-hero-title">Alcanza tu<br /><span style="color:var(--fc-primary-texto);">máximo potencial</span></h1>
             <p class="fc-hero-sub mt-3 mb-4">
                 Rutinas y planes de nutrición generados según tu objetivo, y <strong style="color:var(--fc-text);">Koda</strong>,
                 tu coach, que te guía, te analiza y te acompaña cada día.
             </p>
             <div class="d-flex gap-3 flex-wrap mb-4">
                 <a asp-controller="Perfil" asp-action="Index" class="btn fc-btn-primary px-4 py-2">
-                    <i class="fas fa-user-cog me-2"></i>Configurar Perfil
+                    <i class="fas fa-user-cog me-2" aria-hidden="true"></i>Configurar Perfil
                 </a>
                 <a asp-controller="Rutinas" asp-action="Index" class="btn fc-btn-outline px-4 py-2">
-                    <i class="fas fa-list-check me-2"></i>Ver mi Rutina
+                    <i class="fas fa-list-check me-2" aria-hidden="true"></i>Ver mi Rutina
                 </a>
             </div>
             @* Los atributos de Koda (del character sheet) como chips pixel *@
             <div class="d-flex flex-wrap gap-2">
-                <span class="fc-chip"><i class="fas fa-bullseye me-1" style="color:var(--fc-primary);"></i>Disciplina</span>
-                <span class="fc-chip"><i class="fas fa-brain me-1" style="color:var(--fc-analisis);"></i>Inteligencia</span>
-                <span class="fc-chip"><i class="fas fa-chart-line me-1" style="color:var(--fc-logro);"></i>Progreso</span>
-                <span class="fc-chip"><i class="fas fa-dumbbell me-1" style="color:var(--fc-recuperar);"></i>Fuerza</span>
-                <span class="fc-chip"><i class="fas fa-shield-halved me-1" style="color:var(--fc-reco);"></i>Compromiso</span>
+                <span class="fc-chip"><i class="fas fa-bullseye me-1" style="color:var(--fc-primary-texto);" aria-hidden="true"></i>Disciplina</span>
+                <span class="fc-chip"><i class="fas fa-brain me-1" style="color:var(--fc-analisis);" aria-hidden="true"></i>Inteligencia</span>
+                <span class="fc-chip"><i class="fas fa-chart-line me-1" style="color:var(--fc-logro);" aria-hidden="true"></i>Progreso</span>
+                <span class="fc-chip"><i class="fas fa-dumbbell me-1" style="color:var(--fc-recuperar);" aria-hidden="true"></i>Fuerza</span>
+                <span class="fc-chip"><i class="fas fa-shield-halved me-1" style="color:var(--fc-reco);" aria-hidden="true"></i>Compromiso</span>
             </div>
         </div>
         <div class="col-md-6 fc-hero-wolf-col">
@@ -44,7 +44,7 @@
     <div class="col-md-4">
         <div class="fc-feature-card h-100" style="border-top:var(--px) solid var(--fc-recuperar);">
             <div class="fc-feature-icon" style="background: rgba(246,167,35,0.15); color:var(--fc-recuperar);">
-                <i class="fas fa-fire-flame-curved fa-lg"></i>
+                <i class="fas fa-fire-flame-curved fa-lg" aria-hidden="true"></i>
             </div>
             <h5 class="mt-3 mb-2">Quema de Grasa</h5>
             <p class="text-muted small mb-0">Rutinas Full Body con cardio integrado. 3 días a la semana, máxima eficiencia calórica.</p>
@@ -52,8 +52,8 @@
     </div>
     <div class="col-md-4">
         <div class="fc-feature-card h-100" style="border-top:var(--px) solid var(--fc-primary);">
-            <div class="fc-feature-icon" style="background: rgba(47,107,255,0.15); color:var(--fc-primary);">
-                <i class="fas fa-arrows-rotate fa-lg"></i>
+            <div class="fc-feature-icon" style="background: rgba(47,107,255,0.15); color:var(--fc-primary-texto);">
+                <i class="fas fa-arrows-rotate fa-lg" aria-hidden="true"></i>
             </div>
             <h5 class="mt-3 mb-2">Recomposición Corporal</h5>
             <p class="text-muted small mb-0">Equilibrio entre fuerza e hipertrofia. 4 días Torso/Pierna para resultados duales.</p>
@@ -62,7 +62,7 @@
     <div class="col-md-4">
         <div class="fc-feature-card h-100" style="border-top:var(--px) solid var(--fc-logro);">
             <div class="fc-feature-icon" style="background: rgba(39,209,124,0.15); color:var(--fc-logro);">
-                <i class="fas fa-dumbbell fa-lg"></i>
+                <i class="fas fa-dumbbell fa-lg" aria-hidden="true"></i>
             </div>
             <h5 class="mt-3 mb-2">Ganancia Muscular</h5>
             <p class="text-muted small mb-0">Hipertrofia máxima en 5 días. Volumen y tensión mecánica para crecimiento óptimo.</p>
@@ -78,47 +78,47 @@
 <div class="row g-3 mb-5">
     <div class="col-md-6 col-lg-4">
         <div class="fc-feature-card h-100 d-flex gap-3">
-            <i class="fas fa-fire fa-lg mt-1" style="color:var(--fc-entrenar);"></i>
+            <i class="fas fa-fire fa-lg mt-1" style="color:var(--fc-entrenar);" aria-hidden="true"></i>
             <div><h6 class="mb-1">Rutinas con demostración</h6><p class="text-muted small mb-0">Ejercicios de un catálogo real, con GIF e instrucciones paso a paso.</p></div>
         </div>
     </div>
     <div class="col-md-6 col-lg-4">
         <div class="fc-feature-card h-100 d-flex gap-3">
-            <i class="fas fa-utensils fa-lg mt-1" style="color:var(--fc-recuperar);"></i>
+            <i class="fas fa-utensils fa-lg mt-1" style="color:var(--fc-recuperar);" aria-hidden="true"></i>
             <div><h6 class="mb-1">Nutrición a tu medida</h6><p class="text-muted small mb-0">Macros calculados desde tu objetivo y un plan que respeta tus preferencias.</p></div>
         </div>
     </div>
     <div class="col-md-6 col-lg-4">
         <div class="fc-feature-card h-100 d-flex gap-3">
-            <i class="fas fa-book-open fa-lg mt-1" style="color:var(--fc-reco);"></i>
+            <i class="fas fa-book-open fa-lg mt-1" style="color:var(--fc-reco);" aria-hidden="true"></i>
             <div><h6 class="mb-1">Diario de comidas</h6><p class="text-muted small mb-0">Registra lo que comes y sigue tus macros del día contra el objetivo.</p></div>
         </div>
     </div>
     <div class="col-md-6 col-lg-4">
         <div class="fc-feature-card h-100 d-flex gap-3">
-            <i class="fas fa-robot fa-lg mt-1" style="color:var(--fc-analisis);"></i>
+            <i class="fas fa-robot fa-lg mt-1" style="color:var(--fc-analisis);" aria-hidden="true"></i>
             <div><h6 class="mb-1">Koda, tu coach IA</h6><p class="text-muted small mb-0">Analiza tu progreso, tu dieta y tu rutina con tus números reales.</p></div>
         </div>
     </div>
     <div class="col-md-6 col-lg-4">
         <div class="fc-feature-card h-100 d-flex gap-3">
-            <i class="fas fa-trophy fa-lg mt-1" style="color:var(--fc-logro);"></i>
+            <i class="fas fa-trophy fa-lg mt-1" style="color:var(--fc-logro);" aria-hidden="true"></i>
             <div><h6 class="mb-1">Niveles y logros</h6><p class="text-muted small mb-0">Ganas XP entrenando, subes de nivel y desbloqueas logros por tu constancia.</p></div>
         </div>
     </div>
     <div class="col-md-6 col-lg-4">
         <div class="fc-feature-card h-100 d-flex gap-3">
-            <i class="fas fa-chart-line fa-lg mt-1" style="color:var(--fc-primary);"></i>
+            <i class="fas fa-chart-line fa-lg mt-1" style="color:var(--fc-primary-texto);" aria-hidden="true"></i>
             <div><h6 class="mb-1">Progreso visible</h6><p class="text-muted small mb-0">Historial de peso, récords personales y rachas, con gráficas claras.</p></div>
         </div>
     </div>
 </div>
 
 @* ===== CTA FINAL ===== *@
-<div class="fc-feature-card text-center py-5 mb-2" style="border-color:var(--fc-primary);">
+<div class="fc-feature-card text-center py-5 mb-2" style="border-color:var(--fc-primary-texto);">
     <h3 class="mb-2">¿Listo para empezar, campeón?</h3>
     <p class="text-muted mb-4">Configura tu perfil y Koda arma tu primera rutina y tu plan en segundos.</p>
     <a asp-controller="Perfil" asp-action="Index" class="btn fc-btn-primary px-5 py-2">
-        <i class="fas fa-bolt me-2"></i>Empezar ahora
+        <i class="fas fa-bolt me-2" aria-hidden="true"></i>Empezar ahora
     </a>
 </div>
