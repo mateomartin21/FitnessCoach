@@ -16,6 +16,12 @@ namespace FitnessCoach.Tests.Fakes
         /// <summary>Cuántas veces se llamó a Guardar.</summary>
         public int VecesQueSeGuardo { get; private set; }
 
+        /// <summary>
+        /// Cuántas veces se fue a buscar un perfil por su identidad. Contra la base real cada
+        /// una de estas es un viaje a SQL, así que sirve para afirmar que no se repiten.
+        /// </summary>
+        public int VecesQueSeBuscoPorIdentidad { get; private set; }
+
         public RepositorioUsuarioFalso(params UsuarioPerfil[] usuariosIniciales)
         {
             foreach (var usuario in usuariosIniciales)
@@ -28,8 +34,11 @@ namespace FitnessCoach.Tests.Fakes
         public UsuarioPerfil? ObtenerPorId(int id) =>
             _usuarios.FirstOrDefault(u => u.Id == id);
 
-        public UsuarioPerfil? ObtenerPorIdentityUserId(string identityUserId) =>
-            _usuarios.FirstOrDefault(u => u.IdentityUserId == identityUserId);
+        public UsuarioPerfil? ObtenerPorIdentityUserId(string identityUserId)
+        {
+            VecesQueSeBuscoPorIdentidad++;
+            return _usuarios.FirstOrDefault(u => u.IdentityUserId == identityUserId);
+        }
 
         public void Guardar(UsuarioPerfil usuario)
         {

@@ -105,6 +105,50 @@ namespace FitnessCoach.Tests.Services
             Assert.Equal("Ana", perfil!.Nombre);
         }
 
+        [Fact]
+        public void ObtenerOCrear_VariasVecesEnLaMismaPeticion_LeeLaBaseUnaSolaVez()
+        {
+            // Una pantalla como Progreso pide el perfil media docena de veces: el controlador
+            // más cada servicio, que arranca de su propio ObtenerOCrear. Contra SQL cada
+            // lectura son cinco consultas (el perfil y sus cuatro colecciones).
+            var repositorio = new RepositorioUsuarioFalso(
+                new UsuarioPerfil { IdentityUserId = IdentityAna, Nombre = "Ana" });
+            var servicio = new ServicioPerfilUsuario(repositorio);
+
+            var primera = servicio.ObtenerOCrear(IdentityAna);
+            for (int i = 0; i < 5; i++) servicio.ObtenerOCrear(IdentityAna);
+
+            Assert.Equal(1, repositorio.VecesQueSeBuscoPorIdentidad);
+            Assert.Same(primera, servicio.ObtenerOCrear(IdentityAna));
+        }
+
+        [Fact]
+        public void ObtenerOCrear_ConDosIdentidades_NoConfundeLosPerfiles()
+        {
+            // Recordar lo leído no debe mezclar cuentas: la clave es la identidad.
+            var repositorio = new RepositorioUsuarioFalso(
+                new UsuarioPerfil { IdentityUserId = IdentityAna, Nombre = "Ana" },
+                new UsuarioPerfil { IdentityUserId = IdentityBruno, Nombre = "Bruno" });
+            var servicio = new ServicioPerfilUsuario(repositorio);
+
+            Assert.Equal("Ana", servicio.ObtenerOCrear(IdentityAna).Nombre);
+            Assert.Equal("Bruno", servicio.ObtenerOCrear(IdentityBruno).Nombre);
+            Assert.Equal("Ana", servicio.ObtenerOCrear(IdentityAna).Nombre);
+            Assert.Equal(2, repositorio.VecesQueSeBuscoPorIdentidad);
+        }
+
+        [Fact]
+        public void ObtenerOCrear_TrasCrearUnPerfilNuevo_NoVuelveALaBase()
+        {
+            var repositorio = new RepositorioUsuarioFalso();
+            var servicio = new ServicioPerfilUsuario(repositorio);
+
+            var creado = servicio.ObtenerOCrear(IdentityAna);
+
+            Assert.Same(creado, servicio.ObtenerOCrear(IdentityAna));
+            Assert.Equal(1, repositorio.VecesQueSeGuardo);   // no lo dio de alta dos veces
+        }
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
