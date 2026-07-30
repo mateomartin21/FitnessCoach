@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Caching.Memory;
 using System.Net;
 
 
@@ -94,14 +95,24 @@ builder.Services.AddRateLimiter(options =>
 builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioUsuario,
                            FitnessCoach.Infrastructure.Repositories.RepositorioUsuarioSql>();
 
-// Catalogo de ejercicios: segundo puerto con su adaptador SQL (solo lectura).
-builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioEjercicios,
-                           FitnessCoach.Infrastructure.Repositories.RepositorioEjerciciosSql>();
+// Los dos catalogos (ejercicios y alimentos) son datos de referencia: se pueblan por
+// semilla al arrancar y nadie los modifica en caliente. Por eso el puerto no apunta
+// directo al adaptador SQL sino a un DECORADOR de cache que lo envuelve: la primera
+// consulta baja a SQL y las siguientes se responden desde memoria. La cache es un
+// singleton compartido; los adaptadores siguen siendo scoped porque usan el DbContext.
+builder.Services.AddMemoryCache();
 
-// Catalogo de alimentos: mismo patron, para que los planes de comida se compongan
-// desde datos y no desde texto escrito a mano en las estrategias.
-builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioAlimentos,
-                           FitnessCoach.Infrastructure.Repositories.RepositorioAlimentosSql>();
+builder.Services.AddScoped<FitnessCoach.Infrastructure.Repositories.RepositorioEjerciciosSql>();
+builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioEjercicios>(proveedor =>
+    new FitnessCoach.Infrastructure.Repositories.RepositorioEjerciciosEnCache(
+        proveedor.GetRequiredService<FitnessCoach.Infrastructure.Repositories.RepositorioEjerciciosSql>(),
+        proveedor.GetRequiredService<IMemoryCache>()));
+
+builder.Services.AddScoped<FitnessCoach.Infrastructure.Repositories.RepositorioAlimentosSql>();
+builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioAlimentos>(proveedor =>
+    new FitnessCoach.Infrastructure.Repositories.RepositorioAlimentosEnCache(
+        proveedor.GetRequiredService<FitnessCoach.Infrastructure.Repositories.RepositorioAlimentosSql>(),
+        proveedor.GetRequiredService<IMemoryCache>()));
 
 // Servicio de cálculo calórico
 builder.Services.AddScoped<FitnessCoach.Application.Services.ICalculadorCalorico,
