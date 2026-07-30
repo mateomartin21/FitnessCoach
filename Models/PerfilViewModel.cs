@@ -34,5 +34,13 @@ namespace FitnessCoach.Models
         [Required]
         [Display(Name = "Objetivo Fitness")]
         public string TipoObjetivo { get; set; } = "Recomp";
+
+        /// <summary>
+        /// Id IANA de la zona horaria (D-25). No se valida con anotaciones porque la lista
+        /// válida la conoce el sistema operativo: el controlador la verifica contra
+        /// <c>ZonaHorariaUsuario.EsValida</c> y descarta cualquier cosa que no resuelva.
+        /// </summary>
+        [Display(Name = "Zona horaria")]
+        public string? ZonaHoraria { get; set; }
     }
 }

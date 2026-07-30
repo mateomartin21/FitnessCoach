@@ -1,4 +1,5 @@
 @model FitnessCoach.Models.PerfilViewModel
+@using FitnessCoach.Application.Services
 @{
     ViewData["Title"] = "Mi Perfil";
 }
@@ -42,6 +43,17 @@
                             <option value="Recomp">Recomposición Corporal</option>
                         </select>
                         <span asp-validation-for="TipoObjetivo" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="ZonaHoraria" class="form-label"></label>
+                        <select asp-for="ZonaHoraria" class="form-select" id="selectZonaHoraria"
+                                data-sin-zona="@(string.IsNullOrWhiteSpace(Model.ZonaHoraria) ? "true" : "false")">
+                            @foreach (var zona in ZonaHorariaUsuario.Comunes)
+                            {
+                                <option value="@zona.Id">@zona.Etiqueta</option>
+                            }
+                        </select>
+                        <div class="form-text">Tu racha, tus misiones y el día del diario se cuentan con tu medianoche, no la del servidor.</div>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 py-2">
                         <i class="fas fa-save me-2"></i>Guardar y Calcular
@@ -114,4 +126,25 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        // El navegador ya sabe en qué zona vive el usuario; se la ofrecemos en vez de
+        // hacerlo buscar en la lista. Si su zona no está entre las comunes, se agrega
+        // como opción. Solo se PRESELECCIONA cuando el perfil todavía no tiene una
+        // guardada: si él eligió otra a mano, se respeta (D-25).
+        (function () {
+            var select = document.getElementById('selectZonaHoraria');
+            if (!select || !window.Intl) return;
+
+            var detectada = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            if (!detectada) return;
+
+            var existe = Array.prototype.some.call(select.options, function (o) { return o.value === detectada; });
+            if (!existe) {
+                var opcion = new Option(detectada + ' (detectada)', detectada);
+                select.add(opcion, select.options[0]);
+            }
+
+            if (select.dataset.sinZona === 'true') select.value = detectada;
+        })();
+    </script>
 }
