@@ -62,10 +62,12 @@ namespace FitnessCoach.Controllers
             var registro = _progreso.ObtenerRegistro(IdentityId, id);
             if (registro is null) return NotFound();
 
+            var usuario = _perfiles.ObtenerOCrear(IdentityId);
+
             return View(new EditarRegistroViewModel
             {
                 Id = registro.Id,
-                Fecha = registro.Fecha,
+                FechaLocal = ZonaHorariaUsuario.ALocal(registro.Fecha, ZonaHorariaUsuario.De(usuario)),
                 PesoKg = registro.PesoKg,
                 Notas = registro.Notas
             });
@@ -215,7 +217,8 @@ namespace FitnessCoach.Controllers
                 OpcionesRutina = OpcionesRutina(usuario),
                 Entrenamientos = _entrenamientos.ObtenerHistorial(IdentityId).ToList(),
                 Rachas = _entrenamientos.ObtenerRachas(IdentityId),
-                Records = _records.ObtenerTodos(IdentityId).ToList()
+                Records = _records.ObtenerTodos(IdentityId).ToList(),
+                Zona = ZonaHorariaUsuario.De(usuario)
             };
         }
 

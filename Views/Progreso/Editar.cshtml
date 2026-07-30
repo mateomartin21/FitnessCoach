@@ -11,14 +11,13 @@
             </div>
             <div class="card-body">
                 <p class="text-muted small mb-4">
-                    Registrado el @Model.Fecha.ToLocalTime().ToString("dd/MM/yyyy 'a las' HH:mm").
+                    Registrado el @Model.FechaLocal.ToString("dd/MM/yyyy 'a las' HH:mm").
                     La fecha no se modifica: es cuándo ocurrió.
                 </p>
 
                 <form asp-controller="Progreso" asp-action="Editar" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
                     <input type="hidden" asp-for="Id" />
-                    <input type="hidden" asp-for="Fecha" />
 
                     <div class="mb-3">
                         <label asp-for="PesoKg" class="form-label"></label>

@@ -63,8 +63,8 @@ namespace FitnessCoach.Infrastructure.Data
                     progreso.HasKey(r => r.Id);
 
                     // SQL Server guarda datetime2 sin zona, asi que al leer vuelve con
-                    // Kind = Unspecified y un ToLocalTime() posterior no convertiria nada.
-                    // Marcarlo como UTC al materializar hace que la conversion a local funcione.
+                    // Kind = Unspecified. Marcarlo como UTC al materializar deja explicito
+                    // que es un instante, para convertirlo a la zona del usuario (D-25).
                     progreso.Property(r => r.Fecha)
                         .HasConversion(
                             fecha => fecha,

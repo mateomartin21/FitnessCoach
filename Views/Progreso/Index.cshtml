@@ -144,7 +144,7 @@
                                     var registro = Model.Historial[i];
                                     var cambio = Model.VariacionRespectoAlAnterior(i);
                                     <tr>
-                                        <td class="small">@registro.Fecha.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td class="small">@Model.EnLocal(registro.Fecha).ToString("dd/MM/yyyy HH:mm")</td>
                                         <td><strong>@registro.PesoKg kg</strong></td>
                                         <td class="small">
                                             @if (cambio is null)
@@ -265,7 +265,7 @@
                                 @foreach (var entrenamiento in Model.Entrenamientos.Take(10))
                                 {
                                     <tr>
-                                        <td class="small">@entrenamiento.Fecha.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                                        <td class="small">@Model.EnLocal(entrenamiento.Fecha).ToString("dd/MM/yyyy")</td>
                                         <td>
                                             <strong>@entrenamiento.NombreRutina</strong>
                                             @if (!string.IsNullOrWhiteSpace(entrenamiento.Notas))
@@ -329,7 +329,7 @@
                                     <span class="text-muted">× @record.Repeticiones</span>
                                 </td>
                                 <td class="small text-muted">@record.Volumen kg</td>
-                                <td class="small">@record.Fecha.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                                <td class="small">@Model.EnLocal(record.Fecha).ToString("dd/MM/yyyy")</td>
                                 <td class="text-end">
                                     <form asp-controller="Progreso" asp-action="EliminarRecord" method="post"
                                           class="d-inline m-0"

@@ -11,8 +11,11 @@ namespace FitnessCoach.Models
     {
         public int Id { get; set; }
 
-        /// <summary>Solo para mostrar en la vista; no se persiste desde acá.</summary>
-        public DateTime Fecha { get; set; }
+        /// <summary>
+        /// Cuándo ocurrió, ya traducido a la zona del usuario (D-25). Solo para mostrar:
+        /// no se persiste desde acá ni viaja en el POST, así que no hace falta el UTC.
+        /// </summary>
+        public DateTime FechaLocal { get; set; }
 
         [Range(RangosPerfil.PesoMinimoKg, RangosPerfil.PesoMaximoKg,
             ErrorMessage = "El peso debe estar entre {1} y {2} kg.")]

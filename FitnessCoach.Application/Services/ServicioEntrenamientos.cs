@@ -52,12 +52,13 @@ namespace FitnessCoach.Application.Services
             var usuario = _perfiles.ObtenerOCrear(identityUserId);
 
             // Las fechas se guardan en UTC pero la racha es un concepto de calendario:
-            // "entrené hoy" depende de la medianoche del usuario, no la de UTC. Se cuenta
-            // en la hora local del servidor, que es una aproximación — ver D-25.
-            var fechasLocales = usuario.EntrenamientosCompletados.Select(e => e.Fecha.ToLocalTime());
-            var hoy = DateOnly.FromDateTime(DateTime.Now);
+            // "entrené hoy" depende de la medianoche DEL USUARIO, no la de UTC ni la del
+            // servidor. Por eso todo se traduce a su zona antes de contar días (D-25).
+            var zona = ZonaHorariaUsuario.De(usuario);
+            var fechasLocales = usuario.EntrenamientosCompletados
+                .Select(e => ZonaHorariaUsuario.ALocal(e.Fecha, zona));
 
-            return CalculadorRachas.Calcular(fechasLocales, hoy);
+            return CalculadorRachas.Calcular(fechasLocales, ZonaHorariaUsuario.Hoy(zona));
         }
     }
 }

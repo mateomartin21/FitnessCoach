@@ -91,6 +91,35 @@ namespace FitnessCoach.Tests.Services
         }
 
         [Fact]
+        public void ObtenerRachas_CuentaLosDiasEnLaZonaDelUsuario()
+        {
+            // Dos entrenamientos del MISMO día UTC (ayer 02:00 y ayer 20:00). En UTC son un
+            // solo día de racha; en Ciudad de México (UTC-6) el de las 02:00 cae la noche
+            // anterior, así que son dos días consecutivos. El mismo hecho, distinta racha:
+            // eso es exactamente lo que D-25 rompía al contar con la hora del servidor.
+            var rachaUtc = RachaConZona("UTC");
+            var rachaMexico = RachaConZona("America/Mexico_City");
+
+            Assert.Equal(1, rachaUtc.Actual);
+            Assert.Equal(1, rachaUtc.MasLarga);
+            Assert.Equal(2, rachaMexico.Actual);
+            Assert.Equal(2, rachaMexico.MasLarga);
+        }
+
+        /// <summary>Los mismos dos instantes, leídos desde la zona indicada.</summary>
+        private static Rachas RachaConZona(string zona)
+        {
+            var ayerUtc = DateTime.UtcNow.Date.AddDays(-1);
+
+            var (servicio, ana) = Montar(
+                new EntrenamientoCompletado { Fecha = ayerUtc.AddHours(2), NombreRutina = "A", DuracionMinutos = 40 },
+                new EntrenamientoCompletado { Fecha = ayerUtc.AddHours(20), NombreRutina = "B", DuracionMinutos = 40 });
+            ana.ZonaHoraria = zona;
+
+            return servicio.ObtenerRachas(IdentityAna);
+        }
+
+        [Fact]
         public void ObtenerRachas_SinEntrenamientos_DevuelveVacia()
         {
             var (servicio, _) = Montar();
