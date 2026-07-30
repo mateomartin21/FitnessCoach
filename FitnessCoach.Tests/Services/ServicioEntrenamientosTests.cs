@@ -1,5 +1,6 @@
 using FitnessCoach.Application.Services;
 using FitnessCoach.Domain.Models;
+using FitnessCoach.Domain.Models.Objetivos;
 using FitnessCoach.Tests.Fakes;
 using Xunit;
 
@@ -19,7 +20,10 @@ namespace FitnessCoach.Tests.Services
                 Nombre = "Ana",
                 Edad = 30,
                 EstaturaCm = 165,
-                PesoKg = 62
+                PesoKg = 62,
+                // Sin objetivo no hay rutina, y sin rutina no hay entrenamiento válido
+                // que registrar: el servicio solo acepta días de la rutina real.
+                ObjetivoActual = new ObjetivoPerderPeso()
             };
 
             int siguienteId = 1;
@@ -31,10 +35,10 @@ namespace FitnessCoach.Tests.Services
 
             var repositorio = new RepositorioUsuarioFalso(ana);
             var perfiles = new ServicioPerfilUsuario(repositorio);
-            return (new ServicioEntrenamientos(perfiles), ana);
+            return (new ServicioEntrenamientos(perfiles, new GeneradorRutinasFalso()), ana);
         }
 
-        private static EntrenamientoCompletado Entrenamiento(int diasAtras, string nombre = "Full Body") => new()
+        private static EntrenamientoCompletado Entrenamiento(int diasAtras, string nombre = GeneradorRutinasFalso.Dia1) => new()
         {
             Fecha = DateTime.UtcNow.AddDays(-diasAtras),
             NombreRutina = nombre,
@@ -46,9 +50,9 @@ namespace FitnessCoach.Tests.Services
         {
             var (servicio, ana) = Montar();
 
-            var entrenamiento = servicio.Registrar(IdentityAna, "Piernas", 50, "Pesado");
+            var entrenamiento = servicio.Registrar(IdentityAna, GeneradorRutinasFalso.Dia1, 50, "Pesado");
 
-            Assert.Equal("Piernas", entrenamiento.NombreRutina);
+            Assert.Equal(GeneradorRutinasFalso.Dia1, entrenamiento.NombreRutina);
             Assert.Equal(50, entrenamiento.DuracionMinutos);
             Assert.Single(ana.EntrenamientosCompletados);
         }
@@ -58,9 +62,42 @@ namespace FitnessCoach.Tests.Services
         {
             var (servicio, _) = Montar();
 
-            var entrenamiento = servicio.Registrar(IdentityAna, "Torso", 40, null);
+            var entrenamiento = servicio.Registrar(IdentityAna, GeneradorRutinasFalso.Dia2, 40, null);
 
             Assert.Equal(DateTimeKind.Utc, entrenamiento.Fecha.Kind);
+        }
+
+        [Fact]
+        public void OpcionesDeRutina_SonLosDiasDeLaRutinaReal()
+        {
+            var (servicio, _) = Montar();
+
+            Assert.Equal(new[] { GeneradorRutinasFalso.Dia1, GeneradorRutinasFalso.Dia2 },
+                         servicio.OpcionesDeRutina(IdentityAna));
+        }
+
+        [Fact]
+        public void Registrar_UnEntrenamientoInventado_NoSeGuarda()
+        {
+            // La regla vive en el servicio, no en el controlador: si estuviera solo en la
+            // pantalla, la API la saltearía y se ganaría XP y logros sin entrenar (D-26).
+            var (servicio, ana) = Montar();
+
+            Assert.Throws<ArgumentException>(() =>
+                servicio.Registrar(IdentityAna, "Maratón inventado", 300, null));
+
+            Assert.Empty(ana.EntrenamientosCompletados);
+        }
+
+        [Fact]
+        public void SinObjetivo_NoHayOpcionesNiSePuedeRegistrar()
+        {
+            var (servicio, ana) = Montar();
+            ana.ObjetivoActual = null;
+
+            Assert.Empty(servicio.OpcionesDeRutina(IdentityAna));
+            Assert.Throws<ArgumentException>(() =>
+                servicio.Registrar(IdentityAna, GeneradorRutinasFalso.Dia1, 45, null));
         }
 
         [Fact]

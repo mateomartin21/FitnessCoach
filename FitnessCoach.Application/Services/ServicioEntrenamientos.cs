@@ -5,10 +5,12 @@ namespace FitnessCoach.Application.Services
     public class ServicioEntrenamientos : IServicioEntrenamientos
     {
         private readonly IServicioPerfilUsuario _perfiles;
+        private readonly IGeneradorRutinas _rutinas;
 
-        public ServicioEntrenamientos(IServicioPerfilUsuario perfiles)
+        public ServicioEntrenamientos(IServicioPerfilUsuario perfiles, IGeneradorRutinas rutinas)
         {
             _perfiles = perfiles;
+            _rutinas = rutinas;
         }
 
         public IReadOnlyList<EntrenamientoCompletado> ObtenerHistorial(string identityUserId)
@@ -17,9 +19,33 @@ namespace FitnessCoach.Application.Services
             return usuario.EntrenamientosCompletados.OrderByDescending(e => e.Fecha).ToList();
         }
 
+        /// <summary>
+        /// Los días de la rutina real del usuario, como etiquetas ("Día 1 — Piernas"). La
+        /// rutina es determinista (mismo objetivo y misma semilla, mismos días), así que
+        /// regenerarla acá coincide con lo que el usuario ve en su pantalla.
+        /// </summary>
+        public IReadOnlyList<string> OpcionesDeRutina(string identityUserId) =>
+            OpcionesDe(_perfiles.ObtenerOCrear(identityUserId));
+
+        private IReadOnlyList<string> OpcionesDe(UsuarioPerfil usuario)
+        {
+            if (usuario.ObjetivoActual is null) return Array.Empty<string>();
+
+            var rutina = _rutinas.GenerarRutinaParaObjetivo(usuario.ObjetivoActual, usuario.Id);
+            return rutina.Dias.Select(d => $"{d.NombreDia} — {d.Enfoque}").ToList();
+        }
+
         public EntrenamientoCompletado Registrar(string identityUserId, string nombreRutina, int duracionMinutos, string? notas)
         {
             var usuario = _perfiles.ObtenerOCrear(identityUserId);
+
+            // Solo se puede marcar como hecho un día REAL de la propia rutina. Si fuera
+            // texto libre, cualquiera anota algo inventado y se lleva el XP y los logros sin
+            // haber entrenado. La regla vive acá, no en el controlador, para que la cumplan
+            // por igual la pantalla y la API (D-26).
+            if (!OpcionesDe(usuario).Contains(nombreRutina))
+                throw new ArgumentException(
+                    "El entrenamiento tiene que ser uno de los días de tu rutina.", nameof(nombreRutina));
 
             var entrenamiento = new EntrenamientoCompletado
             {

@@ -16,21 +16,18 @@ namespace FitnessCoach.Controllers
         private readonly IServicioEntrenamientos _entrenamientos;
         private readonly IServicioRecords _records;
         private readonly IServicioGamificacion _gamificacion;
-        private readonly IGeneradorRutinas _rutinas;
 
         public ProgresoController(IServicioPerfilUsuario perfiles,
                                   IServicioProgreso progreso,
                                   IServicioEntrenamientos entrenamientos,
                                   IServicioRecords records,
-                                  IServicioGamificacion gamificacion,
-                                  IGeneradorRutinas rutinas)
+                                  IServicioGamificacion gamificacion)
         {
             _perfiles = perfiles;
             _progreso = progreso;
             _entrenamientos = entrenamientos;
             _records = records;
             _gamificacion = gamificacion;
-            _rutinas = rutinas;
         }
 
         private string IdentityId => User.FindFirstValue(ClaimTypes.NameIdentifier)!;
@@ -105,11 +102,10 @@ namespace FitnessCoach.Controllers
             if (!ModelState.IsValid)
                 return View("Index", ArmarVista(nuevoEntrenamiento: modelo));
 
-            // Solo se puede marcar como hecho un día real de la propia rutina. Sin esto,
-            // el nombre era texto libre: cualquiera anotaba algo inventado y se llevaba el
-            // XP y los logros sin haber entrenado. Se valida en el servidor, no solo en la UI.
-            var usuario = _perfiles.ObtenerOCrear(IdentityId);
-            if (!OpcionesRutina(usuario).Contains(modelo.NombreRutina))
+            // Solo se puede marcar como hecho un día real de la propia rutina (la regla la
+            // hace cumplir ServicioEntrenamientos; acá se traduce a un error del formulario
+            // en vez de una excepción).
+            if (!_entrenamientos.OpcionesDeRutina(IdentityId).Contains(modelo.NombreRutina))
             {
                 ModelState.AddModelError("NuevoEntrenamiento.NombreRutina",
                     "Elige un día de tu rutina.");
@@ -214,7 +210,7 @@ namespace FitnessCoach.Controllers
                 Historial = _progreso.ObtenerHistorial(IdentityId).ToList(),
                 PesoActual = usuario.PesoKg,
                 NuevoEntrenamiento = nuevoEntrenamiento ?? new RegistrarEntrenamientoViewModel(),
-                OpcionesRutina = OpcionesRutina(usuario),
+                OpcionesRutina = _entrenamientos.OpcionesDeRutina(IdentityId).ToList(),
                 Entrenamientos = _entrenamientos.ObtenerHistorial(IdentityId).ToList(),
                 Rachas = _entrenamientos.ObtenerRachas(IdentityId),
                 Records = _records.ObtenerTodos(IdentityId).ToList(),
@@ -222,18 +218,5 @@ namespace FitnessCoach.Controllers
             };
         }
 
-        /// <summary>
-        /// Los días de la rutina real del usuario, como etiquetas ("Día 1 — Piernas").
-        /// Son las únicas opciones válidas para marcar un entrenamiento. La rutina es
-        /// determinista (misma semilla, mismos días), así que regenerarla acá coincide
-        /// con lo que el usuario ve en su pantalla de rutina. Sin objetivo, no hay días.
-        /// </summary>
-        private List<string> OpcionesRutina(UsuarioPerfil usuario)
-        {
-            if (usuario.ObjetivoActual is null) return new();
-
-            var rutina = _rutinas.GenerarRutinaParaObjetivo(usuario.ObjetivoActual, usuario.Id);
-            return rutina.Dias.Select(d => $"{d.NombreDia} — {d.Enfoque}").ToList();
-        }
     }
 }
