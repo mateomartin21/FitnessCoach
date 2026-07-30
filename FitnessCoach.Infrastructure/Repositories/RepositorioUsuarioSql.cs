@@ -1,6 +1,7 @@
 using FitnessCoach.Domain.Models;
 using FitnessCoach.Domain.Ports;
 using FitnessCoach.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitnessCoach.Infrastructure.Repositories
 {
@@ -16,15 +17,23 @@ namespace FitnessCoach.Infrastructure.Repositories
 
         public UsuarioPerfil? ObtenerPorId(int id)
         {
-            return _context.UsuariosPerfil
-                .FirstOrDefault(u => u.Id == id);
+            return PerfilCompleto.FirstOrDefault(u => u.Id == id);
         }
 
-                public UsuarioPerfil? ObtenerPorIdentityUserId(string identityUserId)
+        public UsuarioPerfil? ObtenerPorIdentityUserId(string identityUserId)
         {
-            return _context.UsuariosPerfil
-                .FirstOrDefault(u => u.IdentityUserId == identityUserId);
+            return PerfilCompleto.FirstOrDefault(u => u.IdentityUserId == identityUserId);
         }
+
+        /// <summary>
+        /// El perfil trae cuatro colecciones owned (diario, entrenamientos, historial de peso
+        /// y récords) y EF las incluye siempre. En una sola sentencia eso son cuatro LEFT JOIN
+        /// entre colecciones que no tienen relación entre sí, o sea un producto cartesiano:
+        /// con 100 comidas, 50 entrenamientos, 50 pesos y 10 récords, SQL Server devuelve
+        /// 2.5 millones de filas para leer UN perfil. AsSplitQuery pide una sentencia por
+        /// colección (cinco en total) y cada una devuelve solo sus filas.
+        /// </summary>
+        private IQueryable<UsuarioPerfil> PerfilCompleto => _context.UsuariosPerfil.AsSplitQuery();
 
 
         public void Guardar(UsuarioPerfil usuario)
@@ -46,7 +55,7 @@ namespace FitnessCoach.Infrastructure.Repositories
                 return;
             }
 
-            var existente = _context.UsuariosPerfil.FirstOrDefault(u => u.Id == usuario.Id);
+            var existente = PerfilCompleto.FirstOrDefault(u => u.Id == usuario.Id);
             if (existente == null)
             {
                 _context.UsuariosPerfil.Add(usuario);
