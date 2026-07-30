@@ -2,22 +2,25 @@
 
 > **Documento vivo.** Es el inventario honesto de lo que está mal. Cuando algo se resuelve se marca ✅ con la fase que lo resolvió — **no se borra la línea**, el historial sirve para los ADRs y para la sustentación del proyecto.
 >
-> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **26/07/2026** al cerrar la Fase 9 (rama `fase-9/identidad-pixel`, ADR-19). La Fase 8 (gamificación) no cerró ni abrió deuda formal. La Fase 9 (identidad pixel art) abrió dos deudas cosméticas/de limpieza: D-30 (halo residual en sprites) y D-31 (PNGs de branding sin uso).
+> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **30/07/2026** al cerrar la **Fase 10** (rama `fase-10/optimizacion`, ADR-20), que resolvió las cinco deudas que quedaban de fases anteriores (D-24, D-25, D-26, D-30, D-31) y abrió cuatro nuevas de prioridad baja (D-32 a D-35).
+>
+> **Al arreglarlas se descubrió que dos estaban mal registradas.** D-30 decía "un par de sprites" y eran los 26. D-31 decía que los dos PNG de `branding/` no se usaban, pero `logo.png` era el placeholder de la cadena de medios de los ejercicios. Las correcciones quedan anotadas en cada ficha: registrar mal una deuda hace que se subestime el trabajo de pagarla.
 
 ## Resumen
 
 | Severidad | Total | Abiertas |
 |-----------|-------|----------|
 | 🔴 Crítica (seguridad / pérdida de datos) | 7 | 0 |
-| 🟠 Alta (bug funcional o riesgo real) | 9 | 1 |
-| 🟡 Media (calidad, mantenibilidad) | 15 | 5 |
-| **Total** | **31** | **6** |
+| 🟠 Alta (bug funcional o riesgo real) | 9 | 0 |
+| 🟡 Media (calidad, mantenibilidad) | 15 | 1 |
+| 🟢 Baja (cosmética, mejora opcional) | 4 | 4 |
+| **Total** | **35** | **5** |
 
-> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23. Fase 5.5 → D-27, D-28. Fase 6 → D-09, D-20.
+> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23. Fase 5.5 → D-27, D-28. Fase 6 → D-09, D-20. Fase 10 → D-24, D-25, D-26, D-30, D-31.
 >
-> **No queda ninguna deuda crítica abierta.** La única alta abierta es D-26 (la API no cubre el tracker, Fase 10). Las cinco medias abiertas: D-24 (rate limiter en memoria), D-25 (zona horaria del servidor), D-29 (licencia de los GIFs), D-30 (halo residual en sprites) y D-31 (PNGs de branding sin uso).
+> **No queda deuda crítica ni alta abierta.** Queda una media (D-29, licencia de los GIFs, que depende de un tercero) y cuatro bajas nuevas de la Fase 10: D-32 (nombre de `PersonalidadLoboCoach`), D-33 (los estáticos no usan las rutas inmutables), D-34 (Font Awesome por CDN) y D-35 (la base atada a SQL Server).
 >
-> **Deuda nueva detectada en la Fase 4:** D-25 y D-26. **En la Fase 5:** D-27, D-28 y D-29. **En la Fase 9:** D-30 y D-31.
+> **Deuda nueva detectada en la Fase 4:** D-25 y D-26. **En la Fase 5:** D-27, D-28 y D-29. **En la Fase 9:** D-30 y D-31. **En la Fase 10:** D-32, D-33, D-34 y D-35.
 
 ---
 
@@ -116,7 +119,11 @@
 **Qué pasa:** la Fase 4 agregó edición y borrado de registros, entrenamientos completados y rachas, pero **solo por la vista MVC**. La API sigue con lo que definió el ADR-10: listar el historial, ver el último y agregar un registro. No expone `PUT`/`DELETE` de un registro concreto ni nada de entrenamientos.
 **Riesgo:** ninguno de seguridad — es superficie que no existe. El problema es de coherencia: la API quedó siendo una vista parcial y desactualizada del producto, y `03-ESTANDARES.md` §1.5 ya anticipa cómo debería resolverse el caso de una ruta con id (verificar pertenencia y responder `404`).
 **Resolución:** Fase 10, o antes si aparece un consumidor real (la app móvil listada como idea fuera de alcance). Al hacerlo, reusar `ServicioProgreso` y `ServicioEntrenamientos`, que ya tienen las reglas y el aislamiento por cuenta resueltos.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 10 (commits `5c55765` y `5d7dbeb`, ADR-20). La API suma `GET {id}`, `PUT {id}` y `DELETE {id}` de registros de peso y un `EntrenamientosApiController` con historial, rachas, opciones de rutina, alta y borrado — todo sobre los servicios existentes.
+>
+> **Hubo que mover una regla antes de abrir la API.** La validación de "solo se registra un día real de tu rutina" (ADR-18, tras un review del usuario) vivía en `ProgresoController`: una API nueva la habría salteado y se volvía a poder ganar XP y logros sin entrenar. Ahora la hace cumplir `ServicioEntrenamientos.Registrar`.
+>
+> **Y apareció una inconsistencia que la deuda no anticipaba:** el `POST` de la API armaba el `RegistroProgreso` a mano y **no sincronizaba el peso del perfil**, cosa que la pantalla sí hacía. Dar de alta un peso por API dejaba el cálculo calórico corriendo con el peso viejo.
 
 ### D-12 · `RegistroProgreso` sin identidad propia en el dominio
 **Dónde:** `Domain/Models/RegistroProgreso.cs` + `ApplicationDbContext.OnModelCreating`
@@ -224,27 +231,65 @@
 **Qué pasa:** una racha y "lo que comí hoy" son conceptos de calendario — el día depende de la medianoche **del usuario**. Las fechas se guardan bien en UTC, pero para contar/agrupar días se usa la hora local del *servidor*, que es lo único que la app conoce hoy: nunca se le pregunta al usuario su zona horaria.
 **Riesgo:** un usuario en otra zona puede ver su racha cortarse un día antes de tiempo, o registrar una comida "de hoy" que el servidor archiva en otra fecha. Con todos los usuarios y el servidor en la misma zona no se nota; se vuelve visible al desplegar en un servidor UTC (el caso típico en la nube) o con usuarios de otro país.
 **Resolución:** Fase 10 — guardar la zona horaria en el perfil (o tomarla del navegador) y contar los días en la zona del usuario. `CalculadorRachas` ya está preparado (recibe las fechas y el "hoy" como parámetros) y el diario ya trabaja con `DateOnly`, así que solo cambia quién provee el "hoy".
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 10 (commits `dd812af` y `28bae0b`, ADR-20). `UsuarioPerfil.ZonaHoraria` guarda un id IANA y `ZonaHorariaUsuario` es el único lugar que decide qué día es para el usuario. El selector del perfil autodetecta la zona del navegador; el POST solo acepta ids que el sistema reconozca.
+>
+> **Al cablearlo apareció un bug que la deuda no cubría.** La fecha del diario **no es un instante**: `ServicioDiario` la guarda como la medianoche del día que eligió el usuario, o sea es una etiqueta de día. `ServicioGamificacion` la convertía de zona como al resto de las fechas y la corría un día hacia atrás, así que la comida del **lunes** caía afuera de la ventana que arranca ese lunes y la misión de diario nunca contaba los lunes. Ahora el diario se trata como día, sin convertir, y hay una prueba que lo fija.
 
 ### D-24 · El rate limiter es en memoria y no lee cabeceras de proxy
 **Dónde:** `Program.cs` → `AddRateLimiter`, partición por `contexto.Connection.RemoteIpAddress`
 **Qué pasa:** dos limitaciones del límite por IP agregado en la Fase 3. (1) El estado vive en la memoria del proceso: con más de una instancia, cada una lleva su propia cuenta y el límite efectivo se multiplica por la cantidad de nodos. (2) `RemoteIpAddress` detrás de un proxy o balanceador es la IP del proxy, así que todos los usuarios caerían en la misma partición y se bloquearían entre sí.
 **Riesgo:** hoy ninguno — corre en una sola instancia y sin proxy. Se vuelve real en el despliegue a EC2, sobre todo si queda detrás de un balanceador; por eso queda como media y no como alta.
 **Resolución:** Fase 10 (optimización y cierre, junto con el despliegue) — almacén compartido para el limitador y `UseForwardedHeaders` configurado con los proxies de confianza.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 10 (commit `39ebee3`, ADR-20) **en su parte de riesgo real**. `UseForwardedHeaders` lee `X-Forwarded-For` y `X-Forwarded-Proto` confiando solo en los proxies declarados por configuración; la lista por defecto se limpia, porque aceptar esas cabeceras de cualquier cliente permitiría falsificar la IP y evadir el límite.
+>
+> **La parte del almacén compartido se cierra como decisión, no como implementación:** el estado sigue en la memoria del proceso. Con una sola instancia —el despliegue previsto— alcanza; Redis agrega infraestructura que no está en el stack ni en el presupuesto. Queda escrito en `Program.cs`. Si algún día hay más de un nodo, el límite efectivo se multiplica por la cantidad de nodos.
 
-### D-30 · Halo blanco residual en un par de sprites de Koda
-**Dónde:** `wwwroot/images/koda/koda-presentacion.png`, `koda-descanso.png` (y en menor medida otros)
+### D-30 · Halo blanco residual en los sprites de Koda
+**Dónde:** los 26 PNG de `wwwroot/images/koda/` y `wwwroot/images/logros/` (la ficha original decía "un par de sprites"; al medirlos eran todos)
 **Qué pasa:** el recorte de fondo del sprite sheet (hecho fuera de la app) dejó un borde blanco tenue en algunos sprites. Se **disimula** con el glow neón azul y el flote (decisión de diseño, ADR-19), no se eliminó píxel a píxel para no arriesgar el pelaje blanco del lobo.
 **Riesgo:** cosmético. Se nota solo si se mira de cerca y sin el glow.
 **Resolución:** Fase 10 o cuando lleguen sprites limpios — *defringe* del borde (quitar píxeles casi blancos adyacentes a la transparencia) o reemplazo del asset.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 10 (commit `1860845`, ADR-20). Mirando los píxeles crudos, el residuo era **blanco puro (253-254) con alfa 1-6**: lo que quedó del fondo que se quitó, no el pelaje. Se midió la distribución antes de fijar el umbral (con alfa ≤32 el 90% de esos píxeles es residuo; arriba de 64 ya es antialias legítimo del pelaje claro), así que solo se anulan los casi-blancos de alfa ≤32: **183.386 píxeles**.
+>
+> De paso se recomprimieron: tienen 15.000 a 42.000 colores y se muestran a 88-200 px, así que cuantizados a paleta de 256 pasan de **1722 KB a 293 KB**. Se comparó el resultado a ojo, incluido el peor caso (una pose con una tablet translúcida, que es lo que un defringe mal calibrado habría destruido).
 
 ### D-31 · PNGs `branding/*` sin uso tras cablear los sprites de Koda
 **Dónde:** `wwwroot/images/branding/principal.png`, `logo.png`
-**Qué pasa:** eran el lobo y el logo anteriores; la Fase 9 los reemplazó por los sprites de `images/koda/` y ya no los referencia ninguna vista.
-**Riesgo:** ninguno; es peso muerto en el repo.
+**Qué pasa:** eran el lobo y el logo anteriores; la Fase 9 los reemplazó por los sprites de `images/koda/`. **La ficha estaba equivocada en `logo.png`:** sí se usaba, como `FabricaMediosEjercicio.RutaPlaceholder`, el último eslabón de la cadena de medios de un ejercicio.
+**Riesgo:** `principal.png` era peso muerto (274 KB). `logo.png` era peor que peso muerto: era el **logo naranja anterior a la identidad azul de la Fase 9**, y aparecía justo cuando fallaba el GIF de un ejercicio, es decir mostraba el branding que esa fase había barrido.
 **Resolución:** Fase 10 — borrarlos en la limpieza final tras confirmar que nada los usa.
+**Estado:** ✅ Resuelta en Fase 10 (commit `aaeb396`, ADR-20). El placeholder pasó a ser `koda-pensativo.png` y la carpeta `branding/` se borró (397 KB). En la misma revisión se vio que el **favicon era el genérico de la plantilla de ASP.NET**: se generó desde la cara de Koda en 16/32/48 px.
+
+---
+
+## 🟢 Bajas (abiertas — Fase 10)
+
+### D-32 · `PersonalidadLoboCoach` conserva el nombre viejo del coach
+**Dónde:** `FitnessCoach.Application/Coaching/PersonalidadLoboCoach.cs`
+**Qué pasa:** desde la Fase 9 el coach se llama **Koda**, pero la clase que define su voz sigue nombrada como cuando era "el Lobo". El texto visible está bien; es el identificador el que quedó atrás.
+**Riesgo:** ninguno funcional. Confunde al leer el código y al seguir los diagramas.
+**Resolución:** renombrar la clase y su archivo; toca las pruebas que la referencian y el registro en `Program.cs`.
+**Estado:** ⬜ Abierta
+
+### D-33 · Los estáticos no usan las rutas inmutables de `MapStaticAssets`
+**Dónde:** `Views/Shared/_Layout.cshtml` (`asp-append-version`), `Program.cs` → `app.MapStaticAssets()`
+**Qué pasa:** el manifiesto genera dos rutas por asset: la normal y una con huella en el nombre (`css/site.inrd7ojr0v.css`) con `Cache-Control: max-age=31536000, immutable`. Las vistas referencian la normal, que responde `no-cache` en css/js y `max-age=3600` en imágenes. El helper `@Assets` que resolvería la ruta con huella **no existe en vistas MVC** (es de Blazor).
+**Riesgo:** bajo. Hay ETag y compresión gzip/brotli, así que la revalidación devuelve `304` sin cuerpo: se pagan viajes de ida y vuelta, no ancho de banda.
+**Resolución:** cuando MVC tenga un helper soportado para las rutas con huella, o resolviendo el manifiesto en un tag helper propio. No vale inventar un esquema paralelo de fingerprinting.
+**Estado:** ⬜ Abierta
+
+### D-34 · Font Awesome se carga desde un CDN externo
+**Dónde:** `Views/Shared/_Layout.cshtml` → `cdnjs.cloudflare.com/.../font-awesome/6.4.0/css/all.min.css`
+**Qué pasa:** es la única lib de front que no está copiada en `wwwroot/lib/`, contra la regla del proyecto (Bootstrap, jQuery y la tipografía Press Start 2P sí están autohospedados).
+**Riesgo:** si el CDN no responde o está bloqueado, **desaparecen todos los iconos de la app**. Además es una petición a un tercero en cada carga, con lo que eso implica de privacidad.
+**Resolución:** autohospedar Font Awesome (suma ~1-2 MB de webfonts) o reemplazar los iconos usados por SVG propios. Es una decisión de producto: peso contra independencia.
+**Estado:** ⬜ Abierta
+
+### D-35 · La base está atada a SQL Server
+**Dónde:** `appsettings.json` (cadena de conexión), `FitnessCoach.Infrastructure/Data/Migrations/*`
+**Qué pasa:** el despliegue usa **SQL Server Express**, que no tiene costo de licencia pero limita a 10 GB por base y 1 GB de RAM de buffer. Ya el ADR-06 y el ADR-07 anticipaban PostgreSQL como alternativa.
+**Riesgo:** ninguno a la escala actual (los catálogos son ~1400 filas). El costo está en migrar el día que haga falta: **PostgreSQL distingue mayúsculas y SQL Server no**, así que las búsquedas por slug cambiarían de comportamiento (la caché de la Fase 10 ya lo normaliza, el sembrador no), y las migraciones usan tipos y sintaxis de SQL Server (`nvarchar`, `datetime2`, `HasFilter("[IdentityUserId] IS NOT NULL")`): hay que **regenerarlas** con Npgsql, no editarlas.
+**Resolución:** solo si se llega al límite de Express o si se prefiere RDS/PostgreSQL por costo de operación. El dominio y los servicios no cambian: todo pasa por EF Core y por los puertos.
 **Estado:** ⬜ Abierta
 
 ---

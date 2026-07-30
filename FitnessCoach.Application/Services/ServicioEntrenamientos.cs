@@ -5,10 +5,12 @@ namespace FitnessCoach.Application.Services
     public class ServicioEntrenamientos : IServicioEntrenamientos
     {
         private readonly IServicioPerfilUsuario _perfiles;
+        private readonly IGeneradorRutinas _rutinas;
 
-        public ServicioEntrenamientos(IServicioPerfilUsuario perfiles)
+        public ServicioEntrenamientos(IServicioPerfilUsuario perfiles, IGeneradorRutinas rutinas)
         {
             _perfiles = perfiles;
+            _rutinas = rutinas;
         }
 
         public IReadOnlyList<EntrenamientoCompletado> ObtenerHistorial(string identityUserId)
@@ -17,9 +19,29 @@ namespace FitnessCoach.Application.Services
             return usuario.EntrenamientosCompletados.OrderByDescending(e => e.Fecha).ToList();
         }
 
+        /// <summary>
+        /// La rutina es determinista, así que regenerarla acá da los mismos días que ve el usuario.
+        /// </summary>
+        public IReadOnlyList<string> OpcionesDeRutina(string identityUserId) =>
+            OpcionesDe(_perfiles.ObtenerOCrear(identityUserId));
+
+        private IReadOnlyList<string> OpcionesDe(UsuarioPerfil usuario)
+        {
+            if (usuario.ObjetivoActual is null) return Array.Empty<string>();
+
+            var rutina = _rutinas.GenerarRutinaParaObjetivo(usuario.ObjetivoActual, usuario.Id);
+            return rutina.Dias.Select(d => $"{d.NombreDia} — {d.Enfoque}").ToList();
+        }
+
         public EntrenamientoCompletado Registrar(string identityUserId, string nombreRutina, int duracionMinutos, string? notas)
         {
             var usuario = _perfiles.ObtenerOCrear(identityUserId);
+
+            // Con texto libre cualquiera se lleva XP y logros sin entrenar. La regla vive
+            // en el servicio para que la cumplan la pantalla y la API por igual (D-26).
+            if (!OpcionesDe(usuario).Contains(nombreRutina))
+                throw new ArgumentException(
+                    "El entrenamiento tiene que ser uno de los días de tu rutina.", nameof(nombreRutina));
 
             var entrenamiento = new EntrenamientoCompletado
             {
@@ -51,13 +73,12 @@ namespace FitnessCoach.Application.Services
         {
             var usuario = _perfiles.ObtenerOCrear(identityUserId);
 
-            // Las fechas se guardan en UTC pero la racha es un concepto de calendario:
-            // "entrené hoy" depende de la medianoche del usuario, no la de UTC. Se cuenta
-            // en la hora local del servidor, que es una aproximación — ver D-25.
-            var fechasLocales = usuario.EntrenamientosCompletados.Select(e => e.Fecha.ToLocalTime());
-            var hoy = DateOnly.FromDateTime(DateTime.Now);
+            // "Entrené hoy" depende de la medianoche del usuario, no de la de UTC (D-25).
+            var zona = ZonaHorariaUsuario.De(usuario);
+            var fechasLocales = usuario.EntrenamientosCompletados
+                .Select(e => ZonaHorariaUsuario.ALocal(e.Fecha, zona));
 
-            return CalculadorRachas.Calcular(fechasLocales, hoy);
+            return CalculadorRachas.Calcular(fechasLocales, ZonaHorariaUsuario.Hoy(zona));
         }
     }
 }

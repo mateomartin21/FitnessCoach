@@ -40,6 +40,9 @@ namespace FitnessCoach.Infrastructure.Data
 
             builder.Entity<UsuarioPerfil>(entity =>
             {
+                // Id IANA de zona horaria; el mas largo no pasa de 40 caracteres (D-25).
+                entity.Property(u => u.ZonaHoraria).HasMaxLength(64);
+
                 // ObjetivoActual es una clase abstracta sin datos propios (Strategy):
                 // se guarda como el nombre del tipo y se reconstruye al leer.
                 entity.Property(u => u.ObjetivoActual)
@@ -59,8 +62,8 @@ namespace FitnessCoach.Infrastructure.Data
                     progreso.HasKey(r => r.Id);
 
                     // SQL Server guarda datetime2 sin zona, asi que al leer vuelve con
-                    // Kind = Unspecified y un ToLocalTime() posterior no convertiria nada.
-                    // Marcarlo como UTC al materializar hace que la conversion a local funcione.
+                    // Kind = Unspecified. Marcarlo como UTC al materializar deja explicito
+                    // que es un instante, para convertirlo a la zona del usuario (D-25).
                     progreso.Property(r => r.Fecha)
                         .HasConversion(
                             fecha => fecha,

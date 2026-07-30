@@ -14,7 +14,8 @@ namespace FitnessCoach.Domain.Models.Entrenamiento
     /// </summary>
     public static class FabricaMediosEjercicio
     {
-        public const string RutaPlaceholder = "/images/branding/logo.png";
+        /// <summary>Último eslabón: un asset propio que siempre existe (D-31).</summary>
+        public const string RutaPlaceholder = "/images/koda/koda-pensativo.png";
 
         private const string BaseBusquedaYoutube = "https://www.youtube.com/results?search_query=";
         private const string BaseEmbedYoutube = "https://www.youtube-nocookie.com/embed/";

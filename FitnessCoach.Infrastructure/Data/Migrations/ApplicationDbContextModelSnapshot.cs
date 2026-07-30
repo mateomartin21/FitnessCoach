@@ -212,6 +212,10 @@ namespace FitnessCoach.Infrastructure.Data.Migrations
                     b.Property<double>("PesoKg")
                         .HasColumnType("float");
 
+                    b.Property<string>("ZonaHoraria")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdentityUserId")

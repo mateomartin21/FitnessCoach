@@ -1,5 +1,6 @@
 using FitnessCoach.Application.Services;
 using FitnessCoach.Domain.Models;
+using FitnessCoach.Domain.Models.Objetivos;
 using FitnessCoach.Tests.Fakes;
 using Xunit;
 
@@ -19,7 +20,9 @@ namespace FitnessCoach.Tests.Services
                 Nombre = "Ana",
                 Edad = 30,
                 EstaturaCm = 165,
-                PesoKg = 62
+                PesoKg = 62,
+                // Sin objetivo no hay rutina y el servicio no acepta ningún entrenamiento.
+                ObjetivoActual = new ObjetivoPerderPeso()
             };
 
             int siguienteId = 1;
@@ -31,10 +34,10 @@ namespace FitnessCoach.Tests.Services
 
             var repositorio = new RepositorioUsuarioFalso(ana);
             var perfiles = new ServicioPerfilUsuario(repositorio);
-            return (new ServicioEntrenamientos(perfiles), ana);
+            return (new ServicioEntrenamientos(perfiles, new GeneradorRutinasFalso()), ana);
         }
 
-        private static EntrenamientoCompletado Entrenamiento(int diasAtras, string nombre = "Full Body") => new()
+        private static EntrenamientoCompletado Entrenamiento(int diasAtras, string nombre = GeneradorRutinasFalso.Dia1) => new()
         {
             Fecha = DateTime.UtcNow.AddDays(-diasAtras),
             NombreRutina = nombre,
@@ -46,9 +49,9 @@ namespace FitnessCoach.Tests.Services
         {
             var (servicio, ana) = Montar();
 
-            var entrenamiento = servicio.Registrar(IdentityAna, "Piernas", 50, "Pesado");
+            var entrenamiento = servicio.Registrar(IdentityAna, GeneradorRutinasFalso.Dia1, 50, "Pesado");
 
-            Assert.Equal("Piernas", entrenamiento.NombreRutina);
+            Assert.Equal(GeneradorRutinasFalso.Dia1, entrenamiento.NombreRutina);
             Assert.Equal(50, entrenamiento.DuracionMinutos);
             Assert.Single(ana.EntrenamientosCompletados);
         }
@@ -58,9 +61,41 @@ namespace FitnessCoach.Tests.Services
         {
             var (servicio, _) = Montar();
 
-            var entrenamiento = servicio.Registrar(IdentityAna, "Torso", 40, null);
+            var entrenamiento = servicio.Registrar(IdentityAna, GeneradorRutinasFalso.Dia2, 40, null);
 
             Assert.Equal(DateTimeKind.Utc, entrenamiento.Fecha.Kind);
+        }
+
+        [Fact]
+        public void OpcionesDeRutina_SonLosDiasDeLaRutinaReal()
+        {
+            var (servicio, _) = Montar();
+
+            Assert.Equal(new[] { GeneradorRutinasFalso.Dia1, GeneradorRutinasFalso.Dia2 },
+                         servicio.OpcionesDeRutina(IdentityAna));
+        }
+
+        [Fact]
+        public void Registrar_UnEntrenamientoInventado_NoSeGuarda()
+        {
+            // Si la regla viviera solo en la pantalla, la API la saltearía (D-26).
+            var (servicio, ana) = Montar();
+
+            Assert.Throws<ArgumentException>(() =>
+                servicio.Registrar(IdentityAna, "Maratón inventado", 300, null));
+
+            Assert.Empty(ana.EntrenamientosCompletados);
+        }
+
+        [Fact]
+        public void SinObjetivo_NoHayOpcionesNiSePuedeRegistrar()
+        {
+            var (servicio, ana) = Montar();
+            ana.ObjetivoActual = null;
+
+            Assert.Empty(servicio.OpcionesDeRutina(IdentityAna));
+            Assert.Throws<ArgumentException>(() =>
+                servicio.Registrar(IdentityAna, GeneradorRutinasFalso.Dia1, 45, null));
         }
 
         [Fact]
@@ -88,6 +123,33 @@ namespace FitnessCoach.Tests.Services
 
             Assert.Equal(3, rachas.Actual);
             Assert.Equal(3, rachas.MasLarga);
+        }
+
+        [Fact]
+        public void ObtenerRachas_CuentaLosDiasEnLaZonaDelUsuario()
+        {
+            // Dos entrenamientos del mismo día UTC (02:00 y 20:00): en UTC son un día de
+            // racha, en México (UTC-6) el primero cae la noche anterior y son dos (D-25).
+            var rachaUtc = RachaConZona("UTC");
+            var rachaMexico = RachaConZona("America/Mexico_City");
+
+            Assert.Equal(1, rachaUtc.Actual);
+            Assert.Equal(1, rachaUtc.MasLarga);
+            Assert.Equal(2, rachaMexico.Actual);
+            Assert.Equal(2, rachaMexico.MasLarga);
+        }
+
+        /// <summary>Los mismos instantes, leídos desde la zona indicada.</summary>
+        private static Rachas RachaConZona(string zona)
+        {
+            var ayerUtc = DateTime.UtcNow.Date.AddDays(-1);
+
+            var (servicio, ana) = Montar(
+                new EntrenamientoCompletado { Fecha = ayerUtc.AddHours(2), NombreRutina = "A", DuracionMinutos = 40 },
+                new EntrenamientoCompletado { Fecha = ayerUtc.AddHours(20), NombreRutina = "B", DuracionMinutos = 40 });
+            ana.ZonaHoraria = zona;
+
+            return servicio.ObtenerRachas(IdentityAna);
         }
 
         [Fact]

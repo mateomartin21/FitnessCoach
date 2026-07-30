@@ -41,34 +41,34 @@ namespace FitnessCoach.Application.Services
         }
 
         /// <summary>
-        /// Traduce el perfil a la foto de hechos. Las fechas se guardan en UTC pero las
-        /// rachas y "esta semana" son de calendario, así que se cuentan en hora local del
-        /// servidor, igual que el resto del tracker (aproximación conocida, D-25).
+        /// Traduce el perfil a la foto de hechos. Los días se cuentan en la zona del
+        /// usuario: su lunes y su medianoche (D-25).
         /// </summary>
         public static EstadisticasUsuario Snapshot(UsuarioPerfil u)
         {
             ArgumentNullException.ThrowIfNull(u);
 
-            var ahora = DateTime.Now;
+            var zona = ZonaHorariaUsuario.De(u);
+            var ahora = ZonaHorariaUsuario.Ahora(zona);
             var hoy = DateOnly.FromDateTime(ahora);
-            // Las misiones son de SEMANA DE CALENDARIO: se reinician todas juntas el
-            // lunes a las 00:00 (hora local), no en una ventana móvil de 7 días.
+            // Semana de calendario: las misiones reinician el lunes, no en ventana móvil.
             int diasDesdeLunes = ((int)ahora.DayOfWeek + 6) % 7;   // lunes=0 … domingo=6
             var desde = ahora.Date.AddDays(-diasDesdeLunes);
 
             var fechasEntreno = u.EntrenamientosCompletados
-                .Select(e => e.Fecha.ToLocalTime())
+                .Select(e => ZonaHorariaUsuario.ALocal(e.Fecha, zona))
                 .ToList();
             var rachas = CalculadorRachas.Calcular(fechasEntreno, hoy);
 
-            int diasConDiario = u.Diario
-                .Select(d => DateOnly.FromDateTime(d.Fecha.ToLocalTime()))
-                .Distinct().Count();
+            // La fecha del diario no es un instante sino la etiqueta del día elegido
+            // (ServicioDiario la guarda como su medianoche): convertirla la corre un día.
+            var diasDiario = u.Diario
+                .Select(d => DateOnly.FromDateTime(d.Fecha))
+                .Distinct()
+                .ToList();
 
-            int diasConDiarioSemana = u.Diario
-                .Where(d => d.Fecha.ToLocalTime() >= desde)
-                .Select(d => DateOnly.FromDateTime(d.Fecha.ToLocalTime()))
-                .Distinct().Count();
+            int diasConDiario = diasDiario.Count;
+            int diasConDiarioSemana = diasDiario.Count(d => d >= DateOnly.FromDateTime(desde));
 
             return new EstadisticasUsuario(
                 TotalEntrenamientos: u.EntrenamientosCompletados.Count,
@@ -79,7 +79,7 @@ namespace FitnessCoach.Application.Services
                 RachaMaxima: rachas.MasLarga,
                 TieneObjetivo: u.ObjetivoActual is not null,
                 EntrenamientosEstaSemana: fechasEntreno.Count(f => f >= desde),
-                RegistrosPesoEstaSemana: u.HistorialProgreso.Count(r => r.Fecha.ToLocalTime() >= desde),
+                RegistrosPesoEstaSemana: u.HistorialProgreso.Count(r => ZonaHorariaUsuario.ALocal(r.Fecha, zona) >= desde),
                 DiasConDiarioEstaSemana: diasConDiarioSemana);
         }
     }

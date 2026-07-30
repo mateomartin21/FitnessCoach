@@ -9,6 +9,12 @@ public class UsuarioPerfil
     public int Id { get; set; }
     public string? IdentityUserId { get; set; }   // <-- NUEVA: a que cuenta de Identity pertenece este perfil
 
+    /// <summary>
+    /// Zona IANA (ej. "America/Mexico_City") en la que se cuentan los días del usuario.
+    /// Null = la zona por defecto de <c>ZonaHorariaUsuario</c> (D-25).
+    /// </summary>
+    public string? ZonaHoraria { get; set; }
+
     [Required(ErrorMessage = "El nombre es obligatorio.")]
     [StringLength(RangosPerfil.NombreLargoMaximo, MinimumLength = RangosPerfil.NombreLargoMinimo,
         ErrorMessage = "El nombre debe tener entre {2} y {1} caracteres.")]

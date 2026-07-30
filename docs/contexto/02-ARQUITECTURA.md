@@ -109,9 +109,20 @@ Estos tres están implementados, documentados en el ADR-06 y **cubiertos por pru
 - **Por qué existe:** `ObjetivoFitness` es una clase abstracta sin datos propios; no es mapeable a una columna. Se persiste el nombre del tipo concreto (`ObjetivoActualTipo`) y se reconstruye al leer, vía `HasConversion` en `OnModelCreating`.
 - ⚠ **Mantenimiento manual:** cada objetivo nuevo debe agregarse *a la clase concreta y al `switch` del factory*. Es la fragilidad conocida de este patrón aquí, ya documentada en ADR-07.
 
+### Chain of Responsibility — la cadena de proveedores de IA
+
+- `CoachResiliente` recorre los proveedores en orden y devuelve la primera respuesta que llegue: Gemini flash → Groq/OpenRouter (si hay clave) → Gemini flash-lite → `CoachOfflineService`.
+- **El último eslabón no puede fallar:** responde por reglas locales, sin red. Verificado en la prueba de fuego de la Fase 10.
+- Los proveedores los arma `FabricaProveedoresIA` (Factory) según la configuración disponible.
+
+### Decorator — también en el acceso a datos (Fase 10)
+
+- `RepositorioEjerciciosEnCache` y `RepositorioAlimentosEnCache` implementan el mismo puerto que envuelven, así que nada arriba se enteró de que apareció una caché.
+- La lógica pura de los índices vive en `Domain/Catalogos` (`IndiceEjercicios`, `IndiceAlimentos`) y no en `Application`: la usa un adaptador de `Infrastructure`, que **solo referencia `Domain`**. Mover los índices a `Application` habría agregado una dependencia nueva entre capas solo para poder probarlos.
+
 ### Patrones planificados (aún no implementados)
 
-- **Factory / Strategy para proveedores de IA** — para que si Gemini falla, se pueda caer a otro proveedor. Ver Fase 6 del roadmap.
+- Ninguno pendiente. Los tres previstos del ADR-06 (Strategy, Decorator, Factory Method) y la cadena de IA están implementados y cubiertos.
 
 ---
 

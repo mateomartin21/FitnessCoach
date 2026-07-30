@@ -1,6 +1,7 @@
 using FitnessCoach.Domain.Models;
 using FitnessCoach.Domain.Ports;
 using FitnessCoach.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitnessCoach.Infrastructure.Repositories
 {
@@ -16,15 +17,20 @@ namespace FitnessCoach.Infrastructure.Repositories
 
         public UsuarioPerfil? ObtenerPorId(int id)
         {
-            return _context.UsuariosPerfil
-                .FirstOrDefault(u => u.Id == id);
+            return PerfilCompleto.FirstOrDefault(u => u.Id == id);
         }
 
-                public UsuarioPerfil? ObtenerPorIdentityUserId(string identityUserId)
+        public UsuarioPerfil? ObtenerPorIdentityUserId(string identityUserId)
         {
-            return _context.UsuariosPerfil
-                .FirstOrDefault(u => u.IdentityUserId == identityUserId);
+            return PerfilCompleto.FirstOrDefault(u => u.IdentityUserId == identityUserId);
         }
+
+        /// <summary>
+        /// El perfil tiene cuatro colecciones owned y EF las incluye siempre: en una sola
+        /// sentencia son cuatro LEFT JOIN sin relación entre sí, o sea un producto cartesiano.
+        /// AsSplitQuery pide una sentencia por colección.
+        /// </summary>
+        private IQueryable<UsuarioPerfil> PerfilCompleto => _context.UsuariosPerfil.AsSplitQuery();
 
 
         public void Guardar(UsuarioPerfil usuario)
@@ -46,7 +52,7 @@ namespace FitnessCoach.Infrastructure.Repositories
                 return;
             }
 
-            var existente = _context.UsuariosPerfil.FirstOrDefault(u => u.Id == usuario.Id);
+            var existente = PerfilCompleto.FirstOrDefault(u => u.Id == usuario.Id);
             if (existente == null)
             {
                 _context.UsuariosPerfil.Add(usuario);

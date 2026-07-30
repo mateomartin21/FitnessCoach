@@ -8,7 +8,7 @@
     <img src="~/images/koda/koda-listo.png" alt="Koda listo para entrenar" class="d-none d-sm-block flex-shrink-0 koda-glow koda-idle koda-interactive"
          style="height:130px; width:auto; image-rendering:pixelated;" />
     <div>
-        <h2 class="fw-bold mb-1" style="color:var(--fc-primary);">@Model.NombreRutina</h2>
+        <h2 class="fw-bold mb-1" style="color:var(--fc-primary-texto);">@Model.NombreRutina</h2>
         <span class="badge px-3 py-2" style="background:var(--fc-primary); font-size:0.9rem;">@Model.Nivel</span>
         <p class="text-muted mt-2 mb-0 small">Incluye calentamiento y enfriamiento automáticos en cada día.</p>
     </div>
@@ -34,7 +34,7 @@
             <h2 class="accordion-header">
                 <button class="accordion-button @(isFirst ? "" : "collapsed")" type="button"
                     data-bs-toggle="collapse" data-bs-target="#dia-@i">
-                    <i class="fas fa-calendar-day me-2"></i>
+                    <i class="fas fa-calendar-day me-2" aria-hidden="true"></i>
                     <strong>@dia.NombreDia</strong>&nbsp;&mdash;&nbsp;@dia.Enfoque
                     <span class="badge ms-3 bg-secondary">@dia.Ejercicios.Count ejercicios</span>
                 </button>
@@ -45,11 +45,11 @@
                         <table class="table table-hover mb-0 align-middle">
                             <thead style="background:#1a1a2e;">
                                 <tr>
-                                    <th class="ps-3" style="width:70px;"></th>
-                                    <th>Ejercicio</th>
-                                    <th class="text-center">Series</th>
-                                    <th class="text-center">Reps</th>
-                                    <th>Notas</th>
+                                    <th scope="col" class="ps-3" style="width:70px;"></th>
+                                    <th scope="col">Ejercicio</th>
+                                    <th scope="col" class="text-center">Series</th>
+                                    <th scope="col" class="text-center">Reps</th>
+                                    <th scope="col">Notas</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -77,9 +77,9 @@
                                             }
                                         </td>
                                         <td class="fw-bold">
-                                            @if (isWarmup) { <i class="fas fa-wind me-1" style="color:#00d4ff;"></i> }
-                                            else if (isCooldown) { <i class="fas fa-snowflake me-1" style="color:#7c3aed;"></i> }
-                                            else { <i class="fas fa-bolt me-1" style="color:var(--fc-primary);"></i> }
+                                            @if (isWarmup) { <i class="fas fa-wind me-1" style="color:#00d4ff;" aria-hidden="true"></i> }
+                                            else if (isCooldown) { <i class="fas fa-snowflake me-1" style="color:#7c3aed;" aria-hidden="true"></i> }
+                                            else { <i class="fas fa-bolt me-1" style="color:var(--fc-primary-texto);" aria-hidden="true"></i> }
                                             @ej.Nombre
                                             @if (esDelCatalogo)
                                             {
@@ -93,7 +93,7 @@
                                                         data-grupo="@ej.Ejercicio.GrupoMuscular"
                                                         data-equipo="@ej.Ejercicio.Equipo"
                                                         data-slug="@ej.Ejercicio.Slug">
-                                                    <i class="fas fa-circle-info"></i> Ver técnica
+                                                    <i class="fas fa-circle-info" aria-hidden="true"></i> Ver técnica
                                                 </button>
                                                 @* Las instrucciones viajan como HTML, no como JSON en un atributo:
                                                    Json.Serialize devuelve contenido ya codificado y el JSON llegaba
@@ -122,7 +122,7 @@
 
 <div class="text-center mt-4">
     <a asp-controller="Perfil" asp-action="Index" class="btn btn-outline-light px-4">
-        <i class="fas fa-user-cog me-2"></i>Cambiar Objetivo
+        <i class="fas fa-user-cog me-2" aria-hidden="true"></i>Cambiar Objetivo
     </a>
 </div>
 
@@ -131,7 +131,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content" style="background:#16213e; border:1px solid #2a2a4a;">
             <div class="modal-header" style="border-bottom:1px solid #2a2a4a;">
-                <h5 class="modal-title" id="modalEjercicioTitulo" style="color:var(--fc-primary);"></h5>
+                <h5 class="modal-title" id="modalEjercicioTitulo" style="color:var(--fc-primary-texto);"></h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body">
@@ -149,29 +149,29 @@
                         <h6 class="text-uppercase text-muted small">Cómo se hace</h6>
                         <ol class="ps-3 small" id="modalEjercicioInstrucciones"></ol>
                         <a id="modalEjercicioYoutube" class="btn btn-sm btn-outline-danger mt-2" target="_blank" rel="noopener">
-                            <i class="fab fa-youtube me-1"></i>Ver más en YouTube
+                            <i class="fab fa-youtube me-1" aria-hidden="true"></i>Ver más en YouTube
                         </a>
 
                         <hr style="border-color:#2a2a4a;" />
 
                         <h6 class="text-uppercase text-muted small">
-                            <i class="fas fa-trophy me-1" style="color:#f59e0b;"></i>Registrar marca
+                            <i class="fas fa-trophy me-1" style="color:#f59e0b;" aria-hidden="true"></i>Registrar marca
                         </h6>
                         <form asp-controller="Progreso" asp-action="RegistrarRecord" method="post" class="row g-2">
                             <input type="hidden" name="EjercicioSlug" id="recordSlug" />
                             <input type="hidden" name="EjercicioNombre" id="recordNombre" />
                             <input type="hidden" name="volverA" value="@Context.Request.Path" />
                             <div class="col-5">
-                                <label class="form-label small mb-1">Peso (kg)</label>
-                                <input type="number" step="0.5" min="0" name="PesoKg" value="0" class="form-control form-control-sm" />
+                                <label for="recordPesoKg" class="form-label small mb-1">Peso (kg)</label>
+                                <input type="number" step="0.5" min="0" name="PesoKg" id="recordPesoKg" value="0" class="form-control form-control-sm" />
                             </div>
                             <div class="col-5">
-                                <label class="form-label small mb-1">Reps</label>
-                                <input type="number" min="1" name="Repeticiones" value="1" class="form-control form-control-sm" />
+                                <label for="recordReps" class="form-label small mb-1">Reps</label>
+                                <input type="number" min="1" name="Repeticiones" id="recordReps" value="1" class="form-control form-control-sm" />
                             </div>
                             <div class="col-2 d-flex align-items-end">
                                 <button type="submit" class="btn btn-sm fc-btn-primary w-100" title="Guardar marca">
-                                    <i class="fas fa-check"></i>
+                                    <i class="fas fa-check" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="col-12">

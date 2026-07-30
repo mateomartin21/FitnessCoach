@@ -14,24 +14,27 @@
         Func<string, string> activo = c => ctrlActual == c ? "active" : "";
         var estaLogueado = User.Identity is not null && User.Identity.IsAuthenticated;
     }
+    <a class="fc-salto-contenido" href="#contenido">Saltar al contenido</a>
+
     <header>
         <nav class="navbar navbar-expand-lg fc-navbar">
             <div class="container">
                 <a class="navbar-brand fc-brand" asp-controller="Home" asp-action="Index">
                     <span class="fc-brand-text">FitnessCoach</span>
                 </a>
-                <button class="navbar-toggler fc-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
-                    <i class="fas fa-bars" style="color:var(--fc-primary);"></i>
+                <button class="navbar-toggler fc-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbar-principal" aria-expanded="false" aria-label="Abrir o cerrar el menú">
+                    <i class="fas fa-bars" style="color:var(--fc-primary-texto);" aria-hidden="true"></i>
                 </button>
-                <div class="navbar-collapse collapse">
+                <div class="navbar-collapse collapse" id="navbar-principal">
                     <ul class="navbar-nav me-auto align-items-lg-center gap-1">
-                        <li class="nav-item"><a class="nav-link fc-nav-link @activo("Home")" asp-controller="Home" asp-action="Index"><i class="fas fa-house me-1"></i>Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link fc-nav-link @activo("Perfil")" asp-controller="Perfil" asp-action="Index"><i class="fas fa-user-circle me-1"></i>Perfil</a></li>
-                        <li class="nav-item"><a class="nav-link fc-nav-link @activo("Alimentacion")" asp-controller="Alimentacion" asp-action="Index"><i class="fas fa-utensils me-1"></i>Dieta</a></li>
-                        <li class="nav-item"><a class="nav-link fc-nav-link @activo("Diario")" asp-controller="Diario" asp-action="Index"><i class="fas fa-book-open me-1"></i>Diario</a></li>
-                        <li class="nav-item"><a class="nav-link fc-nav-link @activo("Rutinas")" asp-controller="Rutinas" asp-action="Index"><i class="fas fa-fire me-1"></i>Rutina</a></li>
-                        <li class="nav-item"><a class="nav-link fc-nav-link @activo("Progreso")" asp-controller="Progreso" asp-action="Index"><i class="fas fa-chart-line me-1"></i>Progreso</a></li>
-                        <li class="nav-item"><a class="nav-link fc-nav-link @activo("Gamificacion")" asp-controller="Gamificacion" asp-action="Index"><i class="fas fa-trophy me-1"></i>Logros</a></li>
+                        <li class="nav-item"><a class="nav-link fc-nav-link @activo("Home")" asp-controller="Home" asp-action="Index"><i class="fas fa-house me-1" aria-hidden="true"></i>Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link fc-nav-link @activo("Perfil")" asp-controller="Perfil" asp-action="Index"><i class="fas fa-user-circle me-1" aria-hidden="true"></i>Perfil</a></li>
+                        <li class="nav-item"><a class="nav-link fc-nav-link @activo("Alimentacion")" asp-controller="Alimentacion" asp-action="Index"><i class="fas fa-utensils me-1" aria-hidden="true"></i>Dieta</a></li>
+                        <li class="nav-item"><a class="nav-link fc-nav-link @activo("Diario")" asp-controller="Diario" asp-action="Index"><i class="fas fa-book-open me-1" aria-hidden="true"></i>Diario</a></li>
+                        <li class="nav-item"><a class="nav-link fc-nav-link @activo("Rutinas")" asp-controller="Rutinas" asp-action="Index"><i class="fas fa-fire me-1" aria-hidden="true"></i>Rutina</a></li>
+                        <li class="nav-item"><a class="nav-link fc-nav-link @activo("Progreso")" asp-controller="Progreso" asp-action="Index"><i class="fas fa-chart-line me-1" aria-hidden="true"></i>Progreso</a></li>
+                        <li class="nav-item"><a class="nav-link fc-nav-link @activo("Gamificacion")" asp-controller="Gamificacion" asp-action="Index"><i class="fas fa-trophy me-1" aria-hidden="true"></i>Logros</a></li>
                     </ul>
                     <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
                         <li class="nav-item my-1 my-lg-0">
@@ -40,17 +43,17 @@
                         @if (estaLogueado)
                         {
                             <li class="nav-item d-none d-lg-flex"><span class="fc-nav-sep"></span></li>
-                            <li class="nav-item"><span class="fc-user-chip"><i class="fas fa-user"></i>@User.Identity!.Name</span></li>
+                            <li class="nav-item"><span class="fc-user-chip"><i class="fas fa-user" aria-hidden="true"></i>@User.Identity!.Name</span></li>
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline m-0">
-                                    <button type="submit" class="nav-link fc-logout"><i class="fas fa-right-from-bracket me-1"></i>Salir</button>
+                                    <button type="submit" class="nav-link fc-logout"><i class="fas fa-right-from-bracket me-1" aria-hidden="true"></i>Salir</button>
                                 </form>
                             </li>
                         }
                         else
                         {
-                            <li class="nav-item"><a class="nav-link fc-nav-link @activo("Account")" asp-controller="Account" asp-action="Login"><i class="fas fa-right-to-bracket me-1"></i>Entrar</a></li>
-                            <li class="nav-item"><a class="nav-link fc-nav-link" asp-controller="Account" asp-action="Register"><i class="fas fa-user-plus me-1"></i>Registro</a></li>
+                            <li class="nav-item"><a class="nav-link fc-nav-link @activo("Account")" asp-controller="Account" asp-action="Login"><i class="fas fa-right-to-bracket me-1" aria-hidden="true"></i>Entrar</a></li>
+                            <li class="nav-item"><a class="nav-link fc-nav-link" asp-controller="Account" asp-action="Register"><i class="fas fa-user-plus me-1" aria-hidden="true"></i>Registro</a></li>
                         }
                     </ul>
                 </div>
@@ -59,7 +62,7 @@
     </header>
 
     <div class="container mt-4">
-        <main role="main" class="pb-4">
+        <main role="main" id="contenido" class="pb-4">
             @RenderBody()
         </main>
     </div>
@@ -68,7 +71,7 @@
         <div class="container">
             <div class="row gy-4 py-5">
                 <div class="col-lg-5">
-                    <span class="fw-bold fs-4" style="color:var(--fc-primary);">FitnessCoach</span>
+                    <span class="fw-bold fs-4" style="color:var(--fc-primary-texto);">FitnessCoach</span>
                     <p class="text-muted mb-0 mt-2" style="max-width:340px; font-size:.9rem;">
                         Tu entrenador personal inteligente. Rutinas, nutrición y un coach —Koda— que te guía,
                         te analiza y te acompaña día a día.

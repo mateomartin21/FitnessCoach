@@ -47,7 +47,7 @@ Y adjunta:
 | Campo | Valor |
 |-------|-------|
 | Creado | 22/07/2026 |
-| Última actualización | 26/07/2026 |
-| Rama de referencia | `fase-9/identidad-pixel` (contra `CD/CI`) |
-| Último ADR | ADR-19 (identidad visual pixel art y Koda) |
-| Fase activa del roadmap | Fase 10 — Optimización y cierre |
+| Última actualización | 30/07/2026 |
+| Rama de referencia | `fase-10/optimizacion` (contra `CD/CI`) |
+| Último ADR | ADR-20 (cierre del producto: rendimiento, calendario del usuario, API y accesibilidad) |
+| Fase activa del roadmap | Ninguna — roadmap cerrado en la Fase 10 (ADR-20) |

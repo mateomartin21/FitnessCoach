@@ -62,6 +62,11 @@ namespace FitnessCoach.Controllers
             usuario.EstaturaCm = modelo.EstaturaCm;
             usuario.ObjetivoActual = CrearObjetivo(modelo.TipoObjetivo);
 
+            // Solo se guarda si el sistema la reconoce: un id inventado correría todas las
+            // rachas sin que se note. Si no resuelve, se conserva la anterior (D-25).
+            if (!string.IsNullOrWhiteSpace(modelo.ZonaHoraria) && ZonaHorariaUsuario.EsValida(modelo.ZonaHoraria))
+                usuario.ZonaHoraria = modelo.ZonaHoraria;
+
             _perfiles.Guardar(usuario);
             return RedirectToAction("Index");
         }
@@ -77,7 +82,8 @@ namespace FitnessCoach.Controllers
                 ObjetivoPerderPeso => "Perder",
                 ObjetivoGanarMusculo => "Musculo",
                 _ => "Recomp"
-            }
+            },
+            ZonaHoraria = usuario.ZonaHoraria
         };
 
         private static ObjetivoFitness CrearObjetivo(string tipo) => tipo switch

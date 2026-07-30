@@ -1,4 +1,5 @@
 using FitnessCoach.Application.Services;
+using FitnessCoach.Domain.Models;
 using FitnessCoach.Domain.Ports;
 using FitnessCoach.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -36,11 +37,12 @@ namespace FitnessCoach.Controllers
                 return RedirectToAction("Index", "Perfil");
 
             // Nunca se muestran días futuros: no se puede registrar comida que no pasó.
-            var elDia = ClampHoy(dia);
+            var elDia = ClampHoy(dia, usuario);
 
             var modelo = new DiarioViewModel
             {
                 Dia = elDia,
+                Hoy = Hoy(usuario),
                 Resumen = _diario.ResumenDelDia(usuario, elDia),
                 Plan = _generador.GenerarPlanPara(usuario),
                 CatalogoPorCategoria = _catalogo.ObtenerTodos()
@@ -55,7 +57,7 @@ namespace FitnessCoach.Controllers
         public IActionResult Registrar(string alimentoSlug, double gramos, DateOnly? dia)
         {
             var usuario = _perfiles.ObtenerOCrear(IdentityId);
-            var elDia = ClampHoy(dia);
+            var elDia = ClampHoy(dia, usuario);
 
             // Rango razonable de una porción; fuera de eso es un error de tipeo.
             if (gramos is > 0 and <= 2000 && _catalogo.ObtenerPorSlug(alimentoSlug) is not null)
@@ -71,7 +73,7 @@ namespace FitnessCoach.Controllers
         public IActionResult RegistrarComida(string nombreComida, DateOnly? dia)
         {
             var usuario = _perfiles.ObtenerOCrear(IdentityId);
-            var elDia = ClampHoy(dia);
+            var elDia = ClampHoy(dia, usuario);
 
             // El plan es determinista, así que regenerarlo devuelve las mismas comidas
             // que vio el usuario. Se registra cada porción de la comida elegida.
@@ -92,14 +94,20 @@ namespace FitnessCoach.Controllers
             var usuario = _perfiles.ObtenerOCrear(IdentityId);
             _diario.Borrar(usuario, id);
 
-            return RedirectToAction("Index", new { dia = ClampHoy(dia) });
+            return RedirectToAction("Index", new { dia = ClampHoy(dia, usuario) });
         }
 
-        /// <summary>El día pedido, nunca en el futuro; por defecto, hoy.</summary>
-        private static DateOnly ClampHoy(DateOnly? dia)
+        /// <summary>
+        /// El día pedido, nunca en el futuro; por defecto, hoy. "Hoy" es el del calendario
+        /// del usuario, no el del servidor (D-25).
+        /// </summary>
+        private static DateOnly ClampHoy(DateOnly? dia, UsuarioPerfil usuario)
         {
-            var hoy = DateOnly.FromDateTime(DateTime.Today);
+            var hoy = Hoy(usuario);
             return dia is { } d && d <= hoy ? d : hoy;
         }
+
+        private static DateOnly Hoy(UsuarioPerfil usuario) =>
+            ZonaHorariaUsuario.Hoy(ZonaHorariaUsuario.De(usuario));
     }
 }

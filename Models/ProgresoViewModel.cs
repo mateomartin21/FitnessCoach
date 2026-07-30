@@ -1,3 +1,4 @@
+using FitnessCoach.Application.Services;
 using FitnessCoach.Domain.Models;
 
 namespace FitnessCoach.Models
@@ -33,6 +34,11 @@ namespace FitnessCoach.Models
 
         public Rachas Rachas { get; set; } = Rachas.Vacia;
 
+        /// <summary>La provee el controlador: las marcas se guardan en UTC y se muestran acá (D-25).</summary>
+        public TimeZoneInfo Zona { get; set; } = TimeZoneInfo.Utc;
+
+        public DateTime EnLocal(DateTime fechaGuardada) => ZonaHorariaUsuario.ALocal(fechaGuardada, Zona);
+
         public List<RecordPersonal> Records { get; set; } = new();
 
         public bool TieneEntrenamientos => Entrenamientos.Count > 0;
@@ -60,7 +66,7 @@ namespace FitnessCoach.Models
         private IEnumerable<RegistroProgreso> EnOrdenCronologico => Historial.OrderBy(r => r.Fecha);
 
         public List<string> EtiquetasGrafica =>
-            EnOrdenCronologico.Select(r => r.Fecha.ToLocalTime().ToString("dd/MM")).ToList();
+            EnOrdenCronologico.Select(r => EnLocal(r.Fecha).ToString("dd/MM")).ToList();
 
         public List<double> PesosGrafica =>
             EnOrdenCronologico.Select(r => r.PesoKg).ToList();

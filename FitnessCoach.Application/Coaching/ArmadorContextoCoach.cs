@@ -80,27 +80,28 @@ namespace FitnessCoach.Application.Coaching
 
         /// <summary>
         /// El pulso de los últimos 7 días: entrenamientos hechos, racha y cómo se movió
-        /// el peso. Es lo que alimenta el resumen semanal narrado, y de paso le da al
-        /// Lobo el ritmo reciente en cualquier respuesta. Se cuenta en hora local, igual
-        /// que las rachas de la pantalla de progreso.
+        /// el peso. Alimenta el resumen semanal y da contexto al resto de las respuestas.
+        /// Se cuenta en la zona del usuario (D-25).
         /// </summary>
         private static void EstaSemana(StringBuilder sb, UsuarioPerfil u)
         {
             try
             {
-                var hoyLocal = DateOnly.FromDateTime(DateTime.Now);
-                var desde = DateTime.Now.AddDays(-7);
+                var zona = ZonaHorariaUsuario.De(u);
+                var ahora = ZonaHorariaUsuario.Ahora(zona);
+                var hoyLocal = DateOnly.FromDateTime(ahora);
+                var desde = ahora.AddDays(-7);
 
                 var entrenosSemana = u.EntrenamientosCompletados
-                    .Where(e => e.Fecha.ToLocalTime() >= desde)
+                    .Where(e => ZonaHorariaUsuario.ALocal(e.Fecha, zona) >= desde)
                     .OrderByDescending(e => e.Fecha)
                     .ToList();
 
                 var racha = CalculadorRachas.Calcular(
-                    u.EntrenamientosCompletados.Select(e => e.Fecha.ToLocalTime()), hoyLocal);
+                    u.EntrenamientosCompletados.Select(e => ZonaHorariaUsuario.ALocal(e.Fecha, zona)), hoyLocal);
 
                 var pesosSemana = u.HistorialProgreso
-                    .Where(r => r.Fecha.ToLocalTime() >= desde)
+                    .Where(r => ZonaHorariaUsuario.ALocal(r.Fecha, zona) >= desde)
                     .OrderBy(r => r.Fecha)
                     .ToList();
 
@@ -113,7 +114,7 @@ namespace FitnessCoach.Application.Coaching
 
                 if (entrenosSemana.Count > 0)
                     sb.AppendLine("Hizo: " + string.Join("; ",
-                        entrenosSemana.Select(e => $"{e.NombreRutina} ({e.DuracionMinutos}min, {e.Fecha.ToLocalTime():dd/MM})")));
+                        entrenosSemana.Select(e => $"{e.NombreRutina} ({e.DuracionMinutos}min, {ZonaHorariaUsuario.ALocal(e.Fecha, zona):dd/MM})")));
 
                 if (pesosSemana.Count >= 2)
                 {
@@ -170,7 +171,8 @@ namespace FitnessCoach.Application.Coaching
         {
             try
             {
-                var hoy = DateOnly.FromDateTime(DateTime.Today);
+                // "Hoy" es el día del usuario, no el de UTC (D-25).
+                var hoy = ZonaHorariaUsuario.Hoy(ZonaHorariaUsuario.De(u));
                 var resumen = _diario.ResumenDelDia(u, hoy);
 
                 sb.AppendLine("== DIARIO DE HOY (lo que realmente comio) ==");

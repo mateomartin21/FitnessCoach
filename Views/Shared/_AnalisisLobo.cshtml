@@ -40,10 +40,11 @@
             @titulo
         </h5>
         <button id="@botonId" class="btn fc-btn-primary btn-sm" data-aspecto="@aspecto" data-cargando="@cargando">
-            <i class="fas fa-wand-magic-sparkles me-1"></i>Pedir análisis
+            <i class="fas fa-wand-magic-sparkles me-1" aria-hidden="true"></i>Pedir análisis
         </button>
     </div>
-    <div id="@salidaId" class="small" style="color:#ccc; white-space:pre-line;">
+    @* aria-live: el analisis llega por fetch y sin esto un lector de pantalla no lo anuncia. *@
+    <div id="@salidaId" class="small" role="status" aria-live="polite" style="color:#ccc; white-space:pre-line;">
         @invitacion
     </div>
 </div>

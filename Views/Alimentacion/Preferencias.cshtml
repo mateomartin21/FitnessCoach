@@ -4,7 +4,7 @@
 }
 
 <div class="text-center mb-4">
-    <h2 class="fw-bold" style="color:var(--fc-primary);">Mis preferencias</h2>
+    <h2 class="fw-bold" style="color:var(--fc-primary-texto);">Mis preferencias</h2>
     <p class="text-muted small mx-auto" style="max-width:620px;">
         Con esto ajustamos tu plan: nada de lo que marques como excluido va a aparecer,
         ni en las comidas ni como alternativa.
@@ -15,8 +15,8 @@
     @Html.AntiForgeryToken()
 
     <div class="fc-feature-card mb-4">
-        <h6 class="fw-bold mb-3" style="color:var(--fc-primary);">
-            <i class="fas fa-leaf me-2"></i>Tipo de dieta
+        <h6 class="fw-bold mb-3" style="color:var(--fc-primary-texto);">
+            <i class="fas fa-leaf me-2" aria-hidden="true"></i>Tipo de dieta
         </h6>
         <div class="row g-2">
             @foreach (var (valor, titulo, detalle) in FitnessCoach.Models.PreferenciasViewModel.DietasDisponibles)
@@ -38,8 +38,8 @@
     </div>
 
     <div class="fc-feature-card mb-4">
-        <h6 class="fw-bold mb-1" style="color:var(--fc-primary);">
-            <i class="fas fa-ban me-2"></i>Alimentos a excluir
+        <h6 class="fw-bold mb-1" style="color:var(--fc-primary-texto);">
+            <i class="fas fa-ban me-2" aria-hidden="true"></i>Alimentos a excluir
         </h6>
         <p class="small text-muted mb-3">Por alergia o porque no te gustan. Marca los que no quieres ver nunca.</p>
 
@@ -69,10 +69,10 @@
 
     <div class="text-center mb-4">
         <button type="submit" class="btn fc-btn-primary px-4 me-2">
-            <i class="fas fa-save me-2"></i>Guardar preferencias
+            <i class="fas fa-save me-2" aria-hidden="true"></i>Guardar preferencias
         </button>
         <a asp-action="Index" class="btn fc-btn-outline px-4">
-            <i class="fas fa-utensils me-2"></i>Ver mi plan
+            <i class="fas fa-utensils me-2" aria-hidden="true"></i>Ver mi plan
         </a>
     </div>
 </form>

@@ -81,6 +81,29 @@ namespace FitnessCoach.Tests.Gamificacion
         }
 
         [Fact]
+        public void LaComidaDelLunes_CuentaEnLaSemanaQueEmpiezaEseLunes()
+        {
+            // La fecha del diario es la etiqueta del día elegido, guardada como su
+            // medianoche: convertirla de zona la corría al día anterior, y la comida del
+            // lunes quedaba afuera de la semana que arranca ese lunes.
+            var zona = ZonaHorariaUsuario.Resolver(ZonaHorariaUsuario.PorDefecto);
+            var hoy = ZonaHorariaUsuario.Hoy(zona);
+            var lunes = hoy.AddDays(-(((int)hoy.DayOfWeek + 6) % 7));
+
+            var u = new UsuarioPerfil { IdentityUserId = "u1" };
+            u.Diario.Add(new RegistroComida
+            {
+                Fecha = DateTime.SpecifyKind(lunes.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc),
+                AlimentoNombre = "Avena"
+            });
+
+            var stats = ServicioGamificacion.Snapshot(u);
+
+            Assert.Equal(1, stats.DiasConDiario);
+            Assert.Equal(1, stats.DiasConDiarioEstaSemana);
+        }
+
+        [Fact]
         public void UnEntrenamientoViejo_NoCuentaEnLaSemana()
         {
             var u = new UsuarioPerfil { IdentityUserId = "u1" };
