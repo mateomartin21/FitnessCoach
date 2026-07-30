@@ -173,6 +173,30 @@ Una tarea está terminada solo cuando **todo** esto se cumple:
 
 ---
 
+## 6.bis Comentarios, accesibilidad y fechas
+
+### Comentarios
+Un comentario justifica lo que **no se deduce del código**. Si repite el nombre del método, sobra.
+
+- **Una o dos líneas**, con la referencia `D-xx` o `ADR-nn` cuando aplique.
+- Nada de narrativa ni escenarios hipotéticos ("alguien en Tijuana a las 23:00…"): el caso concreto va en la prueba, no en el comentario.
+- **Excepción:** los `<summary>`, `<param>` y `<response>` de los controladores de API se quedan completos, porque alimentan el OpenAPI.
+
+### Accesibilidad (mínimo exigible)
+- Iconos decorativos con `aria-hidden="true"`; todo control que solo tenga un icono necesita `aria-label`.
+- Cada campo con su `<label>` **asociado** por `for`/`id` (o `asp-for`, que lo hace solo).
+- Contenido que llega por `fetch` dentro de una región con `aria-live`.
+- Foco visible con `:focus-visible` en enlaces y botones, y enlace "Saltar al contenido" como primer tabulador.
+- **Contraste AA (4.5:1) para texto.** El azul primario no lo cumple como texto: para eso está `--fc-primary-texto`. `--fc-primary` es para rellenos y bordes (mínimo 3:1).
+- `scope="col"` en los encabezados de tabla.
+
+### Fechas
+- Todo instante se **guarda en UTC**, siempre puesto por el servidor.
+- Todo lo que sea **día de calendario** (rachas, "esta semana", "hoy") se cuenta en la zona del usuario, y el único lugar que la resuelve es `ZonaHorariaUsuario` (D-25).
+- **Excepción:** la fecha del diario de comidas no es un instante sino la etiqueta del día elegido, así que no se convierte de zona.
+
+---
+
 ## 7. Prueba de fuego
 
 Antes de cerrar una fase, intenta romperla tú mismo como lo haría un compañero:
@@ -186,3 +210,5 @@ Antes de cerrar una fase, intenta romperla tú mismo como lo haría un compañer
 7. Reinicia el servidor. ¿Siguen ahí los datos?
 
 Si alguna de estas siete rompe algo, la fase no está terminada.
+
+> **Corrida completa al cerrar la Fase 10** (30/07/2026, ADR-20): los siete puntos en verde contra la app real. El punto 6 se verificó sin salida a internet: la cadena de IA llegó al eslabón offline y respondió por reglas. El punto 7 se verificó matando el proceso y volviéndolo a levantar: los registros y la sesión siguieron ahí.

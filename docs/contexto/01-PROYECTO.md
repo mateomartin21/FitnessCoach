@@ -152,13 +152,18 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 
 - **Identidad visual pixel art y Koda con vida (Fase 9, ADR-19).** Sistema de diseño 8-bit en tokens CSS (azul + 6 colores de estado, Press Start 2P auto-hospedada, bordes duros, sin scanlines). El coach se llama **Koda**: 19 sprites recortados de un sheet del usuario, cableados a Inicio, chat, Rutina, Progreso y Logros. Una capa de JavaScript vanilla le da vida (`koda.js`: estados reactivos, micro-interacciones, aura de partículas en canvas) y dibuja las medallas de logros (`logros.js`), reemplazando los emojis. Toda la app —y la voz de la IA— quedó en español de México. Respeta `prefers-reduced-motion`.
 
+- **Cierre del producto (Fase 10, ADR-20).** El calendario pasó a ser el **del usuario**: el perfil guarda su zona horaria (autodetectada del navegador) y `ZonaHorariaUsuario` es el único lugar que decide qué día es, así que rachas, misiones y el "hoy" del diario ya no dependen del reloj del servidor. La **API cubre el tracker completo** (editar y borrar registros, entrenamientos, rachas, opciones de rutina), reusando los servicios y su aislamiento por cuenta. Rendimiento **medido**: `AsSplitQuery` en el perfil, caché de los dos catálogos por Decorator y una sola lectura de perfil por petición — de 20/15/30 consultas a 6/5/6 en Progreso, Rutina y Diario. Los sprites perdieron el halo del fondo original y `wwwroot` bajó de 2149 KB a 328 KB. Accesibilidad: teclado, lectores de pantalla y contraste AA.
+
 ### ❌ Existe pero NO está conectado / no funciona como se documentó
 
-- **La API REST se quedó atrás del producto (D-26).** Solo expone perfil, calorías y el historial de peso en modo lectura/alta; no cubre edición, borrado ni entrenamientos. No es un riesgo de seguridad, es superficie desactualizada.
+- **Font Awesome se carga de un CDN externo (D-34).** Es la única lib de front que no está autohospedada: si `cdnjs` no responde, la app se queda sin iconos.
+- **Los estáticos no usan las rutas inmutables que ya genera `MapStaticAssets` (D-33).** Sirven con ETag y compresión, pero revalidando.
 
 ### ⏳ No existe todavía
 
-El pulido final de la Fase 10 (optimización, despliegue y cierre). → Ver `06-ROADMAP.md`.
+**Nada del roadmap: las diez fases están cerradas.** Lo que sigue son las ideas fuera de alcance (capa social, app móvil/PWA, despliegue continuo a EC2, PostgreSQL, wearables). → Ver `06-ROADMAP.md`.
+
+**Para desplegar:** se usa **SQL Server Express**, gratis y con límite de 10 GB por base, sin cambios de código. PostgreSQL queda registrado como opción en D-35, con el detalle de que distingue mayúsculas y SQL Server no.
 
 ---
 
@@ -184,6 +189,7 @@ El pulido final de la Fase 10 (optimización, despliegue y cierre). → Ver `06-
 | ADR-17 | El Lobo en toda la app y resumen semanal narrado |
 | ADR-18 | Gamificación derivada de los hechos, sin estado paralelo |
 | ADR-19 | Identidad visual pixel art y Koda presente y con vida |
+| ADR-20 | Cierre del producto: rendimiento medido, calendario del usuario, API completa y accesibilidad |
 
 **Convención establecida:** cada ADR abre citando explícitamente su relación con el anterior ("Este ADR extiende el ADR-N…"). Cada uno tiene: Contexto → Decisión → Alternativas Consideradas → Consecuencias → Estado actual.
 

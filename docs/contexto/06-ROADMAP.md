@@ -348,6 +348,16 @@ Tracker       Catálogo de        Resiliencia IA
 
 ## Fase 10 — Optimización y cierre
 
+> **✅ Cerrada el 30/07/2026** (rama `fase-10/optimizacion`, ADR-20) — doce commits. Resolvió las cinco deudas que quedaban abiertas de fases anteriores: **D-24** (`39ebee3`), **D-25** (`dd812af`, `28bae0b`), **D-26** (`5c55765`, `5d7dbeb`), **D-30** (`1860845`) y **D-31** (`aaeb396`). Rendimiento en `bb9f8bb`, `c026920` y `51ad3f9`; accesibilidad en `47fc2ab`; limpieza de comentarios en `bf8445b`. 348/348 pruebas y **los 7 puntos de la prueba de fuego corridos contra la app real**.
+>
+> **La fase se guió por medir antes de tocar, y eso encontró dos cosas que no estaban en ninguna lista de deuda:** leer un perfil costaba una consulta con cuatro `LEFT JOIN` entre colecciones sin relación (un producto cartesiano) repetida hasta seis veces por pantalla; y la fecha del diario de comidas se trataba como instante cuando es la *etiqueta* del día elegido, así que la comida del **lunes** nunca contaba en la misión semanal.
+>
+> **También quedó claro que dos deudas estaban mal registradas.** D-30 hablaba de "un par de sprites" y eran los 26. D-31 daba por no usados los dos PNG de `branding/`, pero `logo.png` era el placeholder de los ejercicios sin GIF — y era el logo naranja de antes de la Fase 9.
+>
+> **Índices: no se tocó ninguno.** Ya estaban los que piden las consultas reales, así que el entregable se cierra por verificación y no por cambio.
+>
+> Deuda nueva, toda baja: **D-32** (nombre de `PersonalidadLoboCoach`), **D-33** (los estáticos no usan las rutas inmutables de `MapStaticAssets`), **D-34** (Font Awesome por CDN) y **D-35** (la base atada a SQL Server; se despliega con **Express**, que es gratis, y PostgreSQL queda como opción).
+
 **Objetivo:** el pulido final.
 
 **Entregables:**
@@ -363,7 +373,8 @@ Tracker       Catálogo de        Resiliencia IA
 - Los 7 puntos de la prueba de fuego, completos
 - Actualizar `04-DEUDA-TECNICA.md` y este roadmap
 
-**Definition of Done:** las siete pruebas de fuego pasan; cero deuda crítica o alta abierta.
+**Definition of Done:** las siete pruebas de fuego pasan; cero deuda crítica o alta abierta. ✅ **Cumplido:** los siete puntos se corrieron contra la app (dos usuarios aislados, ids ajenos en `404`, datos basura rechazados, API sin sesión en `401`, guardados simultáneos, Koda degradando al respaldo offline sin red, y datos intactos tras reiniciar el servidor). Cero deuda crítica y cero alta abiertas.
+**ADR:** ADR-20 — cierre del producto: rendimiento medido, calendario del usuario, API completa y accesibilidad.
 **Rama sugerida:** `fase-10/optimizacion`
 
 ---
@@ -394,4 +405,6 @@ Tracker       Catálogo de        Resiliencia IA
 | 7 | ✅ Completada | `fase-7/ia-pulido` | (contra `CD/CI`) | ADR-17 | ✅ |
 | 8 | ✅ Completada | `fase-8/gamificacion` | (contra `CD/CI`) | ADR-18 | ✅ |
 | 9 | ✅ Completada | `fase-9/identidad-pixel` | (contra `CD/CI`) | ADR-19 | ✅ |
-| 10 | ⬜ Pendiente | — | — | — | — |
+| 10 | ✅ Completada | `fase-10/optimizacion` | (contra `CD/CI`) | ADR-20 | ✅ |
+
+> **Roadmap cerrado.** Las diez fases están completas. Lo que siga sale de "Ideas fuera de alcance" y arranca su propio ciclo de fase, plan y ADR.
