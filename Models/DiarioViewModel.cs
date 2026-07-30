@@ -16,11 +16,7 @@ namespace FitnessCoach.Models
         public IReadOnlyList<IGrouping<string, Alimento>> CatalogoPorCategoria { get; set; } =
             Array.Empty<IGrouping<string, Alimento>>();
 
-        /// <summary>
-        /// El día de hoy EN LA ZONA DEL USUARIO. Lo provee el controlador, que es quien
-        /// tiene el perfil: la vista no puede preguntarle la hora al servidor porque su
-        /// medianoche no es la del usuario (D-25).
-        /// </summary>
+        /// <summary>Hoy en la zona del usuario; lo provee el controlador, que tiene el perfil (D-25).</summary>
         public DateOnly Hoy { get; set; }
 
         public bool EsHoy => Dia == Hoy;

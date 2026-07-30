@@ -11,9 +11,8 @@ namespace FitnessCoach.Web.ApiControllers
     /// Historial de progreso de peso del usuario autenticado.
     /// La ruta ya no lleva el id del usuario: el dueño sale de la identidad.
     ///
-    /// Todo pasa por <see cref="IServicioProgreso"/>, que es donde viven las reglas (entre
-    /// otras, que el peso del perfil siga al registro más reciente). Antes la API tocaba el
-    /// perfil por su cuenta y se salteaba eso: la pantalla y la API no coincidían (D-26).
+    /// Todo pasa por <see cref="IServicioProgreso"/>, donde viven las reglas. Antes la API
+    /// tocaba el perfil por su cuenta y no coincidía con la pantalla (D-26).
     /// </summary>
     [ApiController]
     [Authorize]
@@ -76,9 +75,7 @@ namespace FitnessCoach.Web.ApiControllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult ObtenerRegistro(int id)
         {
-            // El servicio busca dentro del historial del usuario autenticado, así que un id
-            // ajeno simplemente no aparece: 404, no 403, para no confirmar que existe
-            // (estándar §1.4, misma idea que la pantalla MVC).
+            // Un id ajeno no aparece en el historial propio: 404, no 403 (estándar §1.4).
             var registro = _progreso.ObtenerRegistro(IdentityId, id);
 
             return registro is null ? NotFound() : Ok(registro);

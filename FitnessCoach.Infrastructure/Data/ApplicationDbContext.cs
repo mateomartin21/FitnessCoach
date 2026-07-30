@@ -40,8 +40,7 @@ namespace FitnessCoach.Infrastructure.Data
 
             builder.Entity<UsuarioPerfil>(entity =>
             {
-                // Id IANA de zona horaria ("America/Mexico_City"): el mas largo del mundo
-                // no pasa de 40 caracteres. Null = usar la zona por defecto (D-25).
+                // Id IANA de zona horaria; el mas largo no pasa de 40 caracteres (D-25).
                 entity.Property(u => u.ZonaHoraria).HasMaxLength(64);
 
                 // ObjetivoActual es una clase abstracta sin datos propios (Strategy):

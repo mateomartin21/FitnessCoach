@@ -102,9 +102,8 @@ namespace FitnessCoach.Controllers
             if (!ModelState.IsValid)
                 return View("Index", ArmarVista(nuevoEntrenamiento: modelo));
 
-            // Solo se puede marcar como hecho un día real de la propia rutina (la regla la
-            // hace cumplir ServicioEntrenamientos; acá se traduce a un error del formulario
-            // en vez de una excepción).
+            // La regla la hace cumplir ServicioEntrenamientos; acá solo se traduce a un
+            // error del formulario en vez de una excepción.
             if (!_entrenamientos.OpcionesDeRutina(IdentityId).Contains(modelo.NombreRutina))
             {
                 ModelState.AddModelError("NuevoEntrenamiento.NombreRutina",

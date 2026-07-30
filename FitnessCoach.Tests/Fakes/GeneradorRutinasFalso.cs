@@ -4,10 +4,7 @@ using FitnessCoach.Domain.Models.Objetivos;
 
 namespace FitnessCoach.Tests.Fakes
 {
-    /// <summary>
-    /// Rutina fija de dos días, sin catálogo ni base de datos. Alcanza para lo que las
-    /// pruebas del tracker necesitan: saber qué etiquetas de entrenamiento son válidas.
-    /// </summary>
+    /// <summary>Rutina fija de dos días: alcanza para saber qué etiquetas son válidas.</summary>
     public class GeneradorRutinasFalso : IGeneradorRutinas
     {
         /// <summary>Las etiquetas que forma <c>ServicioEntrenamientos</c> con estos días.</summary>

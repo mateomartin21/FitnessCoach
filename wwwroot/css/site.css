@@ -296,8 +296,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ---------- ACCESIBILIDAD ---------- */
 
-/* Primer tabulador de la pagina: salta la navegacion entera. Fuera de la pantalla
-   hasta que recibe el foco, asi no molesta a quien usa el mouse. */
+/* Primer tabulador: salta la navegacion. Fuera de pantalla hasta recibir el foco. */
 .fc-salto-contenido {
     position: absolute;
     left: -9999px;
@@ -311,8 +310,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .fc-salto-contenido:focus { left: 0; }
 
-/* Los campos ya tenian foco visible, el resto no: con teclado no se sabia donde
-   estabas parado. :focus-visible no lo dibuja al hacer clic con el mouse. */
+/* Los campos ya tenian foco visible, el resto no. :focus-visible lo omite con mouse. */
 a:focus-visible,
 button:focus-visible,
 [role="button"]:focus-visible,

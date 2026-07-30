@@ -98,9 +98,8 @@ namespace FitnessCoach.Controllers
         }
 
         /// <summary>
-        /// El día pedido, nunca en el futuro; por defecto, hoy. "Hoy" y "futuro" son los
-        /// del calendario del usuario: alguien en Tijuana a las 23:00 no debe ver que su
-        /// día ya terminó porque en el servidor son las 06:00 del siguiente (D-25).
+        /// El día pedido, nunca en el futuro; por defecto, hoy. "Hoy" es el del calendario
+        /// del usuario, no el del servidor (D-25).
         /// </summary>
         private static DateOnly ClampHoy(DateOnly? dia, UsuarioPerfil usuario)
         {

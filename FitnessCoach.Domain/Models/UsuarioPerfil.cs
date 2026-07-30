@@ -10,9 +10,8 @@ public class UsuarioPerfil
     public string? IdentityUserId { get; set; }   // <-- NUEVA: a que cuenta de Identity pertenece este perfil
 
     /// <summary>
-    /// Zona horaria IANA del usuario (ej. "America/Mexico_City"). Las rachas, las misiones
-    /// y el "hoy" del diario se cuentan en SU calendario, no en el del servidor (D-25).
-    /// Si es null, se usa la zona por defecto (ver <c>ZonaHorariaUsuario</c>).
+    /// Zona IANA (ej. "America/Mexico_City") en la que se cuentan los días del usuario.
+    /// Null = la zona por defecto de <c>ZonaHorariaUsuario</c> (D-25).
     /// </summary>
     public string? ZonaHoraria { get; set; }
 

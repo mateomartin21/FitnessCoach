@@ -11,10 +11,7 @@ namespace FitnessCoach.Models
     {
         public int Id { get; set; }
 
-        /// <summary>
-        /// Cuándo ocurrió, ya traducido a la zona del usuario (D-25). Solo para mostrar:
-        /// no se persiste desde acá ni viaja en el POST, así que no hace falta el UTC.
-        /// </summary>
+        /// <summary>Solo para mostrar, ya en la zona del usuario. No viaja en el POST (D-25).</summary>
         public DateTime FechaLocal { get; set; }
 
         [Range(RangosPerfil.PesoMinimoKg, RangosPerfil.PesoMaximoKg,

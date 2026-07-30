@@ -83,10 +83,9 @@ namespace FitnessCoach.Tests.Gamificacion
         [Fact]
         public void LaComidaDelLunes_CuentaEnLaSemanaQueEmpiezaEseLunes()
         {
-            // La fecha del diario no es un instante: es la ETIQUETA del día que el usuario
-            // eligió, guardada como su medianoche. Al convertirla de zona se corría al día
-            // anterior, y la comida del lunes quedaba justo afuera de la ventana que
-            // arranca ese mismo lunes (la misión de diario nunca contaba los lunes).
+            // La fecha del diario es la etiqueta del día elegido, guardada como su
+            // medianoche: convertirla de zona la corría al día anterior, y la comida del
+            // lunes quedaba afuera de la semana que arranca ese lunes.
             var zona = ZonaHorariaUsuario.Resolver(ZonaHorariaUsuario.PorDefecto);
             var hoy = ZonaHorariaUsuario.Hoy(zona);
             var lunes = hoy.AddDays(-(((int)hoy.DayOfWeek + 6) % 7));

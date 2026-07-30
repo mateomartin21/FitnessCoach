@@ -108,8 +108,7 @@ namespace FitnessCoach.Tests.Services
         [Fact]
         public void ObtenerOCrear_VariasVecesEnLaMismaPeticion_LeeLaBaseUnaSolaVez()
         {
-            // Una pantalla como Progreso pide el perfil media docena de veces: el controlador
-            // más cada servicio, que arranca de su propio ObtenerOCrear. Contra SQL cada
+            // Progreso lo pide seis veces: el controlador y cada servicio. Contra SQL cada
             // lectura son cinco consultas (el perfil y sus cuatro colecciones).
             var repositorio = new RepositorioUsuarioFalso(
                 new UsuarioPerfil { IdentityUserId = IdentityAna, Nombre = "Ana" });
@@ -125,7 +124,7 @@ namespace FitnessCoach.Tests.Services
         [Fact]
         public void ObtenerOCrear_ConDosIdentidades_NoConfundeLosPerfiles()
         {
-            // Recordar lo leído no debe mezclar cuentas: la clave es la identidad.
+            // La clave es la identidad: recordar no debe mezclar cuentas.
             var repositorio = new RepositorioUsuarioFalso(
                 new UsuarioPerfil { IdentityUserId = IdentityAna, Nombre = "Ana" },
                 new UsuarioPerfil { IdentityUserId = IdentityBruno, Nombre = "Bruno" });

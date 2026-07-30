@@ -80,9 +80,8 @@ namespace FitnessCoach.Application.Coaching
 
         /// <summary>
         /// El pulso de los últimos 7 días: entrenamientos hechos, racha y cómo se movió
-        /// el peso. Es lo que alimenta el resumen semanal narrado, y de paso le da al
-        /// Lobo el ritmo reciente en cualquier respuesta. Se cuenta en la zona horaria del
-        /// usuario, igual que las rachas de la pantalla de progreso (D-25).
+        /// el peso. Alimenta el resumen semanal y da contexto al resto de las respuestas.
+        /// Se cuenta en la zona del usuario (D-25).
         /// </summary>
         private static void EstaSemana(StringBuilder sb, UsuarioPerfil u)
         {
@@ -172,8 +171,7 @@ namespace FitnessCoach.Application.Coaching
         {
             try
             {
-                // "Hoy" es el día del usuario: a las 22:00 en México todavía no es mañana,
-                // aunque para UTC ya lo sea (D-25).
+                // "Hoy" es el día del usuario, no el de UTC (D-25).
                 var hoy = ZonaHorariaUsuario.Hoy(ZonaHorariaUsuario.De(u));
                 var resumen = _diario.ResumenDelDia(u, hoy);
 

@@ -6,10 +6,8 @@ using Microsoft.Extensions.Caching.Memory;
 namespace FitnessCoach.Infrastructure.Repositories
 {
     /// <summary>
-    /// Mismo decorador de caché que el catálogo de ejercicios, para los alimentos. Son
-    /// menos filas, pero se piden más seguido: cada pantalla del diario y de alimentación
-    /// arma el selector completo por categoría, y las sustituciones consultan por grupo de
-    /// intercambio alimento por alimento.
+    /// Mismo decorador que el catálogo de ejercicios: menos filas, pero se piden más seguido
+    /// (el selector del diario y las sustituciones por grupo de intercambio).
     /// </summary>
     public class RepositorioAlimentosEnCache : IRepositorioAlimentos
     {

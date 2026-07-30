@@ -6,24 +6,15 @@ using Microsoft.Extensions.Caching.Memory;
 namespace FitnessCoach.Infrastructure.Repositories
 {
     /// <summary>
-    /// Decorador de caché sobre el catálogo de ejercicios (Decorator: implementa el mismo
-    /// puerto que envuelve, así que nada arriba se enteró del cambio).
-    ///
-    /// El catálogo son 1300+ filas de referencia que se pueblan por semilla al arrancar y
-    /// nadie modifica en caliente, así que consultarlo en cada petición es trabajo repetido:
-    /// armar una rutina dispara una consulta por bloque, y la rutina se regenera en varias
-    /// pantallas (Rutina, Progreso, y al registrar un entrenamiento).
-    ///
-    /// Acá solo vive el manejo de la caché; los índices los arma <see cref="IndiceEjercicios"/>.
+    /// Decorador de caché sobre el catálogo: son 1300+ filas de referencia que se pueblan por
+    /// semilla y nadie modifica en caliente, pero armar una rutina consultaba una vez por
+    /// bloque. Los índices los arma <see cref="IndiceEjercicios"/>.
     /// </summary>
     public class RepositorioEjerciciosEnCache : IRepositorioEjercicios
     {
         private const string Clave = "catalogo-ejercicios";
 
-        /// <summary>
-        /// El catálogo solo cambia al re-sembrar (o tocando la base a mano), y eso implica
-        /// reinicio. La vigencia es una red de seguridad, no un mecanismo de refresco.
-        /// </summary>
+        /// <summary>Red de seguridad: el catálogo solo cambia al re-sembrar, y eso implica reinicio.</summary>
         private static readonly TimeSpan Vigencia = TimeSpan.FromHours(12);
 
         private readonly IRepositorioEjercicios _origen;

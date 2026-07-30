@@ -21,8 +21,7 @@ namespace FitnessCoach.Tests.Services
                 Edad = 30,
                 EstaturaCm = 165,
                 PesoKg = 62,
-                // Sin objetivo no hay rutina, y sin rutina no hay entrenamiento válido
-                // que registrar: el servicio solo acepta días de la rutina real.
+                // Sin objetivo no hay rutina y el servicio no acepta ningún entrenamiento.
                 ObjetivoActual = new ObjetivoPerderPeso()
             };
 
@@ -79,8 +78,7 @@ namespace FitnessCoach.Tests.Services
         [Fact]
         public void Registrar_UnEntrenamientoInventado_NoSeGuarda()
         {
-            // La regla vive en el servicio, no en el controlador: si estuviera solo en la
-            // pantalla, la API la saltearía y se ganaría XP y logros sin entrenar (D-26).
+            // Si la regla viviera solo en la pantalla, la API la saltearía (D-26).
             var (servicio, ana) = Montar();
 
             Assert.Throws<ArgumentException>(() =>
@@ -130,10 +128,8 @@ namespace FitnessCoach.Tests.Services
         [Fact]
         public void ObtenerRachas_CuentaLosDiasEnLaZonaDelUsuario()
         {
-            // Dos entrenamientos del MISMO día UTC (ayer 02:00 y ayer 20:00). En UTC son un
-            // solo día de racha; en Ciudad de México (UTC-6) el de las 02:00 cae la noche
-            // anterior, así que son dos días consecutivos. El mismo hecho, distinta racha:
-            // eso es exactamente lo que D-25 rompía al contar con la hora del servidor.
+            // Dos entrenamientos del mismo día UTC (02:00 y 20:00): en UTC son un día de
+            // racha, en México (UTC-6) el primero cae la noche anterior y son dos (D-25).
             var rachaUtc = RachaConZona("UTC");
             var rachaMexico = RachaConZona("America/Mexico_City");
 
@@ -143,7 +139,7 @@ namespace FitnessCoach.Tests.Services
             Assert.Equal(2, rachaMexico.MasLarga);
         }
 
-        /// <summary>Los mismos dos instantes, leídos desde la zona indicada.</summary>
+        /// <summary>Los mismos instantes, leídos desde la zona indicada.</summary>
         private static Rachas RachaConZona(string zona)
         {
             var ayerUtc = DateTime.UtcNow.Date.AddDays(-1);

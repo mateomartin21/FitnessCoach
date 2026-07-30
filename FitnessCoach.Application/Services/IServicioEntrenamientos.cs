@@ -8,14 +8,13 @@ namespace FitnessCoach.Application.Services
         IReadOnlyList<EntrenamientoCompletado> ObtenerHistorial(string identityUserId);
 
         /// <summary>
-        /// Los días de la rutina real del usuario, únicas etiquetas válidas para registrar
-        /// un entrenamiento. Vacío si todavía no tiene objetivo (sin objetivo no hay rutina).
+        /// Únicas etiquetas válidas para registrar un entrenamiento. Vacío si no tiene objetivo.
         /// </summary>
         IReadOnlyList<string> OpcionesDeRutina(string identityUserId);
 
         /// <summary>
-        /// Registra un entrenamiento hecho. <paramref name="nombreRutina"/> tiene que ser
-        /// uno de <see cref="OpcionesDeRutina"/>: si no, lanza <see cref="ArgumentException"/>.
+        /// <paramref name="nombreRutina"/> tiene que ser uno de <see cref="OpcionesDeRutina"/>;
+        /// si no, lanza <see cref="ArgumentException"/>.
         /// </summary>
         EntrenamientoCompletado Registrar(string identityUserId, string nombreRutina, int duracionMinutos, string? notas);
 

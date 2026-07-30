@@ -3,9 +3,8 @@ using FitnessCoach.Domain.Models;
 namespace FitnessCoach.Application.Services
 {
     /// <summary>
-    /// Resuelve la zona horaria del usuario y convierte las marcas guardadas (UTC) a su
-    /// calendario. Las rachas, misiones y el "hoy" del diario se cuentan acá, no en la
-    /// hora del servidor (D-25). Es el único lugar que decide "qué día es para el usuario".
+    /// Único lugar que decide qué día es para el usuario: rachas, misiones y el "hoy" del
+    /// diario se cuentan en su zona, no en la del servidor (D-25).
     /// </summary>
     public static class ZonaHorariaUsuario
     {
@@ -13,10 +12,8 @@ namespace FitnessCoach.Application.Services
         public const string PorDefecto = "America/Mexico_City";
 
         /// <summary>
-        /// Las zonas que ofrece el selector del perfil, en ids IANA. No es la lista completa
-        /// (son cientos): son las de México y el resto de Latinoamérica, más las de Estados
-        /// Unidos y España, donde puede vivir alguien de acá. Quien necesite otra la recibe
-        /// del navegador (el formulario acepta cualquier id válido del sistema).
+        /// Zonas que ofrece el selector del perfil. No es la lista completa: el formulario
+        /// acepta cualquier id válido del sistema, que es lo que aporta el navegador.
         /// </summary>
         public static readonly IReadOnlyList<(string Id, string Etiqueta)> Comunes = new[]
         {
@@ -41,10 +38,7 @@ namespace FitnessCoach.Application.Services
             ("UTC",                            "UTC (hora universal)"),
         };
 
-        /// <summary>
-        /// Devuelve la <see cref="TimeZoneInfo"/> del id dado (IANA o Windows; .NET convierte
-        /// entre ambos). Cae a la zona por defecto y, en último caso, a UTC, sin lanzar.
-        /// </summary>
+        /// <summary>Acepta ids IANA o Windows. Cae a la zona por defecto y luego a UTC, sin lanzar.</summary>
         public static TimeZoneInfo Resolver(string? id)
         {
             foreach (var candidato in new[] { id, PorDefecto })
@@ -76,10 +70,7 @@ namespace FitnessCoach.Application.Services
         /// <summary>El día de calendario del usuario en este momento.</summary>
         public static DateOnly Hoy(TimeZoneInfo zona) => DateOnly.FromDateTime(Ahora(zona));
 
-        /// <summary>
-        /// Convierte una marca guardada a la hora de pared del usuario. Las fechas se guardan
-        /// en UTC pero EF las devuelve con Kind sin especificar; acá se tratan como UTC.
-        /// </summary>
+        /// <summary>Una marca guardada (UTC, aunque EF la devuelva sin Kind) en hora del usuario.</summary>
         public static DateTime ALocal(DateTime fechaGuardada, TimeZoneInfo zona) =>
             TimeZoneInfo.ConvertTimeFromUtc(DateTime.SpecifyKind(fechaGuardada, DateTimeKind.Utc), zona);
     }

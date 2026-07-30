@@ -20,9 +20,7 @@ namespace FitnessCoach.Application.Services
         }
 
         /// <summary>
-        /// Los días de la rutina real del usuario, como etiquetas ("Día 1 — Piernas"). La
-        /// rutina es determinista (mismo objetivo y misma semilla, mismos días), así que
-        /// regenerarla acá coincide con lo que el usuario ve en su pantalla.
+        /// La rutina es determinista, así que regenerarla acá da los mismos días que ve el usuario.
         /// </summary>
         public IReadOnlyList<string> OpcionesDeRutina(string identityUserId) =>
             OpcionesDe(_perfiles.ObtenerOCrear(identityUserId));
@@ -39,10 +37,8 @@ namespace FitnessCoach.Application.Services
         {
             var usuario = _perfiles.ObtenerOCrear(identityUserId);
 
-            // Solo se puede marcar como hecho un día REAL de la propia rutina. Si fuera
-            // texto libre, cualquiera anota algo inventado y se lleva el XP y los logros sin
-            // haber entrenado. La regla vive acá, no en el controlador, para que la cumplan
-            // por igual la pantalla y la API (D-26).
+            // Con texto libre cualquiera se lleva XP y logros sin entrenar. La regla vive
+            // en el servicio para que la cumplan la pantalla y la API por igual (D-26).
             if (!OpcionesDe(usuario).Contains(nombreRutina))
                 throw new ArgumentException(
                     "El entrenamiento tiene que ser uno de los días de tu rutina.", nameof(nombreRutina));
@@ -77,9 +73,7 @@ namespace FitnessCoach.Application.Services
         {
             var usuario = _perfiles.ObtenerOCrear(identityUserId);
 
-            // Las fechas se guardan en UTC pero la racha es un concepto de calendario:
-            // "entrené hoy" depende de la medianoche DEL USUARIO, no la de UTC ni la del
-            // servidor. Por eso todo se traduce a su zona antes de contar días (D-25).
+            // "Entrené hoy" depende de la medianoche del usuario, no de la de UTC (D-25).
             var zona = ZonaHorariaUsuario.De(usuario);
             var fechasLocales = usuario.EntrenamientosCompletados
                 .Select(e => ZonaHorariaUsuario.ALocal(e.Fecha, zona));

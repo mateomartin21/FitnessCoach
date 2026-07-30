@@ -3,16 +3,13 @@ using FitnessCoach.Domain.Models.Entrenamiento;
 namespace FitnessCoach.Domain.Catalogos
 {
     /// <summary>
-    /// Foto inmutable del catálogo de ejercicios con sus accesos ya preparados. Es lógica
-    /// pura: recibe la lista y arma los índices, sin saber de dónde vino ni quién la guarda
-    /// en caché (de eso se encarga el decorador del adaptador SQL).
-    ///
-    /// Compartirla entre peticiones es seguro porque el catálogo es de solo lectura: se
-    /// puebla por semilla al arrancar y nadie lo modifica en caliente.
+    /// Foto inmutable del catálogo con sus accesos ya preparados. No sabe de dónde vino la
+    /// lista ni quién la guarda en caché. Compartirla entre peticiones es seguro porque el
+    /// catálogo es de solo lectura.
     /// </summary>
     public sealed class IndiceEjercicios
     {
-        /// <summary>Ordenados por nombre, igual que los devolvía el adaptador SQL.</summary>
+        /// <summary>Ordenados por nombre, igual que el adaptador SQL.</summary>
         public IReadOnlyList<Ejercicio> Todos { get; }
 
         private readonly IReadOnlyDictionary<string, Ejercicio> _porSlug;
@@ -29,9 +26,8 @@ namespace FitnessCoach.Domain.Catalogos
         }
 
         /// <summary>
-        /// Los índices comparan sin distinguir mayúsculas para no cambiar el comportamiento
-        /// que tenía la consulta SQL: la colación por defecto de SQL Server ya era
-        /// insensible, y con un diccionario ordinal "Pecho" y "pecho" dejarían de coincidir.
+        /// Compara sin distinguir mayúsculas, como la colación de SQL Server: con un
+        /// diccionario ordinal "Pecho" y "pecho" dejarían de coincidir.
         /// </summary>
         public static IndiceEjercicios Armar(IEnumerable<Ejercicio> ejercicios)
         {

@@ -16,10 +16,7 @@ namespace FitnessCoach.Tests.Fakes
         /// <summary>Cuántas veces se llamó a Guardar.</summary>
         public int VecesQueSeGuardo { get; private set; }
 
-        /// <summary>
-        /// Cuántas veces se fue a buscar un perfil por su identidad. Contra la base real cada
-        /// una de estas es un viaje a SQL, así que sirve para afirmar que no se repiten.
-        /// </summary>
+        /// <summary>Cuántas lecturas por identidad: contra la base real, cada una es un viaje a SQL.</summary>
         public int VecesQueSeBuscoPorIdentidad { get; private set; }
 
         public RepositorioUsuarioFalso(params UsuarioPerfil[] usuariosIniciales)

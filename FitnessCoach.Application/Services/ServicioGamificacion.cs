@@ -41,9 +41,8 @@ namespace FitnessCoach.Application.Services
         }
 
         /// <summary>
-        /// Traduce el perfil a la foto de hechos. Las fechas se guardan en UTC pero las
-        /// rachas y "esta semana" son de calendario, así que se cuentan en la zona horaria
-        /// del usuario: su lunes y su medianoche, no los del servidor (D-25).
+        /// Traduce el perfil a la foto de hechos. Los días se cuentan en la zona del
+        /// usuario: su lunes y su medianoche (D-25).
         /// </summary>
         public static EstadisticasUsuario Snapshot(UsuarioPerfil u)
         {
@@ -52,8 +51,7 @@ namespace FitnessCoach.Application.Services
             var zona = ZonaHorariaUsuario.De(u);
             var ahora = ZonaHorariaUsuario.Ahora(zona);
             var hoy = DateOnly.FromDateTime(ahora);
-            // Las misiones son de SEMANA DE CALENDARIO: se reinician todas juntas el
-            // lunes a las 00:00 del usuario, no en una ventana móvil de 7 días.
+            // Semana de calendario: las misiones reinician el lunes, no en ventana móvil.
             int diasDesdeLunes = ((int)ahora.DayOfWeek + 6) % 7;   // lunes=0 … domingo=6
             var desde = ahora.Date.AddDays(-diasDesdeLunes);
 
@@ -62,10 +60,8 @@ namespace FitnessCoach.Application.Services
                 .ToList();
             var rachas = CalculadorRachas.Calcular(fechasEntreno, hoy);
 
-            // El diario NO se convierte de zona: su fecha no es un instante sino la
-            // etiqueta del día que el usuario eligió (ServicioDiario la guarda como la
-            // medianoche de ese día). Convertirla la corría un día hacia atrás y hacía
-            // que la comida del lunes no contara en la semana que arranca ese lunes.
+            // La fecha del diario no es un instante sino la etiqueta del día elegido
+            // (ServicioDiario la guarda como su medianoche): convertirla la corre un día.
             var diasDiario = u.Diario
                 .Select(d => DateOnly.FromDateTime(d.Fecha))
                 .Distinct()

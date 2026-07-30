@@ -6,10 +6,9 @@ using Xunit;
 namespace FitnessCoach.Tests.Catalogos
 {
     /// <summary>
-    /// Los índices son lo que se guarda en caché en vez de volver a consultar SQL, así que
-    /// tienen que responder lo MISMO que respondía la consulta: mismo orden, y sin
-    /// distinguir mayúsculas (la colación de SQL Server tampoco distinguía). Si acá se
-    /// colara una diferencia, una rutina se armaría con menos ejercicios sin que falle nada.
+    /// Los índices reemplazan a la consulta SQL, así que tienen que responder lo mismo:
+    /// mismo orden y sin distinguir mayúsculas. Una diferencia acá armaría rutinas con
+    /// menos ejercicios sin que falle nada.
     /// </summary>
     public class IndicesDeCatalogoTests
     {

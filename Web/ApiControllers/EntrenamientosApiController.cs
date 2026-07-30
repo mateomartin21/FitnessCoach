@@ -8,12 +8,10 @@ using System.Security.Claims;
 namespace FitnessCoach.Web.ApiControllers
 {
     /// <summary>
-    /// Entrenamientos completados y rachas del usuario autenticado (D-26: la API cubría
-    /// solo el peso y la pantalla MVC era la única que operaba el tracker).
+    /// Entrenamientos completados y rachas del usuario autenticado (D-26).
     ///
-    /// Todo pasa por <see cref="IServicioEntrenamientos"/>: ahí vive el aislamiento por
-    /// cuenta, la regla de que solo se registran días reales de la propia rutina y el
-    /// conteo de rachas en la zona horaria del usuario.
+    /// Todo pasa por <see cref="IServicioEntrenamientos"/>: ahí viven el aislamiento por
+    /// cuenta, la validación del día de rutina y el conteo de rachas por zona horaria.
     /// </summary>
     [ApiController]
     [Authorize]
@@ -65,8 +63,7 @@ namespace FitnessCoach.Web.ApiControllers
 
         /// <summary>
         /// Registra un entrenamiento completado. El nombre tiene que ser uno de los días de
-        /// la rutina del usuario (ver <c>GET opciones</c>): con texto libre, cualquiera
-        /// anotaría algo inventado y se llevaría el XP y los logros sin haber entrenado.
+        /// la rutina del usuario (ver <c>GET opciones</c>).
         /// </summary>
         /// <param name="entrenamiento">Día de la rutina, duración y notas</param>
         /// <returns>El entrenamiento registrado</returns>
@@ -93,8 +90,7 @@ namespace FitnessCoach.Web.ApiControllers
             }
             catch (ArgumentException ex)
             {
-                // No es un error de formato (eso ya lo cubre ModelState): el dato está bien
-                // formado pero no corresponde a la rutina de este usuario.
+                // Bien formado (eso ya lo cubre ModelState) pero no es un día de su rutina.
                 return UnprocessableEntity(new { mensaje = ex.Message });
             }
         }

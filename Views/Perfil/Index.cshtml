@@ -127,10 +127,8 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        // El navegador ya sabe en qué zona vive el usuario; se la ofrecemos en vez de
-        // hacerlo buscar en la lista. Si su zona no está entre las comunes, se agrega
-        // como opción. Solo se PRESELECCIONA cuando el perfil todavía no tiene una
-        // guardada: si él eligió otra a mano, se respeta (D-25).
+        // El navegador ya sabe la zona del usuario. Si no está entre las comunes se agrega
+        // como opción, y solo se preselecciona si el perfil no tiene una guardada (D-25).
         (function () {
             var select = document.getElementById('selectZonaHoraria');
             if (!select || !window.Intl) return;

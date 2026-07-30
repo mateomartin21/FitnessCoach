@@ -2,10 +2,7 @@ using FitnessCoach.Domain.Models.Alimentacion;
 
 namespace FitnessCoach.Domain.Catalogos
 {
-    /// <summary>
-    /// Lo mismo que <see cref="IndiceEjercicios"/> para el catálogo de alimentos: foto
-    /// inmutable con los cuatro accesos que pide el puerto ya resueltos en memoria.
-    /// </summary>
+    /// <summary>Como <see cref="IndiceEjercicios"/>, con los cuatro accesos que pide el puerto.</summary>
     public sealed class IndiceAlimentos
     {
         public IReadOnlyList<Alimento> Todos { get; }

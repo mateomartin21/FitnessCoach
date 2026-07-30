@@ -25,16 +25,13 @@ builder.Services.AddOpenApi();
 // [ValidateAntiForgeryToken] solo buscaria el token en los campos del form y nunca lo encontraria.
 builder.Services.AddAntiforgery(options => options.HeaderName = "RequestVerificationToken");
 
-// Detras de un proxy/balanceador (EC2 + ALB), la IP y el esquema reales del cliente
-// llegan en cabeceras X-Forwarded-*. Sin esto, el rate limiter contaria todo el trafico
-// bajo la IP del balanceador y la redireccion a HTTPS podria equivocarse (D-24). Se
-// confia SOLO en los proxies declarados por configuracion (appsettings / variables de
-// entorno), para no aceptar cabeceras falsificadas por un cliente cualquiera.
+// Detras de un proxy, la IP real del cliente llega en X-Forwarded-*: sin esto el rate
+// limiter contaria todo el trafico bajo la IP del balanceador (D-24). Solo se confia en
+// los proxies declarados por configuracion, no en cabeceras de cualquier cliente.
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-    // Por defecto la lista viene con localhost; se limpia para no confiar en nada
-    // salvo lo declarado explicitamente.
+    // Por defecto trae localhost: se limpia para confiar solo en lo declarado.
     options.KnownProxies.Clear();
     options.KnownIPNetworks.Clear();
 
@@ -54,11 +51,8 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 // Complementa al bloqueo de cuenta de Identity, que cuenta fallos POR CUENTA y por eso
 // no frena el "password spraying": una sola contrasena probada contra miles de correos
 // distintos nunca acumula 5 fallos en ninguno. Esto se cuenta por origen, no por cuenta.
-// NOTA (D-24): el estado del limitador vive en la memoria del proceso. Con una sola
-// instancia (el despliegue actual) alcanza; para varias instancias detras de un
-// balanceador haria falta un almacen compartido (p. ej. Redis), que no forma parte del
-// stack de este proyecto. La particion ya usa la IP real del cliente gracias a
-// UseForwardedHeaders de arriba.
+// NOTA (D-24): el estado vive en la memoria del proceso. Con una sola instancia alcanza;
+// con varias haria falta un almacen compartido (Redis), fuera del stack del proyecto.
 builder.Services.AddRateLimiter(options =>
 {
     options.AddPolicy("login", contexto =>
@@ -95,11 +89,9 @@ builder.Services.AddRateLimiter(options =>
 builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioUsuario,
                            FitnessCoach.Infrastructure.Repositories.RepositorioUsuarioSql>();
 
-// Los dos catalogos (ejercicios y alimentos) son datos de referencia: se pueblan por
-// semilla al arrancar y nadie los modifica en caliente. Por eso el puerto no apunta
-// directo al adaptador SQL sino a un DECORADOR de cache que lo envuelve: la primera
-// consulta baja a SQL y las siguientes se responden desde memoria. La cache es un
-// singleton compartido; los adaptadores siguen siendo scoped porque usan el DbContext.
+// Los dos catalogos son datos de referencia, asi que el puerto no apunta al adaptador
+// SQL sino a un decorador de cache que lo envuelve. La cache es singleton; los
+// adaptadores siguen scoped porque usan el DbContext.
 builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<FitnessCoach.Infrastructure.Repositories.RepositorioEjerciciosSql>();
@@ -245,8 +237,7 @@ using (var alcance = app.Services.CreateScope())
 
 // Pipeline HTTP
 
-// Lo primero: reescribir IP/esquema desde X-Forwarded-* (segun los proxies de
-// confianza configurados) para que todo lo que sigue vea al cliente real (D-24).
+// Antes que nada, para que todo lo que sigue vea al cliente real (D-24).
 app.UseForwardedHeaders();
 
 if (!app.Environment.IsDevelopment())

@@ -34,13 +34,9 @@ namespace FitnessCoach.Models
 
         public Rachas Rachas { get; set; } = Rachas.Vacia;
 
-        /// <summary>
-        /// Zona horaria del usuario. Todas las marcas se guardan en UTC; la pantalla las
-        /// muestra en SU hora, no en la del servidor (D-25). La provee el controlador.
-        /// </summary>
+        /// <summary>La provee el controlador: las marcas se guardan en UTC y se muestran acá (D-25).</summary>
         public TimeZoneInfo Zona { get; set; } = TimeZoneInfo.Utc;
 
-        /// <summary>Una marca guardada, en la hora de pared del usuario.</summary>
         public DateTime EnLocal(DateTime fechaGuardada) => ZonaHorariaUsuario.ALocal(fechaGuardada, Zona);
 
         public List<RecordPersonal> Records { get; set; } = new();
