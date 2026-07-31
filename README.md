@@ -9,12 +9,12 @@
 Proyecto académico de Arquitectura de Software — Tecnológico de Software
 
 ![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
-![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=csharp&logoColor=white)
+![C#](https://img.shields.io/badge/C%23-13-239120?style=for-the-badge&logoColor=white)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-MVC%20%2B%20API-5C2D91?style=for-the-badge&logo=dotnet&logoColor=white)
 ![Entity Framework](https://img.shields.io/badge/EF%20Core-10-512BD4?style=for-the-badge&logo=nuget&logoColor=white)
-![SQL Server](https://img.shields.io/badge/SQL%20Server-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white)
+![SQL Server](https://img.shields.io/badge/SQL%20Server-Express-CC2927?style=for-the-badge&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
-![xUnit](https://img.shields.io/badge/xUnit-363%20pruebas-5E5E5E?style=for-the-badge&logo=nunit&logoColor=white)
+![xUnit](https://img.shields.io/badge/xUnit-363%20pruebas-5E5E5E?style=for-the-badge&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
 ![Fases](https://img.shields.io/badge/roadmap-12%2F12%20fases%20cerradas-27d17c?style=flat-square)
@@ -198,16 +198,16 @@ C4Context
 
 | | Tecnología | Para qué se usa |
 |---|---|---|
-| <img src="https://cdn.simpleicons.org/dotnet/512BD4" width="18" /> | **.NET 10 / ASP.NET Core** | MVC y Web API en un mismo proceso |
-| <img src="https://cdn.simpleicons.org/csharp/239120" width="18" /> | **C#** | Todo el backend |
-| <img src="https://cdn.simpleicons.org/nuget/004880" width="18" /> | **EF Core 10** | Persistencia, migraciones y tipos owned |
-| <img src="https://cdn.simpleicons.org/microsoftsqlserver/CC2927" width="18" /> | **SQL Server** | LocalDB en desarrollo, Express al desplegar |
-| <img src="https://cdn.simpleicons.org/bootstrap/7952B3" width="18" /> | **Bootstrap 5** | Grilla y componentes base, sobre un sistema de diseño propio |
-| <img src="https://cdn.simpleicons.org/javascript/F7DF1E" width="18" /> | **JavaScript vanilla** | La capa de vida de Koda y las medallas en canvas, sin librerías |
-| <img src="https://cdn.simpleicons.org/fontawesome/538DD7" width="18" /> | **Font Awesome 6** | Iconografía, autohospedada como subconjunto de 12 KB |
-| <img src="https://cdn.simpleicons.org/googlegemini/8E75B2" width="18" /> | **Gemini / Groq** | Proveedores de IA, ambos en capa gratuita |
-| <img src="https://cdn.simpleicons.org/openapiinitiative/6BA539" width="18" /> | **OpenAPI + Scalar** | Documentación viva de la API |
-| <img src="https://cdn.simpleicons.org/githubactions/2088FF" width="18" /> | **GitHub Actions** | Integración continua en cada push y PR |
+| <img src="docs/iconos/dotnet.svg" width="18" /> | **.NET 10 / ASP.NET Core** | MVC y Web API en un mismo proceso |
+| <img src="docs/iconos/csharp.svg" width="18" /> | **C#** | Todo el backend |
+| <img src="docs/iconos/nuget.svg" width="18" /> | **EF Core 10** | Persistencia, migraciones y tipos owned |
+| <img src="docs/iconos/microsoftsqlserver.svg" width="18" /> | **SQL Server** | LocalDB en desarrollo, Express al desplegar |
+| <img src="docs/iconos/bootstrap.svg" width="18" /> | **Bootstrap 5** | Grilla y componentes base, sobre un sistema de diseño propio |
+| <img src="docs/iconos/javascript.svg" width="18" /> | **JavaScript vanilla** | La capa de vida de Koda y las medallas en canvas, sin librerías |
+| <img src="docs/iconos/fontawesome.svg" width="18" /> | **Font Awesome 6** | Iconografía, autohospedada como subconjunto de 12 KB |
+| <img src="docs/iconos/googlegemini.svg" width="18" /> | **Gemini / Groq** | Proveedores de IA, ambos en capa gratuita |
+| <img src="docs/iconos/openapiinitiative.svg" width="18" /> | **OpenAPI + Scalar** | Documentación viva de la API |
+| <img src="docs/iconos/githubactions.svg" width="18" /> | **GitHub Actions** | Integración continua en cada push y PR |
 
 ---
 
