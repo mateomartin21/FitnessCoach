@@ -1,7 +1,7 @@
 using FitnessCoach.Domain.Models;
 using FitnessCoach.Domain.Ports;
 
-namespace FitnessCoach.Infrastructure.Repositoriess
+namespace FitnessCoach.Infrastructure.Repositories
 {
     public class RepositorioUsuarioMemoria : IRepositorioUsuario
     {
@@ -11,6 +11,12 @@ namespace FitnessCoach.Infrastructure.Repositoriess
         {
             return _usuarios.FirstOrDefault(u => u.Id == id);
         }
+
+                public UsuarioPerfil? ObtenerPorIdentityUserId(string identityUserId)
+        {
+            return _usuarios.FirstOrDefault(u => u.IdentityUserId == identityUserId);
+        }
+
         public void Guardar(UsuarioPerfil usuario)
         {
             if (usuario.Id == 0)

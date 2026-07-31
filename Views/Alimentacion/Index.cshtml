@@ -1,0 +1,187 @@
+@model FitnessCoach.Domain.Models.Alimentacion.PlanAlimentacion
+@{
+    ViewData["Title"] = "Mi Plan Alimenticio";
+}
+
+@if (TempData["PreferenciasGuardadas"] is true)
+{
+    <div class="alert d-flex align-items-center gap-2 mb-4"
+         style="background:#12261a; border:1px solid #1f5133; color:#b8e6c8;">
+        <i class="fas fa-check-circle" aria-hidden="true"></i>
+        <span class="small">Preferencias guardadas. Tu plan ya las tiene en cuenta.</span>
+    </div>
+}
+
+<div class="text-center mb-4">
+    <h2 class="fw-bold" style="color:var(--fc-primary-texto);">@Model.NombrePlan</h2>
+    <span class="badge px-3 py-2 me-2" style="background:var(--fc-primary); font-size:0.9rem;">@Model.Objetivo</span>
+    <span class="badge px-3 py-2" style="background:#16213e; border:1px solid #2a2a4a; font-size:0.9rem;">
+        @Model.Objetivos.Calorias kcal/día
+    </span>
+    <p class="text-muted mt-3 small mx-auto" style="max-width:640px;">@Model.Descripcion</p>
+</div>
+
+@* Los objetivos del dia, calculados desde el peso y el objetivo del usuario. *@
+<div class="fc-feature-card mb-4">
+    <h6 class="fw-bold mb-3" style="color:var(--fc-primary-texto);">
+        <i class="fas fa-bullseye me-2" aria-hidden="true"></i>Tus macros del día
+    </h6>
+    <div class="row g-2 text-center">
+        <div class="col-6 col-md-3">
+            <div style="font-size:1.4rem; font-weight:700; color:var(--fc-primary-texto);">@Model.Objetivos.Calorias</div>
+            <div class="small text-muted">kcal</div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div style="font-size:1.4rem; font-weight:700; color:#00d4ff;">@Model.Objetivos.ProteinaG g</div>
+            <div class="small text-muted">proteína · @Model.Objetivos.PorcentajeProteina%</div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div style="font-size:1.4rem; font-weight:700; color:#ffd700;">@Model.Objetivos.CarbohidratoG g</div>
+            <div class="small text-muted">carbohidratos · @Model.Objetivos.PorcentajeCarbohidrato%</div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div style="font-size:1.4rem; font-weight:700; color:#a78bfa;">@Model.Objetivos.GrasaG g</div>
+            <div class="small text-muted">grasas · @Model.Objetivos.PorcentajeGrasa%</div>
+        </div>
+    </div>
+
+    @* El plan usa porciones razonables, asi que casi nunca da el numero exacto.
+       Mostrar el desvio es mas honesto que fingir que cuadra al gramo. *@
+    <div class="mt-3 pt-3 small text-muted" style="border-top:1px solid #2a2a4a;">
+        Las comidas de abajo suman <strong style="color:#ccc;">@Model.CaloriasTotales kcal</strong>
+        (@Model.ProteinaTotalG g de proteína).
+        @if (Math.Abs(Model.DesvioCaloricoPorcentaje) >= 1)
+        {
+            <text>Quedan @($"{Model.DesvioCaloricoPorcentaje:+0;-0}")% respecto del objetivo, porque los alimentos se sirven en porciones realistas y no en las cantidades exactas que cuadrarían la cuenta.</text>
+        }
+    </div>
+</div>
+
+@* El Lobo mira el plan y el diario de hoy y sugiere el ajuste más importante,
+   siempre con alimentos que existen en la app. *@
+<partial name="_AnalisisLobo" model="@("dieta")" />
+
+<div class="row g-3 mb-4">
+    @foreach (var comida in Model.Comidas)
+    {
+        <div class="col-md-6 col-lg-4">
+            <div class="fc-feature-card h-100 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="fw-bold mb-0" style="color:var(--fc-primary-texto);">@comida.NombreComida</h6>
+                    <span class="badge" style="background:#0f0f1a; border:1px solid #2a2a4a; color:#888;">@comida.Hora</span>
+                </div>
+
+                <ul class="list-unstyled mb-3">
+                    @foreach (var porcion in comida.Porciones)
+                    {
+                        <li class="mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                @if (porcion.Alimento.UrlImagen is not null)
+                                {
+                                    <img src="@porcion.Alimento.UrlImagen"
+                                         alt="@porcion.Alimento.Nombre"
+                                         title="@porcion.Alimento.AtribucionImagen"
+                                         loading="lazy"
+                                         width="40" height="40"
+                                         class="rounded flex-shrink-0"
+                                         style="object-fit:cover; background:#0f0f1a;" />
+                                }
+                                else
+                                {
+                                    <span class="rounded flex-shrink-0 d-inline-block text-center"
+                                          style="width:40px; height:40px; line-height:40px; background:#0f0f1a; color:var(--fc-primary-texto);">&#9656;</span>
+                                }
+                                <span class="small" style="color:#ccc;">@porcion.Descripcion</span>
+                            </div>
+
+                            @* Alternativas equivalentes del mismo grupo de intercambio. *@
+                            @if (porcion.Sustitutos.Count > 0)
+                            {
+                                <details class="mt-1 ms-5">
+                                    <summary class="small" style="color:#888; cursor:pointer;">
+                                        o cambia por&hellip;
+                                    </summary>
+                                    <ul class="list-unstyled mt-1 mb-0">
+                                        @foreach (var sustituto in porcion.Sustitutos)
+                                        {
+                                            <li class="small" style="color:#aaa;">
+                                                <span style="color:var(--fc-primary-texto); margin-right:6px;">&#8644;</span>@sustituto.Descripcion
+                                            </li>
+                                        }
+                                    </ul>
+                                </details>
+                            }
+                        </li>
+                    }
+                </ul>
+
+                <div class="row g-1 mt-auto pt-2" style="border-top:1px solid #2a2a4a;">
+                    <div class="col-3 text-center">
+                        <div style="font-size:0.95rem; font-weight:700; color:var(--fc-primary-texto);">@comida.Calorias</div>
+                        <div style="font-size:0.65rem; color:#888;">kcal</div>
+                    </div>
+                    <div class="col-3 text-center">
+                        <div style="font-size:0.95rem; font-weight:700; color:#00d4ff;">@comida.Proteinas g</div>
+                        <div style="font-size:0.65rem; color:#888;">proteina</div>
+                    </div>
+                    <div class="col-3 text-center">
+                        <div style="font-size:0.95rem; font-weight:700; color:#ffd700;">@comida.Carbohidratos g</div>
+                        <div style="font-size:0.65rem; color:#888;">carbos</div>
+                    </div>
+                    <div class="col-3 text-center">
+                        <div style="font-size:0.95rem; font-weight:700; color:#a78bfa;">@comida.Grasas g</div>
+                        <div style="font-size:0.65rem; color:#888;">grasas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="fc-feature-card mb-4">
+    <h6 class="fw-bold mb-3" style="color:var(--fc-primary-texto);">
+        <i class="fas fa-lightbulb me-2" aria-hidden="true"></i>Recomendaciones Generales
+    </h6>
+    <div class="row g-2">
+        @foreach (var rec in Model.RecomendacionesGenerales)
+        {
+            <div class="col-md-6">
+                <div class="d-flex align-items-start gap-2 p-2 rounded" style="background:#0f0f1a;">
+                    <span style="color:var(--fc-primary-texto); margin-top:2px;">&#10003;</span>
+                    <small style="color:#ccc;">@rec</small>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@* Un plan calculado desde formulas no sabe de patologias ni alergias: decirlo
+   es parte de hacer esto en serio, no letra chica. *@
+<div class="alert d-flex align-items-start gap-3 mb-4"
+     style="background:#1a1a2e; border:1px solid #4a3a1a; color:#ccc;">
+    <i class="fas fa-triangle-exclamation mt-1" style="color:#ffd700;" aria-hidden="true"></i>
+    <div>
+        <strong style="color:#ffd700;">Orientativo, no médico.</strong>
+        <div class="small mt-1">@FitnessCoach.Domain.Models.Alimentacion.PlanAlimentacion.Descargo</div>
+    </div>
+</div>
+
+<div class="text-center mb-4">
+    <a asp-controller="Diario" asp-action="Index" class="btn fc-btn-primary px-4 me-2">
+        <i class="fas fa-book-open me-2" aria-hidden="true"></i>Registrar lo que comí
+    </a>
+    <a asp-action="Preferencias" class="btn fc-btn-outline px-4 me-2">
+        <i class="fas fa-sliders-h me-2" aria-hidden="true"></i>Mis preferencias
+    </a>
+    <a asp-controller="Rutinas" asp-action="Index" class="btn fc-btn-outline px-4 me-2">
+        <i class="fas fa-fire me-2" aria-hidden="true"></i>Ver Mi Rutina
+    </a>
+    <a asp-controller="Perfil" asp-action="Index" class="btn fc-btn-outline px-4">
+        <i class="fas fa-user-cog me-2" aria-hidden="true"></i>Cambiar Objetivo
+    </a>
+</div>
+
+<p class="text-center small text-muted">
+    Datos nutricionales: USDA FoodData Central (dominio público).
+    Imágenes: Wikimedia Commons, cada una bajo su licencia (pasá el cursor por la foto para ver la atribución).
+</p>

@@ -1,85 +1,90 @@
-using FitnessCoach.Domain.Models;
-using FitnessCoach.Domain.Ports;
 using FitnessCoach.Application.Services;
+using FitnessCoach.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FitnessCoach.Web.ApiControllers
 {
     /// <summary>
-    /// Endpoints para gestión de perfiles de usuario.
+    /// Endpoints del perfil del usuario autenticado.
+    /// No recibe ningún id: el dueño sale siempre de la identidad de la petición.
     /// </summary>
     [ApiController]
-    [Route("api/usuarios")]
+    [Authorize]
+    [Route("api/perfil")]
     [Produces("application/json")]
     public class UsuariosApiController : ControllerBase
     {
-        private readonly IRepositorioUsuario _repositorio;
+        private readonly IServicioPerfilUsuario _perfiles;
         private readonly ICalculadorCalorico _calculador;
 
-        public UsuariosApiController(IRepositorioUsuario repositorio, ICalculadorCalorico calculador)
+        public UsuariosApiController(IServicioPerfilUsuario perfiles, ICalculadorCalorico calculador)
         {
-            _repositorio = repositorio;
+            _perfiles = perfiles;
             _calculador = calculador;
         }
 
+        private string IdentityId => User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
         /// <summary>
-        /// Obtiene el perfil de un usuario por su ID.
+        /// Obtiene el perfil del usuario autenticado.
         /// </summary>
-        /// <param name="id">ID del usuario</param>
-        /// <returns>Perfil completo del usuario</returns>
+        /// <returns>Perfil del usuario de la sesión actual</returns>
         /// <response code="200">Perfil encontrado</response>
-        /// <response code="404">No existe un usuario con ese ID</response>
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(UsuarioPerfil), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult ObtenerPorId(int id)
+        /// <response code="401">No hay sesión iniciada</response>
+        [HttpGet]
+        [ProducesResponseType(typeof(PerfilResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public IActionResult ObtenerMiPerfil()
         {
-            var usuario = _repositorio.ObtenerPorId(id);
-            if (usuario == null)
-                return NotFound(new { mensaje = $"No se encontró un usuario con ID {id}." });
-
-            return Ok(usuario);
+            var usuario = _perfiles.ObtenerOCrear(IdentityId);
+            return Ok(PerfilResponse.Desde(usuario));
         }
 
         /// <summary>
-        /// Crea un nuevo perfil de usuario.
+        /// Calcula las calorías diarias recomendadas para el usuario autenticado.
         /// </summary>
-        /// <param name="usuario">Datos del nuevo usuario</param>
-        /// <returns>Usuario creado con su ID asignado</returns>
-        /// <response code="201">Usuario creado exitosamente</response>
-        /// <response code="400">Datos inválidos</response>
-        [HttpPost]
-        [ProducesResponseType(typeof(UsuarioPerfil), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Crear([FromBody] UsuarioPerfil usuario)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            usuario.Id = 0; // El repositorio asigna el ID
-            _repositorio.Guardar(usuario);
-
-            return CreatedAtAction(nameof(ObtenerPorId), new { id = usuario.Id }, usuario);
-        }
-
-        /// <summary>
-        /// Calcula las calorías diarias recomendadas para un usuario.
-        /// </summary>
-        /// <param name="id">ID del usuario</param>
         /// <returns>Calorías diarias recomendadas</returns>
         /// <response code="200">Cálculo exitoso</response>
-        /// <response code="404">No existe un usuario con ese ID</response>
-        [HttpGet("{id}/calorias")]
+        /// <response code="401">No hay sesión iniciada</response>
+        [HttpGet("calorias")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult ObtenerCalorias(int id)
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public IActionResult ObtenerCalorias()
         {
-            var usuario = _repositorio.ObtenerPorId(id);
-            if (usuario == null)
-                return NotFound(new { mensaje = $"No se encontró un usuario con ID {id}." });
+            var usuario = _perfiles.ObtenerOCrear(IdentityId);
 
-            var calorias = _calculador.CalcularCaloriasDiarias(usuario);
-            return Ok(new { usuarioId = id, caloriasRecomendadas = calorias });
+            try
+            {
+                var calorias = _calculador.CalcularCaloriasDiarias(usuario);
+                return Ok(new { caloriasRecomendadas = Math.Round(calorias, 0) });
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                // El perfil tiene datos fuera de rango: no es un error del servidor,
+                // es un perfil que hay que completar antes de poder calcular.
+                return UnprocessableEntity(new { mensaje = ex.Message });
+            }
         }
+    }
+
+    /// <summary>
+    /// Vista pública del perfil: deja fuera el IdentityUserId, que es interno.
+    /// </summary>
+    public record PerfilResponse(
+        string? Nombre,
+        int Edad,
+        double PesoKg,
+        double EstaturaCm,
+        string? Objetivo)
+    {
+        public static PerfilResponse Desde(UsuarioPerfil usuario) => new(
+            usuario.Nombre,
+            usuario.Edad,
+            usuario.PesoKg,
+            usuario.EstaturaCm,
+            usuario.ObjetivoActual?.Nombre);
     }
 }

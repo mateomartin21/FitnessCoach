@@ -1,113 +1,708 @@
+/* ============================================================
+   FitnessCoach · Identidad "Koda Pixel" (Fase 9, ADR-19)
+   Estilo pixel-art / 8-bit: bordes duros, sombras solidas sin
+   blur, fuente pixel en los titulos y paleta azul sobre navy.
+   ============================================================ */
+
+@font-face {
+    font-family: "Press Start 2P";
+    src: url("../lib/fonts/PressStart2P-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Tomorrow: geometrica y de formas cuadradas, hace juego con el pixel art sin ser
+   pixel. Autohospedada como la anterior, sin CDN. Subconjunto latino, 4 pesos. */
+@font-face {
+    font-family: "Tomorrow";
+    src: url("../lib/fonts/Tomorrow-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Tomorrow";
+    src: url("../lib/fonts/Tomorrow-500.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Tomorrow";
+    src: url("../lib/fonts/Tomorrow-600.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Tomorrow";
+    src: url("../lib/fonts/Tomorrow-700.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
-    --fc-primary: #ff6b35;
-    --fc-dark: #1a1a2e;
-    --fc-card: #16213e;
-    --fc-border: #2a2a4a;
+    /* Primario y marca (se mantiene el nombre --fc-primary: ahora es azul) */
+    --fc-primary: #2f6bff;
+    --fc-primary-2: #6c9bff;
+    /* Version para TEXTO: el primario da 4.19:1 sobre el fondo y AA pide 4.5. */
+    --fc-primary-texto: #5b8cff;
+    --fc-primary-rgb: 47, 107, 255;
+
+    /* Terreno */
+    --fc-bg: #0b1120;
+    --fc-dark: #0b1120;
+    --fc-card: #141d33;
+    --fc-panel-2: #1b2748;
+    --fc-inset: #090e1a;
+    --fc-border: #2b3a5f;
+    --fc-ink: #05070e;          /* contorno negro pixel */
+
+    /* Texto */
+    --fc-text: #eaf0fb;
+    --fc-muted: #8a97b8;
+    --fc-gold: #ffcf3f;
+
+    /* Estados de Koda (cada uno con su significado) */
+    --fc-entrenar: #2f6bff;
+    --fc-logro: #27d17c;
+    --fc-recuperar: #f6a723;
+    --fc-descanso: #ef4655;
+    --fc-analisis: #9b6dff;
+    --fc-reco: #16c8b4;
+
+    /* Tipografia: tres roles.
+       pixel = marca y datos cortos · ui = interfaz (titulos, navegacion, botones,
+       numeros) · body = texto largo, donde manda la legibilidad. */
+    --fc-font-pixel: "Press Start 2P", "Consolas", monospace;
+    --fc-font-ui: "Tomorrow", "Segoe UI", system-ui, sans-serif;
+    --fc-font-body: "Segoe UI", system-ui, sans-serif;
+
+    /* Unidad pixel */
+    --px: 3px;
 }
 
 * { box-sizing: border-box; }
 
 body {
-    background-color: #0f0f1a !important;
-    color: #f0f0f0 !important;
-    font-family: "Segoe UI", system-ui, sans-serif !important;
+    background-color: var(--fc-bg) !important;
+    color: var(--fc-text) !important;
+    font-family: var(--fc-font-body) !important;
 }
 
-/* NAVBAR */
+/* La fuente pixel se usa con MODERACION: la marca, el titulo del hero, las etiquetas
+   y los datos cortos. Los titulos normales van en la fuente legible (bien en negrita),
+   para que no se sientan pesados ni se corten. Clase .pixel para pedirla a demanda. */
+.fc-brand, .fc-hero-title, .fc-tag, .fc-stat-label, .pixel {
+    font-family: var(--fc-font-pixel) !important;
+    letter-spacing: 0 !important;
+    line-height: 1.6 !important;
+    text-transform: uppercase;
+}
+/* La interfaz va en Tomorrow: titulos, navegacion, botones, etiquetas y numeros.
+   El texto largo se queda en la fuente de sistema, que es la que mejor se lee en
+   parrafos. Tomorrow es angosta, asi que los titulos aguantan 700 sin verse pesados. */
+h1, h2, h3, h4, h5, h6,
+.fc-nav-link, .fc-nav-cta, .fc-user-chip, .fc-logout,
+.btn, .form-label, .fc-foot-head, .fc-chip,
+.fc-stat-num, .display-4, th, .badge {
+    font-family: var(--fc-font-ui) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: .01em;
+}
+
+/* Los numeros grandes se leen mejor con ancho fijo: no bailan al actualizarse. */
+.fc-stat-num, .display-4 {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.01em;
+}
+
+/* ---------- NAVBAR ---------- */
 .fc-navbar {
-    background: linear-gradient(90deg, #1a1a2e 0%, #16213e 100%) !important;
-    border-bottom: 2px solid var(--fc-primary) !important;
+    background: var(--fc-card) !important;
+    border-bottom: var(--px) solid var(--fc-ink) !important;
+    box-shadow: 0 var(--px) 0 var(--fc-primary) !important;
     padding: 0.75rem 0 !important;
 }
-.fc-brand { color: var(--fc-primary) !important; font-weight: 800 !important; font-size: 1.3rem !important; text-decoration: none !important; display: flex; align-items: center; }
-.fc-brand-text { letter-spacing: 1px; }
-.fc-nav-link { color: #aaa !important; font-size: 0.9rem !important; padding: 0.5rem 1rem !important; border-radius: 6px !important; transition: all 0.2s !important; }
-.fc-nav-link:hover { color: var(--fc-primary) !important; background: rgba(255,107,53,0.08) !important; }
-.fc-nav-highlight { background: rgba(255,107,53,0.12) !important; color: var(--fc-primary) !important; }
+.fc-brand { color: var(--fc-primary-texto) !important; font-size: 0.95rem !important; text-decoration: none !important; display: flex; align-items: center; }
+.fc-brand-text { letter-spacing: 0; }
+.fc-nav-link { color: var(--fc-muted) !important; font-size: 0.85rem !important; padding: 0.5rem 0.9rem !important; border: var(--px) solid transparent !important; border-radius: 0 !important; transition: none !important; }
+.fc-nav-link:hover { color: var(--fc-primary-2) !important; background: var(--fc-inset) !important; border-color: var(--fc-ink) !important; }
+.fc-nav-highlight { background: rgba(var(--fc-primary-rgb),0.12) !important; color: var(--fc-primary-texto) !important; }
 .fc-toggler { border: none !important; background: transparent !important; }
 
-/* HERO */
+/* Seccion activa: resalta dónde estás parado */
+.fc-nav-link.active { color: var(--fc-primary-texto) !important; background: var(--fc-inset) !important; border-color: var(--fc-ink) !important; }
+
+/* CTA de Koda (IA), separado del resto de la navegación */
+.fc-nav-cta {
+    display: inline-flex; align-items: center; gap: 7px;
+    color: #fff !important; background: var(--fc-primary) !important;
+    border: var(--px) solid var(--fc-ink) !important; box-shadow: var(--px) var(--px) 0 var(--fc-ink);
+    padding: 0.35rem 0.8rem !important; font-weight: 700 !important; font-size: 0.85rem !important;
+    text-decoration: none; transition: transform .05s, box-shadow .05s, background .1s;
+}
+.fc-nav-cta:hover { color: #fff !important; background: var(--fc-primary-2) !important; }
+.fc-nav-cta:active { transform: translate(var(--px), var(--px)); box-shadow: 0 0 0 var(--fc-ink); }
+.fc-nav-cta-koda {
+    height: 26px; width: 26px; object-fit: contain; object-position: top;
+    image-rendering: pixelated; flex-shrink: 0; margin: -4px 0;
+    filter: drop-shadow(0 0 3px rgba(255,255,255,.35));
+}
+
+/* Bloque de cuenta */
+.fc-nav-sep { width: var(--px); height: 24px; align-self: center; background: var(--fc-border); margin: 0 6px; }
+.fc-user-chip { display: inline-flex; align-items: center; gap: 6px; color: var(--fc-text) !important; font-size: 0.82rem; padding: 0.35rem 0.7rem; border: var(--px) solid var(--fc-border); background: var(--fc-inset); }
+.fc-user-chip-correo { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fc-logout { color: var(--fc-muted) !important; background: transparent !important; border: none !important; box-shadow: none !important; font-size: 0.82rem; padding: 0.35rem 0.6rem !important; }
+.fc-logout:hover { color: var(--fc-descanso) !important; }
+
+/* Footer estructurado */
+.fc-foot-head { font-size: 0.68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--fc-muted); font-weight: 700; margin-bottom: 12px; }
+.fc-foot-bottom { border-top: var(--px) solid var(--fc-ink); font-size: 0.78rem; color: var(--fc-muted); }
+
+/* ---------- HERO ---------- */
 .fc-hero { padding: 1rem 0; }
-.fc-tag { display: inline-block; background: rgba(255,107,53,0.15); color: var(--fc-primary); font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,107,53,0.3); }
-.fc-hero-title { font-size: 2.8rem; font-weight: 900; line-height: 1.1; color: #f0f0f0; }
-.fc-hero-sub { color: #888; font-size: 1rem; max-width: 480px; }
+.fc-tag { display: inline-block; background: rgba(var(--fc-primary-rgb),0.15); color: var(--fc-primary-texto); font-size: 0.6rem; padding: 6px 12px; border: var(--px) solid var(--fc-primary); border-radius: 0; }
+.fc-hero-title { font-size: 1.9rem !important; line-height: 1.3 !important; color: var(--fc-text); text-shadow: var(--px) var(--px) 0 var(--fc-ink); }
+.fc-hero-sub { color: var(--fc-muted); font-size: 1rem; max-width: 480px; }
 
-/* WOLF */
-.fc-wolf-container { position: relative; display: inline-block; }
-.fc-wolf { filter: drop-shadow(0 0 30px rgba(255,107,53,0.3)); animation: fc-float 3s ease-in-out infinite; }
+/* ---------- KODA / MASCOTA ---------- */
+/* Los sprites de Koda se descargan como PNG y van en wwwroot/images/koda/.
+   Se renderizan sin suavizado para conservar el pixel. */
+.koda-sprite, .fc-wolf-img, .fc-wolf-hero, .fc-navbar-logo, .fc-footer-logo {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+.fc-wolf { animation: fc-float 3s steps(3) infinite; }
 @keyframes fc-float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-12px); }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-9px); }
 }
 
-/* BOTONES */
-.fc-btn-primary { background: var(--fc-primary) !important; color: white !important; border: none !important; font-weight: 600 !important; border-radius: 8px !important; transition: all 0.2s !important; }
-.fc-btn-primary:hover { background: #e55a2b !important; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,107,53,0.4) !important; }
-.fc-btn-outline { background: transparent !important; color: #f0f0f0 !important; border: 1px solid #2a2a4a !important; font-weight: 600 !important; border-radius: 8px !important; transition: all 0.2s !important; }
-.fc-btn-outline:hover { border-color: var(--fc-primary) !important; color: var(--fc-primary) !important; }
+/* Luz neón azul + vida de Koda. El GLOW anima el filter y el IDLE anima el
+   transform (flote + respiración): van en elementos/propiedades distintas, así
+   no se pelean, y el rebote por click (JS, composite:'add') se suma encima. */
+.koda-glow { animation: fc-glow 2.6s ease-in-out infinite; }
+.koda-glow-still { animation: fc-glow 2.6s ease-in-out infinite; }
+/* koda-idle lleva glow + flote en una sola declaración: si estuvieran en dos
+   clases distintas, la propiedad `animation` de una pisaría a la otra. */
+.koda-idle { animation: fc-glow 2.6s ease-in-out infinite, fc-koda-idle 3.6s ease-in-out infinite; will-change: transform; }
+@keyframes fc-glow {
+    0%, 100% { filter: drop-shadow(0 0 4px rgba(var(--fc-primary-rgb),.85)) drop-shadow(0 0 13px rgba(var(--fc-primary-rgb),.45)); }
+    50%      { filter: drop-shadow(0 0 8px rgba(108,155,255,.95)) drop-shadow(0 0 22px rgba(var(--fc-primary-rgb),.6)); }
+}
+@keyframes fc-koda-idle {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(-7px) scale(1.015); }
+}
 
-/* FEATURE CARDS */
-.fc-feature-card { background: #16213e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 1.5rem; transition: all 0.2s; }
-.fc-feature-card:hover { border-color: var(--fc-primary); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255,107,53,0.15); }
-.fc-feature-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+/* Assets pixel de logros y misiones (/images/logros/). */
+.logro-medal { display: block; image-rendering: pixelated; width: 64px; height: 64px; object-fit: contain; }
+.logro-medal.is-locked { filter: grayscale(1) opacity(.5); }
+.logro-medal.is-unlocked {
+    animation: fc-medal-pulse 2.6s ease-in-out infinite;
+    filter: drop-shadow(0 0 6px rgba(255,207,63,.45));
+}
+@keyframes fc-medal-pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .logro-medal.is-unlocked { animation: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .koda-glow, .koda-glow-still, .koda-idle {
+        animation: none;
+        filter: drop-shadow(0 0 6px rgba(var(--fc-primary-rgb),.7)) drop-shadow(0 0 16px rgba(var(--fc-primary-rgb),.4));
+    }
+}
 
-/* STATS BAR */
-.fc-info-bar { background: #16213e; border: 1px solid #2a2a4a; border-radius: 12px; }
+/* ---------- BOTONES (8-bit: sombra dura, se hunden al presionar) ---------- */
+.fc-btn-primary, .btn-primary {
+    background: var(--fc-primary) !important;
+    color: #fff !important;
+    border: var(--px) solid var(--fc-ink) !important;
+    box-shadow: var(--px) var(--px) 0 var(--fc-ink) !important;
+    border-radius: 0 !important;
+    font-weight: 700 !important;
+    transition: transform .05s, box-shadow .05s !important;
+}
+.fc-btn-primary:hover, .btn-primary:hover { background: #4880ff !important; border-color: var(--fc-ink) !important; }
+.fc-btn-primary:active, .btn-primary:active { transform: translate(var(--px), var(--px)); box-shadow: 0 0 0 var(--fc-ink) !important; }
+
+.fc-btn-outline, .btn-outline-light {
+    background: var(--fc-inset) !important;
+    color: var(--fc-primary-2) !important;
+    border: var(--px) solid var(--fc-ink) !important;
+    box-shadow: var(--px) var(--px) 0 var(--fc-ink) !important;
+    border-radius: 0 !important;
+    font-weight: 700 !important;
+    transition: transform .05s, box-shadow .05s !important;
+}
+.fc-btn-outline:hover, .btn-outline-light:hover { border-color: var(--fc-ink) !important; color: #fff !important; background: var(--fc-panel-2) !important; }
+.fc-btn-outline:active, .btn-outline-light:active { transform: translate(var(--px), var(--px)); box-shadow: 0 0 0 var(--fc-ink) !important; }
+
+/* ---------- CARDS / PANELES (marco pixel + sombra solida) ---------- */
+.fc-feature-card {
+    background: var(--fc-card);
+    border: var(--px) solid var(--fc-ink);
+    box-shadow: var(--px) var(--px) 0 var(--fc-ink);
+    border-radius: 0;
+    padding: 1.5rem;
+    transition: transform .1s, box-shadow .1s;
+}
+.fc-feature-card:hover { transform: translate(-1px,-1px); box-shadow: calc(var(--px) + 2px) calc(var(--px) + 2px) 0 var(--fc-ink), 0 0 18px rgba(var(--fc-primary-rgb),.25); }
+.fc-feature-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; }
+
+.fc-info-bar { background: var(--fc-card); border: var(--px) solid var(--fc-ink); box-shadow: var(--px) var(--px) 0 var(--fc-ink); border-radius: 0; }
 .fc-stat { padding: 0.5rem 1rem; }
-.fc-stat-num { font-size: 1.8rem; font-weight: 900; color: var(--fc-primary); }
-.fc-stat-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
-.border-end { border-right: 1px solid #2a2a4a !important; }
+.fc-stat-num { font-size: 1.8rem; font-weight: 900; color: var(--fc-primary-texto); font-variant-numeric: tabular-nums; }
+.fc-stat-label { font-size: 0.6rem; color: var(--fc-muted); }
+.border-end { border-right: var(--px) solid var(--fc-ink) !important; }
 
-/* CARDS GENERICAS */
-.card { background: #16213e !important; border: 1px solid #2a2a4a !important; color: #f0f0f0 !important; border-radius: 12px !important; }
-.card-header { background: transparent !important; border-bottom: 1px solid #2a2a4a !important; }
+.card { background: var(--fc-card) !important; border: var(--px) solid var(--fc-ink) !important; color: var(--fc-text) !important; border-radius: 0 !important; box-shadow: var(--px) var(--px) 0 var(--fc-ink) !important; }
+.card-header { background: transparent !important; border-bottom: var(--px) solid var(--fc-ink) !important; }
 
-/* FORMS */
-.form-control, .form-select { background: #0f0f1a !important; border: 1px solid #2a2a4a !important; color: #f0f0f0 !important; border-radius: 8px !important; }
-.form-control:focus, .form-select:focus { background: #0f0f1a !important; color: #f0f0f0 !important; border-color: var(--fc-primary) !important; box-shadow: 0 0 0 0.2rem rgba(255,107,53,0.2) !important; }
-.form-label { color: #aaa !important; font-size: 0.85rem !important; font-weight: 600 !important; }
-.form-select option { background: #1a1a2e; color: #f0f0f0; }
+/* ---------- FORMS ---------- */
+.form-control, .form-select { background: var(--fc-inset) !important; border: var(--px) solid var(--fc-ink) !important; color: var(--fc-text) !important; border-radius: 0 !important; }
+.form-control:focus, .form-select:focus { background: var(--fc-inset) !important; color: var(--fc-text) !important; border-color: var(--fc-primary) !important; box-shadow: 0 0 0 var(--px) rgba(var(--fc-primary-rgb),0.3) !important; }
+.form-label { color: var(--fc-muted) !important; font-size: 0.85rem !important; font-weight: 600 !important; }
+.form-select option { background: var(--fc-card); color: var(--fc-text); }
 
-/* BOTONES GLOBALES */
-.btn-primary { background: var(--fc-primary) !important; border-color: var(--fc-primary) !important; border-radius: 8px !important; font-weight: 600 !important; }
-.btn-primary:hover { background: #e55a2b !important; border-color: #e55a2b !important; }
-.btn-outline-light { border-color: #2a2a4a !important; color: #f0f0f0 !important; border-radius: 8px !important; font-weight: 600 !important; }
-.btn-outline-light:hover { border-color: var(--fc-primary) !important; color: var(--fc-primary) !important; background: transparent !important; }
+/* ---------- TABLES ----------
+   Se fuerza el tema oscuro en celdas y cabecera: Bootstrap deja las celdas en
+   blanco por defecto (se veía al desplegar la rutina). */
+.table { --bs-table-bg: transparent; --bs-table-color: var(--fc-text); color: var(--fc-text) !important; margin-bottom: 0; }
+.table > :not(caption) > * > * { background-color: transparent !important; color: var(--fc-text) !important; border-color: var(--fc-border) !important; }
+.table > thead > tr > * { background: var(--fc-inset) !important; color: var(--fc-muted) !important; text-transform: uppercase; font-size: 0.72rem; letter-spacing: .06em; border-bottom: var(--px) solid var(--fc-ink) !important; }
+.table-hover tbody tr:hover td { background: rgba(var(--fc-primary-rgb),0.06) !important; }
 
-/* TABLES */
-.table { color: #f0f0f0 !important; }
-.table-hover tbody tr:hover td { background: rgba(255,107,53,0.05) !important; }
-
-/* ACCORDION */
-.accordion-item { background: #16213e !important; border: 1px solid #2a2a4a !important; margin-bottom: 0.5rem; border-radius: 10px !important; overflow: hidden; }
-.accordion-button { background: #1a1a2e !important; color: #f0f0f0 !important; font-weight: 600 !important; }
-.accordion-button:not(.collapsed) { background: var(--fc-primary) !important; color: white !important; }
+/* ---------- ACCORDION ---------- */
+.accordion-item { background: var(--fc-card) !important; border: var(--px) solid var(--fc-ink) !important; margin-bottom: 0.5rem; border-radius: 0 !important; overflow: hidden; box-shadow: var(--px) var(--px) 0 var(--fc-ink); }
+.accordion-button { background: var(--fc-panel-2) !important; color: var(--fc-text) !important; font-weight: 600 !important; }
+.accordion-button:not(.collapsed) { background: var(--fc-primary) !important; color: #fff !important; }
 .accordion-button::after { filter: invert(1); }
-.accordion-body { background: #16213e !important; padding: 0 !important; }
+.accordion-body { background: var(--fc-card) !important; padding: 0 !important; }
 
-/* BADGE */
-.badge { border-radius: 6px !important; }
+/* ---------- BADGE ---------- */
+.badge { border-radius: 0 !important; }
 
-/* FOOTER */
-.fc-footer { background: #16213e !important; border-top: 1px solid #2a2a4a !important; }
+/* ---------- FOOTER ---------- */
+.fc-footer { background: var(--fc-card) !important; border-top: var(--px) solid var(--fc-ink) !important; }
+.fc-footer-link { color: var(--fc-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.fc-footer-link:hover { color: var(--fc-primary-texto); }
 
-/* MISC */
-.text-muted { color: #888 !important; }
-.display-4 { color: var(--fc-primary) !important; }
+/* ---------- MISC ---------- */
+.text-muted { color: var(--fc-muted) !important; }
+.display-4 { color: var(--fc-primary-texto) !important; }
+.btn-warning { color: #fff !important; }
 
-#chat-box::-webkit-scrollbar {
-    width: 8px;
+#chat-box::-webkit-scrollbar { width: 8px; }
+#chat-box::-webkit-scrollbar-thumb { background: var(--fc-border); border-radius: 0; }
+
+/* Logos monocromos recoloreados a azul (placeholder hasta los assets pixel definitivos) */
+.fc-navbar-logo { height: 34px; width: auto; filter: brightness(0) saturate(100%) invert(34%) sepia(96%) saturate(1900%) hue-rotate(212deg) brightness(101%) contrast(101%); }
+.fc-footer-logo { height: 32px; width: auto; filter: brightness(0) saturate(100%) invert(34%) sepia(96%) saturate(1900%) hue-rotate(212deg) brightness(101%) contrast(101%); }
+
+/* ---------- HERO SECTION ---------- */
+.fc-hero-section {
+    margin: -1.5rem -12px 2rem -12px;
+    padding: 0 12px;
+    background: radial-gradient(ellipse at 70% 50%, rgba(var(--fc-primary-rgb),0.10) 0%, transparent 60%);
+}
+.fc-hero-wolf-col { position: relative; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.fc-wolf-hero { width: 100%; max-width: 320px; height: auto; object-fit: contain; object-position: center; display: block; }
+.fc-wolf-img { max-width: 380px; width: 100%; height: auto; animation: fc-float 3s steps(3) infinite; }
+
+/* ---------- CHAT ---------- */
+.fc-msg { display: flex; align-items: flex-end; gap: 10px; }
+.fc-msg-user { flex-direction: row-reverse; }
+.fc-msg-avatar { height: 40px; width: 40px; border-radius: 0; object-fit: contain; object-position: top; image-rendering: pixelated; flex-shrink: 0; filter: drop-shadow(0 0 5px rgba(var(--fc-primary-rgb),.55)); }
+.fc-msg-avatar-user { height: 32px; width: 32px; border-radius: 0; background: var(--fc-primary); border: 2px solid var(--fc-ink); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem; flex-shrink: 0; }
+.fc-msg-bubble { max-width: 75%; padding: 0.75rem 1rem; border-radius: 0; font-size: 0.9rem; line-height: 1.5; }
+.fc-msg-bubble-bot { background: var(--fc-card); border: var(--px) solid var(--fc-ink); color: var(--fc-text); }
+.fc-msg-bubble-user { background: var(--fc-primary); color: #fff; border: var(--px) solid var(--fc-ink); }
+.fc-chip { background: var(--fc-inset); border: var(--px) solid var(--fc-ink); color: var(--fc-muted); font-size: 0.75rem; border-radius: 0; padding: 4px 12px; transition: none; }
+.fc-chip:hover { border-color: var(--fc-primary); color: var(--fc-primary-texto); }
+
+.ai-message { border-left: var(--px) solid var(--fc-primary); }
+
+/* ---------- TYPING INDICATOR ---------- */
+.fc-typing { display: flex; gap: 4px; align-items: center; height: 20px; }
+.fc-typing span { width: 8px; height: 8px; border-radius: 0; background: var(--fc-primary); animation: fc-bounce 1.2s steps(2) infinite; }
+.fc-typing span:nth-child(2) { animation-delay: 0.2s; }
+.fc-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes fc-bounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
 }
 
-#chat-box::-webkit-scrollbar-thumb {
-    background: #30363d;
-    border-radius: 4px;
+/* ---------- ACCESIBILIDAD ---------- */
+
+/* Primer tabulador: salta la navegacion. Fuera de pantalla hasta recibir el foco. */
+.fc-salto-contenido {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 1080;
+    padding: 0.6rem 1rem;
+    background: var(--fc-primary);
+    color: #fff;
+    border: var(--px) solid var(--fc-text);
+    text-decoration: none;
+}
+.fc-salto-contenido:focus { left: 0; }
+
+/* Los campos ya tenian foco visible, el resto no. :focus-visible lo omite con mouse. */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+summary:focus-visible {
+    outline: var(--px) solid var(--fc-primary);
+    outline-offset: 2px;
 }
 
-.ai-message {
-    border-left: 4px solid #ff6b35;
+/* En pantallas de alto contraste el outline hereda el color del sistema. */
+@media (forced-colors: active) {
+    a:focus-visible, button:focus-visible { outline: 3px solid CanvasText; }
 }
 
-.btn-warning {
-    color: white !important;
+/* ---------- PERFIL ---------- */
+
+/* Resumen a lo ancho: identidad a la izquierda, calorias a la derecha. */
+.fc-perfil-resumen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, var(--fc-card), var(--fc-inset));
+    border: var(--px) solid var(--fc-ink);
+    box-shadow: var(--px) var(--px) 0 var(--fc-ink);
+    padding: 1.5rem;
 }
+
+.fc-perfil-identidad { display: flex; align-items: center; gap: 1.25rem; min-width: 0; }
+
+.fc-perfil-koda {
+    width: 96px;
+    height: auto;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 12px rgba(var(--fc-primary-rgb), .35));
+    flex-shrink: 0;
+}
+
+.fc-perfil-nombre {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--fc-primary-texto);
+    margin: .35rem 0 .1rem;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+}
+
+.fc-perfil-objetivo { color: var(--fc-text); font-size: .95rem; }
+
+.fc-perfil-calorias {
+    text-align: right;
+    border-left: var(--px) solid var(--fc-ink);
+    padding-left: 1.5rem;
+    min-width: 240px;
+}
+
+.fc-perfil-kcal {
+    font-family: var(--fc-font-ui);
+    font-size: 3.25rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--fc-primary-texto);
+    font-variant-numeric: tabular-nums;
+}
+
+.fc-perfil-kcal-vacio { color: var(--fc-muted); }
+.fc-perfil-kcal-unidad { color: var(--fc-muted); font-size: 1rem; margin-left: .35rem; }
+
+/* En pantalla angosta el bloque de calorias pasa abajo y a la izquierda. */
+@media (max-width: 767.98px) {
+    .fc-perfil-calorias {
+        text-align: left;
+        border-left: 0;
+        border-top: var(--px) solid var(--fc-ink);
+        padding-left: 0;
+        padding-top: 1rem;
+        width: 100%;
+    }
+    .fc-perfil-koda { width: 72px; }
+    .fc-perfil-nombre { font-size: 1.5rem; }
+}
+
+/* Bootstrap la deja en un gris que no llega al contraste AA sobre el fondo oscuro. */
+.form-text { color: var(--fc-muted) !important; font-size: .8rem; }
+
+
+/* ============================================================
+   PANTALLAS SIN SESION (bienvenida, login, registro)
+   Sin navegacion ni pie: todas las secciones de la app piden
+   cuenta, asi que enlazarlas antes de entrar solo lleva al login.
+   ============================================================ */
+
+.fc-limpio-main { max-width: 1140px; margin: 0 auto; padding: 0 1rem 3rem; }
+
+/* Barra minima de la portada publica: marca y acceso, nada mas. */
+.fc-barra-limpia {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    border-bottom: var(--px) solid var(--fc-border);
+    margin-bottom: 1rem;
+}
+
+.fc-barra-limpia .fc-brand-text { font-size: .9rem; text-decoration: none; }
+
+/* ---- Bienvenida ---- */
+
+.fc-bienvenida {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.fc-bienvenida-caja { max-width: 620px; width: 100%; text-align: center; }
+
+.fc-bienvenida-marca {
+    font-family: var(--fc-font-pixel);
+    font-size: 1.5rem;
+    line-height: 1.4;
+    color: var(--fc-text);
+    text-shadow: var(--px) var(--px) 0 var(--fc-ink);
+    margin-bottom: 2rem;
+}
+
+.fc-bienvenida-koda {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.fc-bienvenida-sprite { width: 120px; height: auto; image-rendering: pixelated; flex-shrink: 0; }
+
+/* Globo de dialogo de Koda: la punta se dibuja con dos triangulos, el del
+   borde debajo del relleno, para que el contorno pixel no se corte. */
+.fc-globo {
+    position: relative;
+    background: var(--fc-card);
+    border: var(--px) solid var(--fc-ink);
+    box-shadow: var(--px) var(--px) 0 var(--fc-border);
+    padding: 1rem 1.15rem;
+    color: var(--fc-text);
+    font-size: .95rem;
+}
+
+.fc-globo::before,
+.fc-globo::after {
+    content: "";
+    position: absolute;
+    top: 28px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.fc-globo::before {
+    left: calc(-12px - var(--px));
+    border-width: 10px 12px 10px 0;
+    border-color: transparent var(--fc-ink) transparent transparent;
+}
+
+.fc-globo::after {
+    left: -12px;
+    border-width: 10px 12px 10px 0;
+    border-color: transparent var(--fc-card) transparent transparent;
+}
+
+.fc-bienvenida-pregunta {
+    font-family: var(--fc-font-ui);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--fc-text);
+    margin-bottom: 1.25rem;
+}
+
+.fc-bienvenida-acciones { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+
+.fc-bienvenida-pie { margin: 1.75rem 0 0; font-size: .85rem; }
+.fc-bienvenida-pie a { color: var(--fc-muted); }
+.fc-bienvenida-pie a:hover { color: var(--fc-primary-texto); }
+
+@media (max-width: 575.98px) {
+    .fc-bienvenida-koda { flex-direction: column; text-align: center; }
+    .fc-globo::before, .fc-globo::after { display: none; }
+    .fc-bienvenida-marca { font-size: 1.1rem; }
+}
+
+/* ---- Login y registro ---- */
+
+.fc-acceso {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.fc-acceso-caja { width: 100%; max-width: 420px; }
+
+.fc-acceso-marca {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    margin-bottom: 1.5rem;
+    text-decoration: none;
+}
+
+.fc-acceso-marca .fc-brand-text { font-size: .8rem; }
+.fc-acceso-koda { width: 34px; height: auto; image-rendering: pixelated; }
+
+.fc-acceso-card {
+    background: var(--fc-card);
+    border: var(--px) solid var(--fc-ink);
+    box-shadow: var(--px) var(--px) 0 var(--fc-border);
+    padding: 2rem 1.75rem;
+}
+
+.fc-acceso-titulo { font-size: 1.4rem; margin-bottom: .35rem; }
+.fc-acceso-sub { color: var(--fc-muted); font-size: .9rem; margin-bottom: 1.5rem; }
+
+.fc-acceso-pie { text-align: center; color: var(--fc-muted); font-size: .875rem; margin: 1.25rem 0 0; }
+
+
+/* ============================================================
+   AJUSTES
+   ============================================================ */
+
+.fc-ajustes-titulo { font-size: 1.75rem; margin: .5rem 0 .35rem; }
+
+.fc-ajuste-bloque {
+    display: flex;
+    flex-direction: column;
+    background: var(--fc-card);
+    border: var(--px) solid var(--fc-ink);
+    box-shadow: var(--px) var(--px) 0 var(--fc-border);
+    padding: 1.5rem;
+}
+
+.fc-ajuste-cabeza {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: 1rem;
+    padding-bottom: .75rem;
+    border-bottom: 1px solid var(--fc-border);
+}
+
+.fc-ajuste-cabeza i { color: var(--fc-primary-texto); }
+.fc-ajuste-titulo { font-size: 1.05rem; margin: 0; }
+
+.fc-ajuste-dato { margin-bottom: .5rem; }
+.fc-ajuste-dato dt { font-family: var(--fc-font-ui); font-size: .75rem; color: var(--fc-muted); text-transform: uppercase; letter-spacing: .04em; }
+.fc-ajuste-dato dd { margin: 0; color: var(--fc-text); overflow-wrap: anywhere; }
+
+/* Los bloques de una fila comparten altura; sin esto el sobrante queda debajo del
+   boton en vez de encima, que fue justo lo que se corrigio en el perfil. */
+.fc-ajuste-acciones { margin-top: auto; display: flex; flex-wrap: wrap; gap: .5rem; align-items: flex-start; }
+.fc-ajuste-acciones .btn { flex: 0 0 auto; }
+
+/* Avisos con el contorno pixel del resto de la interfaz, en vez del alert de Bootstrap. */
+.fc-alerta-ok, .fc-alerta-error {
+    border-radius: 0;
+    border: var(--px) solid var(--fc-ink);
+}
+
+.fc-alerta-ok { background: rgba(39,209,124,0.12); border-left: var(--px) solid var(--fc-logro); color: var(--fc-logro); }
+.fc-alerta-error { background: rgba(239,70,85,0.12); border-left: var(--px) solid var(--fc-descanso); color: #ff8d97; }
+
+/* Equipo disponible: tarjetas marcables, mas claras que una lista de casillas sueltas. */
+.fc-equipo-rejilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: .75rem;
+}
+
+.fc-equipo-opcion {
+    display: flex;
+    align-items: flex-start;
+    gap: .7rem;
+    padding: .85rem 1rem;
+    background: var(--fc-inset);
+    border: var(--px) solid var(--fc-border);
+    cursor: pointer;
+}
+
+.fc-equipo-opcion:hover { border-color: var(--fc-primary); }
+.fc-equipo-activa { border-color: var(--fc-primary); background: rgba(var(--fc-primary-rgb), 0.1); }
+.fc-equipo-opcion:focus-within { outline: var(--px) solid var(--fc-primary-2); outline-offset: 2px; }
+
+.fc-equipo-titulo { display: block; font-family: var(--fc-font-ui); font-weight: 600; color: var(--fc-text); }
+.fc-equipo-detalle { display: block; font-size: .8rem; color: var(--fc-muted); }
+
+/* Cambiar un ejercicio por otro del mismo grupo muscular */
+.fc-cambiar-ejercicio { color: var(--fc-reco) !important; text-decoration: none; font-size: .85rem; }
+.fc-cambiar-ejercicio:hover { text-decoration: underline; }
+
+.fc-marca-cambiado {
+    display: inline-block;
+    margin-left: .4rem;
+    padding: 1px 7px;
+    font-family: var(--fc-font-ui);
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--fc-reco);
+    border: 1px solid var(--fc-reco);
+}
+
+.fc-alt-rejilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: .75rem;
+}
+
+.fc-alt-opcion {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    padding: .75rem;
+    background: var(--fc-inset);
+    border: var(--px) solid var(--fc-border);
+}
+
+.fc-alt-opcion:hover { border-color: var(--fc-primary); }
+.fc-alt-texto { flex: 1 1 auto; min-width: 0; }
+.fc-alt-texto .fc-equipo-titulo { overflow-wrap: anywhere; }
+
+.fc-alt-gif {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    background: var(--fc-inset);
+    flex-shrink: 0;
+    border: 1px solid var(--fc-border);
+}
+
+.fc-alt-buscador { display: flex; gap: .5rem; flex-wrap: wrap; }
+.fc-alt-buscador .form-control { flex: 1 1 260px; }

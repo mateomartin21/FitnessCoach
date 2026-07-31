@@ -1,0 +1,145 @@
+@using FitnessCoach.Domain.Models.Gamificacion
+@model ResumenGamificacion
+@{
+    ViewData["Title"] = "Mis Logros";
+    var nivel = Model.Nivel;
+
+    // Cada logro/misión usa uno de los assets pixel de /images/logros/ según su tema.
+    string IconoLogro(string id) => id switch
+    {
+        "primer-entreno" or "diez-entrenos" or "cincuenta-entrenos" => "entrenos.png",
+        "racha-3" or "racha-7" or "racha-30" or "semana-de-fuego" => "rachas.png",
+        "primer-record" or "diez-records" => "records.png",
+        "primer-peso" => "peso.png",
+        "diario-7" => "diario.png",
+        "con-objetivo" => "objetivo.png",
+        _ => "objetivo.png",
+    };
+    string IconoMision(string id) => id switch
+    {
+        "semana-entrenar" => "entrenos.png",
+        "semana-pesarse" => "peso.png",
+        "semana-diario" => "diario.png",
+        _ => "objetivo.png",
+    };
+}
+
+<div class="text-center mb-4">
+    <h2 class="fw-bold" style="color:var(--fc-primary-texto);">
+        <i class="fas fa-trophy me-2" style="color:#ffd700;" aria-hidden="true"></i>Tu camino de lobo
+    </h2>
+    <p class="text-muted small">Todo se gana entrenando de verdad: cada hecho suma XP.</p>
+</div>
+
+@* --- Nivel y barra de XP, estilo RPG --- *@
+<div class="fc-feature-card mb-4 d-flex gap-3 align-items-center">
+    <img src="~/images/koda/koda-celebrando.png" alt="Koda celebrando" class="d-none d-sm-block flex-shrink-0 koda-glow koda-idle koda-interactive" data-koda-aura data-koda-celebra
+         style="height:120px; width:auto; image-rendering:pixelated;" />
+    <div class="flex-grow-1">
+    <div class="d-flex justify-content-between align-items-end mb-2 flex-wrap gap-2">
+        <div>
+            <span class="badge px-3 py-2" style="background:var(--fc-primary); font-size:1rem;">Nivel @nivel.Numero</span>
+            <span class="ms-2 fw-bold" style="color:#ffd700; font-size:1.1rem;">@nivel.Titulo</span>
+        </div>
+        <div class="text-end small text-muted">
+            <strong style="color:#eee;">@nivel.XpTotal XP</strong> en total
+        </div>
+    </div>
+
+    <div class="progress" role="progressbar" aria-valuenow="@nivel.PorcentajeAvance"
+         aria-valuemin="0" aria-valuemax="100"
+         style="height:22px; background:#0f0f1a; border:1px solid #2a2a4a;">
+        <div class="progress-bar" style="width:@nivel.PorcentajeAvance%; background:linear-gradient(90deg,var(--fc-primary),#ffd700); font-weight:700;">
+            @nivel.XpEnNivel / @nivel.XpParaSubir
+        </div>
+    </div>
+    <div class="small text-muted mt-1 text-end">
+        Faltan <strong style="color:#eee;">@nivel.XpRestante XP</strong> para el nivel @(nivel.Numero + 1).
+    </div>
+    </div>
+</div>
+
+@* --- Misiones de la semana --- *@
+<div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-1">
+    <h5 class="fw-bold mb-0"><i class="fas fa-bullseye me-2" style="color:#00d4ff;" aria-hidden="true"></i>Misiones de la semana</h5>
+    <span class="text-muted small"><i class="fas fa-rotate me-1" aria-hidden="true"></i>Se reinician cada lunes</span>
+</div>
+<div class="row g-3 mb-4">
+    @foreach (var m in Model.Misiones)
+    {
+        <div class="col-md-4">
+            <div class="fc-feature-card h-100 @(m.Cumplida ? "" : "")"
+                 style="@(m.Cumplida ? "border:1px solid #22c55e;" : "")">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <img src="~/images/logros/@IconoMision(m.Mision.Id)" alt="@m.Mision.Nombre" width="44" height="44"
+                         class="logro-medal @(m.Cumplida ? "is-unlocked" : "is-locked")" style="width:44px;height:44px;" />
+                    @if (m.Cumplida)
+                    {
+                        <span class="badge" style="background:#22c55e;"><i class="fas fa-check me-1" aria-hidden="true"></i>Cumplida</span>
+                    }
+                    else
+                    {
+                        <span class="badge" style="background:#0f0f1a; border:1px solid #2a2a4a; color:#888;">+@m.Mision.Xp XP</span>
+                    }
+                </div>
+                <h6 class="fw-bold mb-1" style="color:#eee;">@m.Mision.Nombre</h6>
+                <p class="small text-muted mb-2">@m.Mision.Descripcion</p>
+                <div class="progress" role="progressbar" aria-valuenow="@m.Porcentaje" aria-valuemin="0" aria-valuemax="100"
+                     style="height:8px; background:#0f0f1a;">
+                    <div class="progress-bar" style="width:@m.Porcentaje%; background:@(m.Cumplida ? "#22c55e" : "#00d4ff");"></div>
+                </div>
+                <div class="small text-muted mt-1 text-end">@m.ProgresoActual / @m.Mision.Objetivo</div>
+            </div>
+        </div>
+    }
+</div>
+
+@* --- Logros --- *@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0"><i class="fas fa-medal me-2" style="color:#ffd700;" aria-hidden="true"></i>Logros</h5>
+    <span class="text-muted small">@Model.LogrosDesbloqueados de @Model.LogrosTotales desbloqueados</span>
+</div>
+<div class="row g-3">
+    @foreach (var le in Model.LogrosOrdenados)
+    {
+        var l = le.Logro;
+        <div class="col-md-6 col-lg-4">
+            <div class="fc-feature-card h-100 d-flex gap-3" style="@(le.Desbloqueado ? "border:1px solid #ffd700;" : "opacity:0.65;")">
+                @* Asset pixel del logro (/images/logros/). Desbloqueado brilla; bloqueado en gris. *@
+                <img src="~/images/logros/@IconoLogro(l.Id)" alt="@l.Nombre" width="64" height="64"
+                     class="logro-medal flex-shrink-0 @(le.Desbloqueado ? "is-unlocked" : "is-locked")" />
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h6 class="fw-bold mb-1" style="color:@(le.Desbloqueado ? "#ffd700" : "#ccc");">@l.Nombre</h6>
+                        <span class="badge ms-2" style="background:#0f0f1a; border:1px solid #2a2a4a; color:#888;">+@l.Xp XP</span>
+                    </div>
+                    <p class="small text-muted mb-2">@l.Descripcion</p>
+
+                    @if (le.Desbloqueado)
+                    {
+                        <div class="small fst-italic" style="color:#b8a6e6;">
+                            <img src="/images/koda/koda-logo.png" alt="Koda" width="20" height="20" class="me-1" style="object-fit:contain; image-rendering:pixelated;" />@l.LineaLobo
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="progress" role="progressbar" aria-valuenow="@le.Porcentaje" aria-valuemin="0" aria-valuemax="100"
+                             style="height:6px; background:#0f0f1a;">
+                            <div class="progress-bar" style="width:@le.Porcentaje%; background:var(--fc-primary);"></div>
+                        </div>
+                        <div class="small text-muted mt-1 text-end">@le.ProgresoActual / @l.Objetivo</div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="text-center mt-4">
+    <a asp-controller="Progreso" asp-action="Index" class="btn fc-btn-outline px-4 me-2">
+        <i class="fas fa-chart-line me-2" aria-hidden="true"></i>Ver mi progreso
+    </a>
+    <a asp-controller="Rutinas" asp-action="Index" class="btn fc-btn-primary px-4">
+        <i class="fas fa-fire me-2" aria-hidden="true"></i>A entrenar
+    </a>
+</div>

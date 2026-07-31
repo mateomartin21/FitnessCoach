@@ -1,6 +1,11 @@
 <Solution>
+  <Folder Name="/.github/" />
+  <Folder Name="/.github/workflows/">
+    <File Path="ci.yml" />
+  </Folder>
   <Project Path="FitnessCoach.Application/FitnessCoach.Application.csproj" />
   <Project Path="FitnessCoach.csproj" />
   <Project Path="FitnessCoach.Domain/FitnessCoach.Domain.csproj" />
   <Project Path="FitnessCoach.Infrastructure/FitnessCoach.Infrastructure.csproj" />
+  <Project Path="FitnessCoach.Tests/FitnessCoach.Tests.csproj" />
 </Solution>

@@ -1,0 +1,1429 @@
+[
+ {
+  "slug": "pechuga-de-pollo",
+  "nombre": "Pechuga de pollo",
+  "buscar": "Chicken, broiler or fryers, breast, skinless, boneless, meat only, raw",
+  "categoria": "proteina",
+  "grupo": "proteina-magra",
+  "porcion": 150,
+  "desc": "1 pechuga mediana",
+  "min": 80,
+  "max": 250,
+  "etiquetas": [
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Pechuga de pollo",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "muslo-de-pollo",
+  "nombre": "Muslo de pollo sin piel",
+  "buscar": "Chicken, broilers or fryers, dark meat, thigh, meat only, raw",
+  "categoria": "proteina",
+  "grupo": "proteina-media",
+  "porcion": 130,
+  "desc": "2 muslos",
+  "min": 80,
+  "max": 220,
+  "etiquetas": [
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Pollo (alimento)",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "pavo-pechuga",
+  "nombre": "Pechuga de pavo",
+  "buscar": "Turkey, breast, meat only, raw",
+  "categoria": "proteina",
+  "grupo": "proteina-magra",
+  "porcion": 150,
+  "desc": "1 filete grande",
+  "min": 80,
+  "max": 250,
+  "etiquetas": [
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Meleagris gallopavo",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "carne-magra-res",
+  "nombre": "Carne magra de res",
+  "buscar": "Beef, round, top round, separable lean only, raw",
+  "categoria": "proteina",
+  "grupo": "proteina-media",
+  "porcion": 150,
+  "desc": "1 bife mediano",
+  "min": 80,
+  "max": 250,
+  "etiquetas": [
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Carne de vacuno",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "lomo-de-cerdo",
+  "nombre": "Lomo de cerdo",
+  "buscar": "Pork, loin, tenderloin, separable lean only, raw",
+  "categoria": "proteina",
+  "grupo": "proteina-magra",
+  "porcion": 150,
+  "desc": "1 porción mediana",
+  "min": 80,
+  "max": 250,
+  "etiquetas": [
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Lomo de cerdo",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "salmon",
+  "nombre": "Salmón",
+  "buscar": "Fish, salmon, Atlantic, farmed, raw",
+  "categoria": "proteina",
+  "grupo": "pescado-graso",
+  "porcion": 150,
+  "desc": "1 filete",
+  "min": 80,
+  "max": 220,
+  "etiquetas": [
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Salmón (alimento)",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "merluza",
+  "nombre": "Merluza",
+  "buscar": "Fish, cod, Atlantic, raw",
+  "categoria": "proteina",
+  "grupo": "pescado-blanco",
+  "porcion": 180,
+  "desc": "1 filete grande",
+  "min": 100,
+  "max": 250,
+  "etiquetas": [
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Gadus morhua",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "atun-en-agua",
+  "nombre": "Atún en agua",
+  "buscar": "Fish, tuna, light, canned in water, drained solids",
+  "categoria": "proteina",
+  "grupo": "proteina-magra",
+  "porcion": 100,
+  "desc": "1 lata escurrida",
+  "min": 60,
+  "max": 180,
+  "etiquetas": [
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Atún en conserva",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "camaron",
+  "nombre": "Camarón",
+  "buscar": "Crustaceans, shrimp, raw",
+  "categoria": "proteina",
+  "grupo": "proteina-magra",
+  "porcion": 150,
+  "desc": "1 taza",
+  "min": 80,
+  "max": 220,
+  "etiquetas": [
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Camarón",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "huevo-entero",
+  "nombre": "Huevo entero",
+  "buscar": "Egg, whole, raw, fresh",
+  "categoria": "proteina",
+  "grupo": "proteina-media",
+  "porcion": 100,
+  "desc": "2 huevos medianos",
+  "min": 50,
+  "max": 200,
+  "etiquetas": [
+   "vegetariano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Huevo (alimento)",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "clara-de-huevo",
+  "nombre": "Clara de huevo",
+  "buscar": "Egg, white, raw, fresh",
+  "categoria": "proteina",
+  "grupo": "proteina-magra",
+  "porcion": 100,
+  "desc": "3 claras",
+  "min": 60,
+  "max": 250,
+  "etiquetas": [
+   "vegetariano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Clara de huevo",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "tofu",
+  "nombre": "Tofu firme",
+  "buscar": "Tofu, firm, prepared with calcium sulfate",
+  "categoria": "proteina",
+  "grupo": "proteina-vegetal",
+  "porcion": 150,
+  "desc": "1 bloque pequeño",
+  "min": 80,
+  "max": 250,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Tofu",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "tempeh",
+  "nombre": "Tempeh",
+  "buscar": "Tempeh",
+  "categoria": "proteina",
+  "grupo": "proteina-vegetal",
+  "porcion": 120,
+  "desc": "1 porción",
+  "min": 60,
+  "max": 200,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-lactosa"
+  ],
+  "wiki": "Tempeh",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "lentejas-cocidas",
+  "nombre": "Lentejas cocidas",
+  "buscar": "Lentils, mature seeds, cooked, boiled, without salt",
+  "categoria": "proteina",
+  "grupo": "legumbre",
+  "porcion": 180,
+  "desc": "1 taza cocidas",
+  "min": 100,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Lens culinaris",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "garbanzos-cocidos",
+  "nombre": "Garbanzos cocidos",
+  "buscar": "Chickpeas, mature seeds, cooked, boiled, without salt",
+  "categoria": "proteina",
+  "grupo": "legumbre",
+  "porcion": 160,
+  "desc": "1 taza cocidos",
+  "min": 100,
+  "max": 280,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Cicer arietinum",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "frijoles-negros",
+  "nombre": "Frijoles negros cocidos",
+  "buscar": "Beans, black, mature seeds, cooked, boiled, without salt",
+  "categoria": "proteina",
+  "grupo": "legumbre",
+  "porcion": 170,
+  "desc": "1 taza cocidos",
+  "min": 100,
+  "max": 280,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Frijol negro",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "yogur-griego",
+  "nombre": "Yogur griego natural",
+  "buscar": "Yogurt, Greek, plain, nonfat",
+  "categoria": "lacteo",
+  "grupo": "lacteo-proteico",
+  "porcion": 170,
+  "desc": "1 pote",
+  "min": 100,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "sin-gluten"
+  ],
+  "wiki": "Yogur griego",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "queso-cottage",
+  "nombre": "Queso cottage",
+  "buscar": "Cheese, cottage, lowfat, 2% milkfat",
+  "categoria": "lacteo",
+  "grupo": "lacteo-proteico",
+  "porcion": 150,
+  "desc": "3/4 taza",
+  "min": 80,
+  "max": 250,
+  "etiquetas": [
+   "vegetariano",
+   "sin-gluten"
+  ],
+  "wiki": "Queso cottage",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "leche-descremada",
+  "nombre": "Leche descremada",
+  "buscar": "Milk, nonfat, fluid, with added vitamin A and vitamin D",
+  "categoria": "lacteo",
+  "grupo": "lacteo-liquido",
+  "porcion": 240,
+  "desc": "1 vaso",
+  "min": 150,
+  "max": 400,
+  "etiquetas": [
+   "vegetariano",
+   "sin-gluten"
+  ],
+  "wiki": "Leche desnatada",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "queso-mozzarella",
+  "nombre": "Queso mozzarella",
+  "buscar": "Cheese, mozzarella, part skim milk",
+  "categoria": "lacteo",
+  "grupo": "lacteo-graso",
+  "porcion": 40,
+  "desc": "2 rebanadas",
+  "min": 20,
+  "max": 80,
+  "etiquetas": [
+   "vegetariano",
+   "sin-gluten"
+  ],
+  "wiki": "Mozzarella",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "arroz-blanco",
+  "nombre": "Arroz blanco cocido",
+  "buscar": "Rice, white, long-grain, regular, enriched, cooked",
+  "categoria": "carbohidrato",
+  "grupo": "cereal",
+  "porcion": 150,
+  "desc": "1 taza cocido",
+  "min": 80,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Arroz blanco",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "arroz-integral",
+  "nombre": "Arroz integral cocido",
+  "buscar": "Rice, brown, long-grain, cooked",
+  "categoria": "carbohidrato",
+  "grupo": "cereal",
+  "porcion": 150,
+  "desc": "1 taza cocido",
+  "min": 80,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Arroz integral",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "avena",
+  "nombre": "Avena en hojuelas",
+  "buscar": "Cereals, oats, regular and quick, not fortified, dry",
+  "categoria": "carbohidrato",
+  "grupo": "cereal",
+  "porcion": 60,
+  "desc": "3/4 taza en seco",
+  "min": 30,
+  "max": 120,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-lactosa"
+  ],
+  "wiki": "Avena sativa",
+  "momentos": [
+   "desayuno",
+   "snack"
+  ]
+ },
+ {
+  "slug": "quinoa-cocida",
+  "nombre": "Quinoa cocida",
+  "buscar": "Quinoa, cooked",
+  "categoria": "carbohidrato",
+  "grupo": "cereal",
+  "porcion": 150,
+  "desc": "1 taza cocida",
+  "min": 80,
+  "max": 280,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Chenopodium quinoa",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "pasta-integral",
+  "nombre": "Pasta integral cocida",
+  "buscar": "Pasta, whole-wheat, cooked",
+  "categoria": "carbohidrato",
+  "grupo": "cereal",
+  "porcion": 150,
+  "desc": "1 taza cocida",
+  "min": 80,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-lactosa"
+  ],
+  "wiki": "Pasta integral",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "pan-integral",
+  "nombre": "Pan integral",
+  "buscar": "Bread, whole-wheat, commercially prepared",
+  "categoria": "carbohidrato",
+  "grupo": "cereal",
+  "porcion": 60,
+  "desc": "2 rebanadas",
+  "min": 30,
+  "max": 120,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-lactosa"
+  ],
+  "wiki": "Pan integral",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "tortilla-de-maiz",
+  "nombre": "Tortilla de maíz",
+  "buscar": "Tortillas, ready-to-bake or -fry, corn",
+  "categoria": "carbohidrato",
+  "grupo": "cereal",
+  "porcion": 75,
+  "desc": "3 tortillas",
+  "min": 40,
+  "max": 150,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Tortilla de maíz",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "papa-cocida",
+  "nombre": "Papa cocida",
+  "buscar": "Potatoes, flesh and skin, raw",
+  "categoria": "carbohidrato",
+  "grupo": "tuberculo",
+  "porcion": 200,
+  "desc": "1 papa grande",
+  "min": 100,
+  "max": 350,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Solanum tuberosum",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "batata",
+  "nombre": "Batata (camote)",
+  "buscar": "Sweet potato, raw, unprepared",
+  "categoria": "carbohidrato",
+  "grupo": "tuberculo",
+  "porcion": 180,
+  "desc": "1 batata mediana",
+  "min": 100,
+  "max": 320,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Ipomoea batatas",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "platano-macho",
+  "nombre": "Plátano macho",
+  "buscar": "Plantains, yellow, raw",
+  "categoria": "carbohidrato",
+  "grupo": "tuberculo",
+  "porcion": 150,
+  "desc": "1 plátano",
+  "min": 80,
+  "max": 260,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Plátano macho",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "maiz-dulce",
+  "nombre": "Maíz dulce",
+  "buscar": "Corn, sweet, yellow, raw",
+  "categoria": "carbohidrato",
+  "grupo": "tuberculo",
+  "porcion": 150,
+  "desc": "1 taza de granos",
+  "min": 80,
+  "max": 250,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Maíz dulce",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "manzana",
+  "nombre": "Manzana",
+  "buscar": "Apples, raw, with skin (Includes foods for USDA's Food Distribution Program)",
+  "categoria": "fruta",
+  "grupo": "fruta",
+  "porcion": 180,
+  "desc": "1 manzana mediana",
+  "min": 100,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Manzana",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "banana",
+  "nombre": "Banana",
+  "buscar": "Bananas, raw",
+  "categoria": "fruta",
+  "grupo": "fruta",
+  "porcion": 120,
+  "desc": "1 banana mediana",
+  "min": 70,
+  "max": 250,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Banana",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "naranja",
+  "nombre": "Naranja",
+  "buscar": "Oranges, raw, all commercial varieties",
+  "categoria": "fruta",
+  "grupo": "fruta",
+  "porcion": 150,
+  "desc": "1 naranja grande",
+  "min": 100,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Naranja (fruta)",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "fresas",
+  "nombre": "Fresas",
+  "buscar": "Strawberries, raw",
+  "categoria": "fruta",
+  "grupo": "fruta",
+  "porcion": 150,
+  "desc": "1 taza",
+  "min": 80,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Fragaria × ananassa",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "arandanos",
+  "nombre": "Arándanos",
+  "buscar": "Blueberries, raw",
+  "categoria": "fruta",
+  "grupo": "fruta",
+  "porcion": 100,
+  "desc": "1 puñado grande",
+  "min": 50,
+  "max": 200,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Vaccinium corymbosum",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "pina",
+  "nombre": "Piña",
+  "buscar": "Pineapple, raw, all varieties",
+  "categoria": "fruta",
+  "grupo": "fruta",
+  "porcion": 165,
+  "desc": "1 taza en cubos",
+  "min": 80,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Ananas comosus",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "mango",
+  "nombre": "Mango",
+  "buscar": "Mangos, raw",
+  "categoria": "fruta",
+  "grupo": "fruta",
+  "porcion": 165,
+  "desc": "1 taza en cubos",
+  "min": 80,
+  "max": 280,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Mangifera indica",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "papaya",
+  "nombre": "Papaya",
+  "buscar": "Papayas, raw",
+  "categoria": "fruta",
+  "grupo": "fruta",
+  "porcion": 150,
+  "desc": "1 taza en cubos",
+  "min": 80,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Carica papaya",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "kiwi",
+  "nombre": "Kiwi",
+  "buscar": "Kiwifruit, green, raw",
+  "categoria": "fruta",
+  "grupo": "fruta",
+  "porcion": 140,
+  "desc": "2 kiwis",
+  "min": 70,
+  "max": 250,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Actinidia deliciosa",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "uvas",
+  "nombre": "Uvas",
+  "buscar": "Grapes, red or green, raw",
+  "categoria": "fruta",
+  "grupo": "fruta",
+  "porcion": 120,
+  "desc": "1 racimo pequeño",
+  "min": 60,
+  "max": 220,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Vitis vinifera",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "pera",
+  "nombre": "Pera",
+  "buscar": "Pears, raw",
+  "categoria": "fruta",
+  "grupo": "fruta",
+  "porcion": 180,
+  "desc": "1 pera mediana",
+  "min": 100,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Pera (fruta)",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "sandia",
+  "nombre": "Sandía",
+  "buscar": "Watermelon, raw",
+  "categoria": "fruta",
+  "grupo": "fruta",
+  "porcion": 200,
+  "desc": "1 rebanada grande",
+  "min": 100,
+  "max": 400,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Citrullus lanatus",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "brocoli",
+  "nombre": "Brócoli",
+  "buscar": "Broccoli, raw",
+  "categoria": "verdura",
+  "grupo": "verdura",
+  "porcion": 150,
+  "desc": "1 taza",
+  "min": 80,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Brócoli",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "espinaca",
+  "nombre": "Espinaca",
+  "buscar": "Spinach, raw",
+  "categoria": "verdura",
+  "grupo": "verdura",
+  "porcion": 100,
+  "desc": "2 tazas crudas",
+  "min": 50,
+  "max": 250,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Spinacia oleracea",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "lechuga",
+  "nombre": "Lechuga",
+  "buscar": "Lettuce, cos or romaine, raw",
+  "categoria": "verdura",
+  "grupo": "verdura",
+  "porcion": 100,
+  "desc": "2 tazas",
+  "min": 50,
+  "max": 250,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Lactuca sativa",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "tomate",
+  "nombre": "Tomate",
+  "buscar": "Tomatoes, red, ripe, raw, year round average",
+  "categoria": "verdura",
+  "grupo": "verdura",
+  "porcion": 150,
+  "desc": "1 tomate grande",
+  "min": 80,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Tomate",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "pepino",
+  "nombre": "Pepino",
+  "buscar": "Cucumber, with peel, raw",
+  "categoria": "verdura",
+  "grupo": "verdura",
+  "porcion": 150,
+  "desc": "1/2 pepino",
+  "min": 80,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Cucumis sativus",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "zanahoria",
+  "nombre": "Zanahoria",
+  "buscar": "Carrots, raw",
+  "categoria": "verdura",
+  "grupo": "verdura",
+  "porcion": 120,
+  "desc": "2 zanahorias",
+  "min": 60,
+  "max": 250,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Daucus carota subsp. sativus",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "pimiento",
+  "nombre": "Pimiento",
+  "buscar": "Peppers, sweet, red, raw",
+  "categoria": "verdura",
+  "grupo": "verdura",
+  "porcion": 120,
+  "desc": "1 pimiento",
+  "min": 60,
+  "max": 250,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Pimiento",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "calabacin",
+  "nombre": "Calabacín (zucchini)",
+  "buscar": "Squash, summer, zucchini, includes skin, raw",
+  "categoria": "verdura",
+  "grupo": "verdura",
+  "porcion": 150,
+  "desc": "1 calabacín mediano",
+  "min": 80,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Calabacín",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "coliflor",
+  "nombre": "Coliflor",
+  "buscar": "Cauliflower, raw",
+  "categoria": "verdura",
+  "grupo": "verdura",
+  "porcion": 150,
+  "desc": "1 taza",
+  "min": 80,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Coliflor",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "cebolla",
+  "nombre": "Cebolla",
+  "buscar": "Onions, raw",
+  "categoria": "verdura",
+  "grupo": "verdura",
+  "porcion": 80,
+  "desc": "1/2 cebolla",
+  "min": 30,
+  "max": 200,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Allium cepa",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "champinones",
+  "nombre": "Champiñones",
+  "buscar": "Mushrooms, white, raw",
+  "categoria": "verdura",
+  "grupo": "verdura",
+  "porcion": 120,
+  "desc": "1 taza en láminas",
+  "min": 60,
+  "max": 250,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Agaricus bisporus",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "ejotes",
+  "nombre": "Judías verdes (ejotes)",
+  "buscar": "Beans, snap, green, raw",
+  "categoria": "verdura",
+  "grupo": "verdura",
+  "porcion": 150,
+  "desc": "1 taza",
+  "min": 80,
+  "max": 300,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Judía verde",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "aguacate",
+  "nombre": "Aguacate (palta)",
+  "buscar": "Avocados, raw, all commercial varieties",
+  "categoria": "grasa",
+  "grupo": "grasa",
+  "porcion": 70,
+  "desc": "1/2 aguacate",
+  "min": 30,
+  "max": 150,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Persea americana",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "aceite-de-oliva",
+  "nombre": "Aceite de oliva",
+  "buscar": "Oil, olive, salad or cooking",
+  "categoria": "grasa",
+  "grupo": "grasa",
+  "porcion": 14,
+  "desc": "1 cucharada",
+  "min": 5,
+  "max": 30,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Aceite de oliva",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "almendras",
+  "nombre": "Almendras",
+  "buscar": "Nuts, almonds, dry roasted, without salt added",
+  "categoria": "grasa",
+  "grupo": "frutos-secos",
+  "porcion": 30,
+  "desc": "1 puñado",
+  "min": 15,
+  "max": 60,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Almendra",
+  "momentos": [
+   "desayuno",
+   "snack"
+  ]
+ },
+ {
+  "slug": "nueces",
+  "nombre": "Nueces",
+  "buscar": "Nuts, walnuts, english",
+  "categoria": "grasa",
+  "grupo": "frutos-secos",
+  "porcion": 30,
+  "desc": "1 puñado",
+  "min": 15,
+  "max": 60,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Juglans regia",
+  "momentos": [
+   "desayuno",
+   "snack"
+  ]
+ },
+ {
+  "slug": "mani",
+  "nombre": "Maní",
+  "buscar": "Peanuts, all types, dry-roasted, without salt",
+  "categoria": "grasa",
+  "grupo": "frutos-secos",
+  "porcion": 30,
+  "desc": "1 puñado",
+  "min": 15,
+  "max": 60,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Arachis hypogaea",
+  "momentos": [
+   "desayuno",
+   "snack"
+  ]
+ },
+ {
+  "slug": "mantequilla-de-mani",
+  "nombre": "Mantequilla de maní",
+  "buscar": "Peanut butter, smooth style, without salt",
+  "categoria": "grasa",
+  "grupo": "grasa",
+  "porcion": 32,
+  "desc": "2 cucharadas",
+  "min": 15,
+  "max": 60,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Mantequilla de cacahuete",
+  "momentos": [
+   "desayuno",
+   "snack"
+  ]
+ },
+ {
+  "slug": "semillas-de-chia",
+  "nombre": "Semillas de chía",
+  "buscar": "Seeds, chia seeds, dried",
+  "categoria": "grasa",
+  "grupo": "semillas",
+  "porcion": 20,
+  "desc": "2 cucharadas",
+  "min": 10,
+  "max": 40,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Salvia hispanica",
+  "momentos": [
+   "desayuno",
+   "snack"
+  ]
+ },
+ {
+  "slug": "semillas-de-girasol",
+  "nombre": "Semillas de girasol",
+  "buscar": "Seeds, sunflower seed kernels, dry roasted, without salt",
+  "categoria": "grasa",
+  "grupo": "semillas",
+  "porcion": 25,
+  "desc": "2 cucharadas",
+  "min": 10,
+  "max": 50,
+  "etiquetas": [
+   "vegetariano",
+   "vegano",
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Pipa (semilla)",
+  "momentos": [
+   "desayuno",
+   "snack"
+  ]
+ },
+ {
+  "slug": "sardinas",
+  "nombre": "Sardinas en lata",
+  "buscar": "Fish, sardine, Atlantic, canned in oil, drained solids with bone",
+  "categoria": "proteina",
+  "grupo": "pescado-graso",
+  "porcion": 100,
+  "desc": "1 lata escurrida",
+  "min": 50,
+  "max": 160,
+  "etiquetas": [
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Sardina",
+  "momentos": [
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "tilapia",
+  "nombre": "Tilapia",
+  "buscar": "Fish, tilapia, raw",
+  "categoria": "proteina",
+  "grupo": "pescado-blanco",
+  "porcion": 170,
+  "desc": "1 filete",
+  "min": 100,
+  "max": 250,
+  "etiquetas": [
+   "sin-gluten",
+   "sin-lactosa"
+  ],
+  "wiki": "Oreochromis niloticus",
+  "momentos": [
+   "principal"
+  ]
+ },
+ {
+  "slug": "leche-entera",
+  "nombre": "Leche entera",
+  "buscar": "Milk, whole, 3.25% milkfat, with added vitamin D",
+  "categoria": "lacteo",
+  "grupo": "lacteo-liquido",
+  "porcion": 240,
+  "desc": "1 vaso",
+  "min": 150,
+  "max": 400,
+  "etiquetas": [
+   "vegetariano",
+   "sin-gluten"
+  ],
+  "wiki": "Leche",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ },
+ {
+  "slug": "queso-ricotta",
+  "nombre": "Queso ricotta",
+  "buscar": "Cheese, ricotta, part skim milk",
+  "categoria": "lacteo",
+  "grupo": "lacteo-graso",
+  "porcion": 100,
+  "desc": "1/2 taza",
+  "min": 50,
+  "max": 180,
+  "etiquetas": [
+   "vegetariano",
+   "sin-gluten"
+  ],
+  "wiki": "Ricotta",
+  "momentos": [
+   "desayuno",
+   "principal",
+   "snack"
+  ]
+ }
+]

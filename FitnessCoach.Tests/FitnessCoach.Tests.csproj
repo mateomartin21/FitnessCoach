@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- La semilla del catalogo se copia como dato, no como referencia al proyecto de
+         Infraestructura (ADR-08). Permite validar el JSON en sí: un alimento mal
+         importado no lo detectaría ninguna otra prueba. -->
+    <Content Include="..\FitnessCoach.Infrastructure\Data\catalogo-alimentos.json"
+             Link="Data\catalogo-alimentos.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\FitnessCoach.Infrastructure\Data\catalogo-ejercicios.json"
+             Link="Data\catalogo-ejercicios.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FitnessCoach.Domain\FitnessCoach.Domain.csproj" />
+    <ProjectReference Include="..\FitnessCoach.Application\FitnessCoach.Application.csproj" />
+  </ItemGroup>
+
+</Project>

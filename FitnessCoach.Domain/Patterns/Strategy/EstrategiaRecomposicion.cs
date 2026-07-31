@@ -1,33 +1,68 @@
 using FitnessCoach.Domain.Models.Entrenamiento;
+using FitnessCoach.Domain.Ports;
 
 namespace FitnessCoach.Domain.Patterns.Strategy
 {
-    public class EstrategiaRecomposicion : IEstrategiaRutina
+    public class EstrategiaRecomposicion : EstrategiaRutinaBase
     {
-        public Rutina GenerarRutina()
+        public EstrategiaRecomposicion(IRepositorioEjercicios catalogo, int semillaRotacion = 0,
+                                 PreferenciasEntrenamiento? preferencias = null)
+            : base(catalogo, semillaRotacion, preferencias) { }
+
+        protected override string NombreRutina => "RecomposiciÃ³n Estructural: Torso/Pierna (4 DÃ­as)";
+        protected override string Nivel => "Intermedio";
+
+        protected override IReadOnlyList<string> EquiposPreferidos =>
+            new[] { "barbell", "dumbbell", "cable", "bodyweight", "lever" };
+
+        protected override IReadOnlyList<PlantillaDia> Plan => new PlantillaDia[]
         {
-            var rutina = new Rutina { NombreRutina = "Recomposición Estructural: Torso/Pierna (4 Días)", Nivel = "Intermedio" };
-            rutina.Dias.Add(new DiaEntrenamiento { NombreDia = "Lunes", Enfoque = "Torso Fuerza", Ejercicios = new List<Ejercicio> {
-                new Ejercicio { Nombre = "Press de Banca con Barra", Series = 4, Repeticiones = "5-8" },
-                new Ejercicio { Nombre = "Remo con Barra", Series = 4, Repeticiones = "6-8" },
-                new Ejercicio { Nombre = "Press Militar", Series = 3, Repeticiones = "8-10" }
-            }});
-            rutina.Dias.Add(new DiaEntrenamiento { NombreDia = "Martes", Enfoque = "Pierna Fuerza", Ejercicios = new List<Ejercicio> {
-                new Ejercicio { Nombre = "Sentadilla Libre", Series = 4, Repeticiones = "5-8" },
-                new Ejercicio { Nombre = "Peso Muerto Rumano", Series = 4, Repeticiones = "8-10" },
-                new Ejercicio { Nombre = "Prensa de Piernas", Series = 3, Repeticiones = "10-12" }
-            }});
-            rutina.Dias.Add(new DiaEntrenamiento { NombreDia = "Jueves", Enfoque = "Torso Hipertrofia", Ejercicios = new List<Ejercicio> {
-                new Ejercicio { Nombre = "Press Inclinado Mancuernas", Series = 4, Repeticiones = "10-12" },
-                new Ejercicio { Nombre = "Elevaciones Laterales", Series = 4, Repeticiones = "15-20" },
-                new Ejercicio { Nombre = "Curl Martillo", Series = 3, Repeticiones = "12-15" }
-            }});
-            rutina.Dias.Add(new DiaEntrenamiento { NombreDia = "Viernes", Enfoque = "Pierna Hipertrofia", Ejercicios = new List<Ejercicio> {
-                new Ejercicio { Nombre = "Sentadilla Búlgara", Series = 3, Repeticiones = "10-12 por pierna" },
-                new Ejercicio { Nombre = "Hip Thrust", Series = 4, Repeticiones = "10-12" },
-                new Ejercicio { Nombre = "Curl de Isquios", Series = 3, Repeticiones = "15" }
-            }});
-            return rutina;
-        }
+            new()
+            {
+                NombreDia = "Lunes",
+                Enfoque = "Torso Fuerza",
+                Bloques = new BloqueEjercicios[]
+                {
+                    new("pectorals", 2, 4, "5-8"),
+                    new("upper-back", 1, 4, "6-8"),
+                    new("delts", 1, 3, "8-10")
+                }
+            },
+            new()
+            {
+                NombreDia = "Martes",
+                Enfoque = "Pierna Fuerza",
+                Bloques = new BloqueEjercicios[]
+                {
+                    new("quads", 2, 4, "5-8"),
+                    new("hamstrings", 1, 4, "8-10"),
+                    new("glutes", 1, 3, "10-12")
+                }
+            },
+            new()
+            {
+                NombreDia = "Jueves",
+                Enfoque = "Torso Hipertrofia",
+                Bloques = new BloqueEjercicios[]
+                {
+                    new("pectorals", 1, 4, "10-12"),
+                    new("delts", 2, 4, "15-20"),
+                    new("biceps", 1, 3, "12-15"),
+                    new("triceps", 1, 3, "12-15")
+                }
+            },
+            new()
+            {
+                NombreDia = "Viernes",
+                Enfoque = "Pierna Hipertrofia",
+                Bloques = new BloqueEjercicios[]
+                {
+                    new("quads", 1, 3, "10-12 por pierna"),
+                    new("glutes", 2, 4, "10-12"),
+                    new("hamstrings", 1, 3, "15"),
+                    new("calves", 1, 3, "15-20")
+                }
+            }
+        };
     }
 }
