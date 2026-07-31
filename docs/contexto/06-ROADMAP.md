@@ -412,6 +412,7 @@ Tracker       Catálogo de        Resiliencia IA
 - **Cambiar un ejercicio por uno relacionado**: mismo grupo muscular, compatible con tu equipo, con buscador y tope de 24 ✅
 - Persistir la elección en el perfil, al estilo de `PreferenciasAlimentarias` ✅
 - Grupos musculares y equipos en español: venían crudos del catálogo ✅
+- **D-34**: Font Awesome deja de venir de un CDN. Se autohospeda un subconjunto generado con los 68 iconos que la app usa de verdad — 12 KB contra los ~360 KB del CDN — así que ya no hay ninguna petición a terceros ✅
 
 **Definition of Done:** dos usuarios con el mismo objetivo y distinto equipo obtienen rutinas distintas, y cualquiera puede cambiar un ejercicio y que el cambio siga ahí al recargar. ✅ **Cumplido:** verificado contra la app (la rutina cambia al marcar equipo, persiste, sigue siendo estable entre cargas, y cambiar un ejercicio toca **una sola fila** y se puede deshacer). 363 pruebas.
 **ADR:** ADR-21 — preferencias de entrenamiento y sustitución de ejercicios.

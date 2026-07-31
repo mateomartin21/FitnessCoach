@@ -1,0 +1,111 @@
+/* Font Awesome Free 6.4.0 — subconjunto propio con los 68 iconos que usa la app.
+   Generado, no editar a mano. Autohospedado para no depender de un CDN (D-34).
+   Iconos: CC BY 4.0 · Fuentes: SIL OFL 1.1 · https://fontawesome.com */
+
+@font-face {
+    font-family: "Font Awesome 6 Free";
+    src: url("fa-solid-900.woff2") format("woff2");
+    font-weight: 900;
+    font-style: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: "Font Awesome 6 Brands";
+    src: url("fa-brands-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: block;
+}
+
+.fas, .fab {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display, inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+}
+
+.fas { font-family: "Font Awesome 6 Free"; font-weight: 900; }
+.fab { font-family: "Font Awesome 6 Brands"; font-weight: 400; }
+
+/* Tamanos y utilidades que la app usa */
+.fa-lg { font-size: 1.25em; line-height: .05em; vertical-align: -.075em; }
+.fa-2x { font-size: 2em; }
+.fa-3x { font-size: 3em; }
+.fa-fw { text-align: center; width: 1.25em; }
+.fa-spin { animation: fa-spin 2s infinite linear; }
+@keyframes fa-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .fa-spin { animation: none; } }
+
+/* Los 68 iconos */
+.fa-arrow-left::before { content: "\f060"; }
+.fa-arrows-rotate::before { content: "\f021"; }
+.fa-ban::before { content: "\f05e"; }
+.fa-bars::before { content: "\f0c9"; }
+.fa-bolt::before { content: "\f0e7"; }
+.fa-book-open::before { content: "\f518"; }
+.fa-brain::before { content: "\f5dc"; }
+.fa-bullseye::before { content: "\f140"; }
+.fa-calendar-day::before { content: "\f783"; }
+.fa-chart-area::before { content: "\f1fe"; }
+.fa-chart-line::before { content: "\f201"; }
+.fa-check::before { content: "\f00c"; }
+.fa-check-circle::before { content: "\f058"; }
+.fa-chevron-left::before { content: "\f053"; }
+.fa-chevron-right::before { content: "\f054"; }
+.fa-circle-check::before { content: "\f058"; }
+.fa-circle-exclamation::before { content: "\f06a"; }
+.fa-circle-info::before { content: "\f05a"; }
+.fa-clock::before { content: "\f017"; }
+.fa-clock-rotate-left::before { content: "\f1da"; }
+.fa-cookie-bite::before { content: "\f564"; }
+.fa-database::before { content: "\f1c0"; }
+.fa-dumbbell::before { content: "\f44b"; }
+.fa-exclamation-circle::before { content: "\f06a"; }
+.fa-eye::before { content: "\f06e"; }
+.fa-eye-slash::before { content: "\f070"; }
+.fa-fire::before { content: "\f06d"; }
+.fa-fire-flame-curved::before { content: "\f7e4"; }
+.fa-gear::before { content: "\f013"; }
+.fa-house::before { content: "\f015"; }
+.fa-id-card::before { content: "\f2c2"; }
+.fa-key::before { content: "\f084"; }
+.fa-leaf::before { content: "\f06c"; }
+.fa-lightbulb::before { content: "\f0eb"; }
+.fa-list::before { content: "\f03a"; }
+.fa-list-check::before { content: "\f0ae"; }
+.fa-magnifying-glass::before { content: "\f002"; }
+.fa-medal::before { content: "\f5a2"; }
+.fa-paper-plane::before { content: "\f1d8"; }
+.fa-pen::before { content: "\f304"; }
+.fa-plus::before { content: "\2b"; }
+.fa-plus-circle::before { content: "\f055"; }
+.fa-right-from-bracket::before { content: "\f2f5"; }
+.fa-right-left::before { content: "\f362"; }
+.fa-right-to-bracket::before { content: "\f2f6"; }
+.fa-robot::before { content: "\f544"; }
+.fa-rotate::before { content: "\f2f1"; }
+.fa-rotate-left::before { content: "\f2ea"; }
+.fa-save::before { content: "\f0c7"; }
+.fa-shield-halved::before { content: "\f3ed"; }
+.fa-sliders::before { content: "\f1de"; }
+.fa-sliders-h::before { content: "\f1de"; }
+.fa-snowflake::before { content: "\f2dc"; }
+.fa-trash::before { content: "\f1f8"; }
+.fa-trash-alt::before { content: "\f2ed"; }
+.fa-triangle-exclamation::before { content: "\f071"; }
+.fa-trophy::before { content: "\f091"; }
+.fa-user::before { content: "\f007"; }
+.fa-user-circle::before { content: "\f2bd"; }
+.fa-user-cog::before { content: "\f4fe"; }
+.fa-user-edit::before { content: "\f4ff"; }
+.fa-user-plus::before { content: "\f234"; }
+.fa-user-shield::before { content: "\f505"; }
+.fa-utensils::before { content: "\f2e7"; }
+.fa-wand-magic-sparkles::before { content: "\e2ca"; }
+.fa-weight-scale::before { content: "\f496"; }
+.fa-wind::before { content: "\f72e"; }
+.fa-youtube::before { content: "\f167"; }

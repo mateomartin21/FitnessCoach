@@ -2,7 +2,7 @@
 
 > **Documento vivo.** Es el inventario honesto de lo que está mal. Cuando algo se resuelve se marca ✅ con la fase que lo resolvió — **no se borra la línea**, el historial sirve para los ADRs y para la sustentación del proyecto.
 >
-> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **30/07/2026** al cerrar la **Fase 10** (rama `fase-10/optimizacion`, ADR-20), que resolvió las cinco deudas que quedaban de fases anteriores (D-24, D-25, D-26, D-30, D-31) y abrió cuatro nuevas de prioridad baja (D-32 a D-35). Actualizado el **31/07/2026** en la **Fase 12** (rama `fase-12/ajustes-y-ejercicios`, ADR-21), que cerró D-36 y dejó abierta D-37.
+> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **30/07/2026** al cerrar la **Fase 10** (rama `fase-10/optimizacion`, ADR-20), que resolvió las cinco deudas que quedaban de fases anteriores (D-24, D-25, D-26, D-30, D-31) y abrió cuatro nuevas de prioridad baja (D-32 a D-35). Actualizado el **31/07/2026** en la **Fase 12** (rama `fase-12/ajustes-y-ejercicios`, ADR-21), que cerró D-34 y D-36, y dejó abierta D-37.
 >
 > **Al arreglarlas se descubrió que dos estaban mal registradas.** D-30 decía "un par de sprites" y eran los 26. D-31 decía que los dos PNG de `branding/` no se usaban, pero `logo.png` era el placeholder de la cadena de medios de los ejercicios. Las correcciones quedan anotadas en cada ficha: registrar mal una deuda hace que se subestime el trabajo de pagarla.
 
@@ -13,12 +13,12 @@
 | 🔴 Crítica (seguridad / pérdida de datos) | 7 | 0 |
 | 🟠 Alta (bug funcional o riesgo real) | 9 | 0 |
 | 🟡 Media (calidad, mantenibilidad) | 16 | 1 |
-| 🟢 Baja (cosmética, mejora opcional) | 5 | 5 |
-| **Total** | **37** | **6** |
+| 🟢 Baja (cosmética, mejora opcional) | 5 | 4 |
+| **Total** | **37** | **5** |
 
-> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23. Fase 5.5 → D-27, D-28. Fase 6 → D-09, D-20. Fase 10 → D-24, D-25, D-26, D-30, D-31. Fase 12 → D-36.
+> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23. Fase 5.5 → D-27, D-28. Fase 6 → D-09, D-20. Fase 10 → D-24, D-25, D-26, D-30, D-31. Fase 12 → D-34, D-36.
 >
-> **No queda deuda crítica ni alta abierta.** Queda una media (D-29, licencia de los GIFs, que depende de un tercero) y cinco bajas: D-32 (nombre de `PersonalidadLoboCoach`), D-33 (los estáticos no usan las rutas inmutables), D-34 (Font Awesome por CDN), D-35 (la base atada a SQL Server) y D-37 (`defaultValue` de EF en columnas JSON).
+> **No queda deuda crítica ni alta abierta.** Queda una media (D-29, licencia de los GIFs, que depende de un tercero) y cuatro bajas: D-32 (nombre de `PersonalidadLoboCoach`), D-33 (los estáticos no usan las rutas inmutables), D-35 (la base atada a SQL Server) y D-37 (`defaultValue` de EF en columnas JSON).
 >
 > **Deuda nueva detectada en la Fase 4:** D-25 y D-26. **En la Fase 5:** D-27, D-28 y D-29. **En la Fase 9:** D-30 y D-31. **En la Fase 10:** D-32, D-33, D-34 y D-35. **En la Fase 12:** D-36 y D-37.
 
@@ -283,7 +283,7 @@
 **Qué pasa:** es la única lib de front que no está copiada en `wwwroot/lib/`, contra la regla del proyecto (Bootstrap, jQuery y la tipografía Press Start 2P sí están autohospedados).
 **Riesgo:** si el CDN no responde o está bloqueado, **desaparecen todos los iconos de la app**. Además es una petición a un tercero en cada carga, con lo que eso implica de privacidad.
 **Resolución:** autohospedar Font Awesome (suma ~1-2 MB de webfonts) o reemplazar los iconos usados por SVG propios. Es una decisión de producto: peso contra independencia.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 12. Ninguna de las dos opciones de la ficha: se autohospeda un **subconjunto generado**. La app usa 68 iconos distintos de los varios miles del paquete, así que se recortaron las fuentes con `fontTools` a solo esos glifos y se generó un CSS con únicamente esas reglas. **12 KB en total** (6.9 KB solid + 0.6 KB brands + 4.5 KB CSS) contra los ~360 KB que traía el CDN y los ~1.5 MB del paquete completo. El marcado no cambió: `<i class="fas fa-x">` sigue funcionando igual. Verificado que los 68 renderizan y que la app **no hace ninguna petición a terceros**.
 
 ### D-35 · La base está atada a SQL Server
 **Dónde:** `appsettings.json` (cadena de conexión), `FitnessCoach.Infrastructure/Data/Migrations/*`
