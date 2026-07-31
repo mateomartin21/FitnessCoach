@@ -659,3 +659,50 @@ summary:focus-visible {
 
 .fc-equipo-titulo { display: block; font-family: var(--fc-font-ui); font-weight: 600; color: var(--fc-text); }
 .fc-equipo-detalle { display: block; font-size: .8rem; color: var(--fc-muted); }
+
+/* Cambiar un ejercicio por otro del mismo grupo muscular */
+.fc-cambiar-ejercicio { color: var(--fc-reco) !important; text-decoration: none; font-size: .85rem; }
+.fc-cambiar-ejercicio:hover { text-decoration: underline; }
+
+.fc-marca-cambiado {
+    display: inline-block;
+    margin-left: .4rem;
+    padding: 1px 7px;
+    font-family: var(--fc-font-ui);
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--fc-reco);
+    border: 1px solid var(--fc-reco);
+}
+
+.fc-alt-rejilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: .75rem;
+}
+
+.fc-alt-opcion {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    padding: .75rem;
+    background: var(--fc-inset);
+    border: var(--px) solid var(--fc-border);
+}
+
+.fc-alt-opcion:hover { border-color: var(--fc-primary); }
+.fc-alt-texto { flex: 1 1 auto; min-width: 0; }
+.fc-alt-texto .fc-equipo-titulo { overflow-wrap: anywhere; }
+
+.fc-alt-gif {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    background: var(--fc-inset);
+    flex-shrink: 0;
+    border: 1px solid var(--fc-border);
+}
+
+.fc-alt-buscador { display: flex; gap: .5rem; flex-wrap: wrap; }
+.fc-alt-buscador .form-control { flex: 1 1 260px; }

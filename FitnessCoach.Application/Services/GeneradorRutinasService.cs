@@ -32,7 +32,37 @@ namespace FitnessCoach.Application.Services
             IEstrategiaRutina rutinaDecorada = new RutinaConEnfriamiento(
                                                new RutinaConCalentamiento(estrategia));
 
-            return rutinaDecorada.GenerarRutina();
+            var rutina = rutinaDecorada.GenerarRutina();
+
+            AplicarSustituciones(rutina, preferencias);
+
+            return rutina;
+        }
+
+        /// <summary>
+        /// Cambia los ejercicios que el usuario pidió cambiar. Va al final y no dentro de la
+        /// estrategia porque es una decisión del usuario, no del objetivo: la estrategia sigue
+        /// eligiendo lo mismo y encima se aplica el cambio, así que deshacerlo devuelve la
+        /// prescripción original sin recalcular nada.
+        /// </summary>
+        private void AplicarSustituciones(Rutina rutina, PreferenciasEntrenamiento? preferencias)
+        {
+            if (preferencias is null || preferencias.Sustituciones.Count == 0) return;
+
+            foreach (var prescrito in rutina.Dias.SelectMany(d => d.Ejercicios))
+            {
+                if (!preferencias.Sustituciones.TryGetValue(prescrito.Ejercicio.Slug, out var slugElegido))
+                    continue;
+
+                var reemplazo = _catalogo.ObtenerPorSlug(slugElegido);
+
+                // Un slug que ya no está en el catálogo se ignora y queda el original:
+                // es mejor que dejar la fila vacía o tumbar la pantalla.
+                if (reemplazo is null) continue;
+
+                prescrito.SlugOriginal = prescrito.Ejercicio.Slug;
+                prescrito.Ejercicio = reemplazo;
+            }
         }
     }
 }

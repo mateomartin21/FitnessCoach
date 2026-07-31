@@ -16,6 +16,17 @@ namespace FitnessCoach.Domain.Models.Entrenamiento
 
         public string Notas { get; set; } = string.Empty;
 
+        /// <summary>
+        /// El slug que había elegido la estrategia, cuando el usuario lo cambió por otro.
+        /// Null = nadie lo tocó. Es la clave con la que la vista pide deshacer o volver a cambiar.
+        /// </summary>
+        public string? SlugOriginal { get; set; }
+
+        public bool EsSustituido => SlugOriginal is not null;
+
+        /// <summary>Con qué clave se guarda un cambio sobre esta fila.</summary>
+        public string SlugDeReferencia => SlugOriginal ?? Ejercicio.Slug;
+
         /// <summary>Atajo de lectura, muy usado en las vistas y en las pruebas.</summary>
         public string Nombre => Ejercicio.Nombre;
     }

@@ -113,20 +113,43 @@ namespace FitnessCoach.Tests.Entrenamiento
             Assert.False(prefs.Permite(new Ejercicio { Slug = "y", Equipo = "barbell" }));
         }
 
-        [Fact]
-        public void TodoEquipoDelCatalogoRealCaeEnAlgunGrupo()
+        private static List<Ejercicio> CatalogoReal()
         {
             var ruta = Path.Combine(AppContext.BaseDirectory, "Data", "catalogo-ejercicios.json");
             var catalogo = JsonSerializer.Deserialize<List<Ejercicio>>(
                 File.ReadAllText(ruta), new JsonSerializerOptions(JsonSerializerDefaults.Web));
 
             Assert.NotNull(catalogo);
+            return catalogo!;
+        }
+
+        [Fact]
+        public void TodoGrupoYEquipoDelCatalogoRealTieneEtiquetaEnEspanol()
+        {
+            var catalogo = CatalogoReal();
+
+            var gruposSinTraducir = catalogo.Select(e => e.GrupoMuscular)
+                .Where(g => !string.IsNullOrWhiteSpace(g) && !EtiquetasEjercicio.ConoceGrupoMuscular(g))
+                .Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+
+            var equiposSinTraducir = catalogo.Select(e => e.Equipo)
+                .Where(q => !string.IsNullOrWhiteSpace(q) && !EtiquetasEjercicio.ConoceEquipo(q))
+                .Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+
+            Assert.True(gruposSinTraducir.Count == 0, $"Grupos sin etiqueta: {string.Join(", ", gruposSinTraducir)}");
+            Assert.True(equiposSinTraducir.Count == 0, $"Equipos sin etiqueta: {string.Join(", ", equiposSinTraducir)}");
+        }
+
+        [Fact]
+        public void TodoEquipoDelCatalogoRealCaeEnAlgunGrupo()
+        {
+            var catalogo = CatalogoReal();
 
             var cubiertos = EquipoEntrenamiento.EquiposDe(
                 EquipoEntrenamiento.Disponibles.Select(g => g.Valor));
 
             // "other" se deja pasar siempre, así que no necesita grupo.
-            var sinGrupo = catalogo!
+            var sinGrupo = catalogo
                 .Select(e => e.Equipo ?? string.Empty)
                 .Where(equipo => !cubiertos.Contains(equipo) &&
                                  !string.Equals(equipo, "other", StringComparison.OrdinalIgnoreCase))

@@ -122,6 +122,10 @@ builder.Services.AddScoped<FitnessCoach.Application.Services.IServicioRecords,
 builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorRutinas,
                            FitnessCoach.Application.Services.GeneradorRutinasService>();
 
+// Cambiar un ejercicio de la rutina por otro del mismo grupo muscular
+builder.Services.AddScoped<FitnessCoach.Application.Services.IServicioSustitucionEjercicios,
+                           FitnessCoach.Application.Services.ServicioSustitucionEjercicios>();
+
 
 builder.Services.AddScoped<FitnessCoach.Application.Services.IGeneradorAlimentacion, FitnessCoach.Application.Services.GeneradorAlimentacionService>();
 
