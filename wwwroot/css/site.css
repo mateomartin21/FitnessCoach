@@ -12,6 +12,37 @@
     font-display: swap;
 }
 
+/* Tomorrow: geometrica y de formas cuadradas, hace juego con el pixel art sin ser
+   pixel. Autohospedada como la anterior, sin CDN. Subconjunto latino, 4 pesos. */
+@font-face {
+    font-family: "Tomorrow";
+    src: url("../lib/fonts/Tomorrow-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Tomorrow";
+    src: url("../lib/fonts/Tomorrow-500.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Tomorrow";
+    src: url("../lib/fonts/Tomorrow-600.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Tomorrow";
+    src: url("../lib/fonts/Tomorrow-700.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     /* Primario y marca (se mantiene el nombre --fc-primary: ahora es azul) */
     --fc-primary: #2f6bff;
@@ -42,8 +73,11 @@
     --fc-analisis: #9b6dff;
     --fc-reco: #16c8b4;
 
-    /* Tipografia */
+    /* Tipografia: tres roles.
+       pixel = marca y datos cortos · ui = interfaz (titulos, navegacion, botones,
+       numeros) · body = texto largo, donde manda la legibilidad. */
     --fc-font-pixel: "Press Start 2P", "Consolas", monospace;
+    --fc-font-ui: "Tomorrow", "Segoe UI", system-ui, sans-serif;
     --fc-font-body: "Segoe UI", system-ui, sans-serif;
 
     /* Unidad pixel */
@@ -67,10 +101,25 @@ body {
     line-height: 1.6 !important;
     text-transform: uppercase;
 }
+/* La interfaz va en Tomorrow: titulos, navegacion, botones, etiquetas y numeros.
+   El texto largo se queda en la fuente de sistema, que es la que mejor se lee en
+   parrafos. Tomorrow es angosta, asi que los titulos aguantan 700 sin verse pesados. */
+h1, h2, h3, h4, h5, h6,
+.fc-nav-link, .fc-nav-cta, .fc-user-chip, .fc-logout,
+.btn, .form-label, .fc-foot-head, .fc-chip,
+.fc-stat-num, .display-4, th, .badge {
+    font-family: var(--fc-font-ui) !important;
+}
+
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--fc-font-body) !important;
-    font-weight: 800;
-    letter-spacing: .005em;
+    font-weight: 700;
+    letter-spacing: .01em;
+}
+
+/* Los numeros grandes se leen mejor con ancho fijo: no bailan al actualizarse. */
+.fc-stat-num, .display-4 {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.01em;
 }
 
 /* ---------- NAVBAR ---------- */
@@ -323,3 +372,75 @@ summary:focus-visible {
 @media (forced-colors: active) {
     a:focus-visible, button:focus-visible { outline: 3px solid CanvasText; }
 }
+
+/* ---------- PERFIL ---------- */
+
+/* Resumen a lo ancho: identidad a la izquierda, calorias a la derecha. */
+.fc-perfil-resumen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, var(--fc-card), var(--fc-inset));
+    border: var(--px) solid var(--fc-ink);
+    box-shadow: var(--px) var(--px) 0 var(--fc-ink);
+    padding: 1.5rem;
+}
+
+.fc-perfil-identidad { display: flex; align-items: center; gap: 1.25rem; min-width: 0; }
+
+.fc-perfil-koda {
+    width: 96px;
+    height: auto;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 12px rgba(var(--fc-primary-rgb), .35));
+    flex-shrink: 0;
+}
+
+.fc-perfil-nombre {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--fc-primary-texto);
+    margin: .35rem 0 .1rem;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+}
+
+.fc-perfil-objetivo { color: var(--fc-text); font-size: .95rem; }
+
+.fc-perfil-calorias {
+    text-align: right;
+    border-left: var(--px) solid var(--fc-ink);
+    padding-left: 1.5rem;
+    min-width: 240px;
+}
+
+.fc-perfil-kcal {
+    font-family: var(--fc-font-ui);
+    font-size: 3.25rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--fc-primary-texto);
+    font-variant-numeric: tabular-nums;
+}
+
+.fc-perfil-kcal-vacio { color: var(--fc-muted); }
+.fc-perfil-kcal-unidad { color: var(--fc-muted); font-size: 1rem; margin-left: .35rem; }
+
+/* En pantalla angosta el bloque de calorias pasa abajo y a la izquierda. */
+@media (max-width: 767.98px) {
+    .fc-perfil-calorias {
+        text-align: left;
+        border-left: 0;
+        border-top: var(--px) solid var(--fc-ink);
+        padding-left: 0;
+        padding-top: 1rem;
+        width: 100%;
+    }
+    .fc-perfil-koda { width: 72px; }
+    .fc-perfil-nombre { font-size: 1.5rem; }
+}
+
+/* Bootstrap la deja en un gris que no llega al contraste AA sobre el fondo oscuro. */
+.form-text { color: var(--fc-muted) !important; font-size: .8rem; }
