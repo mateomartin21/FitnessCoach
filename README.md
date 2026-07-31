@@ -17,8 +17,8 @@ Proyecto académico de Arquitectura de Software — Tecnológico de Software
 ![xUnit](https://img.shields.io/badge/xUnit-363%20pruebas-5E5E5E?style=for-the-badge&logo=nunit&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
-![Fases](https://img.shields.io/badge/roadmap-10%2F10%20fases%20cerradas-27d17c?style=flat-square)
-![ADRs](https://img.shields.io/badge/ADRs-20-5b8cff?style=flat-square)
+![Fases](https://img.shields.io/badge/roadmap-12%2F12%20fases%20cerradas-27d17c?style=flat-square)
+![ADRs](https://img.shields.io/badge/ADRs-21-5b8cff?style=flat-square)
 ![Deuda](https://img.shields.io/badge/deuda%20cr%C3%ADtica%20y%20alta-0%20abierta-27d17c?style=flat-square)
 ![Arquitectura](https://img.shields.io/badge/arquitectura-hexagonal-9b6dff?style=flat-square)
 
@@ -40,7 +40,8 @@ Proyecto académico de Arquitectura de Software — Tecnológico de Software
 10. [Documentación](#documentación)
 11. [Despliegue](#despliegue)
 12. [Ramas del repositorio](#ramas-del-repositorio)
-13. [Cláusula de uso de IA](#cláusula-de-uso-de-ia)
+13. [Créditos y licencias](#créditos-y-licencias)
+14. [Cláusula de uso de IA](#cláusula-de-uso-de-ia)
 
 ---
 
@@ -119,32 +120,66 @@ proveedor de IA nuevo **sin tocar una sola regla de negocio**.
 
 ## Diagramas C4
 
-Los diagramas completos, en Mermaid y renderizados por GitHub, están en
-**[docs/diagrama-arquitectura.md](docs/diagrama-arquitectura.md)**: contexto, contenedores, componentes y la cadena de
-proveedores de IA.
+Todos están en **[docs/diagrama-arquitectura.md](docs/diagrama-arquitectura.md)**, escritos en Mermaid y renderizados
+por GitHub. Cada uno responde **una sola** pregunta, en vez de intentar mostrar el sistema entero de una vez:
 
-### Nivel 1 — Contexto
+| Diagrama | Qué pregunta responde |
+|---|---|
+| [Nivel 1 — Contexto](docs/diagrama-arquitectura.md#nivel-1--contexto-del-sistema) | ¿Quién usa el sistema y de qué depende afuera? |
+| [Nivel 2 — Contenedores](docs/diagrama-arquitectura.md#nivel-2--contenedores) | ¿En qué piezas desplegables se divide? |
+| [Nivel 3.1 — Capas](docs/diagrama-arquitectura.md#nivel-31--las-capas-y-la-regla-de-dependencias) | ¿Cómo se apilan y por qué las flechas van hacia el dominio? |
+| [Nivel 3.2 — Armar una rutina](docs/diagrama-arquitectura.md#nivel-32--cómo-se-arma-una-rutina) | ¿Cómo trabajan juntos Strategy, Decorator y los puertos? |
+| [Nivel 3.3 — Responder con Koda](docs/diagrama-arquitectura.md#nivel-33--cómo-responde-koda) | ¿Cómo se degrada la IA sin dejar de contestar? |
+| [Inventario de componentes](docs/diagrama-arquitectura.md#inventario-de-componentes) | ¿Qué hay en cada capa, clase por clase? |
+
+### La regla que sostiene todo
+
+```mermaid
+flowchart TD
+    WEB["<b>Web</b><br/>Controladores MVC y API<br/>Program.cs compone todo"]
+    APP["<b>Application</b><br/>Servicios de caso de uso<br/>Coaching de Koda"]
+    DOM["<b>Domain</b><br/>Modelos, cálculo puro,<br/>patrones y <b>puertos</b>"]
+    INF["<b>Infrastructure</b><br/>EF Core, repositorios SQL,<br/>adaptadores de IA"]
+
+    WEB --> APP
+    APP --> DOM
+    INF -. "implementan los puertos" .-> DOM
+    WEB -. "solo para inyectar" .-> INF
+
+    classDef nucleo fill:#d4edff,stroke:#2f6bff,stroke-width:2px,color:#000;
+    class DOM nucleo;
+```
+
+Las flechas apuntan **siempre hacia el dominio**. `Domain` no referencia a nadie e `Infrastructure` implementa los
+puertos que aquél declara: por eso su flecha va al revés de lo esperable. Eso es la inversión de dependencias, y es
+verificable — `FitnessCoach.Tests` **no referencia `Infrastructure`** (ADR-08).
+
+### Contexto del sistema
 
 ```mermaid
 C4Context
-    title Nivel 1 - Contexto del sistema (FitnessCoach)
+    title Nivel 1 - Contexto del sistema
 
-    Person(usuario, "Usuario", "Configura su perfil, sigue su rutina y su plan de comidas, registra su progreso y consulta a Koda")
+    Person(usuario, "Usuario", "Configura su perfil, sigue su rutina y su plan, registra entrenamientos y consulta a Koda")
+    System_Ext(gifs, "jsDelivr / ExerciseGymGifsDB", "GIFs de los ejercicios, del CDN al navegador")
 
-    System(fitnessCoach, "FitnessCoach", "Plataforma web de coaching fitness con IA (ASP.NET Core MVC + API, .NET 10)")
+    System(fitnessCoach, "FitnessCoach", "Plataforma web de coaching fitness con IA (ASP.NET Core 10)")
+    System_Ext(gemini, "Google Gemini", "Proveedor de IA principal")
 
-    System_Ext(gemini, "Google Gemini", "Proveedor de IA principal (capa gratuita)")
-    System_Ext(groq, "Groq / OpenRouter", "Proveedor de IA de respaldo, protocolo OpenAI")
-    System_Ext(cdn, "jsDelivr (ExerciseGymGifsDB)", "GIFs de los ejercicios del catalogo")
+    System_Ext(groq, "Groq / OpenRouter", "Proveedor de IA de respaldo")
 
+    Rel(usuario, gifs, "Descarga los GIFs", "HTTPS")
     Rel(usuario, fitnessCoach, "Usa", "HTTPS")
-    Rel(fitnessCoach, gemini, "Consulta al coach", "HTTPS/JSON")
-    Rel(fitnessCoach, groq, "Respaldo si el principal falla", "HTTPS/JSON")
-    Rel(usuario, cdn, "Carga los GIF desde el navegador", "HTTPS")
+    Rel(fitnessCoach, gemini, "Pide análisis", "HTTPS/JSON")
+    Rel(fitnessCoach, groq, "Si Gemini falla", "HTTPS/JSON")
+
+    UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
+    UpdateRelStyle(usuario, gifs, $offsetY="-28")
+    UpdateRelStyle(fitnessCoach, gemini, $offsetY="-28")
 ```
 
-> Si ninguno de los proveedores de IA responde, la cadena cae a un coach **offline** que contesta por reglas locales.
-> Verificado en la prueba de fuego de la Fase 10.
+> Ningún sistema externo es indispensable. Si los dos proveedores de IA fallan —o no hay red— responde un coach
+> **offline** por reglas locales, dentro del propio proceso. Verificado en la prueba de fuego de la Fase 10.
 
 ---
 
@@ -169,6 +204,7 @@ C4Context
 | <img src="https://cdn.simpleicons.org/microsoftsqlserver/CC2927" width="18" /> | **SQL Server** | LocalDB en desarrollo, Express al desplegar |
 | <img src="https://cdn.simpleicons.org/bootstrap/7952B3" width="18" /> | **Bootstrap 5** | Grilla y componentes base, sobre un sistema de diseño propio |
 | <img src="https://cdn.simpleicons.org/javascript/F7DF1E" width="18" /> | **JavaScript vanilla** | La capa de vida de Koda y las medallas en canvas, sin librerías |
+| <img src="https://cdn.simpleicons.org/fontawesome/538DD7" width="18" /> | **Font Awesome 6** | Iconografía, autohospedada como subconjunto de 12 KB |
 | <img src="https://cdn.simpleicons.org/googlegemini/8E75B2" width="18" /> | **Gemini / Groq** | Proveedores de IA, ambos en capa gratuita |
 | <img src="https://cdn.simpleicons.org/openapiinitiative/6BA539" width="18" /> | **OpenAPI + Scalar** | Documentación viva de la API |
 | <img src="https://cdn.simpleicons.org/githubactions/2088FF" width="18" /> | **GitHub Actions** | Integración continua en cada push y PR |
@@ -258,8 +294,26 @@ no**, así que las migraciones hay que regenerarlas con Npgsql, no editarlas.
 |------|-------------|
 | `CD/CI` | Rama de integración: el estado real y más avanzado del proyecto. |
 | `fase-N/...` | Una rama por fase del roadmap, cada una con su PR y su ADR. |
-| `master` | Quedó atrás respecto de `CD/CI`. |
+| `master` | Rama por defecto, al día con `CD/CI`. |
 | `mvc-inicial`, `api-layer` | Estados históricos: MVC puro y la incorporación de la capa API. |
+
+---
+
+## Créditos y licencias
+
+El **código** de este repositorio es del autor. Los recursos de terceros conservan sus propias licencias:
+
+| Recurso | Origen | Licencia |
+|---|---|---|
+| Iconos | [Font Awesome Free 6.4.0](https://fontawesome.com) | Iconos CC BY 4.0 · fuentes SIL OFL 1.1 |
+| Tipografías | Press Start 2P, Tomorrow (Google Fonts) | SIL OFL 1.1 |
+| Bootstrap, jQuery | — | MIT |
+| Imágenes de alimentos | Wikimedia Commons | CC BY-SA, con atribución en el catálogo |
+| GIFs de ejercicios | [ExerciseGymGifsDB](https://github.com/) vía jsDelivr | Sin licencia declarada por el origen — ver **D-29** |
+| Arte de Koda | Original del autor | — |
+
+> El GIF de cada ejercicio lo pide el navegador al CDN; no se redistribuyen desde este repositorio. La licencia sin
+> aclarar del conjunto está registrada como deuda **D-29** y es el motivo por el que no se los incluye en el repo.
 
 ---
 
