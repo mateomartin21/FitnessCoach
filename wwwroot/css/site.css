@@ -158,6 +158,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Bloque de cuenta */
 .fc-nav-sep { width: var(--px); height: 24px; align-self: center; background: var(--fc-border); margin: 0 6px; }
 .fc-user-chip { display: inline-flex; align-items: center; gap: 6px; color: var(--fc-text) !important; font-size: 0.82rem; padding: 0.35rem 0.7rem; border: var(--px) solid var(--fc-border); background: var(--fc-inset); }
+.fc-user-chip-correo { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .fc-logout { color: var(--fc-muted) !important; background: transparent !important; border: none !important; box-shadow: none !important; font-size: 0.82rem; padding: 0.35rem 0.6rem !important; }
 .fc-logout:hover { color: var(--fc-descanso) !important; }
 
@@ -588,3 +589,49 @@ summary:focus-visible {
 .fc-acceso-sub { color: var(--fc-muted); font-size: .9rem; margin-bottom: 1.5rem; }
 
 .fc-acceso-pie { text-align: center; color: var(--fc-muted); font-size: .875rem; margin: 1.25rem 0 0; }
+
+
+/* ============================================================
+   AJUSTES
+   ============================================================ */
+
+.fc-ajustes-titulo { font-size: 1.75rem; margin: .5rem 0 .35rem; }
+
+.fc-ajuste-bloque {
+    display: flex;
+    flex-direction: column;
+    background: var(--fc-card);
+    border: var(--px) solid var(--fc-ink);
+    box-shadow: var(--px) var(--px) 0 var(--fc-border);
+    padding: 1.5rem;
+}
+
+.fc-ajuste-cabeza {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: 1rem;
+    padding-bottom: .75rem;
+    border-bottom: 1px solid var(--fc-border);
+}
+
+.fc-ajuste-cabeza i { color: var(--fc-primary-texto); }
+.fc-ajuste-titulo { font-size: 1.05rem; margin: 0; }
+
+.fc-ajuste-dato { margin-bottom: .5rem; }
+.fc-ajuste-dato dt { font-family: var(--fc-font-ui); font-size: .75rem; color: var(--fc-muted); text-transform: uppercase; letter-spacing: .04em; }
+.fc-ajuste-dato dd { margin: 0; color: var(--fc-text); overflow-wrap: anywhere; }
+
+/* Los bloques de una fila comparten altura; sin esto el sobrante queda debajo del
+   boton en vez de encima, que fue justo lo que se corrigio en el perfil. */
+.fc-ajuste-acciones { margin-top: auto; display: flex; flex-wrap: wrap; gap: .5rem; align-items: flex-start; }
+.fc-ajuste-acciones .btn { flex: 0 0 auto; }
+
+/* Avisos con el contorno pixel del resto de la interfaz, en vez del alert de Bootstrap. */
+.fc-alerta-ok, .fc-alerta-error {
+    border-radius: 0;
+    border: var(--px) solid var(--fc-ink);
+}
+
+.fc-alerta-ok { background: rgba(39,209,124,0.12); border-left: var(--px) solid var(--fc-logro); color: var(--fc-logro); }
+.fc-alerta-error { background: rgba(239,70,85,0.12); border-left: var(--px) solid var(--fc-descanso); color: #ff8d97; }
