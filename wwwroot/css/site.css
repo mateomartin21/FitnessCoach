@@ -158,6 +158,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Bloque de cuenta */
 .fc-nav-sep { width: var(--px); height: 24px; align-self: center; background: var(--fc-border); margin: 0 6px; }
 .fc-user-chip { display: inline-flex; align-items: center; gap: 6px; color: var(--fc-text) !important; font-size: 0.82rem; padding: 0.35rem 0.7rem; border: var(--px) solid var(--fc-border); background: var(--fc-inset); }
+.fc-user-chip-correo { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .fc-logout { color: var(--fc-muted) !important; background: transparent !important; border: none !important; box-shadow: none !important; font-size: 0.82rem; padding: 0.35rem 0.6rem !important; }
 .fc-logout:hover { color: var(--fc-descanso) !important; }
 
@@ -444,3 +445,264 @@ summary:focus-visible {
 
 /* Bootstrap la deja en un gris que no llega al contraste AA sobre el fondo oscuro. */
 .form-text { color: var(--fc-muted) !important; font-size: .8rem; }
+
+
+/* ============================================================
+   PANTALLAS SIN SESION (bienvenida, login, registro)
+   Sin navegacion ni pie: todas las secciones de la app piden
+   cuenta, asi que enlazarlas antes de entrar solo lleva al login.
+   ============================================================ */
+
+.fc-limpio-main { max-width: 1140px; margin: 0 auto; padding: 0 1rem 3rem; }
+
+/* Barra minima de la portada publica: marca y acceso, nada mas. */
+.fc-barra-limpia {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    border-bottom: var(--px) solid var(--fc-border);
+    margin-bottom: 1rem;
+}
+
+.fc-barra-limpia .fc-brand-text { font-size: .9rem; text-decoration: none; }
+
+/* ---- Bienvenida ---- */
+
+.fc-bienvenida {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.fc-bienvenida-caja { max-width: 620px; width: 100%; text-align: center; }
+
+.fc-bienvenida-marca {
+    font-family: var(--fc-font-pixel);
+    font-size: 1.5rem;
+    line-height: 1.4;
+    color: var(--fc-text);
+    text-shadow: var(--px) var(--px) 0 var(--fc-ink);
+    margin-bottom: 2rem;
+}
+
+.fc-bienvenida-koda {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.fc-bienvenida-sprite { width: 120px; height: auto; image-rendering: pixelated; flex-shrink: 0; }
+
+/* Globo de dialogo de Koda: la punta se dibuja con dos triangulos, el del
+   borde debajo del relleno, para que el contorno pixel no se corte. */
+.fc-globo {
+    position: relative;
+    background: var(--fc-card);
+    border: var(--px) solid var(--fc-ink);
+    box-shadow: var(--px) var(--px) 0 var(--fc-border);
+    padding: 1rem 1.15rem;
+    color: var(--fc-text);
+    font-size: .95rem;
+}
+
+.fc-globo::before,
+.fc-globo::after {
+    content: "";
+    position: absolute;
+    top: 28px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.fc-globo::before {
+    left: calc(-12px - var(--px));
+    border-width: 10px 12px 10px 0;
+    border-color: transparent var(--fc-ink) transparent transparent;
+}
+
+.fc-globo::after {
+    left: -12px;
+    border-width: 10px 12px 10px 0;
+    border-color: transparent var(--fc-card) transparent transparent;
+}
+
+.fc-bienvenida-pregunta {
+    font-family: var(--fc-font-ui);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--fc-text);
+    margin-bottom: 1.25rem;
+}
+
+.fc-bienvenida-acciones { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+
+.fc-bienvenida-pie { margin: 1.75rem 0 0; font-size: .85rem; }
+.fc-bienvenida-pie a { color: var(--fc-muted); }
+.fc-bienvenida-pie a:hover { color: var(--fc-primary-texto); }
+
+@media (max-width: 575.98px) {
+    .fc-bienvenida-koda { flex-direction: column; text-align: center; }
+    .fc-globo::before, .fc-globo::after { display: none; }
+    .fc-bienvenida-marca { font-size: 1.1rem; }
+}
+
+/* ---- Login y registro ---- */
+
+.fc-acceso {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.fc-acceso-caja { width: 100%; max-width: 420px; }
+
+.fc-acceso-marca {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    margin-bottom: 1.5rem;
+    text-decoration: none;
+}
+
+.fc-acceso-marca .fc-brand-text { font-size: .8rem; }
+.fc-acceso-koda { width: 34px; height: auto; image-rendering: pixelated; }
+
+.fc-acceso-card {
+    background: var(--fc-card);
+    border: var(--px) solid var(--fc-ink);
+    box-shadow: var(--px) var(--px) 0 var(--fc-border);
+    padding: 2rem 1.75rem;
+}
+
+.fc-acceso-titulo { font-size: 1.4rem; margin-bottom: .35rem; }
+.fc-acceso-sub { color: var(--fc-muted); font-size: .9rem; margin-bottom: 1.5rem; }
+
+.fc-acceso-pie { text-align: center; color: var(--fc-muted); font-size: .875rem; margin: 1.25rem 0 0; }
+
+
+/* ============================================================
+   AJUSTES
+   ============================================================ */
+
+.fc-ajustes-titulo { font-size: 1.75rem; margin: .5rem 0 .35rem; }
+
+.fc-ajuste-bloque {
+    display: flex;
+    flex-direction: column;
+    background: var(--fc-card);
+    border: var(--px) solid var(--fc-ink);
+    box-shadow: var(--px) var(--px) 0 var(--fc-border);
+    padding: 1.5rem;
+}
+
+.fc-ajuste-cabeza {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: 1rem;
+    padding-bottom: .75rem;
+    border-bottom: 1px solid var(--fc-border);
+}
+
+.fc-ajuste-cabeza i { color: var(--fc-primary-texto); }
+.fc-ajuste-titulo { font-size: 1.05rem; margin: 0; }
+
+.fc-ajuste-dato { margin-bottom: .5rem; }
+.fc-ajuste-dato dt { font-family: var(--fc-font-ui); font-size: .75rem; color: var(--fc-muted); text-transform: uppercase; letter-spacing: .04em; }
+.fc-ajuste-dato dd { margin: 0; color: var(--fc-text); overflow-wrap: anywhere; }
+
+/* Los bloques de una fila comparten altura; sin esto el sobrante queda debajo del
+   boton en vez de encima, que fue justo lo que se corrigio en el perfil. */
+.fc-ajuste-acciones { margin-top: auto; display: flex; flex-wrap: wrap; gap: .5rem; align-items: flex-start; }
+.fc-ajuste-acciones .btn { flex: 0 0 auto; }
+
+/* Avisos con el contorno pixel del resto de la interfaz, en vez del alert de Bootstrap. */
+.fc-alerta-ok, .fc-alerta-error {
+    border-radius: 0;
+    border: var(--px) solid var(--fc-ink);
+}
+
+.fc-alerta-ok { background: rgba(39,209,124,0.12); border-left: var(--px) solid var(--fc-logro); color: var(--fc-logro); }
+.fc-alerta-error { background: rgba(239,70,85,0.12); border-left: var(--px) solid var(--fc-descanso); color: #ff8d97; }
+
+/* Equipo disponible: tarjetas marcables, mas claras que una lista de casillas sueltas. */
+.fc-equipo-rejilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: .75rem;
+}
+
+.fc-equipo-opcion {
+    display: flex;
+    align-items: flex-start;
+    gap: .7rem;
+    padding: .85rem 1rem;
+    background: var(--fc-inset);
+    border: var(--px) solid var(--fc-border);
+    cursor: pointer;
+}
+
+.fc-equipo-opcion:hover { border-color: var(--fc-primary); }
+.fc-equipo-activa { border-color: var(--fc-primary); background: rgba(var(--fc-primary-rgb), 0.1); }
+.fc-equipo-opcion:focus-within { outline: var(--px) solid var(--fc-primary-2); outline-offset: 2px; }
+
+.fc-equipo-titulo { display: block; font-family: var(--fc-font-ui); font-weight: 600; color: var(--fc-text); }
+.fc-equipo-detalle { display: block; font-size: .8rem; color: var(--fc-muted); }
+
+/* Cambiar un ejercicio por otro del mismo grupo muscular */
+.fc-cambiar-ejercicio { color: var(--fc-reco) !important; text-decoration: none; font-size: .85rem; }
+.fc-cambiar-ejercicio:hover { text-decoration: underline; }
+
+.fc-marca-cambiado {
+    display: inline-block;
+    margin-left: .4rem;
+    padding: 1px 7px;
+    font-family: var(--fc-font-ui);
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--fc-reco);
+    border: 1px solid var(--fc-reco);
+}
+
+.fc-alt-rejilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: .75rem;
+}
+
+.fc-alt-opcion {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    padding: .75rem;
+    background: var(--fc-inset);
+    border: var(--px) solid var(--fc-border);
+}
+
+.fc-alt-opcion:hover { border-color: var(--fc-primary); }
+.fc-alt-texto { flex: 1 1 auto; min-width: 0; }
+.fc-alt-texto .fc-equipo-titulo { overflow-wrap: anywhere; }
+
+.fc-alt-gif {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    background: var(--fc-inset);
+    flex-shrink: 0;
+    border: 1px solid var(--fc-border);
+}
+
+.fc-alt-buscador { display: flex; gap: .5rem; flex-wrap: wrap; }
+.fc-alt-buscador .form-control { flex: 1 1 260px; }

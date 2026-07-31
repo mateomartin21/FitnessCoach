@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Bienvenido";
+    Layout = "_LayoutLimpio";
+}
+
+<div class="fc-bienvenida">
+    <div class="fc-bienvenida-caja">
+        <span class="fc-tag mb-3">Tu entrenador personal</span>
+        <h1 class="fc-bienvenida-marca">FitnessCoach</h1>
+
+        <div class="fc-bienvenida-koda">
+            <img src="~/images/koda/koda-presentacion.png" alt="Koda, el coach de FitnessCoach"
+                 class="fc-bienvenida-sprite koda-idle" />
+            <div class="fc-globo">
+                <p class="mb-0">
+                    ¡Hey! Soy <strong>Koda</strong>, tu coach. Armo tu rutina y tu plan de comida con
+                    tus números reales, llevo tu progreso y te acompaño todos los días.
+                </p>
+            </div>
+        </div>
+
+        <p class="fc-bienvenida-pregunta">¿Quieres empezar?</p>
+
+        <div class="fc-bienvenida-acciones">
+            <a asp-controller="Account" asp-action="Login" class="btn fc-btn-primary px-4 py-2">
+                <i class="fas fa-bolt me-2" aria-hidden="true"></i>Sí, vamos
+            </a>
+            <a asp-controller="Account" asp-action="Register" class="btn fc-btn-outline px-4 py-2">
+                <i class="fas fa-user-plus me-2" aria-hidden="true"></i>Crear cuenta
+            </a>
+        </div>
+
+        <p class="fc-bienvenida-pie">
+            <a asp-controller="Home" asp-action="Conoce">Conoce qué hace FitnessCoach</a>
+        </p>
+    </div>
+</div>

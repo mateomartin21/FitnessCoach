@@ -1,0 +1,68 @@
+@model FitnessCoach.Models.CambiarContrasenaViewModel
+@{
+    ViewData["Title"] = "Cambiar contraseña";
+}
+
+<div class="fc-ajustes-cabecera mb-4">
+    <span class="fc-tag">Ajustes</span>
+    <h1 class="fc-ajustes-titulo">Cambiar contraseña</h1>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-6">
+        <section class="fc-ajuste-bloque">
+            <form asp-action="CambiarContrasena" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="ContrasenaActual" class="form-label"></label>
+                    <div class="input-group">
+                        <input asp-for="ContrasenaActual" class="form-control" autocomplete="current-password" />
+                        <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#ContrasenaActual" aria-label="Mostrar u ocultar la contraseña actual" aria-pressed="false">
+                            <i class="fas fa-eye" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="ContrasenaActual" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-2">
+                    <label asp-for="ContrasenaNueva" class="form-label"></label>
+                    <div class="input-group">
+                        <input asp-for="ContrasenaNueva" class="form-control" autocomplete="new-password" />
+                        <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#ContrasenaNueva" aria-label="Mostrar u ocultar la nueva contraseña" aria-pressed="false">
+                            <i class="fas fa-eye" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="form-text mt-1">
+                        <i class="fas fa-circle-info me-1" style="color:var(--fc-primary-texto);" aria-hidden="true"></i>
+                        Mínimo 8 caracteres, con al menos una <strong>mayúscula</strong>, una <strong>minúscula</strong> y un <strong>número</strong>.
+                    </div>
+                    <span asp-validation-for="ContrasenaNueva" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="ConfirmarContrasena" class="form-label"></label>
+                    <div class="input-group">
+                        <input asp-for="ConfirmarContrasena" class="form-control" autocomplete="new-password" />
+                        <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#ConfirmarContrasena" aria-label="Mostrar u ocultar la confirmación" aria-pressed="false">
+                            <i class="fas fa-eye" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="ConfirmarContrasena" class="text-danger small"></span>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn fc-btn-primary px-4 py-2">
+                        <i class="fas fa-key me-2" aria-hidden="true"></i>Actualizar contraseña
+                    </button>
+                    <a asp-action="Index" class="btn fc-btn-outline px-4 py-2">Cancelar</a>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="_MostrarContrasena" />
+}

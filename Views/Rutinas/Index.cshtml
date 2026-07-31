@@ -1,3 +1,4 @@
+@using FitnessCoach.Domain.Catalogos
 @using FitnessCoach.Domain.Models.Entrenamiento
 @model FitnessCoach.Domain.Models.Entrenamiento.Rutina
 @{
@@ -13,6 +14,19 @@
         <p class="text-muted mt-2 mb-0 small">Incluye calentamiento y enfriamiento automáticos en cada día.</p>
     </div>
 </div>
+
+@if (TempData["RutinaOk"] is string ok)
+{
+    <div class="alert fc-alerta-ok d-flex align-items-center gap-2 mb-4" role="status">
+        <i class="fas fa-circle-check" aria-hidden="true"></i><span class="small">@ok</span>
+    </div>
+}
+@if (TempData["RutinaError"] is string error)
+{
+    <div class="alert fc-alerta-error d-flex align-items-center gap-2 mb-4" role="alert">
+        <i class="fas fa-circle-exclamation" aria-hidden="true"></i><span class="small">@error</span>
+    </div>
+}
 
 @if (Model.Dias.Count == 0)
 {
@@ -90,11 +104,20 @@
                                                         data-gif="@gif"
                                                         data-video="@ej.Ejercicio.VideoYoutubeId"
                                                         data-busqueda="@busqueda"
-                                                        data-grupo="@ej.Ejercicio.GrupoMuscular"
-                                                        data-equipo="@ej.Ejercicio.Equipo"
+                                                        data-grupo="@EtiquetasEjercicio.GrupoMuscular(ej.Ejercicio.GrupoMuscular)"
+                                                        data-equipo="@EtiquetasEjercicio.Equipo(ej.Ejercicio.Equipo)"
                                                         data-slug="@ej.Ejercicio.Slug">
                                                     <i class="fas fa-circle-info" aria-hidden="true"></i> Ver técnica
                                                 </button>
+                                                <a asp-action="Cambiar" asp-route-slug="@ej.SlugDeReferencia"
+                                                   class="btn btn-sm btn-link p-0 ms-2 fc-cambiar-ejercicio"
+                                                   title="Cambiar por otro que trabaje lo mismo">
+                                                    <i class="fas fa-right-left" aria-hidden="true"></i> Cambiar
+                                                </a>
+                                                @if (ej.EsSustituido)
+                                                {
+                                                    <span class="fc-marca-cambiado" title="Lo elegiste tú, no Koda">cambiado</span>
+                                                }
                                                 @* Las instrucciones viajan como HTML, no como JSON en un atributo:
                                                    Json.Serialize devuelve contenido ya codificado y el JSON llegaba
                                                    mal formado al dataset. Acá Razor escapa cada paso por su cuenta. *@

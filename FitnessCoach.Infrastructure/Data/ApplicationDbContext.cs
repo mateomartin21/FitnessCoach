@@ -30,6 +30,24 @@ namespace FitnessCoach.Infrastructure.Data
             lista => lista.Aggregate(0, (acumulado, item) => HashCode.Combine(acumulado, item.GetHashCode())),
             lista => lista.ToList());
 
+        // El diccionario se guarda igual que las listas, en una columna JSON. Se reconstruye
+        // con el comparador sin distincion de mayusculas: los slugs vienen de SQL Server, que
+        // no distingue, y perderlo haria que "Slug" y "slug" fueran claves distintas.
+        private static Dictionary<string, string> NuevoMapa(IDictionary<string, string>? origen = null) =>
+            origen is null
+                ? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                : new Dictionary<string, string>(origen, StringComparer.OrdinalIgnoreCase);
+
+        private static readonly ValueConverter<Dictionary<string, string>, string> ConversorMapaTexto = new(
+            mapa => JsonSerializer.Serialize(mapa, OpcionesJson),
+            texto => NuevoMapa(JsonSerializer.Deserialize<Dictionary<string, string>>(texto, OpcionesJson)));
+
+        private static readonly ValueComparer<Dictionary<string, string>> ComparadorMapaTexto = new(
+            // Sin TryGetValue: un arbol de expresion no admite 'out var'.
+            (a, b) => a!.Count == b!.Count && a.All(par => b.ContainsKey(par.Key) && b[par.Key] == par.Value),
+            mapa => mapa.Aggregate(0, (acumulado, par) => HashCode.Combine(acumulado, par.Key.GetHashCode(), par.Value.GetHashCode())),
+            mapa => NuevoMapa(mapa));
+
         public DbSet<UsuarioPerfil> UsuariosPerfil => Set<UsuarioPerfil>();
         public DbSet<Ejercicio> Ejercicios => Set<Ejercicio>();
         public DbSet<Alimento> Alimentos => Set<Alimento>();
@@ -137,6 +155,17 @@ namespace FitnessCoach.Infrastructure.Data
                 });
                 // OwnsOne exige que la propiedad nunca sea null al materializar.
                 entity.Navigation(u => u.Preferencias).IsRequired();
+
+                entity.OwnsOne(u => u.PreferenciasEntrenamiento, prefs =>
+                {
+                    prefs.Property(p => p.EquipoDisponible)
+                        .HasConversion(ConversorListaTexto).Metadata.SetValueComparer(ComparadorListaTexto);
+                    prefs.Property(p => p.Sustituciones)
+                        .HasConversion(ConversorMapaTexto).Metadata.SetValueComparer(ComparadorMapaTexto);
+
+                    prefs.Ignore(p => p.SinRestricciones);
+                });
+                entity.Navigation(u => u.PreferenciasEntrenamiento).IsRequired();
 
                 entity.HasIndex(u => u.IdentityUserId)
                     .IsUnique()

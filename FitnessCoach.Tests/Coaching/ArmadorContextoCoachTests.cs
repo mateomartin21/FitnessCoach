@@ -158,7 +158,8 @@ namespace FitnessCoach.Tests.Coaching
 
         private sealed class GeneradorRutinasFalso : IGeneradorRutinas
         {
-            public Rutina GenerarRutinaParaObjetivo(ObjetivoFitness objetivo, int semillaRotacion = 0)
+            public Rutina GenerarRutinaParaObjetivo(ObjetivoFitness objetivo, int semillaRotacion = 0,
+            PreferenciasEntrenamiento? preferencias = null)
             {
                 var dia = new DiaEntrenamiento { NombreDia = "Dia 1", Enfoque = "Piernas" };
                 dia.Ejercicios.Add(new EjercicioPrescrito

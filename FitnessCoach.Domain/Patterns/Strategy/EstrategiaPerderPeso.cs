@@ -1,11 +1,13 @@
+using FitnessCoach.Domain.Models.Entrenamiento;
 using FitnessCoach.Domain.Ports;
 
 namespace FitnessCoach.Domain.Patterns.Strategy
 {
     public class EstrategiaPerderPeso : EstrategiaRutinaBase
     {
-        public EstrategiaPerderPeso(IRepositorioEjercicios catalogo, int semillaRotacion = 0)
-            : base(catalogo, semillaRotacion) { }
+        public EstrategiaPerderPeso(IRepositorioEjercicios catalogo, int semillaRotacion = 0,
+                                 PreferenciasEntrenamiento? preferencias = null)
+            : base(catalogo, semillaRotacion, preferencias) { }
 
         protected override string NombreRutina => "Quema de Grasa: Full Body Activo (3 Días)";
         protected override string Nivel => "Principiante/Intermedio";

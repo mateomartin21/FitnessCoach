@@ -379,6 +379,46 @@ Tracker       Catálogo de        Resiliencia IA
 
 ---
 
+## Fase 11 — Pulido visual y documentación del repo
+
+**Objetivo:** que la app y el repositorio se vean como un producto, no como una entrega.
+
+**Entregables:**
+- Tipografía de interfaz propia (**Tomorrow**), autohospedada, separada de la pixel de marca y de la de texto largo
+- Rediseño de la vista de Perfil: el resumen pasa a lo ancho y desaparece el hueco muerto entre las dos tarjetas de igual altura
+- README completo: índice, capturas reales, diagramas embebidos, tabla de herramientas con iconos
+- Los seis ADR sueltos en la raíz, movidos a `docs/` y renumerados según lo que cada uno contiene
+
+**Definition of Done:** el repo se entiende sin abrir el código. ✅ **Cumplido.**
+**Rama:** `fase-11/pulido-visual`
+
+---
+
+## Fase 12 — Entrada, ajustes y control de la rutina
+
+**Objetivo:** que el usuario mande sobre lo que la app decide por él, y que la primera visita tenga sentido.
+
+**El problema que la origina.** El catálogo tiene **1323 ejercicios en 19 grupos musculares**, pero una rutina usa **16** (perder peso), **23** (ganar músculo) o **18** (recomposición) — entre el 1.2% y el 1.7% del catálogo. Y la selección es determinista: `OrdenEstable(slug)` se siembra con el `Id` del perfil, así que **cada usuario ve siempre los mismos ejercicios, para siempre**, sin forma de cambiarlos. Hay una asimetría clara con la comida, donde sí existen sustituciones por equivalencia de macros y exclusiones por preferencia (Fase 5.5 y 5.6).
+
+**Entregables:**
+
+*Entrada y configuración*
+- Bienvenida sin sesión: Koda se presenta y pregunta si quieres empezar; de ahí al login ✅
+- Layout limpio para bienvenida, login, registro y portada pública: sin barra ni pie, porque todas sus secciones piden cuenta ✅
+- Apartado de **Ajustes**: cuenta, cambio de contraseña, zona horaria (que sale del perfil) y atajos a preferencias ✅
+
+*Control de la rutina*
+- **Preferencias de equipo** en `PreferenciasEntrenamiento`: `EquiposPreferidos` estaba fijo por estrategia y ahora el equipo sale del usuario ✅
+- **Cambiar un ejercicio por uno relacionado**: mismo grupo muscular, compatible con tu equipo, con buscador y tope de 24 ✅
+- Persistir la elección en el perfil, al estilo de `PreferenciasAlimentarias` ✅
+- Grupos musculares y equipos en español: venían crudos del catálogo ✅
+
+**Definition of Done:** dos usuarios con el mismo objetivo y distinto equipo obtienen rutinas distintas, y cualquiera puede cambiar un ejercicio y que el cambio siga ahí al recargar. ✅ **Cumplido:** verificado contra la app (la rutina cambia al marcar equipo, persiste, sigue siendo estable entre cargas, y cambiar un ejercicio toca **una sola fila** y se puede deshacer). 363 pruebas.
+**ADR:** ADR-21 — preferencias de entrenamiento y sustitución de ejercicios.
+**Rama:** `fase-12/ajustes-y-ejercicios`
+
+---
+
 ## Ideas fuera de alcance (registradas, no comprometidas)
 
 - Capa social (retos entre amigos, tablas de clasificación) — requiere multiusuario maduro
@@ -406,5 +446,7 @@ Tracker       Catálogo de        Resiliencia IA
 | 8 | ✅ Completada | `fase-8/gamificacion` | (contra `CD/CI`) | ADR-18 | ✅ |
 | 9 | ✅ Completada | `fase-9/identidad-pixel` | (contra `CD/CI`) | ADR-19 | ✅ |
 | 10 | ✅ Completada | `fase-10/optimizacion` | (contra `CD/CI`) | ADR-20 | ✅ |
+| 11 | ✅ Completada | `fase-11/pulido-visual` | (contra `CD/CI`) | — | ✅ |
+| 12 | ✅ Completada | `fase-12/ajustes-y-ejercicios` | (contra `CD/CI`) | ADR-21 | ✅ |
 
-> **Roadmap cerrado.** Las diez fases están completas. Lo que siga sale de "Ideas fuera de alcance" y arranca su propio ciclo de fase, plan y ADR.
+> El roadmap original cerró en la Fase 10. Las fases 11 y 12 nacen después, de lo que se vio al usar la app terminada: la entrada sin cuenta no tenía sentido y el catálogo de ejercicios estaba desaprovechado.

@@ -1,11 +1,13 @@
+using FitnessCoach.Domain.Models.Entrenamiento;
 using FitnessCoach.Domain.Ports;
 
 namespace FitnessCoach.Domain.Patterns.Strategy
 {
     public class EstrategiaRecomposicion : EstrategiaRutinaBase
     {
-        public EstrategiaRecomposicion(IRepositorioEjercicios catalogo, int semillaRotacion = 0)
-            : base(catalogo, semillaRotacion) { }
+        public EstrategiaRecomposicion(IRepositorioEjercicios catalogo, int semillaRotacion = 0,
+                                 PreferenciasEntrenamiento? preferencias = null)
+            : base(catalogo, semillaRotacion, preferencias) { }
 
         protected override string NombreRutina => "Recomposición Estructural: Torso/Pierna (4 Días)";
         protected override string Nivel => "Intermedio";

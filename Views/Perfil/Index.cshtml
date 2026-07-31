@@ -1,5 +1,4 @@
 @model FitnessCoach.Models.PerfilViewModel
-@using FitnessCoach.Application.Services
 @{
     ViewData["Title"] = "Mi Perfil";
     var calorias = ViewBag.CaloriasRecomendadas;
@@ -82,7 +81,7 @@
                     <input asp-for="EstaturaCm" type="number" step="0.1" class="form-control" />
                     <span asp-validation-for="EstaturaCm" class="text-danger small"></span>
                 </div>
-                <div class="col-6 col-lg-4">
+                <div class="col-12 col-lg-9">
                     <label asp-for="TipoObjetivo" class="form-label"></label>
                     <select asp-for="TipoObjetivo" class="form-select">
                         <option value="Perder">Pérdida de grasa</option>
@@ -90,17 +89,6 @@
                         <option value="Recomp">Recomposición corporal</option>
                     </select>
                     <span asp-validation-for="TipoObjetivo" class="text-danger small"></span>
-                </div>
-                <div class="col-12 col-lg-5">
-                    <label asp-for="ZonaHoraria" class="form-label"></label>
-                    <select asp-for="ZonaHoraria" class="form-select" id="selectZonaHoraria"
-                            data-sin-zona="@(string.IsNullOrWhiteSpace(Model.ZonaHoraria) ? "true" : "false")">
-                        @foreach (var zona in ZonaHorariaUsuario.Comunes)
-                        {
-                            <option value="@zona.Id">@zona.Etiqueta</option>
-                        }
-                    </select>
-                    <div class="form-text">Tu racha y el día del diario se cuentan con tu medianoche.</div>
                 </div>
             </div>
 
@@ -111,6 +99,9 @@
                 <a asp-controller="Rutinas" asp-action="Index" class="btn fc-btn-outline px-4 py-2">
                     <i class="fas fa-fire me-2" aria-hidden="true"></i>Ver mi rutina
                 </a>
+                <a asp-controller="Ajustes" asp-action="Index" class="btn fc-btn-outline px-4 py-2">
+                    <i class="fas fa-gear me-2" aria-hidden="true"></i>Ajustes
+                </a>
             </div>
         </form>
     </div>
@@ -118,23 +109,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        // El navegador ya sabe la zona del usuario. Si no está entre las comunes se agrega
-        // como opción, y solo se preselecciona si el perfil no tiene una guardada (D-25).
-        (function () {
-            var select = document.getElementById('selectZonaHoraria');
-            if (!select || !window.Intl) return;
-
-            var detectada = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            if (!detectada) return;
-
-            var existe = Array.prototype.some.call(select.options, function (o) { return o.value === detectada; });
-            if (!existe) {
-                var opcion = new Option(detectada + ' (detectada)', detectada);
-                select.add(opcion, select.options[0]);
-            }
-
-            if (select.dataset.sinZona === 'true') select.value = detectada;
-        })();
-    </script>
 }

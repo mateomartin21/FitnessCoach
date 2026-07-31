@@ -1,11 +1,13 @@
+using FitnessCoach.Domain.Models.Entrenamiento;
 using FitnessCoach.Domain.Ports;
 
 namespace FitnessCoach.Domain.Patterns.Strategy
 {
     public class EstrategiaGanarMusculo : EstrategiaRutinaBase
     {
-        public EstrategiaGanarMusculo(IRepositorioEjercicios catalogo, int semillaRotacion = 0)
-            : base(catalogo, semillaRotacion) { }
+        public EstrategiaGanarMusculo(IRepositorioEjercicios catalogo, int semillaRotacion = 0,
+                                 PreferenciasEntrenamiento? preferencias = null)
+            : base(catalogo, semillaRotacion, preferencias) { }
 
         protected override string NombreRutina => "Hipertrofia Máxima (5 Días)";
         protected override string Nivel => "Avanzado";

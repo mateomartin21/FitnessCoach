@@ -49,5 +49,5 @@ Y adjunta:
 | Creado | 22/07/2026 |
 | Última actualización | 30/07/2026 |
 | Rama de referencia | `fase-10/optimizacion` (contra `CD/CI`) |
-| Último ADR | ADR-20 (cierre del producto: rendimiento, calendario del usuario, API y accesibilidad) |
-| Fase activa del roadmap | Ninguna — roadmap cerrado en la Fase 10 (ADR-20) |
+| Último ADR | ADR-21 (entrada sin sesión, centro de ajustes y el equipo del usuario como filtro de la rutina) |
+| Fase activa del roadmap | Ninguna — Fase 12 cerrada (ADR-21): ajustes, bienvenida, equipo del usuario y sustitución de ejercicios |

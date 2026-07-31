@@ -1,5 +1,21 @@
 @{
     ViewData["Title"] = "Inicio";
+
+    // La misma portada sirve con y sin sesión. Sin cuenta no se muestra la navegación
+    // de la app —todas sus secciones piden login— sino una barra con la marca y el acceso.
+    var conSesion = User.Identity is { IsAuthenticated: true };
+    if (!conSesion) { Layout = "_LayoutLimpio"; }
+}
+
+@if (!conSesion)
+{
+    <div class="fc-barra-limpia">
+        <a asp-controller="Home" asp-action="Index" class="fc-brand fc-brand-text">FitnessCoach</a>
+        <div class="d-flex gap-2">
+            <a asp-controller="Account" asp-action="Login" class="btn fc-btn-outline px-3 py-2">Entrar</a>
+            <a asp-controller="Account" asp-action="Register" class="btn fc-btn-primary px-3 py-2">Crear cuenta</a>
+        </div>
+    </div>
 }
 
 @* ===== HERO ===== *@
@@ -13,12 +29,24 @@
                 tu coach, que te guía, te analiza y te acompaña cada día.
             </p>
             <div class="d-flex gap-3 flex-wrap mb-4">
-                <a asp-controller="Perfil" asp-action="Index" class="btn fc-btn-primary px-4 py-2">
-                    <i class="fas fa-user-cog me-2" aria-hidden="true"></i>Configurar Perfil
-                </a>
-                <a asp-controller="Rutinas" asp-action="Index" class="btn fc-btn-outline px-4 py-2">
-                    <i class="fas fa-list-check me-2" aria-hidden="true"></i>Ver mi Rutina
-                </a>
+                @if (conSesion)
+                {
+                    <a asp-controller="Perfil" asp-action="Index" class="btn fc-btn-primary px-4 py-2">
+                        <i class="fas fa-user-cog me-2" aria-hidden="true"></i>Configurar Perfil
+                    </a>
+                    <a asp-controller="Rutinas" asp-action="Index" class="btn fc-btn-outline px-4 py-2">
+                        <i class="fas fa-list-check me-2" aria-hidden="true"></i>Ver mi Rutina
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Register" class="btn fc-btn-primary px-4 py-2">
+                        <i class="fas fa-bolt me-2" aria-hidden="true"></i>Crear mi cuenta
+                    </a>
+                    <a asp-controller="Account" asp-action="Login" class="btn fc-btn-outline px-4 py-2">
+                        <i class="fas fa-right-to-bracket me-2" aria-hidden="true"></i>Ya tengo cuenta
+                    </a>
+                }
             </div>
             @* Los atributos de Koda (del character sheet) como chips pixel *@
             <div class="d-flex flex-wrap gap-2">
@@ -118,7 +146,16 @@
 <div class="fc-feature-card text-center py-5 mb-2" style="border-color:var(--fc-primary-texto);">
     <h3 class="mb-2">¿Listo para empezar, campeón?</h3>
     <p class="text-muted mb-4">Configura tu perfil y Koda arma tu primera rutina y tu plan en segundos.</p>
-    <a asp-controller="Perfil" asp-action="Index" class="btn fc-btn-primary px-5 py-2">
-        <i class="fas fa-bolt me-2" aria-hidden="true"></i>Empezar ahora
-    </a>
+    @if (conSesion)
+    {
+        <a asp-controller="Perfil" asp-action="Index" class="btn fc-btn-primary px-5 py-2">
+            <i class="fas fa-bolt me-2" aria-hidden="true"></i>Empezar ahora
+        </a>
+    }
+    else
+    {
+        <a asp-controller="Account" asp-action="Register" class="btn fc-btn-primary px-5 py-2">
+            <i class="fas fa-bolt me-2" aria-hidden="true"></i>Empezar ahora
+        </a>
+    }
 </div>

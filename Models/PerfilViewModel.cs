@@ -34,12 +34,5 @@ namespace FitnessCoach.Models
         [Required]
         [Display(Name = "Objetivo Fitness")]
         public string TipoObjetivo { get; set; } = "Recomp";
-
-        /// <summary>
-        /// Sin anotaciones porque la lista válida la conoce el sistema operativo: lo verifica
-        /// el controlador con <c>ZonaHorariaUsuario.EsValida</c> (D-25).
-        /// </summary>
-        [Display(Name = "Zona horaria")]
-        public string? ZonaHoraria { get; set; }
     }
 }
