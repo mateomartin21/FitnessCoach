@@ -23,3 +23,56 @@ jobs:
 
       - name: Correr pruebas
         run: dotnet test FitnessCoach.Tests/FitnessCoach.Tests.csproj --no-build --verbosity normal
+
+  # Deja listo el paquete que se sube al servidor. Los .gz y .br de los estaticos se
+  # generan en el publish, no en el build (ADR-20), asi que el artefacto ya los trae.
+  publicar:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publicar
+        run: dotnet publish FitnessCoach.csproj -c Release -o publicacion
+
+      - name: Comprobar que los estaticos salieron comprimidos
+        run: |
+          if ! ls publicacion/wwwroot/css/*.br >/dev/null 2>&1; then
+            echo "No se generaron los .br: el publish no comprimio los estaticos."
+            exit 1
+          fi
+          ls -la publicacion/wwwroot/css/ | head
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fitnesscoach-${{ github.sha }}
+          path: publicacion
+          retention-days: 7
+
+  # No publica la imagen en ningun registro: solo comprueba que el Dockerfile
+  # sigue construyendo. Es la red de seguridad para cuando se elija hosting.
+  imagen:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Construir la imagen
+        run: docker build -t fitnesscoach:${{ github.sha }} .
+
+      - name: Arrancarla y ver que responda sin base
+        run: |
+          # Sin cadena de conexion tiene que fallar rapido y con un mensaje entendible,
+          # no quedarse colgada ni tirar un NullReference.
+          salida=$(docker run --rm -e ASPNETCORE_ENVIRONMENT=Production \
+                     -e ConnectionStrings__DefaultConnection= \
+                     fitnesscoach:${{ github.sha }} 2>&1 || true)
+          echo "$salida" | head -5
+          echo "$salida" | grep -q "cadena de conexion" \
+            && echo "OK: falla con el mensaje esperado" \
+            || (echo "El arranque sin base no dio el error esperado"; exit 1)

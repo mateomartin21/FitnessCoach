@@ -275,16 +275,54 @@ arquitectónicas, hexagonal, API REST, patrones GOF) y del **ADR-07 al ADR-21** 
 
 ## Despliegue
 
-Se despliega con **SQL Server Express**: sin costo de licencia, límite de 10 GB por base (los catálogos son ~1400 filas)
-y **cero cambios de código**. Detrás de un proxy o balanceador hay que declarar los proxies de confianza, para que el
-límite de intentos por IP cuente al cliente real:
+La app está lista para desplegarse en cualquier host, sin proveedor elegido todavía. Arranca contra una base **vacía**:
+aplica las migraciones pendientes y siembra los catálogos sola.
 
-```json
-"ForwardedHeaders": { "KnownProxies": ["10.0.0.1"], "KnownNetworks": ["10.0.0.0/8"] }
+### Variables de entorno
+
+| Variable | Obligatoria | Para qué |
+|---|:---:|---|
+| `ConnectionStrings__DefaultConnection` | **sí** | El valor de `appsettings.json` apunta a LocalDB, que solo existe en Windows de escritorio. Si falta —o sigue siendo LocalDB fuera de desarrollo— la app **no arranca** y lo dice. |
+| `ASPNETCORE_ENVIRONMENT` | sí | `Production` |
+| `Gemini__ApiKey` | no | Sin ella, Koda responde con el coach offline. |
+| `Groq__ApiKey` | no | Segundo proveedor de la cadena. |
+| `Despliegue__RedirigirAHttps` | según | Ponla en `false` si un proxy ya termina el TLS, o el redirect entra en **bucle infinito**. |
+| `Despliegue__MigrarAlArrancar` | no | `true` por defecto. |
+| `ForwardedHeaders__KnownProxies__0` | según | La IP del proxy, para que el límite de intentos cuente al cliente real y no al balanceador (D-24). |
+
+### Con Docker
+
+```bash
+docker build -t fitnesscoach .
+docker run -p 8080:8080   -e ASPNETCORE_ENVIRONMENT=Production   -e ConnectionStrings__DefaultConnection="Server=...;Database=FitnessCoachDb;User Id=...;Password=...;TrustServerCertificate=True"   -e Despliegue__RedirigirAHttps=false   fitnesscoach
 ```
 
-PostgreSQL queda como alternativa registrada (D-35), con una advertencia: **PostgreSQL distingue mayúsculas y SQL Server
-no**, así que las migraciones hay que regenerarlas con Npgsql, no editarlas.
+La imagen corre como usuario **no root** y escucha en el **8080** (el 80 exige privilegios que ese usuario no tiene).
+
+### Sin Docker
+
+El CI publica un artefacto listo en cada push (`fitnesscoach-<sha>`), con los estáticos ya comprimidos en `.gz` y `.br`.
+Se descarga, se descomprime y se corre con `dotnet FitnessCoach.dll`.
+
+### Comprobar que quedó bien
+
+`GET /health` abre una conexión real contra la base y responde `Healthy` (200) o `Unhealthy` (503). Sirve como sonda
+para el balanceador o el proveedor.
+
+### Detalles que ya están resueltos
+
+- **Las claves de Data Protection viven en la base**, no en el disco del proceso. En un contenedor el disco es efímero:
+  sin esto, **cada despliegue deslogueaba a todos los usuarios**.
+- **Las migraciones se aplican al arrancar**, con el lock de EF Core, así que dos instancias arrancando a la vez no se
+  pisan.
+- **El CI construye la imagen en cada push** y comprueba que, sin cadena de conexión, falle rápido y con un mensaje
+  entendible.
+
+### La base de datos
+
+Funciona con cualquier **SQL Server**: Express es gratis (límite de 10 GB; los catálogos son ~1400 filas) y no exige
+cambiar una línea de código. PostgreSQL queda como alternativa registrada (**D-35**), con una advertencia: **PostgreSQL
+distingue mayúsculas y SQL Server no**, así que las migraciones hay que **regenerarlas** con Npgsql, no editarlas.
 
 ---
 

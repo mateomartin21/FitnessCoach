@@ -3,6 +3,7 @@ using FitnessCoach.Domain.Models.Alimentacion;
 using FitnessCoach.Domain.Models.Entrenamiento;
 using FitnessCoach.Domain.Models.Objetivos;
 using FitnessCoach.Infrastructure.Identity;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -11,11 +12,18 @@ using System.Text.Json;
 
 namespace FitnessCoach.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    /// <summary>
+    /// Implementa <see cref="IDataProtectionKeyContext"/> para que las claves con las que se
+    /// firman las cookies vivan en la base y no en el disco del proceso. Sin esto, cada
+    /// despliegue en un contenedor genera claves nuevas y **desloguea a todos los usuarios**.
+    /// </summary>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IDataProtectionKeyContext
     {
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
+
+        public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();
 
         private static readonly JsonSerializerOptions OpcionesJson = new(JsonSerializerDefaults.Web);
 
