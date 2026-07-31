@@ -60,7 +60,8 @@ namespace FitnessCoach.Tests.Data
         {
             var plan = Generador().GenerarPlanPara(Usuario(objetivo, peso, estatura, edad));
 
-            Assert.InRange(plan.DesvioCaloricoPorcentaje, -20, 20);
+            Assert.True(Math.Abs(plan.DesvioCaloricoPorcentaje) <= 20,
+                $"{caso}: el plan se desvía {plan.DesvioCaloricoPorcentaje:0.#}% del objetivo calórico.");
         }
 
         [Theory]
@@ -85,9 +86,11 @@ namespace FitnessCoach.Tests.Data
 
             foreach (var porcion in plan.Comidas.SelectMany(c => c.Porciones))
             {
-                Assert.InRange(porcion.Gramos,
-                    porcion.Alimento.PorcionMinimaG,
-                    porcion.Alimento.PorcionMaximaG);
+                Assert.True(
+                    porcion.Gramos >= porcion.Alimento.PorcionMinimaG &&
+                    porcion.Gramos <= porcion.Alimento.PorcionMaximaG,
+                    $"{caso}: {porcion.Gramos:0} g de {porcion.Alimento.Nombre}, fuera del rango " +
+                    $"{porcion.Alimento.PorcionMinimaG}-{porcion.Alimento.PorcionMaximaG} g.");
             }
         }
 

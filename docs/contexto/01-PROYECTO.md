@@ -169,13 +169,16 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 
 ## Historial de ADRs
 
+Los veinte viven en [`docs/`](../). Los títulos de esta tabla son los reales de cada archivo.
+
 | ADR | Tema |
 |-----|------|
-| ADR-01 | Decisión inicial del proyecto |
-| ADR-03 | Dirección hacia arquitectura hexagonal |
-| ADR-04 | Estructura de proyecto único con SOLID + repositorio en memoria |
-| ADR-05 | (patrones / evolución) |
-| ADR-06 | Arquitectura hexagonal multiproyecto + 3 patrones GOF |
+| ADR-01 | Selección del patrón arquitectónico y del stack (bajo el nombre anterior del proyecto, *PeakPerformance*) |
+| ADR-02 | Arquitectura inicial: app web de seguimiento nutricional y fitness |
+| ADR-03 | Definición de las vistas arquitectónicas |
+| ADR-04 | Estilo arquitectónico: hexagonal (Ports & Adapters) en un solo proyecto |
+| ADR-05 | Incorporación de la API REST |
+| ADR-06 | Patrones GOF y migración a arquitectura multiproyecto |
 | ADR-07 | Deuda técnica: persistencia EF Core + SQL Server, seguridad de la API key de Gemini |
 | ADR-08 | Suite de pruebas xUnit + pipeline de Integración Continua |
 | ADR-09 | Cierre de la deuda de persistencia: adaptador SQL real para `IRepositorioUsuario` |
@@ -193,4 +196,4 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 
 **Convención establecida:** cada ADR abre citando explícitamente su relación con el anterior ("Este ADR extiende el ADR-N…"). Cada uno tiene: Contexto → Decisión → Alternativas Consideradas → Consecuencias → Estado actual.
 
-⚠ Los archivos `docs/ADR-07-*.md` están guardados con markdown escapado (`\#`, `\*\*`) y no renderizan bien en GitHub. Ver deuda D-16.
+**Ubicación:** hasta la Fase 10 los ADR-01 a ADR-06 estaban sueltos en la raíz del repositorio —uno con un espacio en el nombre y otro numerado como ADR-01 cuando su contenido era el ADR-02—. Se movieron a `docs/` con el número que les corresponde.

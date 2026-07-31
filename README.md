@@ -115,7 +115,7 @@ El set de contexto vive en [docs/contexto/](docs/contexto/) y se mantiene al dí
 | [05-VISION-PRODUCTO.md](docs/contexto/05-VISION-PRODUCTO.md) | Hacia dónde va el producto |
 | [06-ROADMAP.md](docs/contexto/06-ROADMAP.md) | Las diez fases, cerradas |
 
-Cada fase cerró con su ADR, del **ADR-07** al **ADR-20**, en [docs/](docs/).
+Los **20 ADR** están en [docs/](docs/): del ADR-01 al ADR-06 documentan las decisiones iniciales, y del ADR-07 al ADR-20 cierra uno por cada fase del roadmap.
 
 ---
 
