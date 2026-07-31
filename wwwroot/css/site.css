@@ -444,3 +444,147 @@ summary:focus-visible {
 
 /* Bootstrap la deja en un gris que no llega al contraste AA sobre el fondo oscuro. */
 .form-text { color: var(--fc-muted) !important; font-size: .8rem; }
+
+
+/* ============================================================
+   PANTALLAS SIN SESION (bienvenida, login, registro)
+   Sin navegacion ni pie: todas las secciones de la app piden
+   cuenta, asi que enlazarlas antes de entrar solo lleva al login.
+   ============================================================ */
+
+.fc-limpio-main { max-width: 1140px; margin: 0 auto; padding: 0 1rem 3rem; }
+
+/* Barra minima de la portada publica: marca y acceso, nada mas. */
+.fc-barra-limpia {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    border-bottom: var(--px) solid var(--fc-border);
+    margin-bottom: 1rem;
+}
+
+.fc-barra-limpia .fc-brand-text { font-size: .9rem; text-decoration: none; }
+
+/* ---- Bienvenida ---- */
+
+.fc-bienvenida {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.fc-bienvenida-caja { max-width: 620px; width: 100%; text-align: center; }
+
+.fc-bienvenida-marca {
+    font-family: var(--fc-font-pixel);
+    font-size: 1.5rem;
+    line-height: 1.4;
+    color: var(--fc-text);
+    text-shadow: var(--px) var(--px) 0 var(--fc-ink);
+    margin-bottom: 2rem;
+}
+
+.fc-bienvenida-koda {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.fc-bienvenida-sprite { width: 120px; height: auto; image-rendering: pixelated; flex-shrink: 0; }
+
+/* Globo de dialogo de Koda: la punta se dibuja con dos triangulos, el del
+   borde debajo del relleno, para que el contorno pixel no se corte. */
+.fc-globo {
+    position: relative;
+    background: var(--fc-card);
+    border: var(--px) solid var(--fc-ink);
+    box-shadow: var(--px) var(--px) 0 var(--fc-border);
+    padding: 1rem 1.15rem;
+    color: var(--fc-text);
+    font-size: .95rem;
+}
+
+.fc-globo::before,
+.fc-globo::after {
+    content: "";
+    position: absolute;
+    top: 28px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.fc-globo::before {
+    left: calc(-12px - var(--px));
+    border-width: 10px 12px 10px 0;
+    border-color: transparent var(--fc-ink) transparent transparent;
+}
+
+.fc-globo::after {
+    left: -12px;
+    border-width: 10px 12px 10px 0;
+    border-color: transparent var(--fc-card) transparent transparent;
+}
+
+.fc-bienvenida-pregunta {
+    font-family: var(--fc-font-ui);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--fc-text);
+    margin-bottom: 1.25rem;
+}
+
+.fc-bienvenida-acciones { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+
+.fc-bienvenida-pie { margin: 1.75rem 0 0; font-size: .85rem; }
+.fc-bienvenida-pie a { color: var(--fc-muted); }
+.fc-bienvenida-pie a:hover { color: var(--fc-primary-texto); }
+
+@media (max-width: 575.98px) {
+    .fc-bienvenida-koda { flex-direction: column; text-align: center; }
+    .fc-globo::before, .fc-globo::after { display: none; }
+    .fc-bienvenida-marca { font-size: 1.1rem; }
+}
+
+/* ---- Login y registro ---- */
+
+.fc-acceso {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.fc-acceso-caja { width: 100%; max-width: 420px; }
+
+.fc-acceso-marca {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    margin-bottom: 1.5rem;
+    text-decoration: none;
+}
+
+.fc-acceso-marca .fc-brand-text { font-size: .8rem; }
+.fc-acceso-koda { width: 34px; height: auto; image-rendering: pixelated; }
+
+.fc-acceso-card {
+    background: var(--fc-card);
+    border: var(--px) solid var(--fc-ink);
+    box-shadow: var(--px) var(--px) 0 var(--fc-border);
+    padding: 2rem 1.75rem;
+}
+
+.fc-acceso-titulo { font-size: 1.4rem; margin-bottom: .35rem; }
+.fc-acceso-sub { color: var(--fc-muted); font-size: .9rem; margin-bottom: 1.5rem; }
+
+.fc-acceso-pie { text-align: center; color: var(--fc-muted); font-size: .875rem; margin: 1.25rem 0 0; }
