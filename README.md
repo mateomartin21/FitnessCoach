@@ -53,7 +53,7 @@ Lo que lo distingue de un CRUD de gimnasio:
 - **Nada de contenido escrito a mano en el código.** Rutinas y planes de comida se *componen* desde datos, aplicando estrategias por objetivo.
 - **La IA no puede inventar.** Recibe el perfil, el plan, la rutina, el diario y el catálogo, con reglas explícitas de no fabricar datos. Si ningún proveedor responde, un coach offline contesta por reglas: **nunca se cae**.
 - **La gamificación se deriva, no se guarda.** Nivel, XP, logros y misiones se calculan desde el tracker, así que no puede desincronizarse con la realidad.
-- **Cada decisión está documentada.** 20 ADRs, un inventario de deuda técnica y un roadmap de 10 fases, todas cerradas.
+- **Cada decisión está documentada.** 21 ADRs, un inventario de deuda técnica y un roadmap de 12 fases.
 
 ---
 
@@ -232,8 +232,8 @@ El set de contexto vive en [docs/contexto/](docs/contexto/) y se mantiene al dí
 | [05-VISION-PRODUCTO.md](docs/contexto/05-VISION-PRODUCTO.md) | Hacia dónde va el producto |
 | [06-ROADMAP.md](docs/contexto/06-ROADMAP.md) | Las diez fases, cerradas |
 
-Los **20 ADR** están en [docs/](docs/): del **ADR-01 al ADR-06** documentan las decisiones iniciales (patrón, vistas
-arquitectónicas, hexagonal, API REST, patrones GOF) y del **ADR-07 al ADR-20** cierra uno por cada fase del roadmap.
+Los **21 ADR** están en [docs/](docs/): del **ADR-01 al ADR-06** documentan las decisiones iniciales (patrón, vistas
+arquitectónicas, hexagonal, API REST, patrones GOF) y del **ADR-07 al ADR-21** cierra uno por cada fase del roadmap.
 
 ---
 
