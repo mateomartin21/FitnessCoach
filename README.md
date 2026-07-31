@@ -199,9 +199,9 @@ C4Context
 | | Tecnología | Para qué se usa |
 |---|---|---|
 | <img src="https://cdn.simpleicons.org/dotnet/512BD4" width="18" /> | **.NET 10 / ASP.NET Core** | MVC y Web API en un mismo proceso |
-| <img src="https://cdn.simpleicons.org/csharp/239120" width="18" /> | **C#** | Todo el backend |
+| <img src="https://cdn.simpleicons.org/c#/239120" width="18" /> | **C#** | Todo el backend |
 | <img src="https://cdn.simpleicons.org/nuget/004880" width="18" /> | **EF Core 10** | Persistencia, migraciones y tipos owned |
-| <img src="https://cdn.simpleicons.org/microsoftsqlserver/CC2927" width="18" /> | **SQL Server** | LocalDB en desarrollo, Express al desplegar |
+| <img src="https://cdn.simpleicons.org/postgresql/CC2927" width="18" /> | **SQL Server** | LocalDB en desarrollo, Express al desplegar |
 | <img src="https://cdn.simpleicons.org/bootstrap/7952B3" width="18" /> | **Bootstrap 5** | Grilla y componentes base, sobre un sistema de diseño propio |
 | <img src="https://cdn.simpleicons.org/javascript/F7DF1E" width="18" /> | **JavaScript vanilla** | La capa de vida de Koda y las medallas en canvas, sin librerías |
 | <img src="https://cdn.simpleicons.org/fontawesome/538DD7" width="18" /> | **Font Awesome 6** | Iconografía, autohospedada como subconjunto de 12 KB |
