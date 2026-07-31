@@ -2,7 +2,7 @@
 
 > **Documento vivo.** Es el inventario honesto de lo que está mal. Cuando algo se resuelve se marca ✅ con la fase que lo resolvió — **no se borra la línea**, el historial sirve para los ADRs y para la sustentación del proyecto.
 >
-> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **30/07/2026** al cerrar la **Fase 10** (rama `fase-10/optimizacion`, ADR-20), que resolvió las cinco deudas que quedaban de fases anteriores (D-24, D-25, D-26, D-30, D-31) y abrió cuatro nuevas de prioridad baja (D-32 a D-35). Actualizado el **31/07/2026** en la **Fase 12** (rama `fase-12/ajustes-y-ejercicios`, ADR-21), que abrió D-36 y D-37.
+> Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **30/07/2026** al cerrar la **Fase 10** (rama `fase-10/optimizacion`, ADR-20), que resolvió las cinco deudas que quedaban de fases anteriores (D-24, D-25, D-26, D-30, D-31) y abrió cuatro nuevas de prioridad baja (D-32 a D-35). Actualizado el **31/07/2026** en la **Fase 12** (rama `fase-12/ajustes-y-ejercicios`, ADR-21), que cerró D-36 y dejó abierta D-37.
 >
 > **Al arreglarlas se descubrió que dos estaban mal registradas.** D-30 decía "un par de sprites" y eran los 26. D-31 decía que los dos PNG de `branding/` no se usaban, pero `logo.png` era el placeholder de la cadena de medios de los ejercicios. Las correcciones quedan anotadas en cada ficha: registrar mal una deuda hace que se subestime el trabajo de pagarla.
 
@@ -12,13 +12,13 @@
 |-----------|-------|----------|
 | 🔴 Crítica (seguridad / pérdida de datos) | 7 | 0 |
 | 🟠 Alta (bug funcional o riesgo real) | 9 | 0 |
-| 🟡 Media (calidad, mantenibilidad) | 16 | 2 |
+| 🟡 Media (calidad, mantenibilidad) | 16 | 1 |
 | 🟢 Baja (cosmética, mejora opcional) | 5 | 5 |
-| **Total** | **37** | **7** |
+| **Total** | **37** | **6** |
 
-> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23. Fase 5.5 → D-27, D-28. Fase 6 → D-09, D-20. Fase 10 → D-24, D-25, D-26, D-30, D-31.
+> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23. Fase 5.5 → D-27, D-28. Fase 6 → D-09, D-20. Fase 10 → D-24, D-25, D-26, D-30, D-31. Fase 12 → D-36.
 >
-> **No queda deuda crítica ni alta abierta.** Quedan dos medias —D-29 (licencia de los GIFs, depende de un tercero) y D-36 (no se puede cambiar un ejercicio suelto)— y cinco bajas: D-32 (nombre de `PersonalidadLoboCoach`), D-33 (los estáticos no usan las rutas inmutables), D-34 (Font Awesome por CDN), D-35 (la base atada a SQL Server) y D-37 (`defaultValue` de EF en columnas JSON).
+> **No queda deuda crítica ni alta abierta.** Queda una media (D-29, licencia de los GIFs, que depende de un tercero) y cinco bajas: D-32 (nombre de `PersonalidadLoboCoach`), D-33 (los estáticos no usan las rutas inmutables), D-34 (Font Awesome por CDN), D-35 (la base atada a SQL Server) y D-37 (`defaultValue` de EF en columnas JSON).
 >
 > **Deuda nueva detectada en la Fase 4:** D-25 y D-26. **En la Fase 5:** D-27, D-28 y D-29. **En la Fase 9:** D-30 y D-31. **En la Fase 10:** D-32, D-33, D-34 y D-35. **En la Fase 12:** D-36 y D-37.
 
@@ -297,7 +297,7 @@
 **Qué pasa:** la Fase 12 dejó que el equipo del usuario filtre el catálogo, pero el filtro es en bloque. No hay forma de decir "este ejercicio me lastima el hombro, dame otro de pecho". La comida sí lo tiene desde la Fase 5.5 (`CalculadorEquivalencias`).
 **Riesgo:** medio para el producto, ninguno técnico. La rutina se genera al vuelo y no se guarda, así que persistir una sustitución exige ampliar `PreferenciasEntrenamiento` con pares `slug original → slug elegido` y aplicarlos después de componer.
 **Resolución:** cierre de la Fase 12. Botón por fila que ofrezca ejercicios del mismo grupo muscular compatibles con el equipo marcado.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en Fase 12 (commit `48a3094`). `PreferenciasEntrenamiento.Sustituciones` guarda pares `slug original → slug elegido` y el generador los aplica después de componer. La clave es siempre el **original**: encadenar A→B y B→C haría que el cambio se perdiera en cuanto la estrategia dejara de elegir B. Pantalla `Rutinas/Cambiar` con buscador y tope de 24 — pecho solo tiene 157 alternativas y sin tope la página medía 8758 px.
 
 ### D-37 · EF genera `defaultValue: ""` en columnas que se leen como JSON
 **Dónde:** `FitnessCoach.Infrastructure/Data/Migrations/20260725045439_PreferenciasAlimentarias.cs`, `20260731135549_PreferenciasEntrenamiento.cs`

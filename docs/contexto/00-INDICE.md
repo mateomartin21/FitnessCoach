@@ -50,4 +50,4 @@ Y adjunta:
 | Última actualización | 30/07/2026 |
 | Rama de referencia | `fase-10/optimizacion` (contra `CD/CI`) |
 | Último ADR | ADR-21 (entrada sin sesión, centro de ajustes y el equipo del usuario como filtro de la rutina) |
-| Fase activa del roadmap | Fase 12 — ajustes y control de la rutina (ADR-21); falta la sustitución de ejercicios sueltos (D-36) |
+| Fase activa del roadmap | Ninguna — Fase 12 cerrada (ADR-21): ajustes, bienvenida, equipo del usuario y sustitución de ejercicios |

@@ -106,7 +106,25 @@ Hay una prueba que carga el catálogo real y verifica que **todo valor de `Equip
 semilla trae un equipo nuevo, el filtro lo excluiría en silencio de todas las rutinas; esa prueba lo convierte en un
 fallo visible.
 
-### 6. Sin equipo marcado no se filtra nada
+### 6. Cambiar un ejercicio suelto se guarda por su slug **original**
+
+`PreferenciasEntrenamiento.Sustituciones` es un mapa `slug que eligió la estrategia → slug que prefiere el usuario`, y
+el generador lo aplica **al final**, después de componer y decorar. Va ahí y no dentro de la estrategia porque es una
+decisión del usuario, no del objetivo: la estrategia sigue eligiendo lo mismo y encima se aplica el cambio, así que
+deshacerlo devuelve la prescripción original sin recalcular nada.
+
+**La clave es siempre el original, nunca el que se está viendo.** Si al cambiar dos veces la misma fila se guardara
+`A→B` y después `B→C`, quedaría una cadena que se rompe sola: bastaría con que la estrategia dejara de elegir B para
+que el segundo cambio se perdiera. Por eso `EjercicioPrescrito` lleva `SlugOriginal`, y la vista postea ese.
+
+Un reemplazo que ya no está en el catálogo se ignora y queda el original: mejor eso que una fila vacía o una pantalla
+caída.
+
+La lista de alternativas trae **tope de 24 y buscador por nombre**. No es un adorno: pecho tiene 157 ejercicios
+compatibles y la primera versión, sin tope, generaba una página de **8758 px**. El problema opuesto al que abrió la
+fase, y con el mismo origen —no mirar el tamaño real del catálogo—.
+
+### 7. Sin equipo marcado no se filtra nada
 
 Un perfil recién creado tiene la lista vacía, y eso significa "todo entra", no "nada entra". La alternativa —obligar a
 elegir equipo antes de ver una rutina— pone un trámite entre el registro y el primer valor que la app entrega.
@@ -122,6 +140,10 @@ había tomado esa decisión por buenas razones. El problema no era que fuera est
 **Rotar la semilla por semana.** Habría dado variedad automática sin intervención. Se descartó por lo mismo: nadie pidió
 que su rutina cambie sola, y romper récords personales exige repetir el ejercicio. Queda anotada como idea si algún día
 existe una noción de "bloque de entrenamiento".
+
+**Ofrecer las alternativas en un modal cargado por fetch.** Más ágil que cambiar de pantalla. Se descartó por una
+pantalla propia: funciona sin JavaScript, es enlazable, y el buscador con `GET` sale gratis. La app ya usa este patrón
+en las preferencias de alimentación.
 
 **Exponer los doce equipos crudos.** Menos código y ningún mapeo que mantener. Se descartó porque la interfaz habría
 pedido al usuario distinguir `lever` de `machine`, que es vocabulario de la base de datos, no del gimnasio.
@@ -139,16 +161,15 @@ en SQL habría anulado la caché.
 
 **A favor**
 
-- El catálogo pasa de decorativo a útil: dos personas con el mismo objetivo y distinto equipo ven rutinas distintas.
+- El catálogo pasa de decorativo a útil: dos personas con el mismo objetivo y distinto equipo ven rutinas distintas, y
+  cualquiera puede cambiar un ejercicio que no le sirva sin tocar el resto de la rutina.
 - La primera visita tiene una sola pregunta clara en vez de una navegación que no lleva a ningún lado.
 - El perfil queda con una sola responsabilidad, y la zona horaria en el lugar donde uno la buscaría.
-- La entidad `PreferenciasEntrenamiento` deja el hueco listo para las sustituciones puntuales, que es lo que falta.
+- Los grupos musculares y los equipos se muestran en español: venían crudos del catálogo (`pectorals`, `bodyweight`) y
+  ya se estaban enseñando así en la ficha de técnica.
 
 **En contra / pendiente**
 
-- **Cambiar un ejercicio suelto por otro relacionado sigue sin existir.** El equipo filtra en bloque; no permite decir
-  "este me lastima el hombro, dame otro de pecho". Es el siguiente paso de la fase y necesita persistir la elección, algo
-  que hoy no ocurre porque la rutina se genera al vuelo y no se guarda. Queda como **D-36**.
 - Marcar equipo cambia la rutina completa de golpe. Para alguien que ya venía siguiéndola es un cambio brusco; se avisa
   en el texto, pero no hay confirmación.
 - La migración agregó la columna con `defaultValue: "[]"` corrigiendo a mano lo que EF generó (`""`). La columna se lee

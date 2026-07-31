@@ -408,11 +408,12 @@ Tracker       Catálogo de        Resiliencia IA
 - Apartado de **Ajustes**: cuenta, cambio de contraseña, zona horaria (que sale del perfil) y atajos a preferencias ✅
 
 *Control de la rutina*
-- **Preferencias de equipo** en el perfil: hoy `EquiposPreferidos` está fijo por estrategia; debe salir del usuario ("entreno en casa con mancuernas" vs "gimnasio completo")
-- **Cambiar un ejercicio por uno relacionado**: mismo grupo muscular, compatible con tu equipo, y que la elección se recuerde. Es el `CalculadorEquivalencias` de los alimentos, aplicado al entrenamiento
-- Persistir la elección: hoy la rutina se genera al vuelo y no se guarda, así que hace falta una entidad nueva en el perfil, al estilo de `PreferenciasAlimentarias`
+- **Preferencias de equipo** en `PreferenciasEntrenamiento`: `EquiposPreferidos` estaba fijo por estrategia y ahora el equipo sale del usuario ✅
+- **Cambiar un ejercicio por uno relacionado**: mismo grupo muscular, compatible con tu equipo, con buscador y tope de 24 ✅
+- Persistir la elección en el perfil, al estilo de `PreferenciasAlimentarias` ✅
+- Grupos musculares y equipos en español: venían crudos del catálogo ✅
 
-**Definition of Done:** dos usuarios con el mismo objetivo y distinto equipo obtienen rutinas distintas, y cualquiera puede cambiar un ejercicio y que el cambio siga ahí al recargar.
+**Definition of Done:** dos usuarios con el mismo objetivo y distinto equipo obtienen rutinas distintas, y cualquiera puede cambiar un ejercicio y que el cambio siga ahí al recargar. ✅ **Cumplido:** verificado contra la app (la rutina cambia al marcar equipo, persiste, sigue siendo estable entre cargas, y cambiar un ejercicio toca **una sola fila** y se puede deshacer). 363 pruebas.
 **ADR:** ADR-21 — preferencias de entrenamiento y sustitución de ejercicios.
 **Rama:** `fase-12/ajustes-y-ejercicios`
 
@@ -446,6 +447,6 @@ Tracker       Catálogo de        Resiliencia IA
 | 9 | ✅ Completada | `fase-9/identidad-pixel` | (contra `CD/CI`) | ADR-19 | ✅ |
 | 10 | ✅ Completada | `fase-10/optimizacion` | (contra `CD/CI`) | ADR-20 | ✅ |
 | 11 | ✅ Completada | `fase-11/pulido-visual` | (contra `CD/CI`) | — | ✅ |
-| 12 | 🔄 En curso | `fase-12/ajustes-y-ejercicios` | — | ADR-21 | — |
+| 12 | ✅ Completada | `fase-12/ajustes-y-ejercicios` | (contra `CD/CI`) | ADR-21 | ✅ |
 
 > El roadmap original cerró en la Fase 10. Las fases 11 y 12 nacen después, de lo que se vio al usar la app terminada: la entrada sin cuenta no tenía sentido y el catálogo de ejercicios estaba desaprovechado.
