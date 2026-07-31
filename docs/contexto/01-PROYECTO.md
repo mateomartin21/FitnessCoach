@@ -156,7 +156,6 @@ dotnet user-secrets set "Gemini:ApiKey" "<la-key>"
 
 ### ❌ Existe pero NO está conectado / no funciona como se documentó
 
-- **Font Awesome se carga de un CDN externo (D-34).** Es la única lib de front que no está autohospedada: si `cdnjs` no responde, la app se queda sin iconos.
 - **Los estáticos no usan las rutas inmutables que ya genera `MapStaticAssets` (D-33).** Sirven con ETag y compresión, pero revalidando.
 
 ### ⏳ No existe todavía
