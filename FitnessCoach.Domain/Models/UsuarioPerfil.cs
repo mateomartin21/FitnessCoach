@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using FitnessCoach.Domain.Models.Alimentacion;
+using FitnessCoach.Domain.Models.Entrenamiento;
 using FitnessCoach.Domain.Models.Objetivos;
 
 namespace FitnessCoach.Domain.Models
@@ -39,6 +40,9 @@ public class UsuarioPerfil
 
     /// <summary>Qué puede y qué no puede comer: filtra el plan de alimentación.</summary>
     public PreferenciasAlimentarias Preferencias { get; set; } = new();
+
+    /// <summary>Con qué equipo cuenta: filtra los ejercicios de la rutina.</summary>
+    public PreferenciasEntrenamiento PreferenciasEntrenamiento { get; set; } = new();
 
     /// <summary>Lo que el usuario registró haber comido, para seguir su adherencia.</summary>
     public List<RegistroComida> Diario { get; set; } = new();

@@ -1,5 +1,6 @@
 @model FitnessCoach.Models.AjustesViewModel
 @using FitnessCoach.Application.Services
+@using FitnessCoach.Domain.Catalogos
 @{
     ViewData["Title"] = "Ajustes";
 }
@@ -24,6 +25,43 @@
 }
 
 <div class="row g-4">
+    <div class="col-12">
+        <section class="fc-ajuste-bloque">
+            <div class="fc-ajuste-cabeza">
+                <i class="fas fa-dumbbell" aria-hidden="true"></i>
+                <h2 class="fc-ajuste-titulo">Con qué entrenas</h2>
+            </div>
+            <p class="text-muted small">
+                El catálogo tiene 1323 ejercicios. Marca lo que tienes a mano y tu rutina
+                solo usará ejercicios que de verdad puedas hacer. Si no marcas nada, entra todo.
+            </p>
+            <form asp-action="GuardarEquipo" method="post">
+                <fieldset class="border-0 p-0 m-0 mb-3">
+                    <legend class="visually-hidden">Equipo disponible</legend>
+                    <div class="fc-equipo-rejilla">
+                        @foreach (var grupo in EquipoEntrenamiento.Disponibles)
+                        {
+                            var marcado = Model.EquipoDisponible.Contains(grupo.Valor, StringComparer.OrdinalIgnoreCase);
+                            <label class="fc-equipo-opcion @(marcado ? "fc-equipo-activa" : "")">
+                                <input type="checkbox" name="equipo" value="@grupo.Valor" class="form-check-input mt-0"
+                                       checked="@marcado" />
+                                <span>
+                                    <span class="fc-equipo-titulo">@grupo.Titulo</span>
+                                    <span class="fc-equipo-detalle">@grupo.Detalle</span>
+                                </span>
+                            </label>
+                        }
+                    </div>
+                </fieldset>
+                <div>
+                    <button type="submit" class="btn fc-btn-primary px-3 py-2">
+                        <i class="fas fa-save me-2" aria-hidden="true"></i>Guardar equipo
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+
     <div class="col-12 col-lg-6">
         <section class="fc-ajuste-bloque h-100">
             <div class="fc-ajuste-cabeza">

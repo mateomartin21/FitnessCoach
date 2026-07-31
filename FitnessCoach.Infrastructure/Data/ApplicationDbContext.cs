@@ -138,6 +138,15 @@ namespace FitnessCoach.Infrastructure.Data
                 // OwnsOne exige que la propiedad nunca sea null al materializar.
                 entity.Navigation(u => u.Preferencias).IsRequired();
 
+                entity.OwnsOne(u => u.PreferenciasEntrenamiento, prefs =>
+                {
+                    prefs.Property(p => p.EquipoDisponible)
+                        .HasConversion(ConversorListaTexto).Metadata.SetValueComparer(ComparadorListaTexto);
+
+                    prefs.Ignore(p => p.SinRestricciones);
+                });
+                entity.Navigation(u => u.PreferenciasEntrenamiento).IsRequired();
+
                 entity.HasIndex(u => u.IdentityUserId)
                     .IsUnique()
                     .HasFilter("[IdentityUserId] IS NOT NULL");

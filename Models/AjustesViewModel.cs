@@ -15,5 +15,8 @@ namespace FitnessCoach.Models
 
         public int DietasSeguidas { get; set; }
         public int AlimentosExcluidos { get; set; }
+
+        /// <summary>Grupos de equipo marcados. Vacío = sin filtrar la rutina.</summary>
+        public List<string> EquipoDisponible { get; set; } = new();
     }
 }

@@ -11,7 +11,8 @@ namespace FitnessCoach.Tests.Fakes
         public const string Dia1 = "Día 1 — Piernas";
         public const string Dia2 = "Día 2 — Torso";
 
-        public Rutina GenerarRutinaParaObjetivo(ObjetivoFitness objetivo, int semillaRotacion = 0) => new()
+        public Rutina GenerarRutinaParaObjetivo(ObjetivoFitness objetivo, int semillaRotacion = 0,
+            PreferenciasEntrenamiento? preferencias = null) => new()
         {
             NombreRutina = "Rutina de prueba",
             Dias = new List<DiaEntrenamiento>

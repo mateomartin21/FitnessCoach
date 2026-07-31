@@ -1,4 +1,5 @@
 using FitnessCoach.Application.Services;
+using FitnessCoach.Domain.Catalogos;
 using FitnessCoach.Infrastructure.Identity;
 using FitnessCoach.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -38,8 +39,31 @@ namespace FitnessCoach.Controllers
                 Correo = User.Identity?.Name ?? string.Empty,
                 ZonaHoraria = perfil.ZonaHoraria,
                 DietasSeguidas = perfil.Preferencias.DietasSeguidas.Count,
-                AlimentosExcluidos = perfil.Preferencias.AlimentosExcluidos.Count
+                AlimentosExcluidos = perfil.Preferencias.AlimentosExcluidos.Count,
+                EquipoDisponible = new List<string>(perfil.PreferenciasEntrenamiento.EquipoDisponible)
             });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult GuardarEquipo(List<string>? equipo)
+        {
+            var perfil = _perfiles.ObtenerOCrear(IdentityId);
+
+            // Solo entran grupos que existen: un POST manipulado no puede meter basura
+            // que despues filtre la rutina a cero ejercicios.
+            perfil.PreferenciasEntrenamiento.EquipoDisponible = (equipo ?? new())
+                .Where(EquipoEntrenamiento.EsGrupoValido)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            _perfiles.Guardar(perfil);
+
+            TempData["AjustesOk"] = perfil.PreferenciasEntrenamiento.SinRestricciones
+                ? "Sin equipo marcado: tu rutina puede usar cualquier ejercicio del catálogo."
+                : "Listo, tu rutina ya solo usa ejercicios que puedes hacer.";
+
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]

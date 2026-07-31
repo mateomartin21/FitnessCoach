@@ -26,6 +26,10 @@
              Link="Data\catalogo-alimentos.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\FitnessCoach.Infrastructure\Data\catalogo-ejercicios.json"
+             Link="Data\catalogo-ejercicios.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

@@ -29,7 +29,7 @@ namespace FitnessCoach.Application.Services
         {
             if (usuario.ObjetivoActual is null) return Array.Empty<string>();
 
-            var rutina = _rutinas.GenerarRutinaParaObjetivo(usuario.ObjetivoActual, usuario.Id);
+            var rutina = _rutinas.GenerarRutinaParaObjetivo(usuario.ObjetivoActual, usuario.Id, usuario.PreferenciasEntrenamiento);
             return rutina.Dias.Select(d => $"{d.NombreDia} — {d.Enfoque}").ToList();
         }
 

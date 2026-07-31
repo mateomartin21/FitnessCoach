@@ -635,3 +635,27 @@ summary:focus-visible {
 
 .fc-alerta-ok { background: rgba(39,209,124,0.12); border-left: var(--px) solid var(--fc-logro); color: var(--fc-logro); }
 .fc-alerta-error { background: rgba(239,70,85,0.12); border-left: var(--px) solid var(--fc-descanso); color: #ff8d97; }
+
+/* Equipo disponible: tarjetas marcables, mas claras que una lista de casillas sueltas. */
+.fc-equipo-rejilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: .75rem;
+}
+
+.fc-equipo-opcion {
+    display: flex;
+    align-items: flex-start;
+    gap: .7rem;
+    padding: .85rem 1rem;
+    background: var(--fc-inset);
+    border: var(--px) solid var(--fc-border);
+    cursor: pointer;
+}
+
+.fc-equipo-opcion:hover { border-color: var(--fc-primary); }
+.fc-equipo-activa { border-color: var(--fc-primary); background: rgba(var(--fc-primary-rgb), 0.1); }
+.fc-equipo-opcion:focus-within { outline: var(--px) solid var(--fc-primary-2); outline-offset: 2px; }
+
+.fc-equipo-titulo { display: block; font-family: var(--fc-font-ui); font-weight: 600; color: var(--fc-text); }
+.fc-equipo-detalle { display: block; font-size: .8rem; color: var(--fc-muted); }

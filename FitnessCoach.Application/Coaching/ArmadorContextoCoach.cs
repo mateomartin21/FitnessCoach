@@ -198,7 +198,7 @@ namespace FitnessCoach.Application.Coaching
 
             try
             {
-                var rutina = _rutinas.GenerarRutinaParaObjetivo(u.ObjetivoActual, u.Id);
+                var rutina = _rutinas.GenerarRutinaParaObjetivo(u.ObjetivoActual, u.Id, u.PreferenciasEntrenamiento);
 
                 sb.AppendLine($"== RUTINA (generada por el sistema, nivel {rutina.Nivel}) ==");
                 foreach (var dia in rutina.Dias)

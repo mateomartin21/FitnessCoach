@@ -16,11 +16,14 @@ namespace FitnessCoach.Domain.Patterns.Strategy
     {
         private readonly IRepositorioEjercicios _catalogo;
         private readonly int _semillaRotacion;
+        private readonly PreferenciasEntrenamiento? _preferencias;
 
-        protected EstrategiaRutinaBase(IRepositorioEjercicios catalogo, int semillaRotacion = 0)
+        protected EstrategiaRutinaBase(IRepositorioEjercicios catalogo, int semillaRotacion = 0,
+                                       PreferenciasEntrenamiento? preferencias = null)
         {
             _catalogo = catalogo ?? throw new ArgumentNullException(nameof(catalogo));
             _semillaRotacion = semillaRotacion;
+            _preferencias = preferencias;
         }
 
         protected abstract string NombreRutina { get; }
@@ -76,6 +79,15 @@ namespace FitnessCoach.Domain.Patterns.Strategy
             var candidatos = _catalogo.ObtenerPorGrupoMuscular(bloque.GrupoMuscular)
                 .Where(e => !yaUsados.Contains(e.Slug))
                 .ToList();
+
+            // Lo que el usuario NO tiene se descarta y no vuelve: prescribirle una sentadilla
+            // con barra a quien entrena en casa con bandas es lo mismo que no darle nada.
+            // Distinto del filtro de abajo, que es solo una preferencia de la estrategia.
+            if (_preferencias is { SinRestricciones: false })
+            {
+                var alcanzables = candidatos.Where(_preferencias.Permite).ToList();
+                if (alcanzables.Count > 0) candidatos = alcanzables;
+            }
 
             if (candidatos.Count == 0) return Array.Empty<Ejercicio>();
 
