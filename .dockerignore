@@ -1,0 +1,22 @@
+# Todo lo que no hace falta para compilar. Sin esto el contexto de build sube
+# cientos de MB de bin/obj y ademas invalida la cache del restore en cada cambio.
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/node_modules/
+
+.git/
+.github/
+.gitignore
+.gitattributes
+
+docs/
+README.md
+*.md
+
+FitnessCoach.Tests/
+**/*.user
+**/appsettings.Development.json
+Dockerfile
+.dockerignore

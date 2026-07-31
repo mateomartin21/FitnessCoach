@@ -9,12 +9,12 @@
 Proyecto académico de Arquitectura de Software — Tecnológico de Software
 
 ![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
-![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=csharp&logoColor=white)
+![C#](https://img.shields.io/badge/C%23-13-239120?style=for-the-badge&logoColor=white)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-MVC%20%2B%20API-5C2D91?style=for-the-badge&logo=dotnet&logoColor=white)
 ![Entity Framework](https://img.shields.io/badge/EF%20Core-10-512BD4?style=for-the-badge&logo=nuget&logoColor=white)
-![SQL Server](https://img.shields.io/badge/SQL%20Server-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white)
+![SQL Server](https://img.shields.io/badge/SQL%20Server-Express-CC2927?style=for-the-badge&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
-![xUnit](https://img.shields.io/badge/xUnit-363%20pruebas-5E5E5E?style=for-the-badge&logo=nunit&logoColor=white)
+![xUnit](https://img.shields.io/badge/xUnit-363%20pruebas-5E5E5E?style=for-the-badge&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
 ![Fases](https://img.shields.io/badge/roadmap-12%2F12%20fases%20cerradas-27d17c?style=flat-square)
@@ -198,16 +198,16 @@ C4Context
 
 | | Tecnología | Para qué se usa |
 |---|---|---|
-| <img src="https://cdn.simpleicons.org/dotnet/512BD4" width="18" /> | **.NET 10 / ASP.NET Core** | MVC y Web API en un mismo proceso |
-| <img src="https://cdn.simpleicons.org/c#/239120" width="18" /> | **C#** | Todo el backend |
-| <img src="https://cdn.simpleicons.org/nuget/004880" width="18" /> | **EF Core 10** | Persistencia, migraciones y tipos owned |
-| <img src="https://cdn.simpleicons.org/postgresql/CC2927" width="18" /> | **SQL Server** | LocalDB en desarrollo, Express al desplegar |
-| <img src="https://cdn.simpleicons.org/bootstrap/7952B3" width="18" /> | **Bootstrap 5** | Grilla y componentes base, sobre un sistema de diseño propio |
-| <img src="https://cdn.simpleicons.org/javascript/F7DF1E" width="18" /> | **JavaScript vanilla** | La capa de vida de Koda y las medallas en canvas, sin librerías |
-| <img src="https://cdn.simpleicons.org/fontawesome/538DD7" width="18" /> | **Font Awesome 6** | Iconografía, autohospedada como subconjunto de 12 KB |
-| <img src="https://cdn.simpleicons.org/googlegemini/8E75B2" width="18" /> | **Gemini / Groq** | Proveedores de IA, ambos en capa gratuita |
-| <img src="https://cdn.simpleicons.org/openapiinitiative/6BA539" width="18" /> | **OpenAPI + Scalar** | Documentación viva de la API |
-| <img src="https://cdn.simpleicons.org/githubactions/2088FF" width="18" /> | **GitHub Actions** | Integración continua en cada push y PR |
+| <img src="docs/iconos/dotnet.svg" width="18" /> | **.NET 10 / ASP.NET Core** | MVC y Web API en un mismo proceso |
+| <img src="docs/iconos/csharp.svg" width="18" /> | **C#** | Todo el backend |
+| <img src="docs/iconos/nuget.svg" width="18" /> | **EF Core 10** | Persistencia, migraciones y tipos owned |
+| <img src="docs/iconos/microsoftsqlserver.svg" width="18" /> | **SQL Server** | LocalDB en desarrollo, Express al desplegar |
+| <img src="docs/iconos/bootstrap.svg" width="18" /> | **Bootstrap 5** | Grilla y componentes base, sobre un sistema de diseño propio |
+| <img src="docs/iconos/javascript.svg" width="18" /> | **JavaScript vanilla** | La capa de vida de Koda y las medallas en canvas, sin librerías |
+| <img src="docs/iconos/fontawesome.svg" width="18" /> | **Font Awesome 6** | Iconografía, autohospedada como subconjunto de 12 KB |
+| <img src="docs/iconos/googlegemini.svg" width="18" /> | **Gemini / Groq** | Proveedores de IA, ambos en capa gratuita |
+| <img src="docs/iconos/openapiinitiative.svg" width="18" /> | **OpenAPI + Scalar** | Documentación viva de la API |
+| <img src="docs/iconos/githubactions.svg" width="18" /> | **GitHub Actions** | Integración continua en cada push y PR |
 
 ---
 
@@ -275,16 +275,54 @@ arquitectónicas, hexagonal, API REST, patrones GOF) y del **ADR-07 al ADR-21** 
 
 ## Despliegue
 
-Se despliega con **SQL Server Express**: sin costo de licencia, límite de 10 GB por base (los catálogos son ~1400 filas)
-y **cero cambios de código**. Detrás de un proxy o balanceador hay que declarar los proxies de confianza, para que el
-límite de intentos por IP cuente al cliente real:
+La app está lista para desplegarse en cualquier host, sin proveedor elegido todavía. Arranca contra una base **vacía**:
+aplica las migraciones pendientes y siembra los catálogos sola.
 
-```json
-"ForwardedHeaders": { "KnownProxies": ["10.0.0.1"], "KnownNetworks": ["10.0.0.0/8"] }
+### Variables de entorno
+
+| Variable | Obligatoria | Para qué |
+|---|:---:|---|
+| `ConnectionStrings__DefaultConnection` | **sí** | El valor de `appsettings.json` apunta a LocalDB, que solo existe en Windows de escritorio. Si falta —o sigue siendo LocalDB fuera de desarrollo— la app **no arranca** y lo dice. |
+| `ASPNETCORE_ENVIRONMENT` | sí | `Production` |
+| `Gemini__ApiKey` | no | Sin ella, Koda responde con el coach offline. |
+| `Groq__ApiKey` | no | Segundo proveedor de la cadena. |
+| `Despliegue__RedirigirAHttps` | según | Ponla en `false` si un proxy ya termina el TLS, o el redirect entra en **bucle infinito**. |
+| `Despliegue__MigrarAlArrancar` | no | `true` por defecto. |
+| `ForwardedHeaders__KnownProxies__0` | según | La IP del proxy, para que el límite de intentos cuente al cliente real y no al balanceador (D-24). |
+
+### Con Docker
+
+```bash
+docker build -t fitnesscoach .
+docker run -p 8080:8080   -e ASPNETCORE_ENVIRONMENT=Production   -e ConnectionStrings__DefaultConnection="Server=...;Database=FitnessCoachDb;User Id=...;Password=...;TrustServerCertificate=True"   -e Despliegue__RedirigirAHttps=false   fitnesscoach
 ```
 
-PostgreSQL queda como alternativa registrada (D-35), con una advertencia: **PostgreSQL distingue mayúsculas y SQL Server
-no**, así que las migraciones hay que regenerarlas con Npgsql, no editarlas.
+La imagen corre como usuario **no root** y escucha en el **8080** (el 80 exige privilegios que ese usuario no tiene).
+
+### Sin Docker
+
+El CI publica un artefacto listo en cada push (`fitnesscoach-<sha>`), con los estáticos ya comprimidos en `.gz` y `.br`.
+Se descarga, se descomprime y se corre con `dotnet FitnessCoach.dll`.
+
+### Comprobar que quedó bien
+
+`GET /health` abre una conexión real contra la base y responde `Healthy` (200) o `Unhealthy` (503). Sirve como sonda
+para el balanceador o el proveedor.
+
+### Detalles que ya están resueltos
+
+- **Las claves de Data Protection viven en la base**, no en el disco del proceso. En un contenedor el disco es efímero:
+  sin esto, **cada despliegue deslogueaba a todos los usuarios**.
+- **Las migraciones se aplican al arrancar**, con el lock de EF Core, así que dos instancias arrancando a la vez no se
+  pisan.
+- **El CI construye la imagen en cada push** y comprueba que, sin cadena de conexión, falle rápido y con un mensaje
+  entendible.
+
+### La base de datos
+
+Funciona con cualquier **SQL Server**: Express es gratis (límite de 10 GB; los catálogos son ~1400 filas) y no exige
+cambiar una línea de código. PostgreSQL queda como alternativa registrada (**D-35**), con una advertencia: **PostgreSQL
+distingue mayúsculas y SQL Server no**, así que las migraciones hay que **regenerarlas** con Npgsql, no editarlas.
 
 ---
 

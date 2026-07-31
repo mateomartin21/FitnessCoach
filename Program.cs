@@ -1,4 +1,6 @@
 using FitnessCoach.Infrastructure.Data;
+using FitnessCoach.Web;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using FitnessCoach.Infrastructure.Identity;
@@ -171,9 +173,34 @@ builder.Services.AddScoped<FitnessCoach.Application.Coaching.ICoachIA>(sp =>
     return new FitnessCoach.Application.Coaching.CoachResiliente(proveedores, log);
 });
 
+// El valor de appsettings.json apunta a LocalDB, que solo existe en Windows de escritorio.
+// Fuera de desarrollo hay que pasar la cadena real por entorno
+// (ConnectionStrings__DefaultConnection) o por el proveedor de configuracion del host.
+// Se falla aca con un mensaje claro en vez de arrastrar el error hasta la primera consulta.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+if (string.IsNullOrWhiteSpace(connectionString))
+    throw new InvalidOperationException(
+        "Falta la cadena de conexion. Define ConnectionStrings__DefaultConnection en el entorno.");
+
+if (!builder.Environment.IsDevelopment() && connectionString.Contains("(localdb)", StringComparison.OrdinalIgnoreCase))
+    throw new InvalidOperationException(
+        $"La cadena de conexion apunta a LocalDB y el entorno es '{builder.Environment.EnvironmentName}'. " +
+        "LocalDB no existe en un servidor: define ConnectionStrings__DefaultConnection.");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+// Las claves que firman las cookies de sesion van a la base, no al disco del proceso:
+// en un contenedor el disco es efimero y cada despliegue desloguearia a todo el mundo.
+builder.Services.AddDataProtection()
+    .PersistKeysToDbContext<ApplicationDbContext>()
+    .SetApplicationName("FitnessCoach");
+
+// Sonda para el balanceador o el proveedor de hosting: comprueba que la base responda,
+// que es la unica dependencia sin la que la app no sirve para nada.
+builder.Services.AddHealthChecks()
+    .AddCheck<SondaBaseDeDatos>("base-de-datos");
 
 // ASP.NET Identity sobre el mismo DbContext.
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -228,13 +255,21 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
-// Siembra de los catalogos: cada uno solo hace algo si su tabla esta vacia.
 using (var alcance = app.Services.CreateScope())
 {
     var contexto = alcance.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     var registro = alcance.ServiceProvider.GetRequiredService<ILoggerFactory>()
-        .CreateLogger("SembradorCatalogo");
+        .CreateLogger("Arranque");
 
+    // Contra una base recien creada no hay tablas y la siembra reventaria. EF toma un
+    // lock, asi que dos instancias arrancando a la vez no se pisan.
+    if (app.Configuration.GetValue("Despliegue:MigrarAlArrancar", true))
+    {
+        registro.LogInformation("Aplicando migraciones pendientes...");
+        await contexto.Database.MigrateAsync();
+    }
+
+    // Cada sembrador solo hace algo si su tabla esta vacia.
     await SembradorCatalogoEjercicios.SembrarAsync(contexto, registro);
     await SembradorCatalogoAlimentos.SembrarAsync(contexto, registro);
 }
@@ -253,7 +288,13 @@ if (!app.Environment.IsDevelopment())
 // OpenAPI — genera el JSON en /openapi/v1.json
 app.MapOpenApi();
 app.MapScalarApiReference();
-app.UseHttpsRedirection();
+// Detras de un proxy que ya termina el TLS (lo normal en un PaaS), la app recibe la
+// peticion por HTTP: si redirige a HTTPS, el proxy la vuelve a mandar por HTTP y se
+// hace un bucle infinito. Ahi hay que apagarlo con Despliegue:RedirigirAHttps=false
+// y dejar que el proxy imponga HTTPS.
+if (app.Configuration.GetValue("Despliegue:RedirigirAHttps", true))
+    app.UseHttpsRedirection();
+
 app.UseRouting();
 app.UseRateLimiter();
 app.UseAuthentication();
@@ -268,5 +309,7 @@ app.MapControllerRoute(
 
 // Rutas API
 app.MapControllers();
+
+app.MapHealthChecks("/health").AllowAnonymous();
 
 app.Run();
