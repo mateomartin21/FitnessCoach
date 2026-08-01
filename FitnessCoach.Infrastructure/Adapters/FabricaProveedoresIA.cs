@@ -32,8 +32,10 @@ namespace FitnessCoach.Infrastructure.Adapters
             var proveedores = new List<IProveedorIA>();
 
             var geminiKey = _config["Gemini:ApiKey"];
-            var modeloPrincipal = _config["Gemini:Model"] ?? "gemini-2.0-flash";
-            var modeloSecundario = _config["Gemini:ModelFallback"] ?? "gemini-2.0-flash-lite";
+            // Alias 'latest' y no un modelo fijado: Google retira versiones concretas y la
+            // cadena pierde un eslabon sin que nadie se entere, porque el siguiente responde.
+            var modeloPrincipal = _config["Gemini:Model"] ?? "gemini-flash-latest";
+            var modeloSecundario = _config["Gemini:ModelFallback"] ?? "gemini-flash-lite-latest";
 
             if (!string.IsNullOrWhiteSpace(geminiKey))
                 proveedores.Add(new GeminiCoachService(Cliente(), geminiKey, modeloPrincipal));
