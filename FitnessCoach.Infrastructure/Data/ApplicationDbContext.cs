@@ -27,9 +27,14 @@ namespace FitnessCoach.Infrastructure.Data
 
         private static readonly JsonSerializerOptions OpcionesJson = new(JsonSerializerDefaults.Web);
 
+        // Al agregar una columna JSON no nula, EF genera `defaultValue: ""` y las filas que ya
+        // existian quedan con la cadena vacia, que no es JSON valido. Leerla como coleccion
+        // vacia evita que una migracion olvidada rompa todas esas filas (D-37).
         private static readonly ValueConverter<List<string>, string> ConversorListaTexto = new(
             lista => JsonSerializer.Serialize(lista, OpcionesJson),
-            texto => JsonSerializer.Deserialize<List<string>>(texto, OpcionesJson) ?? new List<string>());
+            texto => string.IsNullOrWhiteSpace(texto)
+                ? new List<string>()
+                : JsonSerializer.Deserialize<List<string>>(texto, OpcionesJson) ?? new List<string>());
 
         // Sin este comparador EF compara las listas por referencia y no detecta cambios
         // dentro de la coleccion.
@@ -48,7 +53,10 @@ namespace FitnessCoach.Infrastructure.Data
 
         private static readonly ValueConverter<Dictionary<string, string>, string> ConversorMapaTexto = new(
             mapa => JsonSerializer.Serialize(mapa, OpcionesJson),
-            texto => NuevoMapa(JsonSerializer.Deserialize<Dictionary<string, string>>(texto, OpcionesJson)));
+            // NuevoMapa(null) y no NuevoMapa(): un arbol de expresion no admite omitir opcionales.
+            texto => string.IsNullOrWhiteSpace(texto)
+                ? NuevoMapa(null)
+                : NuevoMapa(JsonSerializer.Deserialize<Dictionary<string, string>>(texto, OpcionesJson)));
 
         private static readonly ValueComparer<Dictionary<string, string>> ComparadorMapaTexto = new(
             // Sin TryGetValue: un arbol de expresion no admite 'out var'.

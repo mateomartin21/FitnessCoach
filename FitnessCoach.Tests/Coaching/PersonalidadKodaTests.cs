@@ -3,12 +3,12 @@ using Xunit;
 
 namespace FitnessCoach.Tests.Coaching
 {
-    public class PersonalidadLoboCoachTests
+    public class PersonalidadKodaTests
     {
         [Fact]
         public void ElPromptIncluyeElPerfilYLaPregunta()
         {
-            var prompt = PersonalidadLoboCoach.ConstruirPrompt(
+            var prompt = PersonalidadKoda.ConstruirPrompt(
                 mensaje: "Cuanta proteina como?",
                 contextoPerfil: "Nombre: Ana, Peso: 65kg, Objetivo: Perder grasa");
 
@@ -20,7 +20,7 @@ namespace FitnessCoach.Tests.Coaching
         [Fact]
         public void ElPromptFijaLaVozDelLobo()
         {
-            var prompt = PersonalidadLoboCoach.ConstruirPrompt("hola", "perfil");
+            var prompt = PersonalidadKoda.ConstruirPrompt("hola", "perfil");
 
             Assert.Contains("Koda", prompt);
             Assert.Contains("México", prompt);   // siempre responde en español de México
@@ -29,7 +29,7 @@ namespace FitnessCoach.Tests.Coaching
         [Fact]
         public void ElPromptLeProhibeInventarAlimentosYEjercicios()
         {
-            var prompt = PersonalidadLoboCoach.ConstruirPrompt("recomendame algo", "perfil");
+            var prompt = PersonalidadKoda.ConstruirPrompt("recomendame algo", "perfil");
 
             Assert.Contains("NUNCA inventes", prompt);
             // El anclaje: solo lo que esté en el contexto (plan, rutina, catálogo).
@@ -39,7 +39,7 @@ namespace FitnessCoach.Tests.Coaching
         [Fact]
         public void ElPromptPideUsarLosDatosRealesDelUsuario()
         {
-            var prompt = PersonalidadLoboCoach.ConstruirPrompt("como voy?", "perfil");
+            var prompt = PersonalidadKoda.ConstruirPrompt("como voy?", "perfil");
 
             Assert.Contains("SUS datos", prompt);
         }
@@ -52,7 +52,7 @@ namespace FitnessCoach.Tests.Coaching
         [InlineData("cualquier-otra-cosa", "progreso")]   // cae en progreso por defecto
         public void ElPedidoDeAnalisis_ApuntaAlAspectoPedido(string aspecto, string esperado)
         {
-            var pedido = PersonalidadLoboCoach.PedidoDeAnalisis(aspecto);
+            var pedido = PersonalidadKoda.PedidoDeAnalisis(aspecto);
 
             Assert.Contains(esperado, pedido, StringComparison.OrdinalIgnoreCase);
         }
@@ -60,7 +60,7 @@ namespace FitnessCoach.Tests.Coaching
         [Fact]
         public void LaRespuestaSinSenal_EstaEnLaVozDelLobo_NoEsUnErrorTecnico()
         {
-            var sinSenal = PersonalidadLoboCoach.RespuestaSinSenal;
+            var sinSenal = PersonalidadKoda.RespuestaSinSenal;
 
             Assert.Contains("campeón", sinSenal);
             // No debe filtrar jerga técnica al usuario.

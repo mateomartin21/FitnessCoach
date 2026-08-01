@@ -62,7 +62,7 @@ namespace FitnessCoach.Tests.Coaching
 
             var r = await coach.ConsultarAsync("hola", "perfil");
 
-            Assert.Equal(PersonalidadLoboCoach.RespuestaSinSenal, r.Texto);
+            Assert.Equal(PersonalidadKoda.RespuestaSinSenal, r.Texto);
             Assert.True(r.EsDegradada);
             Assert.DoesNotContain("Exception", r.Texto);
             Assert.Equal(1, _log.Errores);       // el fallo total se registró como error
@@ -100,7 +100,7 @@ namespace FitnessCoach.Tests.Coaching
             var r = await coach.ConsultarAsync("hola", "perfil");
 
             Assert.True(r.EsDegradada);
-            Assert.Equal(PersonalidadLoboCoach.RespuestaSinSenal, r.Texto);
+            Assert.Equal(PersonalidadKoda.RespuestaSinSenal, r.Texto);
         }
 
         [Fact]

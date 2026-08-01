@@ -15,7 +15,8 @@ namespace FitnessCoach.Infrastructure.Data.Migrations
                 table: "Alimentos",
                 type: "nvarchar(max)",
                 nullable: false,
-                defaultValue: "");
+                // "[]" y no "": la columna se lee como JSON (D-37).
+                defaultValue: "[]");
         }
 
         /// <inheritdoc />

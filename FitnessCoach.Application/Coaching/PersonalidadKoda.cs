@@ -8,7 +8,7 @@ namespace FitnessCoach.Application.Coaching
     /// Arma el prompt que se le manda a un modelo de lenguaje y guarda las respuestas
     /// que da Koda cuando la IA no está disponible, en su misma voz.
     /// </summary>
-    public static class PersonalidadLoboCoach
+    public static class PersonalidadKoda
     {
         /// <summary>
         /// Construye el prompt a partir del contexto del usuario y su pregunta. Es el
