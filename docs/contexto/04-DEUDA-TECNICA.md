@@ -4,7 +4,7 @@
 >
 > Última revisión completa del código: **22/07/2026**, rama `CD/CI`. Actualizado el **30/07/2026** al cerrar la **Fase 10** (rama `fase-10/optimizacion`, ADR-20), que resolvió las cinco deudas que quedaban de fases anteriores (D-24, D-25, D-26, D-30, D-31) y abrió cuatro nuevas de prioridad baja (D-32 a D-35). Actualizado el **31/07/2026** en la **Fase 12** (rama `fase-12/ajustes-y-ejercicios`, ADR-21), que cerró D-34 y D-36, y dejó abierta D-37.
 >
-> **Al arreglarlas se descubrió que dos estaban mal registradas.** D-30 decía "un par de sprites" y eran los 26. D-31 decía que los dos PNG de `branding/` no se usaban, pero `logo.png` era el placeholder de la cadena de medios de los ejercicios. Las correcciones quedan anotadas en cada ficha: registrar mal una deuda hace que se subestime el trabajo de pagarla.
+> **Al arreglarlas se descubrió que varias estaban mal registradas.** D-30 decía "un par de sprites" y eran los 26. D-31 decía que los dos PNG de `branding/` no se usaban, pero `logo.png` era el placeholder de la cadena de medios de los ejercicios. D-37 listaba dos migraciones con el `defaultValue` malo y eran tres. D-32, al revés, sobreestimaba: decía que tocaba `Program.cs` y no lo toca. Las correcciones quedan anotadas en cada ficha: **antes de pagar una deuda hay que verificar la ficha, no creerle.**
 
 ## Resumen
 
@@ -13,12 +13,12 @@
 | 🔴 Crítica (seguridad / pérdida de datos) | 7 | 0 |
 | 🟠 Alta (bug funcional o riesgo real) | 9 | 0 |
 | 🟡 Media (calidad, mantenibilidad) | 16 | 1 |
-| 🟢 Baja (cosmética, mejora opcional) | 5 | 4 |
-| **Total** | **37** | **5** |
+| 🟢 Baja (cosmética, mejora opcional) | 5 | 2 |
+| **Total** | **37** | **3** |
 
-> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23. Fase 5.5 → D-27, D-28. Fase 6 → D-09, D-20. Fase 10 → D-24, D-25, D-26, D-30, D-31. Fase 12 → D-34, D-36.
+> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23. Fase 5.5 → D-27, D-28. Fase 6 → D-09, D-20. Fase 10 → D-24, D-25, D-26, D-30, D-31. Fase 12 → D-34, D-36. Post-roadmap → D-32, D-37.
 >
-> **No queda deuda crítica ni alta abierta.** Queda una media (D-29, licencia de los GIFs, que depende de un tercero) y cuatro bajas: D-32 (nombre de `PersonalidadLoboCoach`), D-33 (los estáticos no usan las rutas inmutables), D-35 (la base atada a SQL Server) y D-37 (`defaultValue` de EF en columnas JSON).
+> **Las tres que quedan abiertas no dependen de escribir código, y por eso siguen abiertas.** D-29 (licencia de los GIFs) es una decisión legal sobre material de terceros. D-33 espera a que MVC tenga un helper soportado para las rutas con huella; inventar un esquema paralelo sería peor que la deuda. D-35 (la base atada a SQL Server) solo se paga si se llega al límite de Express, y exige regenerar las migraciones con Npgsql, no editarlas.
 >
 > **Deuda nueva detectada en la Fase 4:** D-25 y D-26. **En la Fase 5:** D-27, D-28 y D-29. **En la Fase 9:** D-30 y D-31. **En la Fase 10:** D-32, D-33, D-34 y D-35. **En la Fase 12:** D-36 y D-37.
 
@@ -269,7 +269,7 @@
 **Qué pasa:** desde la Fase 9 el coach se llama **Koda**, pero la clase que define su voz sigue nombrada como cuando era "el Lobo". El texto visible está bien; es el identificador el que quedó atrás.
 **Riesgo:** ninguno funcional. Confunde al leer el código y al seguir los diagramas.
 **Resolución:** renombrar la clase y su archivo; toca las pruebas que la referencian y el registro en `Program.cs`.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta. `PersonalidadLoboCoach` → `PersonalidadKoda`, con su archivo y su clase de pruebas. La ficha sobreestimaba el alcance: **no está registrada en `Program.cs`** (es estática, no se inyecta), así que fueron 13 referencias en 5 archivos y el diagrama del Nivel 3.3. El texto que la clase genera ya decía Koda desde la Fase 9; lo único desalineado era el identificador.
 
 ### D-33 · Los estáticos no usan las rutas inmutables de `MapStaticAssets`
 **Dónde:** `Views/Shared/_Layout.cshtml` (`asp-append-version`), `Program.cs` → `app.MapStaticAssets()`
@@ -304,7 +304,11 @@
 **Qué pasa:** al agregar una columna `nvarchar(max)` no nula con `ValueConverter` a JSON, EF pone `defaultValue: ""`. `JsonSerializer.Deserialize<List<string>>("")` lanza, así que las filas ya existentes quedan ilegibles. Van dos migraciones corregidas a mano a `"[]"`.
 **Riesgo:** alto si se olvida: rompe **todos** los perfiles creados antes de la migración, y no lo detecta ninguna prueba porque las pruebas no corren migraciones.
 **Resolución:** revisar el `defaultValue` de toda migración que toque una propiedad convertida a JSON. Alternativa de fondo: un `ValueConverter` que trate la cadena vacía como lista vacía al leer.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta por el fondo, no por la disciplina. `ConversorListaTexto` y `ConversorMapaTexto` leen la cadena vacía como colección vacía, así que una migración olvidada ya no rompe nada. Se eligió esta vía justamente porque la ficha proponía "acordarse de revisar", y **la ficha misma se había olvidado de una**: listaba dos migraciones y eran tres — `20260724190918_MomentosAptosDelAlimento` agrega una columna JSON (`Alimentos.MomentosAptos`) con `defaultValue: ""` y nunca se corrigió. No hizo daño de casualidad, porque el sembrador reescribe los 67 alimentos en cada arranque.
+>
+> **Verificado en los dos sentidos** contra la base real, poniendo `''` a mano en las cuatro columnas JSON de un perfil y en un alimento: **sin** el arreglo, `/Rutinas` y `/Alimentación` responden **500** con `JsonException: The input does not contain any JSON tokens`; **con** el arreglo, ambas responden 200 y la fila corrompida se muestra normal. El caso no se puede cubrir con una prueba: los conversores viven en `Infrastructure` y `FitnessCoach.Tests` no la referencia (ADR-08).
+>
+> Solo se tolera la cadena **vacía**, no el JSON inválido: eso último es corrupción real y tiene que hacer ruido, no volverse una lista vacía en silencio.
 
 ---
 
