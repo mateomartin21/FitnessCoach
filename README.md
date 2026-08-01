@@ -12,13 +12,13 @@ Proyecto académico de Arquitectura de Software — Tecnológico de Software
 ![C#](https://img.shields.io/badge/C%23-13-239120?style=for-the-badge&logoColor=white)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-MVC%20%2B%20API-5C2D91?style=for-the-badge&logo=dotnet&logoColor=white)
 ![Entity Framework](https://img.shields.io/badge/EF%20Core-10-512BD4?style=for-the-badge&logo=nuget&logoColor=white)
-![SQL Server](https://img.shields.io/badge/SQL%20Server-Express-CC2927?style=for-the-badge&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
 ![xUnit](https://img.shields.io/badge/xUnit-363%20pruebas-5E5E5E?style=for-the-badge&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
 ![Fases](https://img.shields.io/badge/roadmap-12%2F12%20fases%20cerradas-27d17c?style=flat-square)
-![ADRs](https://img.shields.io/badge/ADRs-21-5b8cff?style=flat-square)
+![ADRs](https://img.shields.io/badge/ADRs-22-5b8cff?style=flat-square)
 ![Deuda](https://img.shields.io/badge/deuda%20cr%C3%ADtica%20y%20alta-0%20abierta-27d17c?style=flat-square)
 ![Arquitectura](https://img.shields.io/badge/arquitectura-hexagonal-9b6dff?style=flat-square)
 
@@ -109,13 +109,14 @@ Lo que lo distingue de un CRUD de gimnasio:
 ```
 FitnessCoach.Domain          # Modelos, puertos, cálculo puro y patrones GOF. No referencia a nadie.
 FitnessCoach.Application     # Servicios de aplicación y casos de uso. Solo referencia Domain.
-FitnessCoach.Infrastructure  # Adaptadores: EF Core + SQL Server, Identity, proveedores de IA.
+FitnessCoach.Infrastructure  # Adaptadores: EF Core + PostgreSQL, Identity, proveedores de IA.
 FitnessCoach (raíz)          # Controladores MVC y API, vistas Razor. Program.cs es el composition root.
 FitnessCoach.Tests           # xUnit, sin Moq (dobles a mano). No referencia Infrastructure (ADR-08).
 ```
 
-Que `Domain` no referencie a nadie es lo que permite, por ejemplo, cambiar SQL Server por PostgreSQL o sumar un
-proveedor de IA nuevo **sin tocar una sola regla de negocio**.
+Que `Domain` no referencie a nadie es lo que permite sumar un proveedor de IA nuevo **sin tocar una sola regla de
+negocio**. Y no es teoría: el proyecto **cambió de SQL Server a PostgreSQL** para poder desplegarse, y el cambio
+tocó `Program.cs`, dos repositorios y las migraciones — **ni una línea de `Domain` ni de `Application`** (ADR-22).
 
 ---
 
@@ -229,7 +230,7 @@ Ordenados como los ordena este proyecto; los de abajo se sacrificaron a concienc
 | **Rutina generada al vuelo, no persistida** | Consistencia: no puede quedar desincronizada del perfil. | Flexibilidad: no se puede editar libremente. Obligó a modelar las sustituciones como un mapa `original → elegido` (D-36). | Aceptado, con el costo pagado en la Fase 12. |
 | **Gamificación derivada de los hechos** | Consistencia: **no existe estado de juego** que pueda desincronizarse. | Cómputo: el nivel, los logros y las misiones se recalculan en cada carga. | Aceptado: es cálculo puro sobre datos ya en memoria. |
 | **Rate limiter en memoria, sin Redis** | Simplicidad y costo: cero infraestructura extra. | Correctitud del límite con más de una instancia: **se multiplica por la cantidad de nodos**. | Aceptado para una sola instancia, y **escrito en el código** para que no sorprenda (D-24). |
-| **SQL Server en vez de PostgreSQL** | Cero costo de migración: las migraciones y el `HasFilter` ya son de SQL Server. | Portabilidad y **opciones de hosting**: obliga a Express (10 GB) y a un proveedor que hable SQL Server. | **Es el trade-off que más cuesta hoy** (D-35). Migrar exige *regenerar* las migraciones con Npgsql, no editarlas, porque además PostgreSQL distingue mayúsculas y SQL Server no. |
+| **SQL Server, y después PostgreSQL** | SQL Server no costaba nada mientras el proyecto corría en Windows. | Portabilidad y **opciones de hosting**: no existe SQL Server gratuito sin tarjeta de crédito. | **El único trade-off que hubo que dar vuelta.** Se sostuvo hasta que el despliegue lo hizo insostenible y se pagó la D-35: migraciones *regeneradas* con Npgsql, comparaciones de texto en minúsculas (Postgres distingue mayúsculas y SQL Server no) y modo legacy de fechas para conservar la semántica UTC. Costó `Program.cs`, dos repositorios y el esquema — **cero cambios en `Domain`** (ADR-22). |
 | **GIFs desde un CDN externo** | Peso del repositorio y ninguna redistribución de material ajeno. | Dependencia de un tercero y **licencia sin declarar** en el origen. | Acotado: la URL está pineada a una versión y la cadena de medios degrada a placeholder si el CDN falla (D-29). |
 | **Font Awesome como subconjunto propio** | Independencia y peso: **12 KB** contra ~360 KB del CDN. Cero peticiones a terceros. | Agregar un icono nuevo obliga a volver a correr el script de recorte. | Aceptado; el script queda versionado junto a la fuente (D-34). |
 
@@ -238,7 +239,7 @@ Ordenados como los ordena este proyecto; los de abajo se sacrificaron a concienc
 | Riesgo | Atributo afectado | Estado |
 |---|---|---|
 | **Una sola instancia, sin redundancia.** Si el proceso cae, no hay app. | Disponibilidad | Asumido. No hay balanceador ni réplica; es un proyecto académico. |
-| **Hosting atado a SQL Server.** Las plataformas gratuitas suelen ofrecer PostgreSQL, no SQL Server. | Portabilidad | **Materializado** — es exactamente el problema del despliegue final. Registrado como D-35. |
+| **Hosting atado a SQL Server.** Las plataformas gratuitas ofrecen PostgreSQL, no SQL Server. | Portabilidad | **Se materializó y se pagó.** Era D-35, registrada como riesgo baja prioridad desde la Fase 10; al llegar el despliegue bloqueó todo. La arquitectura hexagonal es lo que hizo que costara horas y no días. |
 | **Las claves de IA son de capa gratuita.** Si se agota la cuota, todos los usuarios caen al coach offline. | Calidad de la IA | Mitigado por la cadena: degrada, no falla. |
 | **Si una migración falla en producción, la app no levanta.** | Disponibilidad | **Deliberado**: es preferible fallar al arrancar que servir con el esquema equivocado. |
 | **Los adaptadores de red no tienen pruebas** (ADR-08). | Testabilidad | Asumido: probarlos exigiría o red real o dobles del protocolo HTTP. Se compensó con la prueba de fuego manual. |
@@ -278,7 +279,7 @@ Cosas que **parecen** riesgos y no lo son, porque hay evidencia de que no lo son
 | <img src="docs/iconos/dotnet.svg" width="18" /> | **.NET 10 / ASP.NET Core** | MVC y Web API en un mismo proceso |
 | <img src="docs/iconos/csharp.svg" width="18" /> | **C#** | Todo el backend |
 | <img src="docs/iconos/nuget.svg" width="18" /> | **EF Core 10** | Persistencia, migraciones y tipos owned |
-| <img src="docs/iconos/microsoftsqlserver.svg" width="18" /> | **SQL Server** | LocalDB en desarrollo, Express al desplegar |
+| <img src="docs/iconos/postgresql.svg" width="18" /> | **PostgreSQL** | Mismo motor en desarrollo y en produccion (ADR-22) |
 | <img src="docs/iconos/bootstrap.svg" width="18" /> | **Bootstrap 5** | Grilla y componentes base, sobre un sistema de diseño propio |
 | <img src="docs/iconos/javascript.svg" width="18" /> | **JavaScript vanilla** | La capa de vida de Koda y las medallas en canvas, sin librerías |
 | <img src="docs/iconos/fontawesome.svg" width="18" /> | **Font Awesome 6** | Iconografía, autohospedada como subconjunto de 12 KB |
@@ -295,7 +296,7 @@ Cosas que **parecen** riesgos y no lo son, porque hay evidencia de que no lo son
 dotnet restore
 dotnet build
 
-# 2. Crear la base (LocalDB por defecto, ver appsettings.json)
+# 2. Crear la base (PostgreSQL, ver appsettings.json)
 dotnet ef database update --project FitnessCoach.Infrastructure --startup-project FitnessCoach.csproj
 
 # 3. Levantar
@@ -346,20 +347,24 @@ El set de contexto vive en [docs/contexto/](docs/contexto/) y se mantiene al dí
 | [06-ROADMAP.md](docs/contexto/06-ROADMAP.md) | Las diez fases, cerradas |
 
 Los **21 ADR** están en [docs/](docs/): del **ADR-01 al ADR-06** documentan las decisiones iniciales (patrón, vistas
-arquitectónicas, hexagonal, API REST, patrones GOF) y del **ADR-07 al ADR-21** cierra uno por cada fase del roadmap.
+arquitectónicas, hexagonal, API REST, patrones GOF) y del **ADR-07 al ADR-22** cierra uno por cada fase del roadmap y por el despliegue final.
 
 ---
 
 ## Despliegue
 
-La app está lista para desplegarse en cualquier host, sin proveedor elegido todavía. Arranca contra una base **vacía**:
-aplica las migraciones pendientes y siembra los catálogos sola.
+Desplegada en **Render** (contenedor Docker) con **PostgreSQL** en **Neon**, ambos en capa gratuita. Arranca contra
+una base **vacía**: aplica las migraciones y siembra los 1323 ejercicios y los 67 alimentos sola.
+
+El repositorio trae un [render.yaml](render.yaml): al conectarlo, Render crea el servicio ya configurado y solo pide la
+cadena de conexión.
 
 ### Variables de entorno
 
 | Variable | Obligatoria | Para qué |
 |---|:---:|---|
-| `ConnectionStrings__DefaultConnection` | **sí** | El valor de `appsettings.json` apunta a LocalDB, que solo existe en Windows de escritorio. Si falta —o sigue siendo LocalDB fuera de desarrollo— la app **no arranca** y lo dice. |
+| `ConnectionStrings__DefaultConnection` | **sí** | Cadena de PostgreSQL. El valor de `appsettings.json` apunta a la máquina local; si falta —o sigue apuntando ahí fuera de desarrollo— la app **no arranca** y lo dice. |
+| `PORT` | según | La ponen Render y compañía. La app escucha ahí si existe; si no, en el 8080. Sin esto el contenedor arranca y el proveedor igual lo da por caído. |
 | `ASPNETCORE_ENVIRONMENT` | sí | `Production` |
 | `Gemini__ApiKey` | no | Sin ella, Koda responde con el coach offline. |
 | `Groq__ApiKey` | no | Segundo proveedor de la cadena. |
@@ -371,7 +376,7 @@ aplica las migraciones pendientes y siembra los catálogos sola.
 
 ```bash
 docker build -t fitnesscoach .
-docker run -p 8080:8080   -e ASPNETCORE_ENVIRONMENT=Production   -e ConnectionStrings__DefaultConnection="Server=...;Database=FitnessCoachDb;User Id=...;Password=...;TrustServerCertificate=True"   -e Despliegue__RedirigirAHttps=false   fitnesscoach
+docker run -p 8080:8080   -e ASPNETCORE_ENVIRONMENT=Production   -e ConnectionStrings__DefaultConnection="Host=...;Database=...;Username=...;Password=...;SSL Mode=Require"   -e Despliegue__RedirigirAHttps=false   fitnesscoach
 ```
 
 La imagen corre como usuario **no root** y escucha en el **8080** (el 80 exige privilegios que ese usuario no tiene).
@@ -397,9 +402,13 @@ para el balanceador o el proveedor.
 
 ### La base de datos
 
-Funciona con cualquier **SQL Server**: Express es gratis (límite de 10 GB; los catálogos son ~1400 filas) y no exige
-cambiar una línea de código. PostgreSQL queda como alternativa registrada (**D-35**), con una advertencia: **PostgreSQL
-distingue mayúsculas y SQL Server no**, así que las migraciones hay que **regenerarlas** con Npgsql, no editarlas.
+**PostgreSQL**, desde el ADR-22. El proyecto usó SQL Server hasta el despliegue final, y cambió por una razón
+concreta: **no existe SQL Server gratuito sin tarjeta de crédito**, y PostgreSQL sobra (Neon, Supabase, Render).
+
+Migrar no fue editar las migraciones sino **regenerarlas** con Npgsql, y hubo que atender dos diferencias reales entre
+motores: PostgreSQL **distingue mayúsculas** y SQL Server no —por eso las comparaciones de texto de los repositorios
+bajan a minúsculas—, y Npgsql exige `DateTime` en UTC, resuelto conservando la semántica anterior. Todo eso ocurrió
+en `Infrastructure` y en `Program.cs`: **`Domain` y `Application` no cambiaron**.
 
 ---
 

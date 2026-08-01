@@ -13,12 +13,12 @@
 | 🔴 Crítica (seguridad / pérdida de datos) | 7 | 0 |
 | 🟠 Alta (bug funcional o riesgo real) | 9 | 0 |
 | 🟡 Media (calidad, mantenibilidad) | 16 | 1 |
-| 🟢 Baja (cosmética, mejora opcional) | 5 | 2 |
-| **Total** | **37** | **3** |
+| 🟢 Baja (cosmética, mejora opcional) | 5 | 1 |
+| **Total** | **37** | **2** |
 
-> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23. Fase 5.5 → D-27, D-28. Fase 6 → D-09, D-20. Fase 10 → D-24, D-25, D-26, D-30, D-31. Fase 12 → D-34, D-36. Post-roadmap → D-32, D-37.
+> **Resueltas hasta ahora:** Fase 0 → D-08, D-13, D-14, D-15, D-16, D-17, D-18, D-19. Fase 1 → D-03, D-06. Fase 2 → D-01, D-02, D-05, D-07, D-11. Fase 3 → D-04, D-21, D-22. Fase 4 → D-10, D-12, D-23. Fase 5.5 → D-27, D-28. Fase 6 → D-09, D-20. Fase 10 → D-24, D-25, D-26, D-30, D-31. Fase 12 → D-34, D-36. Post-roadmap → D-32, D-37. ADR-22 → D-35.
 >
-> **Las tres que quedan abiertas no dependen de escribir código, y por eso siguen abiertas.** D-29 (licencia de los GIFs) es una decisión legal sobre material de terceros. D-33 espera a que MVC tenga un helper soportado para las rutas con huella; inventar un esquema paralelo sería peor que la deuda. D-35 (la base atada a SQL Server) solo se paga si se llega al límite de Express, y exige regenerar las migraciones con Npgsql, no editarlas.
+> **Las dos que quedan abiertas no dependen de escribir código, y por eso siguen abiertas.** D-29 (licencia de los GIFs) es una decisión legal sobre material de terceros. D-33 espera a que MVC tenga un helper soportado para las rutas con huella; inventar un esquema paralelo sería peor que la deuda.
 >
 > **Deuda nueva detectada en la Fase 4:** D-25 y D-26. **En la Fase 5:** D-27, D-28 y D-29. **En la Fase 9:** D-30 y D-31. **En la Fase 10:** D-32, D-33, D-34 y D-35. **En la Fase 12:** D-36 y D-37.
 
@@ -290,7 +290,9 @@
 **Qué pasa:** el despliegue usa **SQL Server Express**, que no tiene costo de licencia pero limita a 10 GB por base y 1 GB de RAM de buffer. Ya el ADR-06 y el ADR-07 anticipaban PostgreSQL como alternativa.
 **Riesgo:** ninguno a la escala actual (los catálogos son ~1400 filas). El costo está en migrar el día que haga falta: **PostgreSQL distingue mayúsculas y SQL Server no**, así que las búsquedas por slug cambiarían de comportamiento (la caché de la Fase 10 ya lo normaliza, el sembrador no), y las migraciones usan tipos y sintaxis de SQL Server (`nvarchar`, `datetime2`, `HasFilter("[IdentityUserId] IS NOT NULL")`): hay que **regenerarlas** con Npgsql, no editarlas.
 **Resolución:** solo si se llega al límite de Express o si se prefiere RDS/PostgreSQL por costo de operación. El dominio y los servicios no cambian: todo pasa por EF Core y por los puertos.
-**Estado:** ⬜ Abierta
+**Estado:** ✅ Resuelta en el ADR-22, **por un motivo que la ficha no previó**. No se llegó al límite de Express ni hubo un cálculo de costo de operación: simplemente **no existe SQL Server gratuito sin tarjeta de crédito**, y el despliegue final lo volvió bloqueante. La ficha acertó el *qué* (regenerar migraciones con Npgsql, cuidado con las mayúsculas) y erró el *cuándo*: la marcó como prioridad baja y terminó siendo lo único que impedía entregar.
+>
+> El pronóstico de que "el dominio y los servicios no cambian" **se cumplió**: la migración tocó `Program.cs`, dos repositorios y el esquema, y las 363 pruebas pasaron sin tocar ninguna. Apareció además una tercera diferencia que la ficha no listaba: Npgsql **rechaza `DateTime` que no sea UTC**, resuelto con el modo legacy de fechas para conservar la semántica anterior.
 
 ### D-36 · No se puede cambiar un ejercicio suelto de la rutina
 **Dónde:** `FitnessCoach.Domain/Patterns/Strategy/EstrategiaRutinaBase.cs`, `Views/Rutinas/Index.cshtml`
