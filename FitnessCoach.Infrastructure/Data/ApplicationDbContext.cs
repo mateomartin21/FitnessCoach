@@ -183,9 +183,11 @@ namespace FitnessCoach.Infrastructure.Data
                 });
                 entity.Navigation(u => u.PreferenciasEntrenamiento).IsRequired();
 
+                // Comillas dobles y no corchetes: es la sintaxis de PostgreSQL para
+                // identificadores, y ademas distingue mayusculas (ADR-22).
                 entity.HasIndex(u => u.IdentityUserId)
                     .IsUnique()
-                    .HasFilter("[IdentityUserId] IS NOT NULL");
+                    .HasFilter("\"IdentityUserId\" IS NOT NULL");
 
             });
 

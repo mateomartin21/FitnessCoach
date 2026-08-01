@@ -23,12 +23,16 @@ namespace FitnessCoach.Infrastructure.Repositories
         public IReadOnlyList<Ejercicio> ObtenerTodos() =>
             _context.Ejercicios.AsNoTracking().OrderBy(e => e.Nombre).ToList();
 
+        // PostgreSQL distingue mayusculas y SQL Server no, asi que las comparaciones de
+        // texto se bajan a minusculas en los dos lados. La caché que envuelve a este
+        // repositorio ya comparaba sin distinguirlas; esto lo iguala (ADR-22).
         public Ejercicio? ObtenerPorSlug(string slug) =>
-            _context.Ejercicios.AsNoTracking().FirstOrDefault(e => e.Slug == slug);
+            _context.Ejercicios.AsNoTracking()
+                .FirstOrDefault(e => e.Slug.ToLower() == slug.ToLower());
 
         public IReadOnlyList<Ejercicio> ObtenerPorGrupoMuscular(string grupoMuscular) =>
             _context.Ejercicios.AsNoTracking()
-                .Where(e => e.GrupoMuscular == grupoMuscular)
+                .Where(e => e.GrupoMuscular.ToLower() == grupoMuscular.ToLower())
                 .OrderBy(e => e.Nombre)
                 .ToList();
     }

@@ -1,0 +1,37 @@
+# Plano de despliegue para Render. Al conectar el repositorio, Render lee este archivo
+# y crea el servicio ya configurado; no hay que llenar formularios a mano.
+#
+# Las claves NO van aca: van marcadas como sync:false para que Render las pida una vez
+# y las guarde cifradas. Este archivo se versiona, un secreto no.
+services:
+  - type: web
+    name: fitnesscoach
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+
+      # Render termina el TLS en su borde y habla HTTP con el contenedor. Con el
+      # redirect encendido, la app responderia 307 a https eternamente (bucle).
+      - key: Despliegue__RedirigirAHttps
+        value: "false"
+
+      # El proxy de Render es quien reenvia la IP real del visitante. Sin declararlo,
+      # el limitador de peticiones veria a todos los usuarios como una sola IP.
+      - key: ForwardedHeaders__KnownNetworks__0
+        value: 10.0.0.0/8
+
+      # Cadena de PostgreSQL (Neon). Formato:
+      #   Host=...;Database=...;Username=...;Password=...;SSL Mode=Require
+      - key: ConnectionStrings__DefaultConnection
+        sync: false
+
+      # Opcionales: sin ellas Koda responde igual, con el coach offline por reglas.
+      - key: Gemini__ApiKey
+        sync: false
+      - key: Groq__ApiKey
+        sync: false
