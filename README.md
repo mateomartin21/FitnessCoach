@@ -339,7 +339,11 @@ distingue mayúsculas y SQL Server no**, así que las migraciones hay que **rege
 
 ## Créditos y licencias
 
-El **código** de este repositorio es del autor. Los recursos de terceros conservan sus propias licencias:
+**© 2026 Mateo Martin. Todos los derechos reservados.** El repositorio es público para mostrarse como trabajo
+académico, pero **no lleva licencia de código abierto**: no se autoriza reutilizar el código sin permiso expreso.
+El detalle está en [COPYRIGHT.md](COPYRIGHT.md).
+
+Los recursos de terceros no quedan cubiertos por ese aviso y conservan sus propias licencias:
 
 | Recurso | Origen | Licencia |
 |---|---|---|
