@@ -33,15 +33,16 @@ Proyecto académico de Arquitectura de Software — Tecnológico de Software
 3. [Funcionalidades](#funcionalidades)
 4. [Arquitectura](#arquitectura)
 5. [Diagramas C4](#diagramas-c4)
-6. [Patrones de diseño](#patrones-de-diseño)
-7. [Tecnologías](#tecnologías)
-8. [Cómo correrlo](#cómo-correrlo)
-9. [Pruebas y calidad](#pruebas-y-calidad)
-10. [Documentación](#documentación)
-11. [Despliegue](#despliegue)
-12. [Ramas del repositorio](#ramas-del-repositorio)
-13. [Créditos y licencias](#créditos-y-licencias)
-14. [Cláusula de uso de IA](#cláusula-de-uso-de-ia)
+6. [Evaluación ATAM](#evaluación-atam)
+7. [Patrones de diseño](#patrones-de-diseño)
+8. [Tecnologías](#tecnologías)
+9. [Cómo correrlo](#cómo-correrlo)
+10. [Pruebas y calidad](#pruebas-y-calidad)
+11. [Documentación](#documentación)
+12. [Despliegue](#despliegue)
+13. [Ramas del repositorio](#ramas-del-repositorio)
+14. [Créditos y licencias](#créditos-y-licencias)
+15. [Cláusula de uso de IA](#cláusula-de-uso-de-ia)
 
 ---
 
@@ -180,6 +181,82 @@ C4Context
 
 > Ningún sistema externo es indispensable. Si los dos proveedores de IA fallan —o no hay red— responde un coach
 > **offline** por reglas locales, dentro del propio proceso. Verificado en la prueba de fuego de la Fase 10.
+
+---
+
+## Evaluación ATAM
+
+Evaluación de la arquitectura con **ATAM** (*Architecture Tradeoff Analysis Method*). No es un repaso de buenas
+intenciones: cada punto sale de una decisión que **ya se tomó y ya se pagó** en este repositorio, y las cifras están
+medidas, no estimadas.
+
+Las tres categorías de ATAM no son sinónimos, y conviene no mezclarlas:
+
+- **Punto de sensibilidad** — una decisión de la que depende **fuertemente un solo** atributo de calidad.
+- **Punto de trade-off** — una decisión que toca **más de un** atributo: mejora uno y empeora otro.
+- **Riesgo** — una decisión que puede impedir alcanzar un atributo bajo condiciones que son plausibles.
+
+### Atributos de calidad priorizados
+
+Ordenados como los ordena este proyecto; los de abajo se sacrificaron a conciencia por los de arriba.
+
+| # | Atributo | Escenario concreto y medible |
+|---|---|---|
+| 1 | **Seguridad y aislamiento** | Un usuario autenticado que pide el `id` de un registro ajeno recibe **404**, nunca el dato. |
+| 2 | **Disponibilidad de Koda** | Sin red y con las dos claves de IA caídas, el coach **igual responde**, con reglas locales. |
+| 3 | **Mantenibilidad** | Agregar un alimento al catálogo es **una línea de JSON**, sin recompilar ni tocar el dominio. |
+| 4 | **Rendimiento percibido** | Las pantallas pesadas resuelven en **≤ 6 consultas** a la base. |
+| 5 | **Testabilidad** | El núcleo se prueba **sin base de datos y sin red**: 363 pruebas en ~370 ms. |
+| 6 | **Portabilidad** | Corre en cualquier host con Docker; la imagen no lleva secretos ni cadena de conexión. |
+
+### Puntos de sensibilidad
+
+| Decisión | Atributo del que pende | Qué pasa si se cambia |
+|---|---|---|
+| `AsSplitQuery` al leer el perfil | Rendimiento | El perfil tiene **cuatro colecciones owned**; sin esto EF hace un producto cartesiano. Medido: `/Diario` pasó de **30 a 6** consultas, `/Progreso` de **20 a 6**, `/Rutinas` de **15 a 5**. |
+| Caché de catálogos por Decorator | Rendimiento | Los 1323 ejercicios y 67 alimentos se leen de memoria. Sin la caché, armar una rutina consultaba SQL **una vez por bloque**. |
+| Claves de Data Protection en la base | Continuidad de sesión | En disco, **cada despliegue desloguea a todos**. Es la decisión de la que depende que un redeploy no eche a los usuarios. |
+| `Database.Migrate()` al arrancar | Disponibilidad en el despliegue | Es lo único que crea el esquema en una base nueva. Sin esto, el primer arranque en un servidor limpio no levanta. |
+| Semilla del orden por `Id` del perfil | Variedad percibida | `OrdenEstable(slug)` hace la rutina determinista y reproducible; también hace que cada usuario vea **siempre los mismos** ejercicios. De ahí salió toda la Fase 12. |
+
+### Puntos de trade-off
+
+| Decisión | Qué mejora | Qué empeora | Veredicto |
+|---|---|---|---|
+| **Hexagonal en 4 proyectos** | Testabilidad y mantenibilidad. La regla de dependencias es **verificable**: `FitnessCoach.Tests` no referencia `Infrastructure`. | Ceremonia. Un caso de uso simple toca puerto, adaptador, servicio y controlador. | Aceptado. Es el objeto de estudio del proyecto y lo que permitió cambiar de repositorio en memoria a SQL sin tocar el dominio. |
+| **Caché de catálogos en memoria** | Rendimiento (ver arriba). | Escalabilidad: **cada instancia tendría su copia**. | Aceptado: los catálogos se siembran al arrancar y nadie los edita en caliente. |
+| **Cadena de IA con respaldo offline** | Disponibilidad: el usuario **nunca** ve un error de IA. | Latencia en el peor caso (hay que esperar que fallen tres proveedores) y **calidad**: el offline responde por reglas, no razona. | Aceptado. Un coach que a veces no contesta rompe el producto; uno que contesta más simple, no. |
+| **Rutina generada al vuelo, no persistida** | Consistencia: no puede quedar desincronizada del perfil. | Flexibilidad: no se puede editar libremente. Obligó a modelar las sustituciones como un mapa `original → elegido` (D-36). | Aceptado, con el costo pagado en la Fase 12. |
+| **Gamificación derivada de los hechos** | Consistencia: **no existe estado de juego** que pueda desincronizarse. | Cómputo: el nivel, los logros y las misiones se recalculan en cada carga. | Aceptado: es cálculo puro sobre datos ya en memoria. |
+| **Rate limiter en memoria, sin Redis** | Simplicidad y costo: cero infraestructura extra. | Correctitud del límite con más de una instancia: **se multiplica por la cantidad de nodos**. | Aceptado para una sola instancia, y **escrito en el código** para que no sorprenda (D-24). |
+| **SQL Server en vez de PostgreSQL** | Cero costo de migración: las migraciones y el `HasFilter` ya son de SQL Server. | Portabilidad y **opciones de hosting**: obliga a Express (10 GB) y a un proveedor que hable SQL Server. | **Es el trade-off que más cuesta hoy** (D-35). Migrar exige *regenerar* las migraciones con Npgsql, no editarlas, porque además PostgreSQL distingue mayúsculas y SQL Server no. |
+| **GIFs desde un CDN externo** | Peso del repositorio y ninguna redistribución de material ajeno. | Dependencia de un tercero y **licencia sin declarar** en el origen. | Acotado: la URL está pineada a una versión y la cadena de medios degrada a placeholder si el CDN falla (D-29). |
+| **Font Awesome como subconjunto propio** | Independencia y peso: **12 KB** contra ~360 KB del CDN. Cero peticiones a terceros. | Agregar un icono nuevo obliga a volver a correr el script de recorte. | Aceptado; el script queda versionado junto a la fuente (D-34). |
+
+### Riesgos
+
+| Riesgo | Atributo afectado | Estado |
+|---|---|---|
+| **Una sola instancia, sin redundancia.** Si el proceso cae, no hay app. | Disponibilidad | Asumido. No hay balanceador ni réplica; es un proyecto académico. |
+| **Hosting atado a SQL Server.** Las plataformas gratuitas suelen ofrecer PostgreSQL, no SQL Server. | Portabilidad | **Materializado** — es exactamente el problema del despliegue final. Registrado como D-35. |
+| **Las claves de IA son de capa gratuita.** Si se agota la cuota, todos los usuarios caen al coach offline. | Calidad de la IA | Mitigado por la cadena: degrada, no falla. |
+| **Si una migración falla en producción, la app no levanta.** | Disponibilidad | **Deliberado**: es preferible fallar al arrancar que servir con el esquema equivocado. |
+| **Los adaptadores de red no tienen pruebas** (ADR-08). | Testabilidad | Asumido: probarlos exigiría o red real o dobles del protocolo HTTP. Se compensó con la prueba de fuego manual. |
+| **Licencia de los GIFs sin declarar por el origen.** | Legal | Abierto (D-29). Es el motivo por el que no se incluyen en el repositorio. |
+
+### No-riesgos
+
+Cosas que **parecen** riesgos y no lo son, porque hay evidencia de que no lo son:
+
+- **Filtración de datos entre usuarios.** Verificado con dos cuentas: todo `id` ajeno responde 404 en GET, PUT y DELETE.
+- **Quedarse sin respuesta de Koda.** El último eslabón de la cadena corre dentro del proceso y no usa red.
+- **Perder el CDN de los GIFs.** La cadena de medios degrada a placeholder sin romper la pantalla.
+- **Que el dominio se contamine con el framework.** Es verificable por compilación, no por disciplina: `Domain` no referencia a nadie.
+- **Perder la sesión al redesplegar.** Probado matando y relanzando el proceso con la sesión viva.
+
+> **Cómo se llegó a esto.** Ninguna de estas filas es una opinión: la de rendimiento sale del log de EF, la de sesiones
+> de matar el proceso a mano, la de aislamiento de correr dos usuarios en paralelo, y la de portabilidad de arrancar
+> contra una base **vacía** y ver aplicarse las 14 migraciones. El detalle está en los [ADRs](#documentación).
 
 ---
 
