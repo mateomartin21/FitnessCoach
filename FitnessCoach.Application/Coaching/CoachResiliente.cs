@@ -27,7 +27,7 @@ namespace FitnessCoach.Application.Coaching
         public async Task<RespuestaCoach> ConsultarAsync(
             string mensaje, string contextoPerfil, CancellationToken cancellationToken = default)
         {
-            var prompt = PersonalidadLoboCoach.ConstruirPrompt(mensaje, contextoPerfil);
+            var prompt = PersonalidadKoda.ConstruirPrompt(mensaje, contextoPerfil);
             var consulta = new ConsultaIA(prompt, mensaje, contextoPerfil);
 
             foreach (var proveedor in _proveedores)
@@ -53,7 +53,7 @@ namespace FitnessCoach.Application.Coaching
 
             // Ni el respaldo pudo: el Lobo responde de todos modos, en su voz.
             _log.LogError("Ningún proveedor de IA pudo responder la consulta del coach.");
-            return new RespuestaCoach(PersonalidadLoboCoach.RespuestaSinSenal, "Degradado", EsDegradada: true);
+            return new RespuestaCoach(PersonalidadKoda.RespuestaSinSenal, "Degradado", EsDegradada: true);
         }
     }
 }

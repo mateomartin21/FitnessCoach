@@ -62,7 +62,7 @@ namespace FitnessCoach.Controllers
                 return Ok(new { respuesta = "Configura tu perfil y tu objetivo primero, campeón, y te hago el análisis.", degradada = true });
 
             var contexto = _contexto.Construir(usuario);
-            var pedido = PersonalidadLoboCoach.PedidoDeAnalisis(request?.Aspecto ?? "progreso");
+            var pedido = PersonalidadKoda.PedidoDeAnalisis(request?.Aspecto ?? "progreso");
 
             var respuesta = await _coach.ConsultarAsync(pedido, contexto);
             return Ok(new { respuesta = respuesta.Texto, degradada = respuesta.EsDegradada });

@@ -157,7 +157,7 @@ recalcular nada (ADR-21).
 ```mermaid
 flowchart LR
     P["Pregunta<br/>(chat o Analizar)"] --> A["ArmadorContextoCoach<br/>perfil + plan + rutina + diario<br/>+ récords + semana"]
-    A --> V["PersonalidadLoboCoach<br/>voz de Koda,<br/>reglas de no inventar"]
+    A --> V["PersonalidadKoda<br/>voz de Koda,<br/>reglas de no inventar"]
     V --> G1["1. Gemini flash"]
 
     G1 -->|falla| G2["2. Groq llama-3.3-70b<br/><i>(si hay clave)</i>"]
@@ -239,5 +239,5 @@ Lo que un diagrama de treinta cajas no logra comunicar, una tabla sí.
 
 ---
 
-> **Nota sobre `PersonalidadLoboCoach`:** conserva el nombre viejo del coach, que desde la Fase 9 se llama **Koda**.
-> Está registrado como deuda **D-32** y es puramente interno: el usuario nunca ve ese nombre.
+> **Nota:** `PersonalidadKoda` se llamaba `PersonalidadLoboCoach` hasta que se pagó la deuda **D-32**.
+> El coach pasó a llamarse Koda en la Fase 9 y el nombre de la clase se había quedado atrás.
