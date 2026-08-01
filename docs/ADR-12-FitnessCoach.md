@@ -14,7 +14,7 @@
 
 Tras la Fase 3 el proyecto guardaba pesos y calculaba calorías, pero no registraba **actividad**. La Fase 4 arrancó con tres deudas y un descubrimiento:
 
-- **D-12 — `RegistroProgreso` sin identidad propia.** El `Id` existía solo como *shadow property* de EF: la base sabía distinguir registros, el dominio no. Sin identidad no hay forma de decir "editá *este* registro".
+- **D-12 — `RegistroProgreso` sin identidad propia.** El `Id` existía solo como *shadow property* de EF: la base sabía distinguir registros, el dominio no. Sin identidad no hay forma de decir "edita *este* registro".
 - **D-10 — Fechas inconsistentes.** `ProgresoController` usaba `DateTime.Now` y `ProgresoApiController` usaba `DateTime.UtcNow`. Dos caminos escribiendo la misma colección con criterios horarios distintos: el historial se ordenaba mal al mezclarlos.
 - **D-23 — La vista de Progreso no existía.** Detectada al empezar esta fase: `ProgresoController.Index` hacía `return View(historial)` contra un archivo ausente, así que `/Progreso` lanzaba una excepción. Pasó inadvertido durante todo el proyecto porque el menú no enlazaba esa pantalla — nadie llegaba nunca.
 

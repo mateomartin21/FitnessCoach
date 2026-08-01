@@ -117,7 +117,7 @@ namespace FitnessCoach.Web.ApiControllers
     /// </summary>
     public class NuevoEntrenamientoRequest
     {
-        [Required(ErrorMessage = "Elegí un día de tu rutina.")]
+        [Required(ErrorMessage = "Elige un día de tu rutina.")]
         [StringLength(120, ErrorMessage = "El nombre no puede superar los {1} caracteres.")]
         public string NombreRutina { get; set; } = string.Empty;
 

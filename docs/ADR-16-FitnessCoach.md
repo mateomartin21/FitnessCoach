@@ -59,7 +59,7 @@ Con esto la meta de la fase se cumple sin pagar nada: con internet cortado, los 
 
 `ArmadorContextoCoach` (Application) junta todo lo que el sistema sabe del usuario —perfil, preferencias, peso reciente, récords, plan de comidas, diario de hoy y rutina— más la **lista real de alimentos del catálogo**. Cada bloque se arma protegido: si uno falla (perfil sin datos válidos para el plan), se omite ese bloque y el resto igual se arma.
 
-Esa lista de alimentos reales, sumada a la regla del prompt ("solo podés recomendar lo que esté acá, nunca inventes"), es lo que **ancla** a la IA a la base de datos: no puede sugerir un alimento que la app no tiene.
+Esa lista de alimentos reales, sumada a la regla del prompt ("solo puedes recomendar lo que esté acá, nunca inventes"), es lo que **ancla** a la IA a la base de datos: no puede sugerir un alimento que la app no tiene.
 
 ### 6. La IA como capa, no un chat
 
