@@ -14,7 +14,7 @@ namespace FitnessCoach.Domain.Models
         /// <summary>Siempre en UTC. La conversión a hora local se hace al mostrar.</summary>
         public DateTime Fecha { get; set; }
 
-        [Required(ErrorMessage = "Indicá qué entrenaste.")]
+        [Required(ErrorMessage = "Indica qué entrenaste.")]
         [StringLength(RangosPerfil.NombreRutinaLargoMaximo,
             ErrorMessage = "El nombre no puede superar los {1} caracteres.")]
         public string NombreRutina { get; set; } = string.Empty;

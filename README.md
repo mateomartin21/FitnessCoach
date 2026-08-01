@@ -12,13 +12,13 @@ Proyecto académico de Arquitectura de Software — Tecnológico de Software
 ![C#](https://img.shields.io/badge/C%23-13-239120?style=for-the-badge&logoColor=white)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-MVC%20%2B%20API-5C2D91?style=for-the-badge&logo=dotnet&logoColor=white)
 ![Entity Framework](https://img.shields.io/badge/EF%20Core-10-512BD4?style=for-the-badge&logo=nuget&logoColor=white)
-![SQL Server](https://img.shields.io/badge/SQL%20Server-Express-CC2927?style=for-the-badge&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
 ![xUnit](https://img.shields.io/badge/xUnit-363%20pruebas-5E5E5E?style=for-the-badge&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
 ![Fases](https://img.shields.io/badge/roadmap-12%2F12%20fases%20cerradas-27d17c?style=flat-square)
-![ADRs](https://img.shields.io/badge/ADRs-21-5b8cff?style=flat-square)
+![ADRs](https://img.shields.io/badge/ADRs-22-5b8cff?style=flat-square)
 ![Deuda](https://img.shields.io/badge/deuda%20cr%C3%ADtica%20y%20alta-0%20abierta-27d17c?style=flat-square)
 ![Arquitectura](https://img.shields.io/badge/arquitectura-hexagonal-9b6dff?style=flat-square)
 
@@ -33,15 +33,16 @@ Proyecto académico de Arquitectura de Software — Tecnológico de Software
 3. [Funcionalidades](#funcionalidades)
 4. [Arquitectura](#arquitectura)
 5. [Diagramas C4](#diagramas-c4)
-6. [Patrones de diseño](#patrones-de-diseño)
-7. [Tecnologías](#tecnologías)
-8. [Cómo correrlo](#cómo-correrlo)
-9. [Pruebas y calidad](#pruebas-y-calidad)
-10. [Documentación](#documentación)
-11. [Despliegue](#despliegue)
-12. [Ramas del repositorio](#ramas-del-repositorio)
-13. [Créditos y licencias](#créditos-y-licencias)
-14. [Cláusula de uso de IA](#cláusula-de-uso-de-ia)
+6. [Evaluación ATAM](#evaluación-atam)
+7. [Patrones de diseño](#patrones-de-diseño)
+8. [Tecnologías](#tecnologías)
+9. [Cómo correrlo](#cómo-correrlo)
+10. [Pruebas y calidad](#pruebas-y-calidad)
+11. [Documentación](#documentación)
+12. [Despliegue](#despliegue)
+13. [Ramas del repositorio](#ramas-del-repositorio)
+14. [Créditos y licencias](#créditos-y-licencias)
+15. [Cláusula de uso de IA](#cláusula-de-uso-de-ia)
 
 ---
 
@@ -108,13 +109,14 @@ Lo que lo distingue de un CRUD de gimnasio:
 ```
 FitnessCoach.Domain          # Modelos, puertos, cálculo puro y patrones GOF. No referencia a nadie.
 FitnessCoach.Application     # Servicios de aplicación y casos de uso. Solo referencia Domain.
-FitnessCoach.Infrastructure  # Adaptadores: EF Core + SQL Server, Identity, proveedores de IA.
+FitnessCoach.Infrastructure  # Adaptadores: EF Core + PostgreSQL, Identity, proveedores de IA.
 FitnessCoach (raíz)          # Controladores MVC y API, vistas Razor. Program.cs es el composition root.
 FitnessCoach.Tests           # xUnit, sin Moq (dobles a mano). No referencia Infrastructure (ADR-08).
 ```
 
-Que `Domain` no referencie a nadie es lo que permite, por ejemplo, cambiar SQL Server por PostgreSQL o sumar un
-proveedor de IA nuevo **sin tocar una sola regla de negocio**.
+Que `Domain` no referencie a nadie es lo que permite sumar un proveedor de IA nuevo **sin tocar una sola regla de
+negocio**. Y no es teoría: el proyecto **cambió de SQL Server a PostgreSQL** para poder desplegarse, y el cambio
+tocó `Program.cs`, dos repositorios y las migraciones — **ni una línea de `Domain` ni de `Application`** (ADR-22).
 
 ---
 
@@ -183,6 +185,82 @@ C4Context
 
 ---
 
+## Evaluación ATAM
+
+Evaluación de la arquitectura con **ATAM** (*Architecture Tradeoff Analysis Method*). No es un repaso de buenas
+intenciones: cada punto sale de una decisión que **ya se tomó y ya se pagó** en este repositorio, y las cifras están
+medidas, no estimadas.
+
+Las tres categorías de ATAM no son sinónimos, y conviene no mezclarlas:
+
+- **Punto de sensibilidad** — una decisión de la que depende **fuertemente un solo** atributo de calidad.
+- **Punto de trade-off** — una decisión que toca **más de un** atributo: mejora uno y empeora otro.
+- **Riesgo** — una decisión que puede impedir alcanzar un atributo bajo condiciones que son plausibles.
+
+### Atributos de calidad priorizados
+
+Ordenados como los ordena este proyecto; los de abajo se sacrificaron a conciencia por los de arriba.
+
+| # | Atributo | Escenario concreto y medible |
+|---|---|---|
+| 1 | **Seguridad y aislamiento** | Un usuario autenticado que pide el `id` de un registro ajeno recibe **404**, nunca el dato. |
+| 2 | **Disponibilidad de Koda** | Sin red y con las dos claves de IA caídas, el coach **igual responde**, con reglas locales. |
+| 3 | **Mantenibilidad** | Agregar un alimento al catálogo es **una línea de JSON**, sin recompilar ni tocar el dominio. |
+| 4 | **Rendimiento percibido** | Las pantallas pesadas resuelven en **≤ 6 consultas** a la base. |
+| 5 | **Testabilidad** | El núcleo se prueba **sin base de datos y sin red**: 363 pruebas en ~370 ms. |
+| 6 | **Portabilidad** | Corre en cualquier host con Docker; la imagen no lleva secretos ni cadena de conexión. |
+
+### Puntos de sensibilidad
+
+| Decisión | Atributo del que pende | Qué pasa si se cambia |
+|---|---|---|
+| `AsSplitQuery` al leer el perfil | Rendimiento | El perfil tiene **cuatro colecciones owned**; sin esto EF hace un producto cartesiano. Medido: `/Diario` pasó de **30 a 6** consultas, `/Progreso` de **20 a 6**, `/Rutinas` de **15 a 5**. |
+| Caché de catálogos por Decorator | Rendimiento | Los 1323 ejercicios y 67 alimentos se leen de memoria. Sin la caché, armar una rutina consultaba SQL **una vez por bloque**. |
+| Claves de Data Protection en la base | Continuidad de sesión | En disco, **cada despliegue desloguea a todos**. Es la decisión de la que depende que un redeploy no eche a los usuarios. |
+| `Database.Migrate()` al arrancar | Disponibilidad en el despliegue | Es lo único que crea el esquema en una base nueva. Sin esto, el primer arranque en un servidor limpio no levanta. |
+| Semilla del orden por `Id` del perfil | Variedad percibida | `OrdenEstable(slug)` hace la rutina determinista y reproducible; también hace que cada usuario vea **siempre los mismos** ejercicios. De ahí salió toda la Fase 12. |
+
+### Puntos de trade-off
+
+| Decisión | Qué mejora | Qué empeora | Veredicto |
+|---|---|---|---|
+| **Hexagonal en 4 proyectos** | Testabilidad y mantenibilidad. La regla de dependencias es **verificable**: `FitnessCoach.Tests` no referencia `Infrastructure`. | Ceremonia. Un caso de uso simple toca puerto, adaptador, servicio y controlador. | Aceptado. Es el objeto de estudio del proyecto y lo que permitió cambiar de repositorio en memoria a SQL sin tocar el dominio. |
+| **Caché de catálogos en memoria** | Rendimiento (ver arriba). | Escalabilidad: **cada instancia tendría su copia**. | Aceptado: los catálogos se siembran al arrancar y nadie los edita en caliente. |
+| **Cadena de IA con respaldo offline** | Disponibilidad: el usuario **nunca** ve un error de IA. | Latencia en el peor caso (hay que esperar que fallen tres proveedores) y **calidad**: el offline responde por reglas, no razona. | Aceptado. Un coach que a veces no contesta rompe el producto; uno que contesta más simple, no. |
+| **Rutina generada al vuelo, no persistida** | Consistencia: no puede quedar desincronizada del perfil. | Flexibilidad: no se puede editar libremente. Obligó a modelar las sustituciones como un mapa `original → elegido` (D-36). | Aceptado, con el costo pagado en la Fase 12. |
+| **Gamificación derivada de los hechos** | Consistencia: **no existe estado de juego** que pueda desincronizarse. | Cómputo: el nivel, los logros y las misiones se recalculan en cada carga. | Aceptado: es cálculo puro sobre datos ya en memoria. |
+| **Rate limiter en memoria, sin Redis** | Simplicidad y costo: cero infraestructura extra. | Correctitud del límite con más de una instancia: **se multiplica por la cantidad de nodos**. | Aceptado para una sola instancia, y **escrito en el código** para que no sorprenda (D-24). |
+| **SQL Server, y después PostgreSQL** | SQL Server no costaba nada mientras el proyecto corría en Windows. | Portabilidad y **opciones de hosting**: no existe SQL Server gratuito sin tarjeta de crédito. | **El único trade-off que hubo que dar vuelta.** Se sostuvo hasta que el despliegue lo hizo insostenible y se pagó la D-35: migraciones *regeneradas* con Npgsql, comparaciones de texto en minúsculas (Postgres distingue mayúsculas y SQL Server no) y modo legacy de fechas para conservar la semántica UTC. Costó `Program.cs`, dos repositorios y el esquema — **cero cambios en `Domain`** (ADR-22). |
+| **GIFs desde un CDN externo** | Peso del repositorio y ninguna redistribución de material ajeno. | Dependencia de un tercero y **licencia sin declarar** en el origen. | Acotado: la URL está pineada a una versión y la cadena de medios degrada a placeholder si el CDN falla (D-29). |
+| **Font Awesome como subconjunto propio** | Independencia y peso: **12 KB** contra ~360 KB del CDN. Cero peticiones a terceros. | Agregar un icono nuevo obliga a volver a correr el script de recorte. | Aceptado; el script queda versionado junto a la fuente (D-34). |
+
+### Riesgos
+
+| Riesgo | Atributo afectado | Estado |
+|---|---|---|
+| **Una sola instancia, sin redundancia.** Si el proceso cae, no hay app. | Disponibilidad | Asumido. No hay balanceador ni réplica; es un proyecto académico. |
+| **Hosting atado a SQL Server.** Las plataformas gratuitas ofrecen PostgreSQL, no SQL Server. | Portabilidad | **Se materializó y se pagó.** Era D-35, registrada como riesgo baja prioridad desde la Fase 10; al llegar el despliegue bloqueó todo. La arquitectura hexagonal es lo que hizo que costara horas y no días. |
+| **Las claves de IA son de capa gratuita.** Si se agota la cuota, todos los usuarios caen al coach offline. | Calidad de la IA | Mitigado por la cadena: degrada, no falla. |
+| **Si una migración falla en producción, la app no levanta.** | Disponibilidad | **Deliberado**: es preferible fallar al arrancar que servir con el esquema equivocado. |
+| **Los adaptadores de red no tienen pruebas** (ADR-08). | Testabilidad | Asumido: probarlos exigiría o red real o dobles del protocolo HTTP. Se compensó con la prueba de fuego manual. |
+| **Licencia de los GIFs sin declarar por el origen.** | Legal | Abierto (D-29). Es el motivo por el que no se incluyen en el repositorio. |
+
+### No-riesgos
+
+Cosas que **parecen** riesgos y no lo son, porque hay evidencia de que no lo son:
+
+- **Filtración de datos entre usuarios.** Verificado con dos cuentas: todo `id` ajeno responde 404 en GET, PUT y DELETE.
+- **Quedarse sin respuesta de Koda.** El último eslabón de la cadena corre dentro del proceso y no usa red.
+- **Perder el CDN de los GIFs.** La cadena de medios degrada a placeholder sin romper la pantalla.
+- **Que el dominio se contamine con el framework.** Es verificable por compilación, no por disciplina: `Domain` no referencia a nadie.
+- **Perder la sesión al redesplegar.** Probado matando y relanzando el proceso con la sesión viva.
+
+> **Cómo se llegó a esto.** Ninguna de estas filas es una opinión: la de rendimiento sale del log de EF, la de sesiones
+> de matar el proceso a mano, la de aislamiento de correr dos usuarios en paralelo, y la de portabilidad de arrancar
+> contra una base **vacía** y ver aplicarse las 14 migraciones. El detalle está en los [ADRs](#documentación).
+
+---
+
 ## Patrones de diseño
 
 | Patrón | Dónde | Para qué |
@@ -201,7 +279,7 @@ C4Context
 | <img src="docs/iconos/dotnet.svg" width="18" /> | **.NET 10 / ASP.NET Core** | MVC y Web API en un mismo proceso |
 | <img src="docs/iconos/csharp.svg" width="18" /> | **C#** | Todo el backend |
 | <img src="docs/iconos/nuget.svg" width="18" /> | **EF Core 10** | Persistencia, migraciones y tipos owned |
-| <img src="docs/iconos/microsoftsqlserver.svg" width="18" /> | **SQL Server** | LocalDB en desarrollo, Express al desplegar |
+| <img src="docs/iconos/postgresql.svg" width="18" /> | **PostgreSQL** | Mismo motor en desarrollo y en produccion (ADR-22) |
 | <img src="docs/iconos/bootstrap.svg" width="18" /> | **Bootstrap 5** | Grilla y componentes base, sobre un sistema de diseño propio |
 | <img src="docs/iconos/javascript.svg" width="18" /> | **JavaScript vanilla** | La capa de vida de Koda y las medallas en canvas, sin librerías |
 | <img src="docs/iconos/fontawesome.svg" width="18" /> | **Font Awesome 6** | Iconografía, autohospedada como subconjunto de 12 KB |
@@ -218,7 +296,7 @@ C4Context
 dotnet restore
 dotnet build
 
-# 2. Crear la base (LocalDB por defecto, ver appsettings.json)
+# 2. Crear la base (PostgreSQL, ver appsettings.json)
 dotnet ef database update --project FitnessCoach.Infrastructure --startup-project FitnessCoach.csproj
 
 # 3. Levantar
@@ -269,20 +347,24 @@ El set de contexto vive en [docs/contexto/](docs/contexto/) y se mantiene al dí
 | [06-ROADMAP.md](docs/contexto/06-ROADMAP.md) | Las diez fases, cerradas |
 
 Los **21 ADR** están en [docs/](docs/): del **ADR-01 al ADR-06** documentan las decisiones iniciales (patrón, vistas
-arquitectónicas, hexagonal, API REST, patrones GOF) y del **ADR-07 al ADR-21** cierra uno por cada fase del roadmap.
+arquitectónicas, hexagonal, API REST, patrones GOF) y del **ADR-07 al ADR-22** cierra uno por cada fase del roadmap y por el despliegue final.
 
 ---
 
 ## Despliegue
 
-La app está lista para desplegarse en cualquier host, sin proveedor elegido todavía. Arranca contra una base **vacía**:
-aplica las migraciones pendientes y siembra los catálogos sola.
+Desplegada en **Render** (contenedor Docker) con **PostgreSQL** en **Neon**, ambos en capa gratuita. Arranca contra
+una base **vacía**: aplica las migraciones y siembra los 1323 ejercicios y los 67 alimentos sola.
+
+El repositorio trae un [render.yaml](render.yaml): al conectarlo, Render crea el servicio ya configurado y solo pide la
+cadena de conexión.
 
 ### Variables de entorno
 
 | Variable | Obligatoria | Para qué |
 |---|:---:|---|
-| `ConnectionStrings__DefaultConnection` | **sí** | El valor de `appsettings.json` apunta a LocalDB, que solo existe en Windows de escritorio. Si falta —o sigue siendo LocalDB fuera de desarrollo— la app **no arranca** y lo dice. |
+| `ConnectionStrings__DefaultConnection` | **sí** | Cadena de PostgreSQL. El valor de `appsettings.json` apunta a la máquina local; si falta —o sigue apuntando ahí fuera de desarrollo— la app **no arranca** y lo dice. |
+| `PORT` | según | La ponen Render y compañía. La app escucha ahí si existe; si no, en el 8080. Sin esto el contenedor arranca y el proveedor igual lo da por caído. |
 | `ASPNETCORE_ENVIRONMENT` | sí | `Production` |
 | `Gemini__ApiKey` | no | Sin ella, Koda responde con el coach offline. |
 | `Groq__ApiKey` | no | Segundo proveedor de la cadena. |
@@ -294,7 +376,7 @@ aplica las migraciones pendientes y siembra los catálogos sola.
 
 ```bash
 docker build -t fitnesscoach .
-docker run -p 8080:8080   -e ASPNETCORE_ENVIRONMENT=Production   -e ConnectionStrings__DefaultConnection="Server=...;Database=FitnessCoachDb;User Id=...;Password=...;TrustServerCertificate=True"   -e Despliegue__RedirigirAHttps=false   fitnesscoach
+docker run -p 8080:8080   -e ASPNETCORE_ENVIRONMENT=Production   -e ConnectionStrings__DefaultConnection="Host=...;Database=...;Username=...;Password=...;SSL Mode=Require"   -e Despliegue__RedirigirAHttps=false   fitnesscoach
 ```
 
 La imagen corre como usuario **no root** y escucha en el **8080** (el 80 exige privilegios que ese usuario no tiene).
@@ -320,9 +402,13 @@ para el balanceador o el proveedor.
 
 ### La base de datos
 
-Funciona con cualquier **SQL Server**: Express es gratis (límite de 10 GB; los catálogos son ~1400 filas) y no exige
-cambiar una línea de código. PostgreSQL queda como alternativa registrada (**D-35**), con una advertencia: **PostgreSQL
-distingue mayúsculas y SQL Server no**, así que las migraciones hay que **regenerarlas** con Npgsql, no editarlas.
+**PostgreSQL**, desde el ADR-22. El proyecto usó SQL Server hasta el despliegue final, y cambió por una razón
+concreta: **no existe SQL Server gratuito sin tarjeta de crédito**, y PostgreSQL sobra (Neon, Supabase, Render).
+
+Migrar no fue editar las migraciones sino **regenerarlas** con Npgsql, y hubo que atender dos diferencias reales entre
+motores: PostgreSQL **distingue mayúsculas** y SQL Server no —por eso las comparaciones de texto de los repositorios
+bajan a minúsculas—, y Npgsql exige `DateTime` en UTC, resuelto conservando la semántica anterior. Todo eso ocurrió
+en `Infrastructure` y en `Program.cs`: **`Domain` y `Application` no cambiaron**.
 
 ---
 

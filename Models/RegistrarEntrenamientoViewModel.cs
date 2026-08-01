@@ -6,7 +6,7 @@ namespace FitnessCoach.Models
     /// <summary>Marcar un entrenamiento como hecho. La fecha la pone el servidor.</summary>
     public class RegistrarEntrenamientoViewModel
     {
-        [Required(ErrorMessage = "Indicá qué entrenaste.")]
+        [Required(ErrorMessage = "Indica qué entrenaste.")]
         [StringLength(RangosPerfil.NombreRutinaLargoMaximo,
             ErrorMessage = "El nombre no puede superar los {1} caracteres.")]
         [Display(Name = "¿Qué entrenaste?")]

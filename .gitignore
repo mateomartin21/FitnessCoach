@@ -362,3 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 appsettings.json
+
+# Guion personal de la presentacion: no va al repositorio.
+docs/presentacion-final.md

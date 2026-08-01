@@ -60,7 +60,7 @@ C4Container
     System_Boundary(limite, "FitnessCoach") {
         Container(app, "Aplicación web", "ASP.NET Core 10, MVC + Web API", "Vistas y API en un solo proceso. Program.cs es el composition root")
         Container(cache, "Caché en memoria", "IMemoryCache", "Foto de los catálogos de ejercicios y alimentos")
-        ContainerDb(sql, "FitnessCoachDb", "SQL Server", "Perfiles, catálogos sembrados y tablas de Identity")
+        ContainerDb(sql, "FitnessCoachDb", "PostgreSQL", "Perfiles, catálogos sembrados, claves de sesión y tablas de Identity")
     }
 
     System_Ext(ia, "Proveedores de IA", "Gemini, Groq/OpenRouter")

@@ -14,6 +14,13 @@ using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Render, Railway y compania asignan el puerto por la variable PORT y esperan que el
+// proceso escuche ahi; ASP.NET Core no la mira por su cuenta. Sin esto el contenedor
+// arranca bien y el proveedor igual lo da por caido, porque toca otro puerto.
+var puertoDelHost = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrWhiteSpace(puertoDelHost))
+    builder.WebHost.UseUrls($"http://*:{puertoDelHost}");
+
 // MVC (vistas web)
 builder.Services.AddControllersWithViews();
 
@@ -173,23 +180,31 @@ builder.Services.AddScoped<FitnessCoach.Application.Coaching.ICoachIA>(sp =>
     return new FitnessCoach.Application.Coaching.CoachResiliente(proveedores, log);
 });
 
-// El valor de appsettings.json apunta a LocalDB, que solo existe en Windows de escritorio.
-// Fuera de desarrollo hay que pasar la cadena real por entorno
-// (ConnectionStrings__DefaultConnection) o por el proveedor de configuracion del host.
-// Se falla aca con un mensaje claro en vez de arrastrar el error hasta la primera consulta.
+// La cadena real se pasa por entorno (ConnectionStrings__DefaultConnection) o por el
+// proveedor de configuracion del host. Se falla aca con un mensaje claro en vez de
+// arrastrar el error hasta la primera consulta.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 if (string.IsNullOrWhiteSpace(connectionString))
     throw new InvalidOperationException(
         "Falta la cadena de conexion. Define ConnectionStrings__DefaultConnection en el entorno.");
 
-if (!builder.Environment.IsDevelopment() && connectionString.Contains("(localdb)", StringComparison.OrdinalIgnoreCase))
+// Fuera de desarrollo, apuntar a la maquina local casi siempre significa que la variable
+// de entorno no se definio y quedo el valor de appsettings.json.
+if (!builder.Environment.IsDevelopment() &&
+    (connectionString.Contains("localhost", StringComparison.OrdinalIgnoreCase) ||
+     connectionString.Contains("127.0.0.1", StringComparison.Ordinal)))
     throw new InvalidOperationException(
-        $"La cadena de conexion apunta a LocalDB y el entorno es '{builder.Environment.EnvironmentName}'. " +
-        "LocalDB no existe en un servidor: define ConnectionStrings__DefaultConnection.");
+        $"La cadena de conexion apunta a la maquina local y el entorno es '{builder.Environment.EnvironmentName}'. " +
+        "Define ConnectionStrings__DefaultConnection con la base real.");
+
+// Npgsql mapea DateTime a 'timestamp with time zone' y rechaza cualquier Kind que no sea
+// Utc. La app guarda instantes UTC desnudos, igual que hacia SQL Server con datetime2, y
+// los marca como UTC al leer. Este modo conserva esa semantica tal cual (ADR-22).
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseNpgsql(connectionString));
 
 // Las claves que firman las cookies de sesion van a la base, no al disco del proceso:
 // en un contenedor el disco es efimero y cada despliegue desloguearia a todo el mundo.
