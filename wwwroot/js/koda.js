@@ -4,6 +4,7 @@
  *   2. Micro-interacciones -> rebote al hacer click (Web Animations API, se
  *      compone con la animación idle sin pelearse por el transform).
  *   3. Aura de partículas -> canvas de píxeles neón azules detrás del sprite.
+ *   4. Formato de sus respuestas -> el markdown mínimo que Koda tiene permitido.
  *
  * Todo respeta prefers-reduced-motion: sin movimiento ni partículas.
  */
@@ -23,6 +24,76 @@
 
     // Precarga para que el cambio de expresión no parpadee.
     for (var k in FACES) { var pre = new Image(); pre.src = BASE + FACES[k]; }
+
+    // ------------------------------------------------- Formato de sus respuestas
+    // Koda tiene permitido un markdown mínimo (PersonalidadKoda): párrafos,
+    // **negritas** y viñetas con "- ". Se traduce a mano en vez de traer una
+    // librería de markdown: son cuatro reglas, y sobre todo el texto viene de un
+    // modelo de lenguaje, así que se escapa ANTES de tocar nada. Todo lo que no
+    // esté en la lista blanca termina siendo texto plano, nunca HTML.
+
+    function escapar(texto) {
+        return String(texto == null ? '' : texto)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    // Sobre texto ya escapado: los asteriscos sobreviven al escape, las etiquetas
+    // que se insertan aquí son las únicas del resultado.
+    function realces(texto) {
+        return texto
+            .replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
+    }
+
+    // El modelo no siempre deja el renglón en blanco entre párrafos ni respeta la
+    // prohibición de títulos, así que se recorre línea por línea y cada caso cae
+    // en algo con sentido. Un '### Titulo' rebelde se lee como negrita, no como
+    // tres gatos sueltos en la pantalla.
+    function formatear(texto) {
+        var lineas = escapar(texto).split(/\r?\n/);
+        var html = '', parrafo = [], lista = [];
+
+        function cerrarParrafo() {
+            if (!parrafo.length) return;
+            html += '<p>' + realces(parrafo.join(' ')) + '</p>';
+            parrafo = [];
+        }
+        function cerrarLista() {
+            if (!lista.length) return;
+            html += '<ul class="fc-lista-koda">';
+            for (var j = 0; j < lista.length; j++) html += '<li>' + realces(lista[j]) + '</li>';
+            html += '</ul>';
+            lista = [];
+        }
+
+        for (var i = 0; i < lineas.length; i++) {
+            var linea = lineas[i].trim();
+            if (!linea) { cerrarParrafo(); cerrarLista(); continue; }
+
+            var vineta = linea.match(/^(?:[-*•]|\d+[.)])\s+(.+)$/);
+            if (vineta) { cerrarParrafo(); lista.push(vineta[1]); continue; }
+
+            // Queda solo en su renglon: pegado al texto de abajo dejaba de leerse
+            // como encabezado y parecia una negrita suelta al principio del parrafo.
+            var titulo = linea.match(/^#{1,6}\s+(.+)$/);
+            if (titulo) {
+                cerrarParrafo(); cerrarLista();
+                parrafo.push('**' + titulo[1] + '**');
+                cerrarParrafo();
+                continue;
+            }
+
+            cerrarLista();
+            parrafo.push(linea);
+        }
+        cerrarParrafo();
+        cerrarLista();
+
+        return html;
+    }
 
     // ---------------------------------------------------------------- Reactivo
     var chatTimer = null;
@@ -46,6 +117,15 @@
             this.setChat('sorprendido');
             var self = this;
             chatTimer = setTimeout(function () { self.setChat('neutral'); }, 3500);
+        },
+        escapar: escapar,
+        formatear: formatear,
+        // Vuelca una respuesta ya formateada dentro de un elemento. Una respuesta
+        // vacía dejaría un globo en blanco, que se lee como que la app falló.
+        pintar: function (el, texto) {
+            if (!el) return;
+            var html = formatear(texto);
+            el.innerHTML = html || '<p>No me salió nada esta vez, campeón. Vuelve a preguntarme.</p>';
         },
         // Rebote de una sola vez, sumado (composite:'add') sobre el idle.
         pop: function (el) {

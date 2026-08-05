@@ -26,7 +26,7 @@
 
 <div class="text-center mb-4">
     <h2 class="fw-bold" style="color:var(--fc-primary-texto);">
-        <i class="fas fa-trophy me-2" style="color:#ffd700;" aria-hidden="true"></i>Tu camino de lobo
+        <i class="fas fa-trophy me-2" style="color:var(--fc-gold);" aria-hidden="true"></i>Tu camino de lobo
     </h2>
     <p class="text-muted small">Todo se gana entrenando de verdad: cada hecho suma XP.</p>
 </div>
@@ -39,54 +39,53 @@
     <div class="d-flex justify-content-between align-items-end mb-2 flex-wrap gap-2">
         <div>
             <span class="badge px-3 py-2" style="background:var(--fc-primary); font-size:1rem;">Nivel @nivel.Numero</span>
-            <span class="ms-2 fw-bold" style="color:#ffd700; font-size:1.1rem;">@nivel.Titulo</span>
+            <span class="ms-2 fw-bold" style="color:var(--fc-gold); font-size:1.1rem;">@nivel.Titulo</span>
         </div>
         <div class="text-end small text-muted">
-            <strong style="color:#eee;">@nivel.XpTotal XP</strong> en total
+            <strong style="color:var(--fc-text);">@nivel.XpTotal XP</strong> en total
         </div>
     </div>
 
     <div class="progress" role="progressbar" aria-valuenow="@nivel.PorcentajeAvance"
          aria-valuemin="0" aria-valuemax="100"
-         style="height:22px; background:#0f0f1a; border:1px solid #2a2a4a;">
-        <div class="progress-bar" style="width:@nivel.PorcentajeAvance%; background:linear-gradient(90deg,var(--fc-primary),#ffd700); font-weight:700;">
+         style="height:22px;">
+        <div class="progress-bar" style="width:@nivel.PorcentajeAvance%; background:linear-gradient(90deg,var(--fc-primary),var(--fc-gold)); font-weight:700;">
             @nivel.XpEnNivel / @nivel.XpParaSubir
         </div>
     </div>
     <div class="small text-muted mt-1 text-end">
-        Faltan <strong style="color:#eee;">@nivel.XpRestante XP</strong> para el nivel @(nivel.Numero + 1).
+        Faltan <strong style="color:var(--fc-text);">@nivel.XpRestante XP</strong> para el nivel @(nivel.Numero + 1).
     </div>
     </div>
 </div>
 
 @* --- Misiones de la semana --- *@
 <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-1">
-    <h5 class="fw-bold mb-0"><i class="fas fa-bullseye me-2" style="color:#00d4ff;" aria-hidden="true"></i>Misiones de la semana</h5>
+    <h5 class="fw-bold mb-0"><i class="fas fa-bullseye me-2" style="color:var(--fc-proteina);" aria-hidden="true"></i>Misiones de la semana</h5>
     <span class="text-muted small"><i class="fas fa-rotate me-1" aria-hidden="true"></i>Se reinician cada lunes</span>
 </div>
 <div class="row g-3 mb-4">
     @foreach (var m in Model.Misiones)
     {
         <div class="col-md-4">
-            <div class="fc-feature-card h-100 @(m.Cumplida ? "" : "")"
-                 style="@(m.Cumplida ? "border:1px solid #22c55e;" : "")">
+            <div class="fc-feature-card h-100 @(m.Cumplida ? "fc-tarjeta-lograda" : "")">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <img src="~/images/logros/@IconoMision(m.Mision.Id)" alt="@m.Mision.Nombre" width="44" height="44"
                          class="logro-medal @(m.Cumplida ? "is-unlocked" : "is-locked")" style="width:44px;height:44px;" />
                     @if (m.Cumplida)
                     {
-                        <span class="badge" style="background:#22c55e;"><i class="fas fa-check me-1" aria-hidden="true"></i>Cumplida</span>
+                        <span class="badge" style="background:var(--fc-logro);"><i class="fas fa-check me-1" aria-hidden="true"></i>Cumplida</span>
                     }
                     else
                     {
-                        <span class="badge" style="background:#0f0f1a; border:1px solid #2a2a4a; color:#888;">+@m.Mision.Xp XP</span>
+                        <span class="badge fc-badge-xp">+@m.Mision.Xp XP</span>
                     }
                 </div>
-                <h6 class="fw-bold mb-1" style="color:#eee;">@m.Mision.Nombre</h6>
+                <h6 class="fw-bold mb-1" style="color:var(--fc-text);">@m.Mision.Nombre</h6>
                 <p class="small text-muted mb-2">@m.Mision.Descripcion</p>
                 <div class="progress" role="progressbar" aria-valuenow="@m.Porcentaje" aria-valuemin="0" aria-valuemax="100"
-                     style="height:8px; background:#0f0f1a;">
-                    <div class="progress-bar" style="width:@m.Porcentaje%; background:@(m.Cumplida ? "#22c55e" : "#00d4ff");"></div>
+                     style="height:8px;">
+                    <div class="progress-bar" style="width:@m.Porcentaje%; background:@(m.Cumplida ? "var(--fc-logro)" : "var(--fc-proteina)");"></div>
                 </div>
                 <div class="small text-muted mt-1 text-end">@m.ProgresoActual / @m.Mision.Objetivo</div>
             </div>
@@ -96,7 +95,7 @@
 
 @* --- Logros --- *@
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="fw-bold mb-0"><i class="fas fa-medal me-2" style="color:#ffd700;" aria-hidden="true"></i>Logros</h5>
+    <h5 class="fw-bold mb-0"><i class="fas fa-medal me-2" style="color:var(--fc-gold);" aria-hidden="true"></i>Logros</h5>
     <span class="text-muted small">@Model.LogrosDesbloqueados de @Model.LogrosTotales desbloqueados</span>
 </div>
 <div class="row g-3">
@@ -104,27 +103,27 @@
     {
         var l = le.Logro;
         <div class="col-md-6 col-lg-4">
-            <div class="fc-feature-card h-100 d-flex gap-3" style="@(le.Desbloqueado ? "border:1px solid #ffd700;" : "opacity:0.65;")">
+            <div class="fc-feature-card h-100 d-flex gap-3 @(le.Desbloqueado ? "fc-tarjeta-dorada" : "fc-tarjeta-pendiente")">
                 @* Asset pixel del logro (/images/logros/). Desbloqueado brilla; bloqueado en gris. *@
                 <img src="~/images/logros/@IconoLogro(l.Id)" alt="@l.Nombre" width="64" height="64"
                      class="logro-medal flex-shrink-0 @(le.Desbloqueado ? "is-unlocked" : "is-locked")" />
                 <div class="flex-grow-1">
                     <div class="d-flex justify-content-between align-items-start">
-                        <h6 class="fw-bold mb-1" style="color:@(le.Desbloqueado ? "#ffd700" : "#ccc");">@l.Nombre</h6>
-                        <span class="badge ms-2" style="background:#0f0f1a; border:1px solid #2a2a4a; color:#888;">+@l.Xp XP</span>
+                        <h6 class="fw-bold mb-1" style="color:@(le.Desbloqueado ? "var(--fc-gold)" : "#ccc");">@l.Nombre</h6>
+                        <span class="badge fc-badge-xp ms-2">+@l.Xp XP</span>
                     </div>
                     <p class="small text-muted mb-2">@l.Descripcion</p>
 
                     @if (le.Desbloqueado)
                     {
-                        <div class="small fst-italic" style="color:#b8a6e6;">
+                        <div class="small fst-italic" style="color:var(--fc-grasas);">
                             <img src="/images/koda/koda-logo.png" alt="Koda" width="20" height="20" class="me-1" style="object-fit:contain; image-rendering:pixelated;" />@l.LineaLobo
                         </div>
                     }
                     else
                     {
                         <div class="progress" role="progressbar" aria-valuenow="@le.Porcentaje" aria-valuemin="0" aria-valuemax="100"
-                             style="height:6px; background:#0f0f1a;">
+                             style="height:6px;">
                             <div class="progress-bar" style="width:@le.Porcentaje%; background:var(--fc-primary);"></div>
                         </div>
                         <div class="small text-muted mt-1 text-end">@le.ProgresoActual / @l.Objetivo</div>

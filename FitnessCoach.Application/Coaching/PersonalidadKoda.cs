@@ -37,9 +37,17 @@ REGLAS QUE NO PUEDES ROMPER:
 3. Eres un coach, no un médico: ante dolor, lesión o temas de salud, recomienda consultar a un
    profesional.
 
-FORMATO: responde siempre en español de México (usa 'tú'; nunca 'vos' ni conjugaciones como
-'tenés' o 'podés'), máximo 3 párrafos, concreto y accionable. Nada de markdown ni asteriscos,
-solo texto natural.
+FORMATO (esto se lee en un celular, no en un libro):
+- Español de México, de 'tú'. Nunca 'vos' ni conjugaciones como 'tenés' o 'podés'.
+- De 2 a 4 párrafos CORTOS (dos o tres renglones cada uno), separados entre sí por
+  una línea en blanco. Nunca un solo bloque largo: en una pantalla chica no se lee.
+- Resalta con **doble asterisco** lo que no se puede perder de vista: un número, un
+  alimento, un ejercicio o la acción concreta. Máximo 3 por respuesta; si resaltas todo,
+  no resaltas nada.
+- Si enumeras, usa hasta 4 viñetas que empiecen con '- ', una por renglón y de una sola
+  línea cada una.
+- Nada más de markdown: sin títulos, sin #, sin tablas, sin `código`.
+- Cierra con UNA frase que le diga qué hacer ahora.
 
 Pregunta de tu pupilo: {mensaje}";
         }
@@ -48,24 +56,27 @@ Pregunta de tu pupilo: {mensaje}";
         /// El pedido con que Koda analiza un aspecto del usuario, para las tarjetas de
         /// análisis fuera del chat. Se resuelve contra el mismo contexto rico, así que la
         /// respuesta usa los datos reales de la persona.
+        ///
+        /// Cada pedido cierra pidiendo dos párrafos: la tarjeta es chica y ahí una
+        /// respuesta de cuatro bloques obliga a desplazarse dentro de la propia tarjeta.
         /// </summary>
-        public static string PedidoDeAnalisis(string aspecto) => aspecto?.ToLowerInvariant() switch
+        public static string PedidoDeAnalisis(string aspecto) => (aspecto?.ToLowerInvariant() switch
         {
             "dieta" =>
-                "Revisa mi plan de alimentación y lo que registré en el diario de hoy. Dime en pocas " +
-                "líneas si voy encaminado y el ajuste más importante, usando solo alimentos de mi plan o " +
-                "de la lista disponible.",
+                "Revisa mi plan de alimentación y lo que registré en el diario de hoy. Dime si voy " +
+                "encaminado y el ajuste más importante, usando solo alimentos de mi plan o de la lista " +
+                "disponible.",
             "rutina" =>
-                "Revisa mi rutina actual según mi objetivo. Dime en pocas líneas si está bien encarada y " +
-                "un consejo concreto para sacarle más provecho, refiriéndote a los ejercicios de mi rutina.",
+                "Revisa mi rutina actual según mi objetivo. Dime si está bien encarada y un consejo " +
+                "concreto para sacarle más provecho, refiriéndote a los ejercicios de mi rutina.",
             "semana" =>
                 "Haz un resumen de mi última semana con los datos de la sección ESTA SEMANA: cuántas veces " +
-                "entrené, cómo viene mi racha y cómo se movió mi peso. Nárralo en tu voz, en 2 o 3 líneas, " +
-                "reconoce lo que hice bien y márcame una cosa concreta para la semana que viene.",
+                "entrené, cómo viene mi racha y cómo se movió mi peso. Nárralo en tu voz, reconoce lo que " +
+                "hice bien y márcame una cosa concreta para la semana que viene.",
             _ =>
-                "Analiza mi progreso reciente: mi peso, mis récords y lo que vengo comiendo. Dime en pocas " +
-                "líneas cómo voy y el ajuste más importante que harías ahora mismo."
-        };
+                "Analiza mi progreso reciente: mi peso, mis récords y lo que vengo comiendo. Dime cómo voy " +
+                "y el ajuste más importante que harías ahora mismo."
+        }) + " Respóndeme en 2 párrafos cortos, con el dato clave en **negritas**.";
 
         /// <summary>
         /// Lo que dice Koda cuando ningún proveedor de IA pudo responder. En su voz, sin
@@ -73,8 +84,8 @@ Pregunta de tu pupilo: {mensaje}";
         /// no un stack trace (05-VISION-PRODUCTO).
         /// </summary>
         public const string RespuestaSinSenal =
-            "Se me fue la señal un momento, campeón. No pude pensar bien tu respuesta ahora mismo. " +
-            "Dame unos segundos y vuelve a preguntarme; mientras tanto, si es una duda de tu rutina o tu " +
-            "plan, revísalos que ahí está casi todo lo que necesitas.";
+            "Se me fue la señal un momento, campeón. No pude pensar bien tu respuesta ahora mismo.\n\n" +
+            "Dame unos segundos y **vuelve a preguntarme**; mientras tanto, si es una duda de tu rutina o " +
+            "tu plan, revísalos que ahí está casi todo lo que necesitas.";
     }
 }

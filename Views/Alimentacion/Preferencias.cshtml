@@ -24,11 +24,11 @@
                 var marcada = Model.Dietas.Contains(valor);
                 <div class="col-md-6">
                     <label class="d-flex align-items-start gap-2 p-3 rounded h-100"
-                           style="background:#0f0f1a; cursor:pointer;">
+                           style="background:var(--fc-anidado); cursor:pointer;">
                         <input type="checkbox" name="Dietas" value="@valor" class="form-check-input mt-1"
                                @(marcada ? "checked" : "") />
                         <span>
-                            <span class="fw-semibold" style="color:#eee;">@titulo</span>
+                            <span class="fw-semibold" style="color:var(--fc-text);">@titulo</span>
                             <span class="d-block small text-muted">@detalle</span>
                         </span>
                     </label>
@@ -46,7 +46,7 @@
         @foreach (var grupo in Model.CatalogoPorCategoria)
         {
             <div class="mb-3">
-                <div class="text-uppercase small fw-bold mb-2" style="color:#888; letter-spacing:0.05em;">
+                <div class="text-uppercase small fw-bold mb-2" style="color:var(--fc-muted); letter-spacing:0.05em;">
                     @grupo.Key
                 </div>
                 <div class="row g-2">
@@ -55,10 +55,10 @@
                         var excluido = Model.AlimentosExcluidos.Contains(alimento.Slug);
                         <div class="col-6 col-md-4 col-lg-3">
                             <label class="d-flex align-items-center gap-2 p-2 rounded"
-                                   style="background:#0f0f1a; cursor:pointer;">
+                                   style="background:var(--fc-anidado); cursor:pointer;">
                                 <input type="checkbox" name="AlimentosExcluidos" value="@alimento.Slug"
                                        class="form-check-input" @(excluido ? "checked" : "") />
-                                <span class="small" style="color:#ccc;">@alimento.Nombre</span>
+                                <span class="small" style="color:var(--fc-text);">@alimento.Nombre</span>
                             </label>
                         </div>
                     }
