@@ -44,19 +44,22 @@
     {
         var dia = Model.Dias[i];
         var isFirst = i == 0;
-        <div class="accordion-item mb-2" style="border-radius:8px; overflow:hidden;">
+        <div class="accordion-item mb-2">
             <h2 class="accordion-header">
-                <button class="accordion-button @(isFirst ? "" : "collapsed")" type="button"
+                <button class="accordion-button fc-dia-boton @(isFirst ? "" : "collapsed")" type="button"
                     data-bs-toggle="collapse" data-bs-target="#dia-@i">
-                    <i class="fas fa-calendar-day me-2" aria-hidden="true"></i>
-                    <strong>@dia.NombreDia</strong>&nbsp;&mdash;&nbsp;@dia.Enfoque
-                    <span class="badge ms-3 bg-secondary">@dia.Ejercicios.Count ejercicios</span>
+                    <i class="fas fa-calendar-day" aria-hidden="true"></i>
+                    <span class="fc-dia-texto">
+                        <strong>@dia.NombreDia</strong>
+                        <span class="fc-dia-enfoque">@dia.Enfoque</span>
+                    </span>
+                    <span class="badge bg-secondary fc-dia-cuenta">@dia.Ejercicios.Count<span class="fc-dia-cuenta-palabra"> ejercicios</span></span>
                 </button>
             </h2>
             <div id="dia-@i" class="accordion-collapse collapse @(isFirst ? "show" : "")">
                 <div class="accordion-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover mb-0 align-middle">
+                        <table class="table table-hover mb-0 align-middle fc-tabla-rutina">
                             <thead style="background:#1a1a2e;">
                                 <tr>
                                     <th scope="col" class="ps-3" style="width:70px;"></th>
@@ -129,9 +132,11 @@
                                                 </ol>
                                             }
                                         </td>
-                                        <td class="text-center">@ej.Series</td>
-                                        <td class="text-center">@ej.Repeticiones</td>
-                                        <td class="text-muted small">@(string.IsNullOrEmpty(ej.Notas) ? "-" : ej.Notas)</td>
+                                        @* data-etiqueta: en móvil la tabla se apila en tarjetas y la
+                                           cabecera se oculta, así que cada dato lleva su nombre encima. *@
+                                        <td class="text-center fc-celda-dato" data-etiqueta="Series">@ej.Series</td>
+                                        <td class="text-center fc-celda-dato" data-etiqueta="Reps">@ej.Repeticiones</td>
+                                        <td class="text-muted small fc-celda-notas" data-etiqueta="Notas">@(string.IsNullOrEmpty(ej.Notas) ? "-" : ej.Notas)</td>
                                     </tr>
                                 }
                             </tbody>

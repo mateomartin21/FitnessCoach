@@ -13,6 +13,9 @@
         var ctrlActual = ViewContext.RouteData.Values["controller"]?.ToString();
         Func<string, string> activo = c => ctrlActual == c ? "active" : "";
         var estaLogueado = User.Identity is not null && User.Identity.IsAuthenticated;
+        var nombreCuenta = User.Identity?.Name ?? string.Empty;
+        // Substring(0,1) sobre una cadena vacia lanza; la inicial es decorativa.
+        var inicialCuenta = nombreCuenta.Length > 0 ? char.ToUpperInvariant(nombreCuenta[0]).ToString() : "?";
     }
     <a class="fc-salto-contenido" href="#contenido">Saltar al contenido</a>
 
@@ -42,22 +45,35 @@
                         </li>
                         @if (estaLogueado)
                         {
-                            <li class="nav-item d-none d-lg-flex"><span class="fc-nav-sep"></span></li>
-                            <li class="nav-item">
-                                <span class="fc-user-chip" title="@User.Identity!.Name">
-                                    <i class="fas fa-user" aria-hidden="true"></i>
-                                    <span class="fc-user-chip-correo">@User.Identity!.Name</span>
-                                </span>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link fc-nav-link @activo("Ajustes")" asp-controller="Ajustes" asp-action="Index" title="Ajustes">
-                                    <i class="fas fa-gear me-1" aria-hidden="true"></i>Ajustes
+                            @* Cuenta, ajustes y salida detrás del avatar: sueltos en la barra
+                               no entraban a 1280px y aparecía scroll horizontal. *@
+                            <li class="nav-item dropdown">
+                                <a class="fc-cuenta-btn dropdown-toggle" href="#" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false" title="@nombreCuenta">
+                                    <span class="fc-cuenta-avatar" aria-hidden="true">@inicialCuenta</span>
+                                    <span class="fc-cuenta-nombre">@nombreCuenta</span>
+                                    <i class="fas fa-chevron-down" style="font-size:.7rem;" aria-hidden="true"></i>
                                 </a>
-                            </li>
-                            <li class="nav-item">
-                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline m-0">
-                                    <button type="submit" class="nav-link fc-logout"><i class="fas fa-right-from-bracket me-1" aria-hidden="true"></i>Salir</button>
-                                </form>
+                                <ul class="dropdown-menu dropdown-menu-end fc-menu-cuenta">
+                                    <li><div class="fc-menu-correo">@nombreCuenta</div></li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Perfil" asp-action="Index">
+                                            <i class="fas fa-user-circle" aria-hidden="true"></i>Mi perfil
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Ajustes" asp-action="Index">
+                                            <i class="fas fa-gear" aria-hidden="true"></i>Ajustes
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                                            <button type="submit" class="dropdown-item fc-menu-salir">
+                                                <i class="fas fa-right-from-bracket" aria-hidden="true"></i>Cerrar sesión
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
                             </li>
                         }
                         else
@@ -114,6 +130,75 @@
             </div>
         </div>
     </footer>
+
+    @* ---- Navegación de móvil ----
+       Cuatro destinos al alcance del pulgar y Koda al centro. El resto vive en la
+       hoja "Más": siete pestañas abajo no se pueden tocar sin errar. *@
+    <nav class="fc-tabbar" aria-label="Navegación principal">
+        <a class="fc-tab @activo("Home")" asp-controller="Home" asp-action="Index">
+            <i class="fas fa-house" aria-hidden="true"></i><span>Inicio</span>
+        </a>
+        <a class="fc-tab @activo("Rutinas")" asp-controller="Rutinas" asp-action="Index">
+            <i class="fas fa-fire" aria-hidden="true"></i><span>Rutina</span>
+        </a>
+        <a class="fc-tab fc-tab-koda @activo("IaCoach")" asp-controller="IaCoach" asp-action="Index">
+            <span class="fc-tab-burbuja"><img src="~/images/koda/koda-logo.png" alt="" /></span>
+            <span>Koda</span>
+        </a>
+        <a class="fc-tab @activo("Alimentacion")" asp-controller="Alimentacion" asp-action="Index">
+            <i class="fas fa-utensils" aria-hidden="true"></i><span>Dieta</span>
+        </a>
+        <button class="fc-tab" type="button" data-bs-toggle="offcanvas" data-bs-target="#hoja-mas"
+                aria-controls="hoja-mas">
+            <i class="fas fa-bars" aria-hidden="true"></i><span>Más</span>
+        </button>
+    </nav>
+
+    <div class="offcanvas offcanvas-bottom fc-hoja" tabindex="-1" id="hoja-mas" aria-labelledby="hoja-mas-titulo">
+        <div class="fc-hoja-agarre" aria-hidden="true"></div>
+        <h2 id="hoja-mas-titulo" class="visually-hidden">Más secciones</h2>
+        <div class="fc-hoja-rejilla">
+            <a class="fc-hoja-item @activo("Progreso")" asp-controller="Progreso" asp-action="Index">
+                <i class="fas fa-chart-line" aria-hidden="true"></i>Progreso
+            </a>
+            <a class="fc-hoja-item @activo("Diario")" asp-controller="Diario" asp-action="Index">
+                <i class="fas fa-book-open" aria-hidden="true"></i>Diario
+            </a>
+            <a class="fc-hoja-item @activo("Gamificacion")" asp-controller="Gamificacion" asp-action="Index">
+                <i class="fas fa-trophy" aria-hidden="true"></i>Logros
+            </a>
+            <a class="fc-hoja-item @activo("Perfil")" asp-controller="Perfil" asp-action="Index">
+                <i class="fas fa-user-circle" aria-hidden="true"></i>Perfil
+            </a>
+            @if (estaLogueado)
+            {
+                <a class="fc-hoja-item @activo("Ajustes")" asp-controller="Ajustes" asp-action="Index">
+                    <i class="fas fa-gear" aria-hidden="true"></i>Ajustes
+                </a>
+                <form asp-controller="Account" asp-action="Logout" method="post">
+                    <button type="submit" class="fc-hoja-item fc-hoja-salir">
+                        <i class="fas fa-right-from-bracket" aria-hidden="true"></i>Salir
+                    </button>
+                </form>
+            }
+            else
+            {
+                <a class="fc-hoja-item" asp-controller="Account" asp-action="Login">
+                    <i class="fas fa-right-to-bracket" aria-hidden="true"></i>Entrar
+                </a>
+                <a class="fc-hoja-item" asp-controller="Account" asp-action="Register">
+                    <i class="fas fa-user-plus" aria-hidden="true"></i>Registro
+                </a>
+            }
+        </div>
+        @if (estaLogueado)
+        {
+            <div class="fc-hoja-cuenta">
+                <img src="~/images/koda/koda-logo.png" alt="" />
+                <span>@nombreCuenta</span>
+            </div>
+        }
+    </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
