@@ -1387,7 +1387,25 @@ html, body { max-width: 100%; overflow-x: hidden; }
 }
 
 .fc-chat-koda { height: 68px; width: auto; image-rendering: pixelated; flex-shrink: 0; }
+.fc-chat-quien { min-width: 0; flex: 1 1 auto; }
 .fc-chat-nombre { font-size: 1.15rem; margin: 0; color: var(--fc-primary-texto); }
+
+/* Borrar la charla: presente pero apagado. Es una accion destructiva, no la
+   principal de la pantalla, asi que no compite con el boton de enviar. */
+.fc-chat-limpiar { margin: 0; flex-shrink: 0; }
+.fc-chat-limpiar-btn {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: var(--fc-muted) !important;
+    padding: .5rem .65rem !important;
+    border-radius: var(--fc-r-pill) !important;
+    min-height: 40px;
+}
+.fc-chat-limpiar-btn:hover {
+    background: rgba(239, 70, 85, .14) !important;
+    color: #ff8d97 !important;
+}
 
 .fc-chat-estado {
     display: inline-flex;
@@ -1462,14 +1480,36 @@ html, body { max-width: 100%; overflow-x: hidden; }
    ============================================================ */
 
 #contenido {
-    animation: fc-pantalla-entra .26s cubic-bezier(.2, .7, .3, 1);
+    animation: fc-pantalla-entra .34s cubic-bezier(.2, .7, .3, 1);
+}
+
+/* Barra de carga: lo unico que se ve mientras el servidor contesta. En Render con
+   la instancia dormida esa espera son segundos, y sin esto el toque parecia no
+   haber contado. Avanza rapido al principio y se frena cerca del final: no sabe
+   cuanto falta, asi que nunca promete llegar. */
+.fc-cargando {
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 2000;
+    height: 3px;
+    width: 0;
+    background: linear-gradient(90deg, var(--fc-primary), var(--fc-primary-2));
+    box-shadow: 0 0 10px rgba(var(--fc-primary-rgb), .7);
+    transition: width 2.4s cubic-bezier(.1, .8, .2, 1);
+}
+
+.fc-cargando-avanza { width: 88%; }
+
+@media (prefers-reduced-motion: reduce) {
+    .fc-cargando { transition: none; }
+    .fc-cargando-avanza { width: 100%; }
 }
 
 /* Sin fill-mode a proposito: al terminar no queda ningun transform puesto. Uno
    permanente crearia un bloque contenedor y cualquier position:fixed de adentro
    (el modal de la rutina, por ejemplo) pasaria a anclarse a #contenido. */
 @keyframes fc-pantalla-entra {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(14px); }
     to { opacity: 1; transform: none; }
 }
 

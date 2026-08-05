@@ -165,6 +165,14 @@ builder.Services.AddScoped<FitnessCoach.Application.Coaching.CoachOfflineService
 builder.Services.AddScoped<FitnessCoach.Application.Coaching.IArmadorContextoCoach,
                            FitnessCoach.Application.Coaching.ArmadorContextoCoach>();
 
+// La charla con Koda: se guarda para que siga ahí al volver, y los últimos turnos
+// viajan en el prompt como memoria. Puerto propio, no colgado del perfil, para que
+// la conversación no se cargue en cada pantalla de la app.
+builder.Services.AddScoped<FitnessCoach.Domain.Ports.IRepositorioConversacion,
+                           FitnessCoach.Infrastructure.Repositories.RepositorioConversacionSql>();
+builder.Services.AddScoped<FitnessCoach.Application.Coaching.IServicioConversacion,
+                           FitnessCoach.Application.Coaching.ServicioConversacion>();
+
 // El coach que consume el controlador: la cadena de la fábrica + el offline al final.
 // Prueba los proveedores en orden y garantiza siempre una respuesta del Lobo.
 builder.Services.AddScoped<FitnessCoach.Application.Coaching.ICoachIA>(sp =>

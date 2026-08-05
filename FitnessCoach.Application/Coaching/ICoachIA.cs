@@ -1,3 +1,5 @@
+using FitnessCoach.Domain.Models.Coaching;
+
 namespace FitnessCoach.Application.Coaching
 {
     /// <summary>
@@ -6,7 +8,15 @@ namespace FitnessCoach.Application.Coaching
     /// </summary>
     public interface ICoachIA
     {
-        Task<RespuestaCoach> ConsultarAsync(string mensaje, string contextoPerfil, CancellationToken cancellationToken = default);
+        /// <param name="historial">
+        /// Los últimos turnos de la charla, para que Koda retome el hilo. Opcional: las
+        /// tarjetas de análisis son consultas sueltas y no llevan conversación detrás.
+        /// </param>
+        Task<RespuestaCoach> ConsultarAsync(
+            string mensaje,
+            string contextoPerfil,
+            IReadOnlyList<MensajeCoach>? historial = null,
+            CancellationToken cancellationToken = default);
     }
 
     /// <summary>

@@ -1,3 +1,4 @@
+using FitnessCoach.Domain.Models.Coaching;
 using FitnessCoach.Domain.Ports;
 using Microsoft.Extensions.Logging;
 
@@ -25,9 +26,12 @@ namespace FitnessCoach.Application.Coaching
         }
 
         public async Task<RespuestaCoach> ConsultarAsync(
-            string mensaje, string contextoPerfil, CancellationToken cancellationToken = default)
+            string mensaje,
+            string contextoPerfil,
+            IReadOnlyList<MensajeCoach>? historial = null,
+            CancellationToken cancellationToken = default)
         {
-            var prompt = PersonalidadKoda.ConstruirPrompt(mensaje, contextoPerfil);
+            var prompt = PersonalidadKoda.ConstruirPrompt(mensaje, contextoPerfil, historial);
             var consulta = new ConsultaIA(prompt, mensaje, contextoPerfil);
 
             foreach (var proveedor in _proveedores)
