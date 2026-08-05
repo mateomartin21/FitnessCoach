@@ -13,7 +13,7 @@
 
 <div class="text-center mb-4">
     <h2 class="fw-bold" style="color:var(--fc-primary-texto);">@Model.NombrePlan</h2>
-    <span class="badge px-3 py-2 me-2" style="background:var(--fc-primary); font-size:0.9rem;">@Model.Objetivo</span>
+    <span class="badge px-3 py-2 me-2" style="background:var(--fc-primary-fuerte); font-size:0.9rem;">@Model.Objetivo</span>
     <span class="badge px-3 py-2" style="background:var(--fc-anidado-fuerte); font-size:0.9rem;">
         @Model.Objetivos.Calorias kcal/día
     </span>
@@ -74,21 +74,21 @@
                     @foreach (var porcion in comida.Porciones)
                     {
                         <li class="mb-2">
-                            <div class="d-flex align-items-center gap-2">
+                            <div class="d-flex align-items-center gap-3">
                                 @if (porcion.Alimento.UrlImagen is not null)
                                 {
                                     <img src="@porcion.Alimento.UrlImagen"
                                          alt="@porcion.Alimento.Nombre"
                                          title="@porcion.Alimento.AtribucionImagen"
                                          loading="lazy"
-                                         width="40" height="40"
-                                         class="rounded flex-shrink-0"
-                                         style="object-fit:cover; background:var(--fc-anidado);" />
+                                         width="72" height="72"
+                                         class="flex-shrink-0 fc-foto-alimento"
+                                         style="background:var(--fc-anidado);" />
                                 }
                                 else
                                 {
-                                    <span class="rounded flex-shrink-0 d-inline-block text-center"
-                                          style="width:40px; height:40px; line-height:40px; background:var(--fc-anidado); color:var(--fc-primary-texto);">&#9656;</span>
+                                    <span class="flex-shrink-0 d-inline-block text-center fc-foto-alimento"
+                                          style="line-height:72px; background:var(--fc-anidado); color:var(--fc-primary-texto);">&#9656;</span>
                                 }
                                 <span class="small" style="color:var(--fc-text);">@porcion.Descripcion</span>
                             </div>
@@ -96,7 +96,7 @@
                             @* Alternativas equivalentes del mismo grupo de intercambio. *@
                             @if (porcion.Sustitutos.Count > 0)
                             {
-                                <details class="mt-1 ms-5">
+                                <details class="mt-1 fc-alternativas">
                                     <summary class="small" style="color:var(--fc-muted); cursor:pointer;">
                                         o cambia por&hellip;
                                     </summary>
