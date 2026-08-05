@@ -129,7 +129,7 @@
                 else
                 {
                     <div class="table-responsive">
-                        <table class="table table-dark table-hover align-middle mb-0">
+                        <table class="table table-dark table-hover align-middle mb-0 fc-tabla-lista">
                             <thead>
                                 <tr class="text-muted" style="font-size:0.75rem; text-transform:uppercase;">
                                     <th scope="col">Fecha</th>
@@ -145,9 +145,9 @@
                                     var registro = Model.Historial[i];
                                     var cambio = Model.VariacionRespectoAlAnterior(i);
                                     <tr>
-                                        <td class="small">@Model.EnLocal(registro.Fecha).ToString("dd/MM/yyyy HH:mm")</td>
-                                        <td><strong>@registro.PesoKg kg</strong></td>
-                                        <td class="small">
+                                        <td class="small fc-lista-pie">@Model.EnLocal(registro.Fecha).ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td class="fc-lista-titulo"><strong>@registro.PesoKg kg</strong></td>
+                                        <td class="small fc-lista-dato">
                                             @if (cambio is null)
                                             {
                                                 <span class="text-muted">—</span>
@@ -159,10 +159,10 @@
                                                 </span>
                                             }
                                         </td>
-                                        <td class="small text-muted">
+                                        <td class="small text-muted fc-lista-nota" data-vacia="@string.IsNullOrWhiteSpace(registro.Notas)">
                                             @(string.IsNullOrWhiteSpace(registro.Notas) ? "—" : registro.Notas)
                                         </td>
-                                        <td class="text-end text-nowrap">
+                                        <td class="text-end text-nowrap fc-lista-acciones">
                                             <a asp-controller="Progreso" asp-action="Editar" asp-route-id="@registro.Id"
                                                class="btn btn-sm btn-outline-secondary" title="Editar">
                                                 <i class="fas fa-pen" aria-hidden="true"></i>
@@ -253,7 +253,7 @@
                 else
                 {
                     <div class="table-responsive">
-                        <table class="table table-dark table-hover align-middle mb-0">
+                        <table class="table table-dark table-hover align-middle mb-0 fc-tabla-lista">
                             <thead>
                                 <tr class="text-muted" style="font-size:0.75rem; text-transform:uppercase;">
                                     <th scope="col">Fecha</th>
@@ -266,16 +266,16 @@
                                 @foreach (var entrenamiento in Model.Entrenamientos.Take(10))
                                 {
                                     <tr>
-                                        <td class="small">@Model.EnLocal(entrenamiento.Fecha).ToString("dd/MM/yyyy")</td>
-                                        <td>
-                                            <strong>@entrenamiento.NombreRutina</strong>
+                                        <td class="small fc-lista-pie">@Model.EnLocal(entrenamiento.Fecha).ToString("dd/MM/yyyy")</td>
+                                        <td class="fc-lista-desplegar">
+                                            <strong class="fc-lista-titulo">@entrenamiento.NombreRutina</strong>
                                             @if (!string.IsNullOrWhiteSpace(entrenamiento.Notas))
                                             {
-                                                <div class="small text-muted">@entrenamiento.Notas</div>
+                                                <div class="small text-muted fc-lista-nota">@entrenamiento.Notas</div>
                                             }
                                         </td>
-                                        <td class="small">@entrenamiento.DuracionMinutos min</td>
-                                        <td class="text-end">
+                                        <td class="small fc-lista-dato">@entrenamiento.DuracionMinutos min</td>
+                                        <td class="text-end fc-lista-acciones">
                                             <form asp-controller="Progreso" asp-action="EliminarEntrenamiento" method="post"
                                                   class="d-inline m-0"
                                                   onsubmit="return confirm('¿Eliminar este entrenamiento? No se puede deshacer.');">
@@ -310,7 +310,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-dark table-hover align-middle mb-0">
+                <table class="table table-dark table-hover align-middle mb-0 fc-tabla-lista">
                     <thead>
                         <tr class="text-muted" style="font-size:0.75rem; text-transform:uppercase;">
                             <th scope="col">Ejercicio</th>
@@ -324,14 +324,14 @@
                         @foreach (var record in Model.Records)
                         {
                             <tr>
-                                <td><strong>@record.EjercicioNombre</strong></td>
-                                <td>
+                                <td class="fc-lista-titulo"><strong>@record.EjercicioNombre</strong></td>
+                                <td class="fc-lista-dato">
                                     <span style="color:var(--fc-recuperar);">@record.PesoKg kg</span>
                                     <span class="text-muted">× @record.Repeticiones</span>
                                 </td>
-                                <td class="small text-muted">@record.Volumen kg</td>
-                                <td class="small">@Model.EnLocal(record.Fecha).ToString("dd/MM/yyyy")</td>
-                                <td class="text-end">
+                                <td class="small text-muted fc-lista-dato">@record.Volumen kg</td>
+                                <td class="small fc-lista-pie">@Model.EnLocal(record.Fecha).ToString("dd/MM/yyyy")</td>
+                                <td class="text-end fc-lista-acciones">
                                     <form asp-controller="Progreso" asp-action="EliminarRecord" method="post"
                                           class="d-inline m-0"
                                           onsubmit="return confirm('¿Eliminar este récord? No se puede deshacer.');">
