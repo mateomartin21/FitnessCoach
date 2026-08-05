@@ -1084,6 +1084,76 @@ html, body { max-width: 100%; overflow-x: hidden; }
 }
 
 
+/* ---- Tablas de datos, en tarjetas cuando la pantalla es angosta ----
+   Historial de peso, entrenamientos y records tienen cuatro o cinco columnas. A
+   390px no entran: la caja .table-responsive no desborda la pagina, se desliza
+   sola, asi que habia que arrastrar de lado para ver las notas y los botones.
+   Medido: el historial escondia 48px y los entrenamientos 30px.
+
+   Cada fila pasa a ser una tarjeta. El orden lo deciden las clases y no la
+   posicion de la columna, asi que la misma regla sirve para las tres tablas
+   aunque tengan las columnas en distinto orden. */
+@media (max-width: 767.98px) {
+    .fc-tabla-lista thead { display: none; }
+
+    .fc-tabla-lista,
+    .fc-tabla-lista tbody,
+    .fc-tabla-lista tr { display: block; width: 100%; }
+
+    .fc-tabla-lista tr {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: .1rem .6rem;
+        /* Hueco a la derecha reservado para los botones, que van anclados. */
+        padding: .85rem 4.4rem .85rem 0;
+        border-bottom: var(--fc-separador) !important;
+    }
+    .fc-tabla-lista tr:last-child { border-bottom: none !important; }
+
+    .fc-tabla-lista td {
+        display: block;
+        width: auto;
+        padding: 0 !important;
+        border: none !important;
+        text-align: left !important;
+    }
+
+    /* Una celda que trae nombre y notas juntos se disuelve: sus hijos pasan a ser
+       piezas de la tarjeta y cada uno se ordena por su cuenta. Va calificada con td
+       a proposito: `.fc-tabla-lista td` de arriba tiene mas peso que una clase
+       suelta y le imponia display:block, asi que la celda no se disolvia. */
+    .fc-tabla-lista td.fc-lista-desplegar { display: contents; }
+
+    /* El dato que identifica la fila: el peso, el nombre del entreno, el ejercicio. */
+    .fc-lista-titulo { order: 1; font-size: 1.05rem; font-weight: 700; color: var(--fc-text); }
+    .fc-lista-titulo strong { font-weight: 700; }
+
+    /* Acompana al titulo en el mismo renglon (el cambio de peso, la duracion). */
+    .fc-lista-dato { order: 2; font-size: .9rem; }
+
+    /* Renglon propio, en gris: la fecha. */
+    .fc-lista-pie { order: 3; flex-basis: 100%; font-size: .78rem; color: var(--fc-muted); }
+
+    /* Las notas, a lo ancho y solo si dicen algo: un guion suelto es ruido. */
+    .fc-lista-nota { order: 4; flex-basis: 100%; font-size: .84rem; color: var(--fc-muted); line-height: 1.45; margin-top: .15rem; }
+    .fc-lista-nota[data-vacia="True"] { display: none; }
+
+    /* Anclados arriba a la derecha, en el hueco que reserva el padding de la fila. */
+    .fc-tabla-lista td.fc-lista-acciones {
+        position: absolute;
+        top: .7rem;
+        right: 0;
+        display: flex;
+        gap: .35rem;
+        white-space: nowrap;
+    }
+    .fc-lista-acciones .btn { min-height: 36px; min-width: 36px; padding: .3rem .5rem !important; }
+    .fc-lista-acciones form { margin: 0; }
+}
+
+
 /* ---- Cabecera de cada dia de la rutina ----
    Antes el dia, el enfoque y la cuenta iban sueltos en el boton y a poco ancho se
    encimaban ("Lunes— Torso Fuerza" partido en dos renglones). Ahora son tres
@@ -1202,12 +1272,16 @@ html, body { max-width: 100%; overflow-x: hidden; }
     flex-direction: column;
     justify-content: center;
     gap: .15rem;
-    height: 100%;
     padding: 1rem .8rem;
     background: var(--fc-anidado);
     border-radius: var(--fc-r-md);
     text-align: center;
 }
+
+/* Solo las tejas que comparten fila igualan altura entre si. Cuando height:100%
+   estaba en la clase base, una teja suelta dentro de una tarjeta se estiraba a la
+   altura de la tarjeta vecina y se leia como un recuadro vacio. */
+.row > [class*="col-"] > .fc-dato { height: 100%; }
 
 /* El dato que importa se destaca con color, no con un borde mas grueso. */
 .fc-dato-clave {
