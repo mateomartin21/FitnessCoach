@@ -82,6 +82,30 @@
 
     /* Unidad pixel */
     --px: 3px;
+
+    /* ---- Formas y profundidad ----
+       El pixel art se queda donde es identidad (Koda, la fuente de marca, el glow);
+       los contenedores se suavizan. Antes todo era esquina viva y sombra dura
+       desplazada, y la app entera se leia como una pila de rectangulos. */
+    --fc-r-xs: 8px;
+    --fc-r-sm: 12px;
+    --fc-r-md: 18px;
+    --fc-r-lg: 26px;
+    --fc-r-pill: 999px;
+
+    /* Borde tenue en vez del contorno negro de 3px: separa sin encerrar. */
+    --fc-borde: 1px solid rgba(255, 255, 255, .075);
+    --fc-borde-fuerte: 1px solid rgba(255, 255, 255, .13);
+
+    /* Elevacion con desenfoque real: da profundidad sin marcar un rectangulo. */
+    --fc-sombra-1: 0 1px 2px rgba(0, 0, 0, .28), 0 4px 12px rgba(0, 0, 0, .22);
+    --fc-sombra-2: 0 2px 6px rgba(0, 0, 0, .3), 0 12px 32px rgba(0, 0, 0, .3);
+    --fc-sombra-azul: 0 6px 20px rgba(var(--fc-primary-rgb), .35);
+
+    /* Alto de la barra inferior de movil; el body reserva este espacio. */
+    --fc-barra-movil: 62px;
+
+    --fc-transicion: .18s cubic-bezier(.4, 0, .2, 1);
 }
 
 * { box-sizing: border-box; }
@@ -124,31 +148,33 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ---------- NAVBAR ---------- */
 .fc-navbar {
-    background: var(--fc-card) !important;
-    border-bottom: var(--px) solid var(--fc-ink) !important;
-    box-shadow: 0 var(--px) 0 var(--fc-primary) !important;
+    background: rgba(20, 29, 51, .88) !important;
+    -webkit-backdrop-filter: saturate(140%) blur(12px);
+    backdrop-filter: saturate(140%) blur(12px);
+    border-bottom: var(--fc-borde) !important;
+    box-shadow: var(--fc-sombra-1) !important;
     padding: 0.75rem 0 !important;
 }
 .fc-brand { color: var(--fc-primary-texto) !important; font-size: 0.95rem !important; text-decoration: none !important; display: flex; align-items: center; }
 .fc-brand-text { letter-spacing: 0; }
-.fc-nav-link { color: var(--fc-muted) !important; font-size: 0.85rem !important; padding: 0.5rem 0.9rem !important; border: var(--px) solid transparent !important; border-radius: 0 !important; transition: none !important; }
-.fc-nav-link:hover { color: var(--fc-primary-2) !important; background: var(--fc-inset) !important; border-color: var(--fc-ink) !important; }
+.fc-nav-link { color: var(--fc-muted) !important; font-size: 0.85rem !important; padding: 0.5rem 0.85rem !important; border: 1px solid transparent !important; border-radius: var(--fc-r-pill) !important; transition: color var(--fc-transicion), background var(--fc-transicion) !important; }
+.fc-nav-link:hover { color: var(--fc-primary-2) !important; background: rgba(var(--fc-primary-rgb), .10) !important; border-color: transparent !important; }
 .fc-nav-highlight { background: rgba(var(--fc-primary-rgb),0.12) !important; color: var(--fc-primary-texto) !important; }
 .fc-toggler { border: none !important; background: transparent !important; }
 
 /* Seccion activa: resalta dónde estás parado */
-.fc-nav-link.active { color: var(--fc-primary-texto) !important; background: var(--fc-inset) !important; border-color: var(--fc-ink) !important; }
+.fc-nav-link.active { color: var(--fc-primary-texto) !important; background: rgba(var(--fc-primary-rgb), .16) !important; border-color: transparent !important; }
 
 /* CTA de Koda (IA), separado del resto de la navegación */
 .fc-nav-cta {
     display: inline-flex; align-items: center; gap: 7px;
     color: #fff !important; background: var(--fc-primary) !important;
-    border: var(--px) solid var(--fc-ink) !important; box-shadow: var(--px) var(--px) 0 var(--fc-ink);
+    border: none !important; border-radius: var(--fc-r-pill) !important; box-shadow: var(--fc-sombra-azul);
     padding: 0.35rem 0.8rem !important; font-weight: 700 !important; font-size: 0.85rem !important;
     text-decoration: none; transition: transform .05s, box-shadow .05s, background .1s;
 }
 .fc-nav-cta:hover { color: #fff !important; background: var(--fc-primary-2) !important; }
-.fc-nav-cta:active { transform: translate(var(--px), var(--px)); box-shadow: 0 0 0 var(--fc-ink); }
+.fc-nav-cta:active { transform: scale(.96); }
 .fc-nav-cta-koda {
     height: 26px; width: 26px; object-fit: contain; object-position: top;
     image-rendering: pixelated; flex-shrink: 0; margin: -4px 0;
@@ -157,18 +183,18 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Bloque de cuenta */
 .fc-nav-sep { width: var(--px); height: 24px; align-self: center; background: var(--fc-border); margin: 0 6px; }
-.fc-user-chip { display: inline-flex; align-items: center; gap: 6px; color: var(--fc-text) !important; font-size: 0.82rem; padding: 0.35rem 0.7rem; border: var(--px) solid var(--fc-border); background: var(--fc-inset); }
+.fc-user-chip { display: inline-flex; align-items: center; gap: 6px; color: var(--fc-text) !important; font-size: 0.82rem; padding: 0.35rem 0.75rem; border: var(--fc-borde); border-radius: var(--fc-r-pill); background: var(--fc-inset); }
 .fc-user-chip-correo { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .fc-logout { color: var(--fc-muted) !important; background: transparent !important; border: none !important; box-shadow: none !important; font-size: 0.82rem; padding: 0.35rem 0.6rem !important; }
 .fc-logout:hover { color: var(--fc-descanso) !important; }
 
 /* Footer estructurado */
 .fc-foot-head { font-size: 0.68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--fc-muted); font-weight: 700; margin-bottom: 12px; }
-.fc-foot-bottom { border-top: var(--px) solid var(--fc-ink); font-size: 0.78rem; color: var(--fc-muted); }
+.fc-foot-bottom { border-top: var(--fc-borde); font-size: 0.78rem; color: var(--fc-muted); }
 
 /* ---------- HERO ---------- */
 .fc-hero { padding: 1rem 0; }
-.fc-tag { display: inline-block; background: rgba(var(--fc-primary-rgb),0.15); color: var(--fc-primary-texto); font-size: 0.6rem; padding: 6px 12px; border: var(--px) solid var(--fc-primary); border-radius: 0; }
+.fc-tag { display: inline-block; background: rgba(var(--fc-primary-rgb),0.15); color: var(--fc-primary-texto); font-size: 0.6rem; padding: 7px 14px; border: 1px solid rgba(var(--fc-primary-rgb), .45); border-radius: var(--fc-r-pill); }
 .fc-hero-title { font-size: 1.9rem !important; line-height: 1.3 !important; color: var(--fc-text); text-shadow: var(--px) var(--px) 0 var(--fc-ink); }
 .fc-hero-sub { color: var(--fc-muted); font-size: 1rem; max-width: 480px; }
 
@@ -228,51 +254,53 @@ h1, h2, h3, h4, h5, h6 {
 .fc-btn-primary, .btn-primary {
     background: var(--fc-primary) !important;
     color: #fff !important;
-    border: var(--px) solid var(--fc-ink) !important;
-    box-shadow: var(--px) var(--px) 0 var(--fc-ink) !important;
-    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: var(--fc-sombra-azul) !important;
+    border-radius: var(--fc-r-pill) !important;
+    padding: .55rem 1.35rem !important;
     font-weight: 700 !important;
-    transition: transform .05s, box-shadow .05s !important;
+    transition: transform var(--fc-transicion), box-shadow var(--fc-transicion), background var(--fc-transicion) !important;
 }
-.fc-btn-primary:hover, .btn-primary:hover { background: #4880ff !important; border-color: var(--fc-ink) !important; }
-.fc-btn-primary:active, .btn-primary:active { transform: translate(var(--px), var(--px)); box-shadow: 0 0 0 var(--fc-ink) !important; }
+.fc-btn-primary:hover, .btn-primary:hover { background: #4880ff !important; transform: translateY(-1px); box-shadow: 0 8px 26px rgba(var(--fc-primary-rgb), .45) !important; }
+.fc-btn-primary:active, .btn-primary:active { transform: scale(.97); box-shadow: var(--fc-sombra-1) !important; }
 
 .fc-btn-outline, .btn-outline-light {
-    background: var(--fc-inset) !important;
+    background: rgba(255, 255, 255, .04) !important;
     color: var(--fc-primary-2) !important;
-    border: var(--px) solid var(--fc-ink) !important;
-    box-shadow: var(--px) var(--px) 0 var(--fc-ink) !important;
-    border-radius: 0 !important;
+    border: var(--fc-borde-fuerte) !important;
+    box-shadow: none !important;
+    border-radius: var(--fc-r-pill) !important;
+    padding: .55rem 1.35rem !important;
     font-weight: 700 !important;
-    transition: transform .05s, box-shadow .05s !important;
+    transition: transform var(--fc-transicion), background var(--fc-transicion), border-color var(--fc-transicion) !important;
 }
-.fc-btn-outline:hover, .btn-outline-light:hover { border-color: var(--fc-ink) !important; color: #fff !important; background: var(--fc-panel-2) !important; }
-.fc-btn-outline:active, .btn-outline-light:active { transform: translate(var(--px), var(--px)); box-shadow: 0 0 0 var(--fc-ink) !important; }
+.fc-btn-outline:hover, .btn-outline-light:hover { border-color: rgba(var(--fc-primary-rgb), .5) !important; color: #fff !important; background: rgba(var(--fc-primary-rgb), .12) !important; }
+.fc-btn-outline:active, .btn-outline-light:active { transform: scale(.97); }
 
 /* ---------- CARDS / PANELES (marco pixel + sombra solida) ---------- */
 .fc-feature-card {
     background: var(--fc-card);
-    border: var(--px) solid var(--fc-ink);
-    box-shadow: var(--px) var(--px) 0 var(--fc-ink);
-    border-radius: 0;
+    border: var(--fc-borde);
+    box-shadow: var(--fc-sombra-1);
+    border-radius: var(--fc-r-md);
     padding: 1.5rem;
-    transition: transform .1s, box-shadow .1s;
+    transition: transform var(--fc-transicion), box-shadow var(--fc-transicion), border-color var(--fc-transicion);
 }
-.fc-feature-card:hover { transform: translate(-1px,-1px); box-shadow: calc(var(--px) + 2px) calc(var(--px) + 2px) 0 var(--fc-ink), 0 0 18px rgba(var(--fc-primary-rgb),.25); }
+.fc-feature-card:hover { transform: translateY(-3px); border-color: rgba(var(--fc-primary-rgb), .35); box-shadow: var(--fc-sombra-2), 0 0 24px rgba(var(--fc-primary-rgb), .18); }
 .fc-feature-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; }
 
-.fc-info-bar { background: var(--fc-card); border: var(--px) solid var(--fc-ink); box-shadow: var(--px) var(--px) 0 var(--fc-ink); border-radius: 0; }
+.fc-info-bar { background: var(--fc-card); border: var(--fc-borde); box-shadow: var(--fc-sombra-1); border-radius: var(--fc-r-md); }
 .fc-stat { padding: 0.5rem 1rem; }
 .fc-stat-num { font-size: 1.8rem; font-weight: 900; color: var(--fc-primary-texto); font-variant-numeric: tabular-nums; }
 .fc-stat-label { font-size: 0.6rem; color: var(--fc-muted); }
-.border-end { border-right: var(--px) solid var(--fc-ink) !important; }
+.border-end { border-right: var(--fc-borde) !important; }
 
-.card { background: var(--fc-card) !important; border: var(--px) solid var(--fc-ink) !important; color: var(--fc-text) !important; border-radius: 0 !important; box-shadow: var(--px) var(--px) 0 var(--fc-ink) !important; }
-.card-header { background: transparent !important; border-bottom: var(--px) solid var(--fc-ink) !important; }
+.card { background: var(--fc-card) !important; border: var(--fc-borde) !important; color: var(--fc-text) !important; border-radius: var(--fc-r-md) !important; box-shadow: var(--fc-sombra-1) !important; overflow: hidden; }
+.card-header { background: transparent !important; border-bottom: var(--fc-borde) !important; padding: 1rem 1.25rem !important; }
 
 /* ---------- FORMS ---------- */
-.form-control, .form-select { background: var(--fc-inset) !important; border: var(--px) solid var(--fc-ink) !important; color: var(--fc-text) !important; border-radius: 0 !important; }
-.form-control:focus, .form-select:focus { background: var(--fc-inset) !important; color: var(--fc-text) !important; border-color: var(--fc-primary) !important; box-shadow: 0 0 0 var(--px) rgba(var(--fc-primary-rgb),0.3) !important; }
+.form-control, .form-select { background: var(--fc-inset) !important; border: var(--fc-borde-fuerte) !important; color: var(--fc-text) !important; border-radius: var(--fc-r-sm) !important; padding: .6rem .9rem !important; transition: border-color var(--fc-transicion), box-shadow var(--fc-transicion) !important; }
+.form-control:focus, .form-select:focus { background: var(--fc-inset) !important; color: var(--fc-text) !important; border-color: var(--fc-primary) !important; box-shadow: 0 0 0 3px rgba(var(--fc-primary-rgb),0.22) !important; }
 .form-label { color: var(--fc-muted) !important; font-size: 0.85rem !important; font-weight: 600 !important; }
 .form-select option { background: var(--fc-card); color: var(--fc-text); }
 
@@ -281,21 +309,22 @@ h1, h2, h3, h4, h5, h6 {
    blanco por defecto (se veía al desplegar la rutina). */
 .table { --bs-table-bg: transparent; --bs-table-color: var(--fc-text); color: var(--fc-text) !important; margin-bottom: 0; }
 .table > :not(caption) > * > * { background-color: transparent !important; color: var(--fc-text) !important; border-color: var(--fc-border) !important; }
-.table > thead > tr > * { background: var(--fc-inset) !important; color: var(--fc-muted) !important; text-transform: uppercase; font-size: 0.72rem; letter-spacing: .06em; border-bottom: var(--px) solid var(--fc-ink) !important; }
+.table > thead > tr > * { background: var(--fc-inset) !important; color: var(--fc-muted) !important; text-transform: uppercase; font-size: 0.72rem; letter-spacing: .06em; border-bottom: var(--fc-borde-fuerte) !important; }
 .table-hover tbody tr:hover td { background: rgba(var(--fc-primary-rgb),0.06) !important; }
 
 /* ---------- ACCORDION ---------- */
-.accordion-item { background: var(--fc-card) !important; border: var(--px) solid var(--fc-ink) !important; margin-bottom: 0.5rem; border-radius: 0 !important; overflow: hidden; box-shadow: var(--px) var(--px) 0 var(--fc-ink); }
-.accordion-button { background: var(--fc-panel-2) !important; color: var(--fc-text) !important; font-weight: 600 !important; }
+.accordion-item { background: var(--fc-card) !important; border: var(--fc-borde) !important; margin-bottom: 0.75rem; border-radius: var(--fc-r-md) !important; overflow: hidden; box-shadow: var(--fc-sombra-1); }
+.accordion-button { background: var(--fc-panel-2) !important; color: var(--fc-text) !important; font-weight: 600 !important; border-radius: 0 !important; padding: 1rem 1.15rem !important; }
+.accordion-button:focus { box-shadow: none !important; }
 .accordion-button:not(.collapsed) { background: var(--fc-primary) !important; color: #fff !important; }
 .accordion-button::after { filter: invert(1); }
 .accordion-body { background: var(--fc-card) !important; padding: 0 !important; }
 
 /* ---------- BADGE ---------- */
-.badge { border-radius: 0 !important; }
+.badge { border-radius: var(--fc-r-pill) !important; padding: .38em .8em !important; font-weight: 600 !important; }
 
 /* ---------- FOOTER ---------- */
-.fc-footer { background: var(--fc-card) !important; border-top: var(--px) solid var(--fc-ink) !important; }
+.fc-footer { background: var(--fc-card) !important; border-top: var(--fc-borde) !important; }
 .fc-footer-link { color: var(--fc-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
 .fc-footer-link:hover { color: var(--fc-primary-texto); }
 
@@ -305,7 +334,7 @@ h1, h2, h3, h4, h5, h6 {
 .btn-warning { color: #fff !important; }
 
 #chat-box::-webkit-scrollbar { width: 8px; }
-#chat-box::-webkit-scrollbar-thumb { background: var(--fc-border); border-radius: 0; }
+#chat-box::-webkit-scrollbar-thumb { background: var(--fc-border); border-radius: var(--fc-r-pill); }
 
 /* Logos monocromos recoloreados a azul (placeholder hasta los assets pixel definitivos) */
 .fc-navbar-logo { height: 34px; width: auto; filter: brightness(0) saturate(100%) invert(34%) sepia(96%) saturate(1900%) hue-rotate(212deg) brightness(101%) contrast(101%); }
@@ -324,19 +353,19 @@ h1, h2, h3, h4, h5, h6 {
 /* ---------- CHAT ---------- */
 .fc-msg { display: flex; align-items: flex-end; gap: 10px; }
 .fc-msg-user { flex-direction: row-reverse; }
-.fc-msg-avatar { height: 40px; width: 40px; border-radius: 0; object-fit: contain; object-position: top; image-rendering: pixelated; flex-shrink: 0; filter: drop-shadow(0 0 5px rgba(var(--fc-primary-rgb),.55)); }
-.fc-msg-avatar-user { height: 32px; width: 32px; border-radius: 0; background: var(--fc-primary); border: 2px solid var(--fc-ink); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem; flex-shrink: 0; }
-.fc-msg-bubble { max-width: 75%; padding: 0.75rem 1rem; border-radius: 0; font-size: 0.9rem; line-height: 1.5; }
-.fc-msg-bubble-bot { background: var(--fc-card); border: var(--px) solid var(--fc-ink); color: var(--fc-text); }
-.fc-msg-bubble-user { background: var(--fc-primary); color: #fff; border: var(--px) solid var(--fc-ink); }
-.fc-chip { background: var(--fc-inset); border: var(--px) solid var(--fc-ink); color: var(--fc-muted); font-size: 0.75rem; border-radius: 0; padding: 4px 12px; transition: none; }
+.fc-msg-avatar { height: 40px; width: 40px; border-radius: var(--fc-r-sm); object-fit: contain; object-position: top; image-rendering: pixelated; flex-shrink: 0; filter: drop-shadow(0 0 5px rgba(var(--fc-primary-rgb),.55)); }
+.fc-msg-avatar-user { height: 32px; width: 32px; border-radius: var(--fc-r-pill); background: var(--fc-primary); border: none; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem; flex-shrink: 0; }
+.fc-msg-bubble { max-width: 78%; padding: 0.8rem 1.05rem; border-radius: var(--fc-r-md); font-size: 0.92rem; line-height: 1.55; box-shadow: var(--fc-sombra-1); }
+.fc-msg-bubble-bot { background: var(--fc-card); border: var(--fc-borde); color: var(--fc-text); border-bottom-left-radius: var(--fc-r-xs); }
+.fc-msg-bubble-user { background: var(--fc-primary); color: #fff; border: none; border-bottom-right-radius: var(--fc-r-xs); }
+.fc-chip { background: var(--fc-inset); border: var(--fc-borde-fuerte); color: var(--fc-muted); font-size: 0.78rem; border-radius: var(--fc-r-pill); padding: 6px 14px; transition: all var(--fc-transicion); }
 .fc-chip:hover { border-color: var(--fc-primary); color: var(--fc-primary-texto); }
 
-.ai-message { border-left: var(--px) solid var(--fc-primary); }
+.ai-message { border-left: 3px solid var(--fc-primary); }
 
 /* ---------- TYPING INDICATOR ---------- */
 .fc-typing { display: flex; gap: 4px; align-items: center; height: 20px; }
-.fc-typing span { width: 8px; height: 8px; border-radius: 0; background: var(--fc-primary); animation: fc-bounce 1.2s steps(2) infinite; }
+.fc-typing span { width: 8px; height: 8px; border-radius: var(--fc-r-pill); background: var(--fc-primary); animation: fc-bounce 1.2s ease-in-out infinite; }
 .fc-typing span:nth-child(2) { animation-delay: 0.2s; }
 .fc-typing span:nth-child(3) { animation-delay: 0.4s; }
 @keyframes fc-bounce {
@@ -384,9 +413,10 @@ summary:focus-visible {
     align-items: center;
     justify-content: space-between;
     background: linear-gradient(135deg, var(--fc-card), var(--fc-inset));
-    border: var(--px) solid var(--fc-ink);
-    box-shadow: var(--px) var(--px) 0 var(--fc-ink);
-    padding: 1.5rem;
+    border: var(--fc-borde);
+    box-shadow: var(--fc-sombra-1);
+    border-radius: var(--fc-r-lg);
+    padding: 1.75rem;
 }
 
 .fc-perfil-identidad { display: flex; align-items: center; gap: 1.25rem; min-width: 0; }
@@ -412,7 +442,7 @@ summary:focus-visible {
 
 .fc-perfil-calorias {
     text-align: right;
-    border-left: var(--px) solid var(--fc-ink);
+    border-left: var(--fc-borde);
     padding-left: 1.5rem;
     min-width: 240px;
 }
@@ -434,7 +464,7 @@ summary:focus-visible {
     .fc-perfil-calorias {
         text-align: left;
         border-left: 0;
-        border-top: var(--px) solid var(--fc-ink);
+        border-top: var(--fc-borde);
         padding-left: 0;
         padding-top: 1rem;
         width: 100%;
@@ -463,7 +493,7 @@ summary:focus-visible {
     flex-wrap: wrap;
     gap: 1rem;
     padding: 1.25rem 0;
-    border-bottom: var(--px) solid var(--fc-border);
+    border-bottom: var(--fc-borde);
     margin-bottom: 1rem;
 }
 
@@ -505,9 +535,10 @@ summary:focus-visible {
 .fc-globo {
     position: relative;
     background: var(--fc-card);
-    border: var(--px) solid var(--fc-ink);
-    box-shadow: var(--px) var(--px) 0 var(--fc-border);
-    padding: 1rem 1.15rem;
+    border: var(--fc-borde);
+    box-shadow: var(--fc-sombra-1);
+    border-radius: var(--fc-r-md);
+    padding: 1.1rem 1.25rem;
     color: var(--fc-text);
     font-size: .95rem;
 }
@@ -580,8 +611,9 @@ summary:focus-visible {
 
 .fc-acceso-card {
     background: var(--fc-card);
-    border: var(--px) solid var(--fc-ink);
-    box-shadow: var(--px) var(--px) 0 var(--fc-border);
+    border: var(--fc-borde);
+    box-shadow: var(--fc-sombra-2);
+    border-radius: var(--fc-r-lg);
     padding: 2rem 1.75rem;
 }
 
@@ -601,8 +633,9 @@ summary:focus-visible {
     display: flex;
     flex-direction: column;
     background: var(--fc-card);
-    border: var(--px) solid var(--fc-ink);
-    box-shadow: var(--px) var(--px) 0 var(--fc-border);
+    border: var(--fc-borde);
+    box-shadow: var(--fc-sombra-1);
+    border-radius: var(--fc-r-md);
     padding: 1.5rem;
 }
 
@@ -629,8 +662,8 @@ summary:focus-visible {
 
 /* Avisos con el contorno pixel del resto de la interfaz, en vez del alert de Bootstrap. */
 .fc-alerta-ok, .fc-alerta-error {
-    border-radius: 0;
-    border: var(--px) solid var(--fc-ink);
+    border-radius: var(--fc-r-sm);
+    border: var(--fc-borde);
 }
 
 .fc-alerta-ok { background: rgba(39,209,124,0.12); border-left: var(--px) solid var(--fc-logro); color: var(--fc-logro); }
@@ -706,3 +739,442 @@ summary:focus-visible {
 
 .fc-alt-buscador { display: flex; gap: .5rem; flex-wrap: wrap; }
 .fc-alt-buscador .form-control { flex: 1 1 260px; }
+
+
+/* ============================================================
+   CASCARA DE APP EN MOVIL
+   En el telefono la navegacion baja al pulgar: barra fija abajo
+   con las secciones que mas se usan, Koda al centro elevado, y el
+   resto en una hoja que sube desde abajo. Arriba queda solo la
+   marca. El menu hamburguesa desaparece: obligaba a dos toques
+   para todo y no se siente una app.
+   ============================================================ */
+
+/* Nada puede empujar la pagina a lo ancho: es la causa numero uno de que una
+   web "se rompa" en el telefono. */
+html, body { max-width: 100%; overflow-x: hidden; }
+
+/* Las tablas anchas se desplazan dentro de su caja, no arrastran la pagina. */
+.fc-scroll-x {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    border-radius: var(--fc-r-sm);
+}
+.fc-scroll-x > .table { margin-bottom: 0; }
+
+/* ---- Barra inferior (solo movil) ---- */
+.fc-tabbar { display: none; }
+
+@media (max-width: 991.98px) {
+    .fc-tabbar {
+        display: flex;
+        position: fixed;
+        left: 0; right: 0; bottom: 0;
+        z-index: 1035;
+        align-items: stretch;
+        justify-content: space-around;
+        gap: 2px;
+        padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
+        background: rgba(11, 17, 32, .93);
+        -webkit-backdrop-filter: saturate(160%) blur(14px);
+        backdrop-filter: saturate(160%) blur(14px);
+        border-top: var(--fc-borde);
+        box-shadow: 0 -6px 24px rgba(0, 0, 0, .35);
+    }
+
+    .fc-tab {
+        flex: 1 1 0;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        padding: 6px 2px;
+        border-radius: var(--fc-r-sm);
+        color: var(--fc-muted);
+        text-decoration: none;
+        font-size: .64rem;
+        font-family: var(--fc-font-ui);
+        font-weight: 600;
+        background: none;
+        border: none;
+        transition: color var(--fc-transicion), background var(--fc-transicion);
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .fc-tab i { font-size: 1.12rem; line-height: 1; }
+    .fc-tab span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .fc-tab:hover { color: var(--fc-primary-2); }
+    .fc-tab:active { background: rgba(var(--fc-primary-rgb), .14); }
+    .fc-tab.active { color: var(--fc-primary-texto); }
+
+    /* Punto bajo la seccion activa: marca donde estas sin ocupar lugar. */
+    .fc-tab.active::after {
+        content: "";
+        width: 4px; height: 4px;
+        border-radius: var(--fc-r-pill);
+        background: var(--fc-primary-texto);
+    }
+
+    /* Koda al centro y elevado: es la funcion que distingue a la app. */
+    .fc-tab-koda {
+        flex: 0 0 auto;
+        justify-content: flex-start;
+        margin-top: -18px;
+    }
+    .fc-tab-koda .fc-tab-burbuja {
+        width: 48px; height: 48px;
+        border-radius: var(--fc-r-pill);
+        background: linear-gradient(160deg, var(--fc-primary-2), var(--fc-primary));
+        box-shadow: 0 0 0 4px var(--fc-bg), var(--fc-sombra-azul);
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 2px;
+        transition: transform var(--fc-transicion), box-shadow var(--fc-transicion);
+    }
+    .fc-tab-koda:active .fc-tab-burbuja { transform: scale(.92); }
+    .fc-tab-koda img {
+        width: 34px; height: 34px;
+        object-fit: contain; object-position: top;
+        image-rendering: pixelated;
+    }
+    .fc-tab-koda.active .fc-tab-burbuja { box-shadow: 0 0 0 4px var(--fc-bg), 0 0 22px rgba(var(--fc-primary-rgb), .85); }
+
+    /* El contenido reserva el alto de la barra para que nada quede tapado. */
+    body { padding-bottom: calc(var(--fc-barra-movil) + env(safe-area-inset-bottom, 0px)); }
+
+    /* Arriba solo la marca: la navegacion ya vive abajo. */
+    .fc-navbar .navbar-collapse,
+    .fc-navbar .fc-toggler { display: none !important; }
+    .fc-navbar { padding: .5rem 0 !important; position: sticky; top: 0; z-index: 1030; }
+
+    /* El pie repetia la navegacion y en el telefono era una pared de enlaces. */
+    .fc-footer { display: none; }
+
+    /* Respiro lateral coherente y titulos que no se comen la pantalla. */
+    .container, .container-fluid { padding-left: 1rem; padding-right: 1rem; }
+    h1, .h1 { font-size: 1.5rem; }
+    h2, .h2 { font-size: 1.25rem; }
+    .display-4 { font-size: 2.25rem; }
+    .fc-hero-title { font-size: 1.35rem !important; }
+
+    .fc-feature-card { padding: 1.15rem; }
+    .card-body { padding: 1.15rem; }
+
+    /* Comodo para el pulgar: 44px es el minimo recomendado para tocar. */
+    .btn { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+}
+
+/* ---- Hoja "Mas" que sube desde abajo ---- */
+.fc-hoja {
+    background: var(--fc-card) !important;
+    border-top-left-radius: var(--fc-r-lg);
+    border-top-right-radius: var(--fc-r-lg);
+    border: none !important;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, .5);
+    height: auto !important;
+    max-height: 88vh;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Agarradera: la senal universal de "esto se arrastra para cerrar". */
+.fc-hoja-agarre {
+    width: 42px; height: 4px;
+    border-radius: var(--fc-r-pill);
+    background: var(--fc-border);
+    margin: 10px auto 4px;
+}
+
+.fc-hoja-rejilla {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .6rem;
+    padding: .5rem 1rem 1.25rem;
+}
+
+/* El form de salir no debe formar celda: su boton es el que ocupa el lugar. */
+.fc-hoja-rejilla form { display: contents; }
+.fc-hoja-rejilla button.fc-hoja-item { width: 100%; cursor: pointer; }
+
+.fc-hoja-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .45rem;
+    padding: 1rem .5rem;
+    border-radius: var(--fc-r-md);
+    background: var(--fc-inset);
+    border: var(--fc-borde);
+    color: var(--fc-text);
+    text-decoration: none;
+    font-size: .78rem;
+    font-family: var(--fc-font-ui);
+    font-weight: 600;
+    text-align: center;
+    transition: background var(--fc-transicion), border-color var(--fc-transicion), transform var(--fc-transicion);
+}
+.fc-hoja-item i { font-size: 1.3rem; color: var(--fc-primary-texto); }
+.fc-hoja-item:hover { color: var(--fc-text); border-color: rgba(var(--fc-primary-rgb), .4); background: rgba(var(--fc-primary-rgb), .1); }
+.fc-hoja-item:active { transform: scale(.96); }
+.fc-hoja-item.active { border-color: rgba(var(--fc-primary-rgb), .55); background: rgba(var(--fc-primary-rgb), .14); }
+
+.fc-hoja-salir, .fc-hoja-salir i { color: #ff8d97; }
+
+.fc-hoja-cuenta {
+    display: flex; align-items: center; gap: .7rem;
+    padding: .25rem 1rem 1rem;
+    color: var(--fc-muted);
+    font-size: .82rem;
+    min-width: 0;
+}
+.fc-hoja-cuenta img { width: 34px; height: 34px; object-fit: contain; object-position: top; image-rendering: pixelated; flex-shrink: 0; }
+.fc-hoja-cuenta span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---- Menu de cuenta en escritorio ----
+   Antes el correo, Ajustes y Salir iban sueltos en la barra: con 7 secciones
+   mas el boton de Koda, a 1280px la barra se desbordaba 28px y aparecia scroll
+   horizontal en toda la app. Ahora se agrupan detras del avatar. */
+.fc-cuenta-btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(255, 255, 255, .05);
+    border: var(--fc-borde-fuerte);
+    border-radius: var(--fc-r-pill);
+    padding: .3rem .75rem .3rem .35rem;
+    color: var(--fc-text);
+    font-size: .82rem;
+    font-family: var(--fc-font-ui);
+    transition: background var(--fc-transicion), border-color var(--fc-transicion);
+}
+.fc-cuenta-btn:hover { background: rgba(var(--fc-primary-rgb), .14); border-color: rgba(var(--fc-primary-rgb), .4); color: var(--fc-text); }
+.fc-cuenta-btn::after { display: none; }
+.fc-cuenta-avatar {
+    width: 30px; height: 30px; flex-shrink: 0;
+    border-radius: var(--fc-r-pill);
+    background: var(--fc-primary);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: .78rem; font-weight: 700;
+}
+.fc-cuenta-nombre { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.fc-menu-cuenta {
+    background: var(--fc-card) !important;
+    border: var(--fc-borde) !important;
+    border-radius: var(--fc-r-md) !important;
+    box-shadow: var(--fc-sombra-2) !important;
+    padding: .4rem !important;
+    min-width: 232px;
+}
+.fc-menu-cuenta .dropdown-item {
+    color: var(--fc-text) !important;
+    border-radius: var(--fc-r-sm);
+    padding: .6rem .8rem;
+    font-size: .88rem;
+    font-family: var(--fc-font-ui);
+    display: flex; align-items: center; gap: .6rem;
+}
+.fc-menu-cuenta .dropdown-item:hover { background: rgba(var(--fc-primary-rgb), .14) !important; color: var(--fc-text) !important; }
+.fc-menu-cuenta .dropdown-item i { width: 18px; text-align: center; color: var(--fc-muted); }
+.fc-menu-cuenta .fc-menu-salir,
+.fc-menu-cuenta .fc-menu-salir i { color: #ff8d97 !important; }
+.fc-menu-cuenta .fc-menu-salir:hover { background: rgba(239, 70, 85, .14) !important; }
+.fc-menu-correo {
+    padding: .5rem .8rem .6rem;
+    color: var(--fc-muted);
+    font-size: .76rem;
+    border-bottom: var(--fc-borde);
+    margin-bottom: .3rem;
+    overflow-wrap: anywhere;
+}
+
+/* Quien pidio menos movimiento no recibe ninguno de los nuevos. */
+@media (prefers-reduced-motion: reduce) {
+    .fc-tab, .fc-tab-koda .fc-tab-burbuja, .fc-hoja-item,
+    .fc-feature-card, .btn, .fc-cuenta-btn { transition: none !important; }
+    .fc-feature-card:hover, .btn:hover { transform: none !important; }
+}
+
+
+/* ---- La rutina, en tarjetas cuando la pantalla es angosta ----
+   Cinco columnas en 390px quedan ilegibles: la de notas se cortaba y el nombre
+   del ejercicio se partia en tres lineas. En movil cada fila pasa a ser una
+   tarjeta con la miniatura arriba a la izquierda y los datos como etiquetas. */
+@media (max-width: 767.98px) {
+    .fc-tabla-rutina thead { display: none; }
+
+    .fc-tabla-rutina,
+    .fc-tabla-rutina tbody,
+    .fc-tabla-rutina tr { display: block; width: 100%; }
+    .fc-tabla-rutina td { display: block; }
+
+    .fc-tabla-rutina tr {
+        position: relative;
+        padding: .9rem 1rem .9rem 5.25rem;
+        min-height: 84px;
+        border-bottom: var(--fc-borde) !important;
+        border-left-width: 3px !important;
+    }
+
+    .fc-tabla-rutina td {
+        border: none !important;
+        padding: 0 !important;
+        text-align: left !important;
+    }
+
+    /* La miniatura se ancla arriba a la izquierda; el texto respira al lado. */
+    .fc-tabla-rutina td:first-child {
+        position: absolute;
+        left: 1rem;
+        top: .9rem;
+        width: 56px;
+    }
+    .fc-tabla-rutina td:first-child img { width: 56px !important; height: 56px !important; }
+
+    .fc-tabla-rutina td:nth-child(2) { font-size: .95rem; line-height: 1.35; margin-bottom: .45rem; }
+
+    /* Series y reps van juntas, como dos datos chicos en linea.
+       width auto a proposito: un inline-flex al 100% ocupa el renglon entero. */
+    .fc-celda-dato {
+        display: inline-flex !important;
+        width: auto !important;
+        align-items: baseline;
+        gap: .3rem;
+        margin-right: 1.25rem;
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+    }
+    .fc-celda-dato::before {
+        content: attr(data-etiqueta);
+        font-size: .62rem;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        color: var(--fc-muted);
+        font-weight: 600;
+    }
+
+    /* Las notas solo aparecen si dicen algo: un guion suelto es ruido. */
+    .fc-celda-notas { margin-top: .5rem; }
+    .fc-celda-notas:not(:empty)::before {
+        content: attr(data-etiqueta);
+        display: block;
+        font-size: .62rem;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        color: var(--fc-muted);
+        margin-bottom: .1rem;
+    }
+
+    /* Los enlaces de accion se separan del nombre para no tocarlos sin querer. */
+    .fc-tabla-rutina .fc-ver-ejercicio,
+    .fc-tabla-rutina .fc-cambiar-ejercicio {
+        display: inline-flex;
+        align-items: center;
+        gap: .25rem;
+        margin: .4rem .75rem 0 0 !important;
+        min-height: 32px;
+    }
+}
+
+
+/* ---- Cabecera de cada dia de la rutina ----
+   Antes el dia, el enfoque y la cuenta iban sueltos en el boton y a poco ancho se
+   encimaban ("Lunes— Torso Fuerza" partido en dos renglones). Ahora son tres
+   piezas de un flex: icono, texto que puede crecer, y la cuenta anclada al final. */
+.fc-dia-boton {
+    display: flex !important;
+    align-items: center;
+    gap: .75rem;
+}
+
+.fc-dia-boton > i { flex-shrink: 0; opacity: .85; }
+
+.fc-dia-texto {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: .1rem .5rem;
+    min-width: 0;
+    flex: 1 1 auto;
+    text-align: left;
+}
+
+.fc-dia-enfoque { color: var(--fc-muted); font-weight: 500; font-size: .92em; }
+.accordion-button:not(.collapsed) .fc-dia-enfoque { color: rgba(255, 255, 255, .82); }
+
+.fc-dia-cuenta { flex-shrink: 0; margin-left: auto; }
+
+/* Un icono de calendario y el numero alcanzan: la palabra sobra en pantalla chica. */
+@media (max-width: 575.98px) {
+    .fc-dia-cuenta-palabra { display: none; }
+    .fc-dia-texto { flex-direction: column; gap: 0; }
+    .fc-dia-boton { gap: .6rem; }
+}
+
+
+/* ---- Afinado de la barra de escritorio ----
+   Los rotulos se partian en dos renglones ("Koda / IA") al quedar justos de
+   ancho, y el correo salia subrayado como un enlace suelto. */
+.fc-nav-link, .fc-nav-cta, .fc-cuenta-btn { white-space: nowrap; }
+.fc-cuenta-btn, .fc-cuenta-btn:hover, .fc-cuenta-btn:focus { text-decoration: none !important; }
+
+/* ---- Koda en las cabeceras ----
+   El sprite del inicio ocupaba casi mil pixeles de alto en el telefono: se veia
+   imponente en escritorio y volvia interminable el scroll en movil. */
+@media (max-width: 767.98px) {
+    .fc-wolf-hero, .fc-wolf-img { max-width: 190px; margin-inline: auto; }
+    .fc-hero-wolf-col { padding: .5rem; }
+    .fc-hero-section { margin-bottom: 1rem; }
+}
+
+/* ---- Hoja "Mas": mas aire en pantallas muy chicas ---- */
+@media (max-width: 359.98px) {
+    .fc-hoja-rejilla { grid-template-columns: repeat(2, 1fr); }
+    .fc-tab span { font-size: .58rem; }
+}
+
+
+/* ---- Campos con boton pegado (ver contrasena, buscador) ----
+   Al redondear campos y botones por separado, el grupo quedaba partido en dos
+   cajas sueltas. Se redondea el conjunto y se aplanan los lados que se tocan. */
+.input-group > .form-control:not(:last-child),
+.input-group > .form-select:not(:last-child) {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-right: none !important;
+}
+
+.input-group > .btn:not(:first-child) {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-top-right-radius: var(--fc-r-sm) !important;
+    border-bottom-right-radius: var(--fc-r-sm) !important;
+}
+
+/* El boton del ojo acompana al campo, no compite con el boton principal. */
+.input-group .btn-outline-secondary {
+    background: var(--fc-inset) !important;
+    border: var(--fc-borde-fuerte) !important;
+    border-left: none !important;
+    color: var(--fc-muted) !important;
+    box-shadow: none !important;
+    padding-inline: .9rem !important;
+}
+.input-group .btn-outline-secondary:hover {
+    background: rgba(var(--fc-primary-rgb), .12) !important;
+    color: var(--fc-primary-texto) !important;
+}
+
+/* La casilla de "recordarme" seguia cuadrada y grande junto a todo lo redondeado. */
+.form-check-input {
+    background-color: var(--fc-inset) !important;
+    border: var(--fc-borde-fuerte) !important;
+    border-radius: var(--fc-r-xs) !important;
+}
+.form-check-input:checked {
+    background-color: var(--fc-primary) !important;
+    border-color: var(--fc-primary) !important;
+}
+.form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(var(--fc-primary-rgb), .22) !important;
+    border-color: var(--fc-primary) !important;
+}

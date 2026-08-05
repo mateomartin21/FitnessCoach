@@ -363,5 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 appsettings.json
 
-# Guion personal de la presentacion: no va al repositorio.
+# Guiones personales: no van al repositorio.
 docs/presentacion-final.md
+docs/guion-video.md
