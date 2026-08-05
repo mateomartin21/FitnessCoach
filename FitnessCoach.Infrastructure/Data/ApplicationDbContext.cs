@@ -1,5 +1,6 @@
 using FitnessCoach.Domain.Models;
 using FitnessCoach.Domain.Models.Alimentacion;
+using FitnessCoach.Domain.Models.Coaching;
 using FitnessCoach.Domain.Models.Entrenamiento;
 using FitnessCoach.Domain.Models.Objetivos;
 using FitnessCoach.Infrastructure.Identity;
@@ -67,10 +68,38 @@ namespace FitnessCoach.Infrastructure.Data
         public DbSet<UsuarioPerfil> UsuariosPerfil => Set<UsuarioPerfil>();
         public DbSet<Ejercicio> Ejercicios => Set<Ejercicio>();
         public DbSet<Alimento> Alimentos => Set<Alimento>();
+        public DbSet<MensajeCoach> MensajesCoach => Set<MensajeCoach>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            // Entidad suelta, no coleccion owned del perfil: asi la charla se lee solo
+            // al abrir el chat y no en cada pantalla de la app.
+            builder.Entity<MensajeCoach>(mensaje =>
+            {
+                mensaje.HasKey(m => m.Id);
+
+                mensaje.Property(m => m.Fecha)
+                    .HasConversion(
+                        fecha => fecha,
+                        fecha => DateTime.SpecifyKind(fecha, DateTimeKind.Utc));
+
+                mensaje.Property(m => m.Texto).HasMaxLength(MensajeCoach.TextoLargoMaximo);
+
+                // Siempre se pide "los ultimos N de este usuario, en orden". Sin el indice
+                // es un escaneo de la tabla entera en cada carga del chat.
+                mensaje.HasIndex(m => new { m.UsuarioPerfilId, m.Id });
+
+                // Al borrar el perfil se va la charla con el: sin la FK quedarian filas
+                // huerfanas de un usuario que ya no existe.
+                mensaje.HasOne<UsuarioPerfil>()
+                    .WithMany()
+                    .HasForeignKey(m => m.UsuarioPerfilId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                mensaje.ToTable("MensajesCoach");
+            });
 
             builder.Entity<UsuarioPerfil>(entity =>
             {

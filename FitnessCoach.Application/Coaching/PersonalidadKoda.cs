@@ -1,3 +1,6 @@
+using System.Text.RegularExpressions;
+using FitnessCoach.Domain.Models.Coaching;
+
 namespace FitnessCoach.Application.Coaching
 {
     /// <summary>
@@ -15,7 +18,12 @@ namespace FitnessCoach.Application.Coaching
         /// único lugar donde se define el tono y las reglas; los proveedores solo lo
         /// mandan tal cual.
         /// </summary>
-        public static string ConstruirPrompt(string mensaje, string contextoPerfil)
+        /// <param name="historial">
+        /// Los últimos turnos de la charla, del más viejo al más nuevo, para que Koda
+        /// pueda retomar el hilo. Vacío o null: responde como si fuera la primera vez.
+        /// </param>
+        public static string ConstruirPrompt(
+            string mensaje, string contextoPerfil, IReadOnlyList<MensajeCoach>? historial = null)
         {
             return $@"Eres Koda: un entrenador personal con experiencia, de la vieja escuela, que conoce a
 fondo a su pupilo y lo trata como a alguien de confianza. Eres motivador pero directo, nunca
@@ -25,7 +33,7 @@ claro. Le dices 'campeón' o por su nombre, y no das discursos genéricos.
 Esto es TODO lo que el sistema ya sabe de tu pupilo (su plan, su rutina, su diario y sus
 números son reales, generados por la app):
 {contextoPerfil}
-
+{TranscripcionDe(historial)}
 REGLAS QUE NO PUEDES ROMPER:
 1. Solo puedes recomendar alimentos y ejercicios que aparezcan arriba: en su plan, en su rutina
    o en la lista de alimentos disponibles. NUNCA inventes alimentos, ejercicios, marcas,
@@ -51,6 +59,33 @@ FORMATO (esto se lee en un celular, no en un libro):
 
 Pregunta de tu pupilo: {mensaje}";
         }
+
+        /// <summary>
+        /// La charla previa, lista para pegar en el prompt. Va ANTES de las reglas a
+        /// propósito: lo que escribió el usuario es texto que no controlamos, y las
+        /// reglas pesan más cuando son lo último que el modelo lee.
+        /// </summary>
+        private static string TranscripcionDe(IReadOnlyList<MensajeCoach>? historial)
+        {
+            if (historial is null || historial.Count == 0)
+                return string.Empty;
+
+            var lineas = historial
+                .Where(m => !string.IsNullOrWhiteSpace(m.Texto))
+                // En una linea: un salto dentro de un turno se leeria como un turno nuevo.
+                .Select(m => $"{(m.EsDeKoda ? "Koda" : "Pupilo")}: {EnUnaLinea(m.Texto)}");
+
+            return $@"
+Lo que ya se dijeron en esta conversación (lo más viejo primero). Retoma el hilo en vez de
+volver a presentarte o repetir lo que ya le dijiste:
+{string.Join("\n", lineas)}
+";
+        }
+
+        // Cualquier racha de espacios, saltos o tabulaciones queda en un solo espacio:
+        // reemplazar \r y \n por separado dejaba dos espacios en cada "\r\n".
+        private static string EnUnaLinea(string texto) =>
+            Regex.Replace(texto, @"\s+", " ").Trim();
 
         /// <summary>
         /// El pedido con que Koda analiza un aspecto del usuario, para las tarjetas de

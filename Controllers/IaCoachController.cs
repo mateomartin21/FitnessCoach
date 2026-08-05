@@ -1,5 +1,6 @@
 using FitnessCoach.Application.Coaching;
 using FitnessCoach.Application.Services;
+using FitnessCoach.Domain.Models.Coaching;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -13,17 +14,30 @@ namespace FitnessCoach.Controllers
         private readonly IServicioPerfilUsuario _perfiles;
         private readonly ICoachIA _coach;
         private readonly IArmadorContextoCoach _contexto;
+        private readonly IServicioConversacion _conversacion;
 
-        public IaCoachController(IServicioPerfilUsuario perfiles, ICoachIA coach, IArmadorContextoCoach contexto)
+        public IaCoachController(
+            IServicioPerfilUsuario perfiles,
+            ICoachIA coach,
+            IArmadorContextoCoach contexto,
+            IServicioConversacion conversacion)
         {
             _perfiles = perfiles;
             _coach = coach;
             _contexto = contexto;
+            _conversacion = conversacion;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var usuario = _perfiles.Obtener(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            // Sin perfil todavia no hay conversacion que mostrar; el chat igual funciona.
+            var historial = usuario is null
+                ? Array.Empty<MensajeCoach>()
+                : _conversacion.Historial(usuario.Id).ToArray();
+
+            return View(historial);
         }
 
         [HttpPost]
@@ -42,10 +56,32 @@ namespace FitnessCoach.Controllers
                 ? "El usuario todavía no configuró su perfil."
                 : _contexto.Construir(usuario);
 
+            // Los ultimos turnos van en el prompt: sin esto Koda contesta cada mensaje
+            // como si fuera el primero, aunque la charla siga en pantalla.
+            var memoria = usuario is null ? null : _conversacion.Memoria(usuario.Id);
+
             // La cadena siempre devuelve algo: si la IA falló, viene la respuesta del Lobo
             // en modo sin conexión, nunca un error. El controlador ya no distingue casos.
-            var respuesta = await _coach.ConsultarAsync(request.Mensaje, contexto);
+            var respuesta = await _coach.ConsultarAsync(request.Mensaje, contexto, memoria);
+
+            // Se guarda incluso la respuesta degradada: al recargar, la charla tiene que
+            // verse igual que antes de recargar, sin huecos.
+            if (usuario is not null)
+                _conversacion.RegistrarIntercambio(usuario.Id, request.Mensaje, respuesta.Texto);
+
             return Ok(new { respuesta = respuesta.Texto, degradada = respuesta.EsDegradada });
+        }
+
+        /// <summary>Empezar la charla de cero. La conversación es del usuario y puede borrarla.</summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Borrar()
+        {
+            var usuario = _perfiles.Obtener(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            if (usuario is not null)
+                _conversacion.Borrar(usuario.Id);
+
+            return RedirectToAction(nameof(Index));
         }
 
         /// <summary>
