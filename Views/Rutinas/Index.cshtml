@@ -10,7 +10,7 @@
          style="height:130px; width:auto; image-rendering:pixelated;" />
     <div>
         <h2 class="fw-bold mb-1" style="color:var(--fc-primary-texto);">@Model.NombreRutina</h2>
-        <span class="badge px-3 py-2" style="background:var(--fc-primary); font-size:0.9rem;">@Model.Nivel</span>
+        <span class="badge px-3 py-2" style="background:var(--fc-primary-fuerte); font-size:0.9rem;">@Model.Nivel</span>
         <p class="text-muted mt-2 mb-0 small">Incluye calentamiento y enfriamiento automáticos en cada día.</p>
     </div>
 </div>
@@ -81,21 +81,21 @@
                                     var gif = medios.FirstOrDefault(m => m.Tipo == TipoMedio.Gif).Url;
                                     var busqueda = medios.First(m => m.Tipo == TipoMedio.EnlaceBusqueda).Url;
 
-                                    <tr style="@(isWarmup ? "border-left: 3px solid var(--fc-proteina);" : isCooldown ? "border-left: 3px solid var(--fc-grasas);" : "border-left: 3px solid var(--fc-primary);")">
+                                    <tr style="@(isWarmup ? "border-left: 3px solid var(--fc-proteina);" : isCooldown ? "border-left: 3px solid var(--fc-analisis);" : "border-left: 3px solid var(--fc-primary);")">
                                         <td class="ps-3">
                                             @if (esDelCatalogo)
                                             {
                                                 <img src="@(gif ?? FabricaMediosEjercicio.RutaPlaceholder)"
                                                      alt="@ej.Nombre"
                                                      loading="lazy"
-                                                     class="rounded"
-                                                     style="width:56px; height:56px; object-fit:cover; background:var(--fc-anidado);"
+                                                     class="fc-gif-ejercicio"
+                                                     style="background:var(--fc-anidado);"
                                                      onerror="this.onerror=null; this.src='@FabricaMediosEjercicio.RutaPlaceholder';" />
                                             }
                                         </td>
                                         <td class="fw-bold">
                                             @if (isWarmup) { <i class="fas fa-wind me-1" style="color:var(--fc-proteina);" aria-hidden="true"></i> }
-                                            else if (isCooldown) { <i class="fas fa-snowflake me-1" style="color:var(--fc-grasas);" aria-hidden="true"></i> }
+                                            else if (isCooldown) { <i class="fas fa-snowflake me-1" style="color:var(--fc-analisis);" aria-hidden="true"></i> }
                                             else { <i class="fas fa-bolt me-1" style="color:var(--fc-primary-texto);" aria-hidden="true"></i> }
                                             @ej.Nombre
                                             @if (esDelCatalogo)
@@ -166,7 +166,7 @@
                 <div class="row g-4">
                     <div class="col-md-6">
                         <div id="modalEjercicioMedio" class="rounded overflow-hidden"
-                             style="background:var(--fc-anidado); min-height:220px; display:flex; align-items:center; justify-content:center;">
+                             style="background:var(--fc-anidado); min-height:320px; display:flex; align-items:center; justify-content:center;">
                         </div>
                         <div class="mt-2 d-flex gap-2 flex-wrap">
                             <span class="badge bg-secondary" id="modalEjercicioGrupo"></span>

@@ -51,6 +51,12 @@
     --fc-primary-texto: #5b8cff;
     --fc-primary-rgb: 47, 107, 255;
 
+    /* Version para RELLENOS que llevan texto blanco encima. El primario da 4.50:1
+       con blanco, o sea justo en el limite de AA y del lado malo del redondeo.
+       Este da 5.91:1 y esta a dE 9 del primario: se sigue leyendo como el mismo
+       azul de marca, pero el texto encima se lee de verdad. */
+    --fc-primary-fuerte: #2558e0;
+
     /* Terreno */
     --fc-bg: #0b1120;
     --fc-dark: #0b1120;
@@ -73,11 +79,18 @@
     --fc-analisis: #9b6dff;
     --fc-reco: #16c8b4;
 
+    /* Acento calido. A la paleta le faltaba: todo lo tibio era dorado o ambar, y
+       tres de los cuatro colores de la fila de macros caian en la familia
+       azul-violeta. Da 7.77:1 sobre el fondo y esta a dE 26 del rojo mas cercano. */
+    --fc-coral: #ff8360;
+
     /* Macros: un color fijo por nutriente, el mismo en el plan, el diario y el
-       resumen. Antes cada vista repetia su propio hex y no siempre coincidian. */
+       resumen. Antes cada vista repetia su propio hex y no siempre coincidian.
+       Grasas paso de violeta a coral: con el violeta, el par mas parecido de la
+       fila estaba a dE 19 (kcal vs grasas); ahora el peor par esta a dE 55. */
     --fc-proteina: #35c8e8;
     --fc-carbos: #ffcf3f;
-    --fc-grasas: #a78bfa;
+    --fc-grasas: var(--fc-coral);
 
     /* Superficie de un bloque anidado. Es un tono, no una caja con borde: un
        recuadro dentro de otro recuadro es lo que hace que la pantalla se lea
@@ -180,12 +193,12 @@ h1, h2, h3, h4, h5, h6 {
 /* CTA de Koda (IA), separado del resto de la navegación */
 .fc-nav-cta {
     display: inline-flex; align-items: center; gap: 7px;
-    color: #fff !important; background: var(--fc-primary) !important;
+    color: #fff !important; background: var(--fc-primary-fuerte) !important;
     border: none !important; border-radius: var(--fc-r-pill) !important; box-shadow: var(--fc-sombra-azul);
     padding: 0.35rem 0.8rem !important; font-weight: 700 !important; font-size: 0.85rem !important;
     text-decoration: none; transition: transform .05s, box-shadow .05s, background .1s;
 }
-.fc-nav-cta:hover { color: #fff !important; background: var(--fc-primary-2) !important; }
+.fc-nav-cta:hover { color: #fff !important; background: var(--fc-primary) !important; }
 .fc-nav-cta:active { transform: scale(.96); }
 .fc-nav-cta-koda {
     height: 26px; width: 26px; object-fit: contain; object-position: top;
@@ -257,7 +270,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ---------- BOTONES (8-bit: sombra dura, se hunden al presionar) ---------- */
 .fc-btn-primary, .btn-primary {
-    background: var(--fc-primary) !important;
+    background: var(--fc-primary-fuerte) !important;
     color: #fff !important;
     border: none !important;
     box-shadow: var(--fc-sombra-azul) !important;
@@ -266,7 +279,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 700 !important;
     transition: transform var(--fc-transicion), box-shadow var(--fc-transicion), background var(--fc-transicion) !important;
 }
-.fc-btn-primary:hover, .btn-primary:hover { background: #4880ff !important; transform: translateY(-1px); box-shadow: 0 8px 26px rgba(var(--fc-primary-rgb), .45) !important; }
+.fc-btn-primary:hover, .btn-primary:hover { background: var(--fc-primary) !important; transform: translateY(-1px); box-shadow: 0 8px 26px rgba(var(--fc-primary-rgb), .45) !important; }
 .fc-btn-primary:active, .btn-primary:active { transform: scale(.97); box-shadow: var(--fc-sombra-1) !important; }
 
 .fc-btn-outline, .btn-outline-light {
@@ -321,12 +334,19 @@ h1, h2, h3, h4, h5, h6 {
 .accordion-item { background: var(--fc-card) !important; border: var(--fc-borde) !important; margin-bottom: 0.75rem; border-radius: var(--fc-r-md) !important; overflow: hidden; box-shadow: var(--fc-sombra-1); }
 .accordion-button { background: var(--fc-panel-2) !important; color: var(--fc-text) !important; font-weight: 600 !important; border-radius: 0 !important; padding: 1rem 1.15rem !important; }
 .accordion-button:focus { box-shadow: none !important; }
-.accordion-button:not(.collapsed) { background: var(--fc-primary) !important; color: #fff !important; }
+.accordion-button:not(.collapsed) { background: var(--fc-primary-fuerte) !important; color: #fff !important; }
 .accordion-button::after { filter: invert(1); }
 .accordion-body { background: var(--fc-card) !important; padding: 0 !important; }
 
 /* ---------- BADGE ---------- */
 .badge { border-radius: var(--fc-r-pill) !important; padding: .38em .8em !important; font-weight: 600 !important; }
+
+/* Pastilla de color solido. El texto va en la tinta oscura, NO en blanco: los
+   acentos son claros y el blanco encima daba 2.00:1 en el verde y 1.47:1 en el
+   dorado, o sea una mancha de color con algo escrito adentro. Con la tinta suben
+   a 9.41:1 y 12.78:1. */
+.fc-badge-solido { color: var(--fc-ink) !important; font-weight: 700 !important; }
+.fc-badge-solido i { color: inherit; }
 
 /* ---------- FOOTER ---------- */
 .fc-footer { background: var(--fc-card) !important; border-top: var(--fc-borde) !important; }
@@ -382,7 +402,7 @@ h1, h2, h3, h4, h5, h6 {
     top: 0;
     z-index: 1080;
     padding: 0.6rem 1rem;
-    background: var(--fc-primary);
+    background: var(--fc-primary-fuerte);
     color: #fff;
     border: var(--px) solid var(--fc-text);
     text-decoration: none;
@@ -736,13 +756,42 @@ summary:focus-visible {
 .fc-alt-texto { flex: 1 1 auto; min-width: 0; }
 .fc-alt-texto .fc-equipo-titulo { overflow-wrap: anywhere; }
 
+/* Los GIFs vienen a 360px de lado y las fotos de alimento a 500. Se estaban
+   mostrando a 56 y a 40: entre 6 y 12 veces mas chicas que el archivo que ya se
+   descarga. Agrandarlas no cuesta un byte mas y es lo que hace que se entienda
+   el ejercicio sin abrir el modal. */
 .fc-alt-gif {
-    width: 64px;
-    height: 64px;
+    width: 96px;
+    height: 96px;
     object-fit: cover;
+    border-radius: var(--fc-r-sm);
     background: var(--fc-inset);
     flex-shrink: 0;
-    border: 1px solid var(--fc-border);
+    border: var(--fc-borde);
+}
+
+.fc-gif-ejercicio {
+    width: 88px;
+    height: 88px;
+    object-fit: cover;
+    border-radius: var(--fc-r-sm);
+    flex-shrink: 0;
+}
+
+.fc-foto-alimento {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: var(--fc-r-sm);
+}
+
+/* La sangria de las alternativas seguia al ancho de la miniatura vieja. */
+.fc-alternativas { margin-left: calc(72px + .75rem); }
+
+@media (max-width: 575.98px) {
+    .fc-foto-alimento { width: 60px; height: 60px; line-height: 60px !important; }
+    .fc-alternativas { margin-left: calc(60px + .75rem); }
+    .fc-alt-gif { width: 76px; height: 76px; }
 }
 
 .fc-alt-buscador { display: flex; gap: .5rem; flex-wrap: wrap; }
@@ -959,7 +1008,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
 .fc-cuenta-avatar {
     width: 30px; height: 30px; flex-shrink: 0;
     border-radius: var(--fc-r-pill);
-    background: var(--fc-primary);
+    background: var(--fc-primary-fuerte);
     display: flex; align-items: center; justify-content: center;
     color: #fff; font-size: .78rem; font-weight: 700;
 }
@@ -1017,8 +1066,10 @@ html, body { max-width: 100%; overflow-x: hidden; }
 
     .fc-tabla-rutina tr {
         position: relative;
-        padding: .9rem 1rem .9rem 5.25rem;
-        min-height: 84px;
+        /* La sangria izquierda es el ancho de la miniatura mas el aire: si crece
+           una, crece la otra o el texto se le monta encima. */
+        padding: .9rem 1rem .9rem 6.5rem;
+        min-height: 104px;
         border-bottom: var(--fc-borde) !important;
         border-left-width: 3px !important;
     }
@@ -1034,9 +1085,9 @@ html, body { max-width: 100%; overflow-x: hidden; }
         position: absolute;
         left: 1rem;
         top: .9rem;
-        width: 56px;
+        width: 76px;
     }
-    .fc-tabla-rutina td:first-child img { width: 56px !important; height: 56px !important; }
+    .fc-tabla-rutina td:first-child img { width: 76px !important; height: 76px !important; }
 
     .fc-tabla-rutina td:nth-child(2) { font-size: .95rem; line-height: 1.35; margin-bottom: .45rem; }
 
@@ -1177,7 +1228,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
 }
 
 .fc-dia-enfoque { color: var(--fc-muted); font-weight: 500; font-size: .92em; }
-.accordion-button:not(.collapsed) .fc-dia-enfoque { color: rgba(255, 255, 255, .82); }
+.accordion-button:not(.collapsed) .fc-dia-enfoque { color: rgba(255, 255, 255, .95); }
 
 .fc-dia-cuenta { flex-shrink: 0; margin-left: auto; }
 
