@@ -73,6 +73,19 @@
     --fc-analisis: #9b6dff;
     --fc-reco: #16c8b4;
 
+    /* Macros: un color fijo por nutriente, el mismo en el plan, el diario y el
+       resumen. Antes cada vista repetia su propio hex y no siempre coincidian. */
+    --fc-proteina: #35c8e8;
+    --fc-carbos: #ffcf3f;
+    --fc-grasas: #a78bfa;
+
+    /* Superficie de un bloque anidado. Es un tono, no una caja con borde: un
+       recuadro dentro de otro recuadro es lo que hace que la pantalla se lea
+       como una reja. Se apoya solo en el color y el radio. */
+    --fc-anidado: rgba(255, 255, 255, .04);
+    --fc-anidado-fuerte: rgba(255, 255, 255, .07);
+    --fc-separador: 1px solid rgba(255, 255, 255, .06);
+
     /* Tipografia: tres roles.
        pixel = marca y datos cortos · ui = interfaz (titulos, navegacion, botones,
        numeros) · body = texto largo, donde manda la legibilidad. */
@@ -129,7 +142,7 @@ body {
    El texto largo se queda en la fuente de sistema, que es la que mejor se lee en
    parrafos. Tomorrow es angosta, asi que los titulos aguantan 700 sin verse pesados. */
 h1, h2, h3, h4, h5, h6,
-.fc-nav-link, .fc-nav-cta, .fc-user-chip, .fc-logout,
+.fc-nav-link, .fc-nav-cta, .fc-cuenta-btn,
 .btn, .form-label, .fc-foot-head, .fc-chip,
 .fc-stat-num, .display-4, th, .badge {
     font-family: var(--fc-font-ui) !important;
@@ -159,7 +172,6 @@ h1, h2, h3, h4, h5, h6 {
 .fc-brand-text { letter-spacing: 0; }
 .fc-nav-link { color: var(--fc-muted) !important; font-size: 0.85rem !important; padding: 0.5rem 0.85rem !important; border: 1px solid transparent !important; border-radius: var(--fc-r-pill) !important; transition: color var(--fc-transicion), background var(--fc-transicion) !important; }
 .fc-nav-link:hover { color: var(--fc-primary-2) !important; background: rgba(var(--fc-primary-rgb), .10) !important; border-color: transparent !important; }
-.fc-nav-highlight { background: rgba(var(--fc-primary-rgb),0.12) !important; color: var(--fc-primary-texto) !important; }
 .fc-toggler { border: none !important; background: transparent !important; }
 
 /* Seccion activa: resalta dónde estás parado */
@@ -180,13 +192,6 @@ h1, h2, h3, h4, h5, h6 {
     image-rendering: pixelated; flex-shrink: 0; margin: -4px 0;
     filter: drop-shadow(0 0 3px rgba(255,255,255,.35));
 }
-
-/* Bloque de cuenta */
-.fc-nav-sep { width: var(--px); height: 24px; align-self: center; background: var(--fc-border); margin: 0 6px; }
-.fc-user-chip { display: inline-flex; align-items: center; gap: 6px; color: var(--fc-text) !important; font-size: 0.82rem; padding: 0.35rem 0.75rem; border: var(--fc-borde); border-radius: var(--fc-r-pill); background: var(--fc-inset); }
-.fc-user-chip-correo { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.fc-logout { color: var(--fc-muted) !important; background: transparent !important; border: none !important; box-shadow: none !important; font-size: 0.82rem; padding: 0.35rem 0.6rem !important; }
-.fc-logout:hover { color: var(--fc-descanso) !important; }
 
 /* Footer estructurado */
 .fc-foot-head { font-size: 0.68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--fc-muted); font-weight: 700; margin-bottom: 12px; }
@@ -333,9 +338,6 @@ h1, h2, h3, h4, h5, h6 {
 .display-4 { color: var(--fc-primary-texto) !important; }
 .btn-warning { color: #fff !important; }
 
-#chat-box::-webkit-scrollbar { width: 8px; }
-#chat-box::-webkit-scrollbar-thumb { background: var(--fc-border); border-radius: var(--fc-r-pill); }
-
 /* Logos monocromos recoloreados a azul (placeholder hasta los assets pixel definitivos) */
 .fc-navbar-logo { height: 34px; width: auto; filter: brightness(0) saturate(100%) invert(34%) sepia(96%) saturate(1900%) hue-rotate(212deg) brightness(101%) contrast(101%); }
 .fc-footer-logo { height: 32px; width: auto; filter: brightness(0) saturate(100%) invert(34%) sepia(96%) saturate(1900%) hue-rotate(212deg) brightness(101%) contrast(101%); }
@@ -360,8 +362,6 @@ h1, h2, h3, h4, h5, h6 {
 .fc-msg-bubble-user { background: var(--fc-primary); color: #fff; border: none; border-bottom-right-radius: var(--fc-r-xs); }
 .fc-chip { background: var(--fc-inset); border: var(--fc-borde-fuerte); color: var(--fc-muted); font-size: 0.78rem; border-radius: var(--fc-r-pill); padding: 6px 14px; transition: all var(--fc-transicion); }
 .fc-chip:hover { border-color: var(--fc-primary); color: var(--fc-primary-texto); }
-
-.ai-message { border-left: 3px solid var(--fc-primary); }
 
 /* ---------- TYPING INDICATOR ---------- */
 .fc-typing { display: flex; gap: 4px; align-items: center; height: 20px; }
@@ -660,14 +660,22 @@ summary:focus-visible {
 .fc-ajuste-acciones { margin-top: auto; display: flex; flex-wrap: wrap; gap: .5rem; align-items: flex-start; }
 .fc-ajuste-acciones .btn { flex: 0 0 auto; }
 
-/* Avisos con el contorno pixel del resto de la interfaz, en vez del alert de Bootstrap. */
-.fc-alerta-ok, .fc-alerta-error {
-    border-radius: var(--fc-r-sm);
-    border: var(--fc-borde);
+/* Avisos: un tinte y una barra de color al costado, sin recuadro propio. Cada
+   vista traia su alert con hex a mano y ninguna se parecia a la otra. */
+.fc-alerta-ok, .fc-alerta-error, .fc-alerta-aviso, .fc-alerta-logro {
+    border-radius: var(--fc-r-md) !important;
+    border: none !important;
+    border-left: 3px solid transparent !important;
 }
 
-.fc-alerta-ok { background: rgba(39,209,124,0.12); border-left: var(--px) solid var(--fc-logro); color: var(--fc-logro); }
-.fc-alerta-error { background: rgba(239,70,85,0.12); border-left: var(--px) solid var(--fc-descanso); color: #ff8d97; }
+.fc-alerta-ok { background: rgba(39,209,124,0.12); border-left-color: var(--fc-logro) !important; color: #9be7c1; }
+.fc-alerta-error { background: rgba(239,70,85,0.12); border-left-color: var(--fc-descanso) !important; color: #ff8d97; }
+.fc-alerta-aviso { background: rgba(255,207,63,0.10); border-left-color: var(--fc-gold) !important; color: var(--fc-text); }
+.fc-alerta-logro {
+    background: linear-gradient(120deg, rgba(var(--fc-primary-rgb), .22), rgba(155, 109, 255, .16));
+    border-left-color: var(--fc-gold) !important;
+    color: var(--fc-text);
+}
 
 /* Equipo disponible: tarjetas marcables, mas claras que una lista de casillas sueltas. */
 .fc-equipo-rejilla {
@@ -1177,4 +1185,261 @@ html, body { max-width: 100%; overflow-x: hidden; }
 .form-check-input:focus {
     box-shadow: 0 0 0 3px rgba(var(--fc-primary-rgb), .22) !important;
     border-color: var(--fc-primary) !important;
+}
+
+
+/* ============================================================
+   MENOS CAJAS DENTRO DE CAJAS
+   Cada bloque interno traia su propio fondo Y su propio borde,
+   asi que una tarjeta con cuatro datos se veia como cinco
+   recuadros anidados. La regla ahora es una sola: la tarjeta
+   pone el borde, lo de adentro se distingue solo por el tono.
+   ============================================================ */
+
+/* Bloque de dato dentro de una tarjeta: sin borde, con aire y esquina blanda. */
+.fc-dato {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .15rem;
+    height: 100%;
+    padding: 1rem .8rem;
+    background: var(--fc-anidado);
+    border-radius: var(--fc-r-md);
+    text-align: center;
+}
+
+/* El dato que importa se destaca con color, no con un borde mas grueso. */
+.fc-dato-clave {
+    background: linear-gradient(160deg, rgba(var(--fc-primary-rgb), .24), rgba(var(--fc-primary-rgb), .07));
+}
+
+.fc-dato > i { font-size: 1.05rem; color: var(--fc-muted); margin-bottom: .2rem; }
+.fc-dato-clave > i { color: var(--fc-primary-texto); }
+
+.fc-dato-rotulo {
+    font-size: .64rem;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--fc-muted);
+    font-family: var(--fc-font-ui);
+    font-weight: 600;
+}
+
+.fc-dato-num {
+    font-family: var(--fc-font-ui);
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--fc-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.fc-dato-clave .fc-dato-num { color: var(--fc-primary-texto); }
+.fc-dato-unidad { font-size: .75rem; color: var(--fc-muted); }
+
+/* Fila de datos chicos (los macros de una comida, por ejemplo): una sola
+   superficie con separadores finos, en vez de cuatro cajitas. */
+.fc-datos-fila {
+    display: flex;
+    background: var(--fc-anidado);
+    border-radius: var(--fc-r-md);
+    overflow: hidden;
+    text-align: center;
+}
+.fc-datos-fila > * { flex: 1 1 0; min-width: 0; padding: .6rem .3rem; }
+.fc-datos-fila > * + * { border-left: var(--fc-separador); }
+.fc-datos-fila .fc-dato-num { font-size: 1.05rem; }
+.fc-datos-fila .fc-dato-rotulo { font-size: .6rem; }
+
+/* Listas de renglones: separador tenue y nada de borde alrededor. */
+.fc-filas { list-style: none; margin: 0; padding: 0; }
+.fc-filas > li { padding: .7rem 0; border-bottom: var(--fc-separador); }
+.fc-filas > li:last-child { border-bottom: none; padding-bottom: 0; }
+.fc-filas > li:first-child { padding-top: 0; }
+
+/* Vinetas de recomendacion: un tilde y texto, sin recuadro por cada linea. */
+.fc-punteo { display: flex; align-items: flex-start; gap: .55rem; padding: .35rem 0; }
+.fc-punteo > i { color: var(--fc-logro); font-size: .8rem; margin-top: .3rem; flex-shrink: 0; }
+
+/* Las barras de progreso eran cajas con borde; ahora son pastillas. */
+.progress {
+    background: var(--fc-anidado-fuerte) !important;
+    border: none !important;
+    border-radius: var(--fc-r-pill) !important;
+    overflow: hidden;
+}
+.progress-bar { border-radius: var(--fc-r-pill); }
+
+/* Los avisos seguian con la esquina viva de Bootstrap. */
+.alert { border-radius: var(--fc-r-md) !important; border: var(--fc-borde) !important; }
+
+/* .rounded de Bootstrap son 4px: junto a tarjetas de 18px se veia como un descuido. */
+.rounded { border-radius: var(--fc-r-sm) !important; }
+
+/* Una tarjeta dentro de otra no se despega al pasar el mouse: el gesto es de la
+   tarjeta de afuera, y dos elevaciones a la vez marean. */
+.fc-feature-card .fc-feature-card:hover { transform: none; }
+
+/* Estado de una tarjeta (mision cumplida, logro ganado). Se marca con un halo de
+   color y el borde propio de la tarjeta teñido, no agregando un segundo borde. */
+.fc-tarjeta-lograda {
+    border-color: rgba(39, 209, 124, .45) !important;
+    box-shadow: var(--fc-sombra-1), 0 0 0 1px rgba(39, 209, 124, .16), 0 0 26px rgba(39, 209, 124, .12);
+}
+.fc-tarjeta-dorada {
+    border-color: rgba(255, 207, 63, .45) !important;
+    box-shadow: var(--fc-sombra-1), 0 0 0 1px rgba(255, 207, 63, .16), 0 0 26px rgba(255, 207, 63, .12);
+}
+/* El logro que falta se apaga, pero sin volverlo ilegible. */
+.fc-tarjeta-pendiente { opacity: .72; }
+.fc-tarjeta-pendiente:hover { opacity: 1; }
+
+.fc-badge-xp {
+    background: var(--fc-anidado-fuerte) !important;
+    color: var(--fc-muted) !important;
+    font-weight: 600 !important;
+}
+
+
+/* ============================================================
+   COMO SE LEEN LAS RESPUESTAS DE KODA
+   El modelo devuelve parrafos, **negritas** y viñetas; koda.js
+   los convierte y esto les da ritmo. Antes llegaba todo como un
+   bloque corrido y en el telefono se volvia ilegible.
+   ============================================================ */
+
+.fc-respuesta { font-size: .93rem; line-height: 1.6; }
+.fc-respuesta > :first-child { margin-top: 0; }
+.fc-respuesta p { margin: 0 0 .7rem; }
+.fc-respuesta > :last-child { margin-bottom: 0; }
+
+/* La negrita es el ancla visual de la respuesta: se lee antes que el resto. */
+.fc-respuesta strong { color: var(--fc-primary-2); font-weight: 700; }
+.fc-respuesta em { color: var(--fc-text); font-style: italic; }
+
+.fc-respuesta-tenue { color: var(--fc-muted); }
+
+.fc-lista-koda { list-style: none; margin: 0 0 .7rem; padding: 0; }
+.fc-lista-koda li { position: relative; padding-left: 1.15rem; margin-bottom: .3rem; }
+.fc-lista-koda li:last-child { margin-bottom: 0; }
+/* Tarjeta de analisis: titulo y boton en un renglon mientras entren, apilados
+   cuando no. A 390px el titulo se partia y se metia por debajo del boton. */
+.fc-analisis-cabeza {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-bottom: .75rem;
+}
+
+.fc-analisis-titulo {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin: 0;
+    font-size: 1.05rem;
+    min-width: 0;
+    flex: 1 1 12rem;
+}
+
+.fc-analisis-cabeza .btn { flex: 0 0 auto; }
+
+@media (max-width: 575.98px) {
+    .fc-analisis-cabeza .btn { width: 100%; }
+}
+
+.fc-lista-koda li::before {
+    content: "";
+    position: absolute;
+    left: .25rem;
+    top: .6em;
+    width: 5px; height: 5px;
+    border-radius: var(--fc-r-pill);
+    background: var(--fc-primary-texto);
+}
+
+
+/* ============================================================
+   CHAT DE KODA
+   Cabecera, conversacion y caja de escribir son una sola pieza.
+   Eran tres tarjetas apiladas y se leian como tres modulos que
+   por casualidad estaban juntos.
+   ============================================================ */
+
+.fc-chat {
+    display: flex;
+    flex-direction: column;
+    background: var(--fc-card);
+    border: var(--fc-borde);
+    border-radius: var(--fc-r-lg);
+    box-shadow: var(--fc-sombra-2);
+    overflow: hidden;
+}
+
+.fc-chat-cabeza {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(180deg, rgba(var(--fc-primary-rgb), .12), transparent);
+}
+
+.fc-chat-koda { height: 68px; width: auto; image-rendering: pixelated; flex-shrink: 0; }
+.fc-chat-nombre { font-size: 1.15rem; margin: 0; color: var(--fc-primary-texto); }
+
+.fc-chat-estado {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .78rem;
+    color: var(--fc-muted);
+}
+
+.fc-punto-vivo {
+    width: 7px; height: 7px;
+    border-radius: var(--fc-r-pill);
+    background: var(--fc-logro);
+    box-shadow: 0 0 8px rgba(39, 209, 124, .8);
+    flex-shrink: 0;
+}
+
+/* El hilo se hunde respecto de la tarjeta: se distingue por profundidad, no por
+   un borde. Alto elastico para que no quede una franja fija en cualquier pantalla. */
+.fc-chat-hilo {
+    height: clamp(300px, 52vh, 520px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1.25rem;
+    background: var(--fc-inset);
+    box-shadow: inset 0 8px 12px -10px rgba(0, 0, 0, .7), inset 0 -8px 12px -10px rgba(0, 0, 0, .7);
+}
+
+.fc-chat-hilo::-webkit-scrollbar { width: 8px; }
+.fc-chat-hilo::-webkit-scrollbar-thumb { background: var(--fc-border); border-radius: var(--fc-r-pill); }
+.fc-chat-hilo::-webkit-scrollbar-track { background: transparent; }
+
+.fc-chat-pie { display: flex; flex-direction: column; gap: .7rem; padding: .9rem 1rem 1rem; }
+.fc-chat-sugerencias { display: flex; gap: .5rem; flex-wrap: wrap; }
+.fc-chat-escribir { display: flex; gap: .5rem; }
+.fc-chat-escribir .form-control { flex: 1 1 auto; border-radius: var(--fc-r-pill) !important; }
+.fc-chat-escribir .btn { flex: 0 0 auto; width: 46px; padding: 0 !important; }
+
+/* En el telefono las sugerencias se van a una sola linea que se desliza: apiladas
+   comian media pantalla y empujaban la caja de escribir fuera de vista. */
+@media (max-width: 575.98px) {
+    .fc-chat-sugerencias {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+        margin: 0 -1rem;
+        padding: 0 1rem;
+    }
+    .fc-chat-sugerencias::-webkit-scrollbar { display: none; }
+    .fc-chat-sugerencias .fc-chip { flex: 0 0 auto; }
+    .fc-chat-koda { height: 54px; }
+    .fc-chat-hilo { padding: 1rem .85rem; }
+    .fc-msg-bubble { max-width: 85%; }
 }

@@ -2,42 +2,42 @@
     ViewData["Title"] = "IA Coach";
 }
 
+@* Cabecera, conversación y caja de escribir son UNA sola superficie. Antes eran
+   tres cajas apiladas, cada una con su borde: se leía como tres módulos sueltos
+   en vez de como un chat. *@
 <div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="fc-feature-card mb-0">
-            <div class="d-flex align-items-center gap-3">
-                <img src="~/images/koda/koda-logo.png" alt="Koda" data-koda="chat" data-koda-aura class="koda-glow koda-idle koda-interactive" style="height:88px; width:auto; image-rendering:pixelated;" />
+    <div class="col-lg-8">
+        <div class="fc-chat">
+            <div class="fc-chat-cabeza">
+                <img src="~/images/koda/koda-logo.png" alt="Koda" data-koda="chat" data-koda-aura class="fc-chat-koda koda-glow koda-idle koda-interactive" />
                 <div>
-                    <h5 class="fw-bold mb-0" style="color:var(--fc-primary-texto);">Koda</h5>
-                    <small class="text-muted">Tu entrenador personal con IA</small>
-                    <div class="d-flex align-items-center gap-1 mt-1">
-                        <span style="width:8px;height:8px;border-radius:50%;background:var(--fc-logro);display:inline-block;"></span>
-                        <small style="color:var(--fc-logro); font-size:0.7rem;">En línea</small>
+                    <h1 class="fc-chat-nombre">Koda</h1>
+                    <span class="fc-chat-estado"><span class="fc-punto-vivo" aria-hidden="true"></span>En línea · ve tus datos reales</span>
+                </div>
+            </div>
+
+            <div id="chat-messages" role="log" aria-live="polite" aria-label="Conversación con Koda" class="fc-chat-hilo">
+                <div class="fc-msg fc-msg-bot mb-3">
+                    <img src="~/images/koda/koda-logo.png" alt="Koda" class="fc-msg-avatar" />
+                    <div class="fc-msg-bubble fc-msg-bubble-bot fc-respuesta">
+                        <p>Soy Koda y ya vi tu perfil, tu rutina y lo que comiste hoy.</p>
+                        <p>Pregúntame lo que sea. <strong>¿Por dónde empezamos?</strong></p>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div id="chat-messages" role="log" aria-live="polite" aria-label="Conversación con Koda" style="background:var(--fc-inset); border-left:var(--px) solid var(--fc-ink); border-right:var(--px) solid var(--fc-ink); height:460px; overflow-y:auto; padding:1.5rem;">
-            <div class="fc-msg fc-msg-bot mb-3">
-                <img src="~/images/koda/koda-logo.png" alt="Koda" class="fc-msg-avatar" />
-                <div class="fc-msg-bubble fc-msg-bubble-bot">
-                    ¡Hola! Soy Koda, tu entrenador. Tengo acceso a tu perfil y te puedo ayudar con rutinas, nutrición, técnica de ejercicios o motivación. ¿Qué necesitas hoy?
+            <div class="fc-chat-pie">
+                <div class="fc-chat-sugerencias">
+                    <button class="btn fc-chip" onclick="preguntaRapida(this)">¿Cómo va mi semana?</button>
+                    <button class="btn fc-chip" onclick="preguntaRapida(this)">¿Qué como antes de entrenar?</button>
+                    <button class="btn fc-chip" onclick="preguntaRapida(this)">Motívame</button>
                 </div>
-            </div>
-        </div>
-
-        <div class="fc-feature-card" style="border-top: var(--px) solid var(--fc-ink);">
-            <div class="d-flex gap-2">
-                <input type="text" id="user-input" class="form-control" placeholder="Escribe tu consulta a Koda..." aria-label="Tu consulta para Koda" />
-                <button id="send-btn" class="btn fc-btn-primary px-4" onclick="enviarMensaje()" aria-label="Enviar mensaje">
-                    <i class="fas fa-paper-plane" aria-hidden="true"></i>
-                </button>
-            </div>
-            <div class="d-flex gap-2 mt-2 flex-wrap">
-                <button class="btn fc-chip" onclick="preguntaRapida(this)">¿Cómo mejorar mi sentadilla?</button>
-                <button class="btn fc-chip" onclick="preguntaRapida(this)">¿Qué comer antes de entrenar?</button>
-                <button class="btn fc-chip" onclick="preguntaRapida(this)">Motívame para hoy</button>
+                <div class="fc-chat-escribir">
+                    <input type="text" id="user-input" class="form-control" placeholder="Escríbele a Koda…" aria-label="Tu consulta para Koda" autocomplete="off" />
+                    <button id="send-btn" class="btn fc-btn-primary" onclick="enviarMensaje()" aria-label="Enviar mensaje">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -84,6 +84,9 @@
         }
     }
 
+    // Ni la respuesta de la IA ni lo que escribe el usuario se interpolan crudo en
+    // innerHTML: la del bot pasa por Koda.pintar (escapa y aplica su markdown mínimo)
+    // y la del usuario por textContent, que no interpreta nada.
     function agregarMensaje(texto, tipo) {
         const container = document.getElementById('chat-messages');
         const div = document.createElement('div');
@@ -92,11 +95,14 @@
         if (tipo === 'bot') {
             div.innerHTML = `
                 <img src="/images/koda/koda-logo.png" alt="Bot" class="fc-msg-avatar" />
-                <div class="fc-msg-bubble fc-msg-bubble-bot">${texto}</div>`;
+                <div class="fc-msg-bubble fc-msg-bubble-bot fc-respuesta"></div>`;
+            const globo = div.querySelector('.fc-respuesta');
+            if (window.Koda) Koda.pintar(globo, texto); else globo.textContent = texto;
         } else {
             div.innerHTML = `
-                <div class="fc-msg-bubble fc-msg-bubble-user">${texto}</div>
+                <div class="fc-msg-bubble fc-msg-bubble-user"></div>
                 <div class="fc-msg-avatar-user"><i class="fas fa-user" aria-hidden="true"></i></div>`;
+            div.querySelector('.fc-msg-bubble-user').textContent = texto;
         }
 
         container.appendChild(div);

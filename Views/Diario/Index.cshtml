@@ -29,7 +29,7 @@
 
 @if (TempData["ErrorDiario"] is string error)
 {
-    <div class="alert mb-4" style="background:#2a1620; border:1px solid #5a2a3a; color:#e6b8c8;">
+    <div class="alert fc-alerta-error mb-4">
         <i class="fas fa-exclamation-circle me-2" aria-hidden="true"></i>@error
     </div>
 }
@@ -39,13 +39,13 @@
     <div class="d-flex justify-content-between align-items-baseline mb-2">
         <h6 class="fw-bold mb-0" style="color:var(--fc-primary-texto);">Calorías del día</h6>
         <div>
-            <span style="font-size:1.4rem; font-weight:700; color:#eee;">@r.CaloriasConsumidas</span>
+            <span style="font-size:1.4rem; font-weight:700; color:var(--fc-text);">@r.CaloriasConsumidas</span>
             <span class="text-muted">/ @r.Objetivo.Calorias kcal</span>
         </div>
     </div>
-    <div class="progress mb-1" style="height:10px; background:#0f0f1a;">
+    <div class="progress mb-1" style="height:10px;">
         <div class="progress-bar" role="progressbar"
-             style="width:@Pct(r.CaloriasConsumidas, r.Objetivo.Calorias)%; background:@(r.SePaso ? "#e06a8a" : "var(--fc-primary)");">
+             style="width:@Pct(r.CaloriasConsumidas, r.Objetivo.Calorias)%; background:@(r.SePaso ? "var(--fc-descanso)" : "var(--fc-primary)");">
         </div>
     </div>
     <div class="small text-muted mb-3">
@@ -65,14 +65,14 @@
 
     <div class="row g-2 text-center">
         @foreach (var (nombre, consumido, objetivo, color) in new[] {
-            ("Proteína", r.ProteinaConsumidaG, r.Objetivo.ProteinaG, "#00d4ff"),
-            ("Carbos", r.CarbohidratoConsumidoG, r.Objetivo.CarbohidratoG, "#ffd700"),
-            ("Grasas", r.GrasaConsumidaG, r.Objetivo.GrasaG, "#a78bfa") })
+            ("Proteína", r.ProteinaConsumidaG, r.Objetivo.ProteinaG, "var(--fc-proteina)"),
+            ("Carbos", r.CarbohidratoConsumidoG, r.Objetivo.CarbohidratoG, "var(--fc-carbos)"),
+            ("Grasas", r.GrasaConsumidaG, r.Objetivo.GrasaG, "var(--fc-grasas)") })
         {
             <div class="col-4">
                 <div class="small text-muted">@nombre</div>
                 <div style="font-weight:700; color:@color;">@consumido<span class="text-muted" style="font-weight:400;"> / @objetivo g</span></div>
-                <div class="progress mt-1" style="height:5px; background:#0f0f1a;">
+                <div class="progress mt-1" style="height:5px;">
                     <div class="progress-bar" style="width:@Pct(consumido, objetivo)%; background:@color;"></div>
                 </div>
             </div>
@@ -94,9 +94,12 @@
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="nombreComida" value="@comida.NombreComida" />
                     <input type="hidden" name="dia" value="@Model.Dia.ToString("yyyy-MM-dd")" />
+                    @* Nombre y calorias van dentro de un mismo span: en movil el boton es
+                       inline-flex y ahi el espacio entre dos hijos sueltos se pierde, asi
+                       que salia "Desayuno(551 kcal)". *@
                     <button type="submit" class="btn fc-btn-outline btn-sm">
-                        <i class="fas fa-plus me-1" aria-hidden="true"></i>@comida.NombreComida
-                        <span class="text-muted">(@comida.Calorias kcal)</span>
+                        <i class="fas fa-plus me-1" aria-hidden="true"></i>
+                        <span>@comida.NombreComida <span class="text-muted">(@comida.Calorias kcal)</span></span>
                     </button>
                 </form>
             }
@@ -149,28 +152,27 @@
     }
     else
     {
-        <ul class="list-unstyled mb-0">
+        <ul class="fc-filas mb-0">
             @foreach (var registro in r.Registros)
             {
-                <li class="d-flex justify-content-between align-items-center gap-2 py-2"
-                    style="border-bottom:1px solid var(--fc-border);">
+                <li class="d-flex justify-content-between align-items-center gap-2">
                     <div style="min-width:0;">
                         <div class="text-truncate">
-                            <span style="color:#eee;">@registro.AlimentoNombre</span>
+                            <span style="color:var(--fc-text);">@registro.AlimentoNombre</span>
                             <span class="text-muted small">· @registro.Gramos.ToString("0") g</span>
                         </div>
                         <div class="d-flex flex-wrap gap-2 mt-1" style="font-size:.72rem;">
                             <span class="text-muted">@Math.Round(registro.Calorias) kcal</span>
-                            <span style="color:#00d4ff;">P @Math.Round(registro.ProteinaG)g</span>
-                            <span style="color:#ffd700;">C @Math.Round(registro.CarbohidratoG)g</span>
-                            <span style="color:#a78bfa;">G @Math.Round(registro.GrasaG)g</span>
+                            <span style="color:var(--fc-proteina);">P @Math.Round(registro.ProteinaG)g</span>
+                            <span style="color:var(--fc-carbos);">C @Math.Round(registro.CarbohidratoG)g</span>
+                            <span style="color:var(--fc-grasas);">G @Math.Round(registro.GrasaG)g</span>
                         </div>
                     </div>
                     <form asp-action="Borrar" method="post" class="d-inline flex-shrink-0">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="id" value="@registro.Id" />
                         <input type="hidden" name="dia" value="@Model.Dia.ToString("yyyy-MM-dd")" />
-                        <button type="submit" class="btn btn-sm" style="color:#e06a8a;" title="Quitar">
+                        <button type="submit" class="btn btn-sm" style="color:var(--fc-descanso);" title="Quitar">
                             <i class="fas fa-trash-alt" aria-hidden="true"></i>
                         </button>
                     </form>

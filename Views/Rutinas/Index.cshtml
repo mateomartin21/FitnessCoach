@@ -60,7 +60,7 @@
                 <div class="accordion-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover mb-0 align-middle fc-tabla-rutina">
-                            <thead style="background:#1a1a2e;">
+                            <thead>
                                 <tr>
                                     <th scope="col" class="ps-3" style="width:70px;"></th>
                                     <th scope="col">Ejercicio</th>
@@ -81,7 +81,7 @@
                                     var gif = medios.FirstOrDefault(m => m.Tipo == TipoMedio.Gif).Url;
                                     var busqueda = medios.First(m => m.Tipo == TipoMedio.EnlaceBusqueda).Url;
 
-                                    <tr style="@(isWarmup ? "border-left: 3px solid #00d4ff;" : isCooldown ? "border-left: 3px solid #7c3aed;" : "border-left: 3px solid var(--fc-primary);")">
+                                    <tr style="@(isWarmup ? "border-left: 3px solid var(--fc-proteina);" : isCooldown ? "border-left: 3px solid var(--fc-grasas);" : "border-left: 3px solid var(--fc-primary);")">
                                         <td class="ps-3">
                                             @if (esDelCatalogo)
                                             {
@@ -89,20 +89,20 @@
                                                      alt="@ej.Nombre"
                                                      loading="lazy"
                                                      class="rounded"
-                                                     style="width:56px; height:56px; object-fit:cover; background:#0f0f1a;"
+                                                     style="width:56px; height:56px; object-fit:cover; background:var(--fc-anidado);"
                                                      onerror="this.onerror=null; this.src='@FabricaMediosEjercicio.RutaPlaceholder';" />
                                             }
                                         </td>
                                         <td class="fw-bold">
-                                            @if (isWarmup) { <i class="fas fa-wind me-1" style="color:#00d4ff;" aria-hidden="true"></i> }
-                                            else if (isCooldown) { <i class="fas fa-snowflake me-1" style="color:#7c3aed;" aria-hidden="true"></i> }
+                                            @if (isWarmup) { <i class="fas fa-wind me-1" style="color:var(--fc-proteina);" aria-hidden="true"></i> }
+                                            else if (isCooldown) { <i class="fas fa-snowflake me-1" style="color:var(--fc-grasas);" aria-hidden="true"></i> }
                                             else { <i class="fas fa-bolt me-1" style="color:var(--fc-primary-texto);" aria-hidden="true"></i> }
                                             @ej.Nombre
                                             @if (esDelCatalogo)
                                             {
                                                 <button type="button"
                                                         class="btn btn-sm btn-link p-0 ms-2 fc-ver-ejercicio"
-                                                        style="color:#00d4ff; text-decoration:none;"
+                                                        style="color:var(--fc-proteina); text-decoration:none;"
                                                         data-nombre="@ej.Nombre"
                                                         data-gif="@gif"
                                                         data-video="@ej.Ejercicio.VideoYoutubeId"
@@ -157,8 +157,8 @@
 <!-- Un solo modal reutilizable: se rellena desde los data-* del botón -->
 <div class="modal fade" id="modalEjercicio" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content" style="background:#16213e; border:1px solid #2a2a4a;">
-            <div class="modal-header" style="border-bottom:1px solid #2a2a4a;">
+        <div class="modal-content" style="background:var(--fc-anidado); border:none;">
+            <div class="modal-header" style="border-bottom:var(--fc-separador);">
                 <h5 class="modal-title" id="modalEjercicioTitulo" style="color:var(--fc-primary-texto);"></h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
@@ -166,7 +166,7 @@
                 <div class="row g-4">
                     <div class="col-md-6">
                         <div id="modalEjercicioMedio" class="rounded overflow-hidden"
-                             style="background:#0f0f1a; min-height:220px; display:flex; align-items:center; justify-content:center;">
+                             style="background:var(--fc-anidado); min-height:220px; display:flex; align-items:center; justify-content:center;">
                         </div>
                         <div class="mt-2 d-flex gap-2 flex-wrap">
                             <span class="badge bg-secondary" id="modalEjercicioGrupo"></span>
@@ -180,10 +180,10 @@
                             <i class="fab fa-youtube me-1" aria-hidden="true"></i>Ver más en YouTube
                         </a>
 
-                        <hr style="border-color:#2a2a4a;" />
+                        <hr style="border-color:var(--fc-border);" />
 
                         <h6 class="text-uppercase text-muted small">
-                            <i class="fas fa-trophy me-1" style="color:#f59e0b;" aria-hidden="true"></i>Registrar marca
+                            <i class="fas fa-trophy me-1" style="color:var(--fc-recuperar);" aria-hidden="true"></i>Registrar marca
                         </h6>
                         <form asp-controller="Progreso" asp-action="RegistrarRecord" method="post" class="row g-2">
                             <input type="hidden" name="EjercicioSlug" id="recordSlug" />

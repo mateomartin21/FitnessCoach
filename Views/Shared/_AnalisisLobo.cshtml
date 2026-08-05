@@ -3,40 +3,45 @@
     reales. El modelo es el aspecto: "progreso", "dieta", "rutina" o "semana".
     El endpoint /IaCoach/Analizar ya resuelve cada uno contra el contexto rico.
 
-    La respuesta se inserta con textContent (nunca innerHTML): es texto que viene
-    de la IA y no debe poder inyectar nada en la pagina. Los ids llevan el aspecto
-    como sufijo para que dos tarjetas en la misma pantalla no choquen.
+    La respuesta se pinta con Koda.pintar, que escapa el texto de la IA antes de
+    aplicarle su markdown minimo (parrafos y negritas): nada de lo que llegue del
+    modelo puede inyectar HTML. Los ids llevan el aspecto como sufijo para que dos
+    tarjetas en la misma pantalla no choquen.
 *@
 @model string
 @{
     var aspecto = string.IsNullOrWhiteSpace(Model) ? "progreso" : Model.ToLowerInvariant();
+    // La invitacion dice QUE se lleva el usuario, no que apriete el boton: el boton
+    // ya dice lo que hace y repetirlo era una linea de texto que nadie leia.
     var (titulo, invitacion, cargando) = aspecto switch
     {
         "dieta" => (
             "Koda revisa tu dieta",
-            "Toca el botón y Koda revisa tu plan y lo que registraste hoy.",
+            "Qué vienes comiendo bien y el ajuste que más te conviene hoy.",
             "Koda está revisando tu plan..."),
         "rutina" => (
             "Koda revisa tu rutina",
-            "Toca el botón y Koda revisa tu rutina según tu objetivo.",
+            "Si tu rutina apunta a tu objetivo, y cómo sacarle más.",
             "Koda está revisando tu rutina..."),
         "semana" => (
             "El resumen de tu semana",
-            "Toca el botón y Koda te narra cómo vas: entrenamientos, racha y peso.",
+            "Tus entrenamientos, tu racha y tu peso, contados por Koda.",
             "Koda está repasando tu semana..."),
         _ => (
             "Koda analiza tu progreso",
-            "Toca el botón y Koda revisa tus números, tus récords y lo que vienes comiendo.",
+            "Tus números, tus récords y el ajuste que más importa ahora.",
             "Koda está revisando tus números..."),
     };
     var botonId = $"btnAnalizar-{aspecto}";
     var salidaId = $"analisis-{aspecto}";
 }
 
-<div class="fc-feature-card mb-4">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <h5 class="mb-0">
-            <img src="/images/koda/koda-enfocado.png" alt="Koda" width="32" height="32" class="me-2 koda-glow-still" style="object-fit:contain; image-rendering:pixelated;" />
+@* En el telefono el titulo y el boton no entran en el mismo renglon: el titulo se
+   partia en dos y quedaba por debajo del boton. Se apilan y el boton va a lo ancho. *@
+<div class="fc-feature-card fc-analisis mb-4">
+    <div class="fc-analisis-cabeza">
+        <h5 class="fc-analisis-titulo">
+            <img src="/images/koda/koda-enfocado.png" alt="Koda" width="32" height="32" class="koda-glow-still" style="object-fit:contain; image-rendering:pixelated;" />
             @titulo
         </h5>
         <button id="@botonId" class="btn fc-btn-primary btn-sm" data-aspecto="@aspecto" data-cargando="@cargando">
@@ -44,8 +49,8 @@
         </button>
     </div>
     @* aria-live: el analisis llega por fetch y sin esto un lector de pantalla no lo anuncia. *@
-    <div id="@salidaId" class="small" role="status" aria-live="polite" style="color:#ccc; white-space:pre-line;">
-        @invitacion
+    <div id="@salidaId" class="fc-respuesta fc-respuesta-tenue" role="status" aria-live="polite">
+        <p>@invitacion</p>
     </div>
 </div>
 @Html.AntiForgeryToken()
@@ -56,9 +61,13 @@
         const salida = document.getElementById('@salidaId');
         if (!boton || !salida) return;
 
+        // Un texto suelto mientras carga y HTML formateado cuando llega la respuesta.
+        const pintar = texto => window.Koda ? Koda.pintar(salida, texto) : (salida.textContent = texto);
+
         boton.addEventListener('click', async () => {
             boton.disabled = true;
-            salida.textContent = boton.dataset.cargando;
+            pintar(boton.dataset.cargando);
+            salida.classList.add('fc-respuesta-tenue');
             try {
                 const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
                 const res = await fetch('/IaCoach/Analizar', {
@@ -67,9 +76,10 @@
                     body: JSON.stringify({ aspecto: boton.dataset.aspecto })
                 });
                 const data = await res.json();
-                salida.textContent = data.respuesta;
+                salida.classList.remove('fc-respuesta-tenue');
+                pintar(data.respuesta);
             } catch {
-                salida.textContent = 'No pude traer el análisis ahora, campeón. Prueba de nuevo en un momento.';
+                pintar('No pude traer el análisis ahora, campeón. Prueba de nuevo en un momento.');
             } finally {
                 boton.disabled = false;
             }

@@ -44,6 +44,37 @@ namespace FitnessCoach.Tests.Coaching
             Assert.Contains("SUS datos", prompt);
         }
 
+        // El formato no es cosmetico: la interfaz (koda.js) solo sabe pintar parrafos,
+        // **negritas** y viñetas con "- ". Si el prompt dejara de pedir justo eso, las
+        // respuestas volverian a llegar como un bloque corrido.
+        [Fact]
+        public void ElPromptPideParrafosCortosYNoUnBloqueCorrido()
+        {
+            var prompt = PersonalidadKoda.ConstruirPrompt("hola", "perfil");
+
+            Assert.Contains("párrafos CORTOS", prompt);
+            Assert.Contains("línea en blanco", prompt);
+        }
+
+        [Fact]
+        public void ElPromptPermiteNegritasYVinetas_PeroNadaMasDeMarkdown()
+        {
+            var prompt = PersonalidadKoda.ConstruirPrompt("hola", "perfil");
+
+            Assert.Contains("**doble asterisco**", prompt);
+            Assert.Contains("- ", prompt);
+            // Lo que la interfaz no sabe pintar sigue prohibido.
+            Assert.Contains("sin títulos", prompt);
+            Assert.Contains("sin tablas", prompt);
+        }
+
+        [Fact]
+        public void ElPedidoDeAnalisis_PideDosParrafos_PorqueLaTarjetaEsChica()
+        {
+            foreach (var aspecto in new[] { "dieta", "rutina", "semana", "progreso" })
+                Assert.Contains("2 párrafos cortos", PersonalidadKoda.PedidoDeAnalisis(aspecto));
+        }
+
         [Theory]
         [InlineData("dieta", "plan")]
         [InlineData("rutina", "rutina")]

@@ -24,10 +24,9 @@
 
 @if (logro != null)
 {
-    <div class="alert d-flex align-items-start gap-3 mb-4"
-         style="background:linear-gradient(135deg,#2a1a3e,#16213e); border:1px solid var(--fc-primary); color:#eee; white-space:pre-line;">
-        <i class="fas fa-trophy mt-1" style="color:#ffd700; font-size:1.4rem;" aria-hidden="true"></i>
-        <div>@logro <a asp-controller="Gamificacion" asp-action="Index" class="d-block small mt-1" style="color:#00d4ff;">Ver todos tus logros →</a></div>
+    <div class="alert fc-alerta-logro d-flex align-items-start gap-3 mb-4" style="white-space:pre-line;">
+        <i class="fas fa-trophy mt-1" style="color:var(--fc-gold); font-size:1.4rem;" aria-hidden="true"></i>
+        <div>@logro <a asp-controller="Gamificacion" asp-action="Index" class="d-block small mt-1" style="color:var(--fc-proteina);">Ver todos tus logros →</a></div>
     </div>
 }
 
@@ -37,37 +36,39 @@
 <partial name="_AnalisisLobo" model="@("semana")" />
 <partial name="_AnalisisLobo" model="@("progreso")" />
 
+@* Los cuatro numeros del encabezado. La racha va resaltada por color, no por un
+   borde mas grueso: cuatro recuadros con borde propio se leian como una reja. *@
 <div class="row g-3 mb-4">
     <div class="col-6 col-md-3">
-        <div class="p-3 rounded text-center h-100" style="background:linear-gradient(135deg,#1a1a2e,#16213e); border:2px solid var(--fc-primary);">
-            <i class="fas fa-fire mb-1" style="color:var(--fc-primary-texto);" aria-hidden="true"></i>
-            <small class="text-muted d-block text-uppercase" style="font-size:0.7rem;">Racha actual</small>
-            <strong class="h4 mb-0 d-block" style="color:var(--fc-primary-texto);">@Model.Rachas.Actual</strong>
-            <small class="text-muted">@(Model.Rachas.Actual == 1 ? "día" : "días")</small>
+        <div class="fc-dato fc-dato-clave">
+            <i class="fas fa-fire" aria-hidden="true"></i>
+            <span class="fc-dato-rotulo">Racha actual</span>
+            <span class="fc-dato-num">@Model.Rachas.Actual</span>
+            <span class="fc-dato-unidad">@(Model.Rachas.Actual == 1 ? "día" : "días")</span>
         </div>
     </div>
     <div class="col-6 col-md-3">
-        <div class="p-3 rounded text-center h-100" style="background:#0f0f1a; border:1px solid #2a2a4a;">
-            <i class="fas fa-trophy mb-1" style="color:#f59e0b;" aria-hidden="true"></i>
-            <small class="text-muted d-block text-uppercase" style="font-size:0.7rem;">Mejor racha</small>
-            <strong class="h4 mb-0 d-block">@Model.Rachas.MasLarga</strong>
-            <small class="text-muted">@(Model.Rachas.MasLarga == 1 ? "día" : "días")</small>
+        <div class="fc-dato">
+            <i class="fas fa-trophy" aria-hidden="true"></i>
+            <span class="fc-dato-rotulo">Mejor racha</span>
+            <span class="fc-dato-num">@Model.Rachas.MasLarga</span>
+            <span class="fc-dato-unidad">@(Model.Rachas.MasLarga == 1 ? "día" : "días")</span>
         </div>
     </div>
     <div class="col-6 col-md-3">
-        <div class="p-3 rounded text-center h-100" style="background:#0f0f1a; border:1px solid #2a2a4a;">
-            <i class="fas fa-dumbbell mb-1" style="color:#00d4ff;" aria-hidden="true"></i>
-            <small class="text-muted d-block text-uppercase" style="font-size:0.7rem;">Entrenamientos</small>
-            <strong class="h4 mb-0 d-block">@Model.Entrenamientos.Count</strong>
-            <small class="text-muted">en total</small>
+        <div class="fc-dato">
+            <i class="fas fa-dumbbell" aria-hidden="true"></i>
+            <span class="fc-dato-rotulo">Entrenamientos</span>
+            <span class="fc-dato-num">@Model.Entrenamientos.Count</span>
+            <span class="fc-dato-unidad">en total</span>
         </div>
     </div>
     <div class="col-6 col-md-3">
-        <div class="p-3 rounded text-center h-100" style="background:#0f0f1a; border:1px solid #2a2a4a;">
-            <i class="fas fa-weight-scale mb-1" style="color:#22c55e;" aria-hidden="true"></i>
-            <small class="text-muted d-block text-uppercase" style="font-size:0.7rem;">Peso actual</small>
-            <strong class="h4 mb-0 d-block">@Model.PesoActual</strong>
-            <small class="text-muted">kg</small>
+        <div class="fc-dato">
+            <i class="fas fa-weight-scale" aria-hidden="true"></i>
+            <span class="fc-dato-rotulo">Peso actual</span>
+            <span class="fc-dato-num">@Model.PesoActual</span>
+            <span class="fc-dato-unidad">kg</span>
         </div>
     </div>
 </div>
@@ -100,11 +101,11 @@
                 @if (Model.VariacionTotalKg is not null)
                 {
                     var variacion = Model.VariacionTotalKg.Value;
-                    <div class="p-3 rounded text-center mt-4" style="background:#0f0f1a; border:1px solid #2a2a4a;">
-                        <small class="text-muted d-block text-uppercase" style="font-size:0.7rem;">Variación desde el primer registro</small>
-                        <strong class="h5 mb-0 d-block mt-1" style="color:@(variacion <= 0 ? "#22c55e" : "#f59e0b");">
-                            @(variacion > 0 ? "+" : "")@variacion kg
-                        </strong>
+                    <div class="fc-dato mt-4">
+                        <span class="fc-dato-rotulo">Desde tu primer registro</span>
+                        <span class="fc-dato-num" style="color:@(variacion <= 0 ? "var(--fc-logro)" : "var(--fc-recuperar)");">
+                            @(variacion > 0 ? "+" : "")@variacion<span class="fc-dato-unidad"> kg</span>
+                        </span>
                     </div>
                 }
             </div>
@@ -113,14 +114,14 @@
 
     <div class="col-md-7">
         <div class="card shadow h-100">
-            <div class="card-header py-3" style="border-left: 4px solid #00d4ff;">
-                <h5 class="mb-0"><i class="fas fa-clock-rotate-left me-2" style="color:#00d4ff;" aria-hidden="true"></i>Historial</h5>
+            <div class="card-header py-3" style="border-left: 4px solid var(--fc-proteina);">
+                <h5 class="mb-0"><i class="fas fa-clock-rotate-left me-2" style="color:var(--fc-proteina);" aria-hidden="true"></i>Historial</h5>
             </div>
             <div class="card-body">
                 @if (!Model.TieneRegistros)
                 {
                     <div class="text-center py-5">
-                        <i class="fas fa-chart-line mb-3" style="font-size:2.5rem; color:#2a2a4a;" aria-hidden="true"></i>
+                        <i class="fas fa-chart-line mb-3" style="font-size:2.5rem; color:var(--fc-border);" aria-hidden="true"></i>
                         <p class="text-muted mb-0">Todavía no registraste ningún peso.</p>
                         <p class="text-muted small">Anota el primero y podrás seguir tu evolución aquí.</p>
                     </div>
@@ -153,7 +154,7 @@
                                             }
                                             else
                                             {
-                                                <span style="color:@(cambio <= 0 ? "#22c55e" : "#f59e0b");">
+                                                <span style="color:@(cambio <= 0 ? "var(--fc-logro)" : "var(--fc-recuperar)");">
                                                     @(cambio > 0 ? "+" : "")@cambio kg
                                                 </span>
                                             }
@@ -213,7 +214,7 @@
                         {
                             <div class="small text-muted">
                                 Define tu objetivo para ver tu rutina y poder registrar entrenamientos.
-                                <a asp-controller="Perfil" asp-action="Index" style="color:#00d4ff;">Ir a mi perfil →</a>
+                                <a asp-controller="Perfil" asp-action="Index" style="color:var(--fc-proteina);">Ir a mi perfil →</a>
                             </div>
                         }
                     </div>
@@ -237,14 +238,14 @@
 
     <div class="col-md-7">
         <div class="card shadow h-100">
-            <div class="card-header py-3" style="border-left: 4px solid #f59e0b;">
-                <h5 class="mb-0"><i class="fas fa-list-check me-2" style="color:#f59e0b;" aria-hidden="true"></i>Entrenamientos recientes</h5>
+            <div class="card-header py-3" style="border-left: 4px solid var(--fc-recuperar);">
+                <h5 class="mb-0"><i class="fas fa-list-check me-2" style="color:var(--fc-recuperar);" aria-hidden="true"></i>Entrenamientos recientes</h5>
             </div>
             <div class="card-body">
                 @if (!Model.TieneEntrenamientos)
                 {
                     <div class="text-center py-5">
-                        <i class="fas fa-dumbbell mb-3" style="font-size:2.5rem; color:#2a2a4a;" aria-hidden="true"></i>
+                        <i class="fas fa-dumbbell mb-3" style="font-size:2.5rem; color:var(--fc-border);" aria-hidden="true"></i>
                         <p class="text-muted mb-0">Todavía no marcaste ningún entrenamiento.</p>
                         <p class="text-muted small">Cada día que entrenes suma a tu racha.</p>
                     </div>
@@ -304,8 +305,8 @@
 @if (Model.TieneRecords)
 {
     <div class="card shadow mt-4">
-        <div class="card-header py-3" style="border-left: 4px solid #f59e0b;">
-            <h5 class="mb-0"><i class="fas fa-trophy me-2" style="color:#f59e0b;" aria-hidden="true"></i>Récords personales</h5>
+        <div class="card-header py-3" style="border-left: 4px solid var(--fc-recuperar);">
+            <h5 class="mb-0"><i class="fas fa-trophy me-2" style="color:var(--fc-recuperar);" aria-hidden="true"></i>Récords personales</h5>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -325,7 +326,7 @@
                             <tr>
                                 <td><strong>@record.EjercicioNombre</strong></td>
                                 <td>
-                                    <span style="color:#f59e0b;">@record.PesoKg kg</span>
+                                    <span style="color:var(--fc-recuperar);">@record.PesoKg kg</span>
                                     <span class="text-muted">× @record.Repeticiones</span>
                                 </td>
                                 <td class="small text-muted">@record.Volumen kg</td>
@@ -346,7 +347,7 @@
                 </table>
             </div>
             <p class="text-muted small mb-0 mt-3">
-                Las marcas se registran desde <a asp-controller="Rutinas" asp-action="Index" style="color:#00d4ff;">tu rutina</a>,
+                Las marcas se registran desde <a asp-controller="Rutinas" asp-action="Index" style="color:var(--fc-proteina);">tu rutina</a>,
                 en el detalle de cada ejercicio.
             </p>
         </div>
@@ -356,8 +357,8 @@
 @if (Model.PuedeGraficar)
 {
     <div class="card shadow mt-4">
-        <div class="card-header py-3" style="border-left: 4px solid #22c55e;">
-            <h5 class="mb-0"><i class="fas fa-chart-area me-2" style="color:#22c55e;" aria-hidden="true"></i>Evolución del peso</h5>
+        <div class="card-header py-3" style="border-left: 4px solid var(--fc-logro);">
+            <h5 class="mb-0"><i class="fas fa-chart-area me-2" style="color:var(--fc-logro);" aria-hidden="true"></i>Evolución del peso</h5>
         </div>
         <div class="card-body">
             <canvas id="grafica-peso" height="90"
@@ -381,8 +382,15 @@
                 const etiquetas = JSON.parse(canvas.dataset.etiquetas);
                 const pesos = JSON.parse(canvas.dataset.pesos);
 
-                const grisTenue = '#2a2a4a';
-                const textoTenue = '#8b8b9e';
+                // El canvas no entiende var(--...): Chart.js pinta pixeles, no CSS. Se
+                // leen los tokens una vez y la grafica queda atada a la paleta igual
+                // que el resto, sin repetir los hex a mano.
+                const tema = getComputedStyle(document.documentElement);
+                const token = nombre => tema.getPropertyValue(nombre).trim();
+
+                const verde = token('--fc-logro');
+                const grisTenue = token('--fc-border');
+                const textoTenue = token('--fc-muted');
 
                 new Chart(canvas, {
                     type: 'line',
@@ -391,9 +399,9 @@
                         datasets: [{
                             label: 'Peso (kg)',
                             data: pesos,
-                            borderColor: '#22c55e',
-                            backgroundColor: 'rgba(34, 197, 94, 0.12)',
-                            pointBackgroundColor: '#22c55e',
+                            borderColor: verde,
+                            backgroundColor: 'rgba(39, 209, 124, 0.12)',
+                            pointBackgroundColor: verde,
                             pointRadius: 4,
                             pointHoverRadius: 6,
                             borderWidth: 2,
